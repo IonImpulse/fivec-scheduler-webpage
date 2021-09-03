@@ -1,71 +1,90 @@
 <!DOCTYPE html>
 
 <html lang="en">
-  <head>
-    <title>5cheduler</title>
 
-    <meta charset="UTF-8" />
+<head>
+  <title>5cheduler</title>
 
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8" />
 
-    <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
 
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      crossorigin="anonymous"
-    />
+  <meta name="description" content="" />
 
-    <link rel="stylesheet" type="text/css" href="css/main.css" />
+  <link href="css/main.css" rel="stylesheet" type="text/css" />
 
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="manifest" href="/site.webmanifest" />
-    <meta name="msapplication-TileColor" content="#da532c" />
-    <meta name="theme-color" content="#ffffff" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta name="msapplication-TileColor" content="#da532c" />
+  <meta name="theme-color" content="#ffffff" />
 
-    <meta property="og:title" content="5scheduler - a new scheduler for the Claremont Colleges" />
+  <meta property="og:title" content="5scheduler - a new scheduler for the Claremont Colleges" />
 
-    <meta property="og:description" content="" />
+  <meta property="og:description" content="" />
 
-    <meta property="og:image" content="" />
+  <meta property="og:image" content="" />
 
-    <meta name="twitter:card" content="" />
+  <meta name="twitter:card" content="" />
 
-    <meta name="twitter:site" content="" />
+  <meta name="twitter:site" content="" />
 
-    <meta name="twitter:title" content="5scheduler - a new scheduler for the Claremont Colleges" />
+  <meta name="twitter:title" content="5scheduler - a new scheduler for the Claremont Colleges" />
 
-    <meta name="twitter:description" content="" />
+  <meta name="twitter:description" content="" />
 
-    <meta name="twitter:image" content="" />
-  </head>
+  <meta name="twitter:image" content="" />
+</head>
 
-  <body>
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-4">Column 1</div>
+<body>
+  <div id="main-section">
+    <div id="title-bar" class="box-shadow">
+      <img src="img/favicon.png" width="30px" class="box-shadow-img"></img>
 
-        <div class="col-sm-4">Column 2</div>
+      <div class="title-bar-button box-shadow">
+        Import
+      </div>
 
-        <div class="col-sm-4">Column 3</div>
+      <div class="title-bar-button box-shadow">
+        Export
+      </div>
+
+      <div class="title-bar-button box-shadow">
+        Print
+      </div>
+
+      <div class="title-bar-button box-shadow">
+        Share
+      </div>
+
+    </div>
+
+    <div id="schedule-box">
+      <div id="schedule-table">
+        <div class="time-list"></div>
+        <div class="day-column" id="monday"></div>
+        <div class="day-column" id="tuesday"></div>
+        <div class="day-column" id="monday"></div>
+        <div class="day-column" id="monday"></div>
+        <div class="day-column" id="monday"></div>
       </div>
     </div>
 
-    <script
-      src="https://code.jquery.com/jquery-3.6.0.min.js"
-      crossorigin="anonymous"
-    ></script>
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
-      crossorigin="anonymous"
-    ></script>
+  </div>
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js"
-      crossorigin="anonymous"
-    ></script>
-  </body>
+
+  <div id="right-section">
+    <div id="courses">
+
+    </div>
+
+    <div id="schedules">
+
+    </div>
+  </div>
+
+</body>
+
 </html>

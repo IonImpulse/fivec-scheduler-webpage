@@ -1,12 +1,22 @@
 /* Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,900&display=swap');
+@font-face {
+    font-family: 'JetBrains Mono';
+    src: url('https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsMono-Medium.woff2') format('woff2'),
+      url('https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff/JetBrainsMono-Medium.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
 
 :root {
     /* Colors - Light mode (default) */
-    --background-main: #BFC0F2;
+    --background-main: #5a70c7;
     --background-alt: #F0F0F0;
-
+    --text-main: #252525;
+    --text-alt: #fdfdfd;
+    --text-light: #616161;
 
     /* Misc. vars */
     --roundedness: 10px;
@@ -18,7 +28,9 @@
 [data-theme="dark"] {
     /* Colors - Dark mode */
     --background-main: #2E293A;
-    --background-alt: #6A627C
+    --background-alt: #6A627C;
+    --text-main: #dbdbdb;
+    --text-alt: #000000;
 } 
 
 .box-shadow {
@@ -44,7 +56,6 @@
     width: 20%;
     height: 92%;
     margin: 1%;
-
 }
 
 #title-bar {
@@ -58,6 +69,16 @@
     padding: var(--padding);
 }
 
+#title-bar-name {
+    font-family: 'Montserrat', sans-serif;
+    font-size: larger;
+    color: var(--text-alt);
+}
+
+#title-bar-5c {
+    color: var(--text-main);
+}
+
 #schedule-box {
     background-color: var(--background-main);
     border-radius: var(--roundedness);
@@ -65,18 +86,15 @@
 }
 
 #schedule-table {
+    border-radius: var(--roundedness);
     background-color: var(--background-alt);
     display: grid;
-    grid-template-columns: 10% repeat(5, 1fr);
+    grid-template-columns: 5% repeat(5, 1fr);
+    grid-template-rows: repeat(340, 1fr); /* 300 is 15 hours (7AM to 10PM) in 20 five minute blocks */
     grid-column-gap: 10px;
-    height: 1000px;
+    height: 85vh;
+    font-family: 'JetBrains Mono', monospace;
 }
-
-.day-column {
-    display: grid;
-    grid-template-rows: 20px repeat(300, 1fr);    
-}
-
 
 .title-bar-button {
     background-color: var(--background-alt);
@@ -88,4 +106,19 @@
     height: 30px;
     width: 100px;
     margin-right: 50px;
+}
+
+.line {
+    background-color: var(--text-light);
+    height: 2px;
+    opacity: .5;
+}
+
+.highlight {
+    background-color: var(--text-light);
+    border-bottom: 1px solid var(--text-light);
+    border-top: 1px solid var(--text-light);
+    border-left: 1px solid var(--text-light);
+    border-right: 1px solid var(--text-light);
+    opacity: .1;
 }

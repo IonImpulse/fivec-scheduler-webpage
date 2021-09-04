@@ -42,20 +42,24 @@
     <div id="title-bar" class="box-shadow">
       <img src="img/favicon.png" width="30px" class="box-shadow-img"></img>
 
-      <div class="title-bar-button box-shadow">
+      <div class="title-bar-button box-shadow noselect">
         Import
       </div>
 
-      <div class="title-bar-button box-shadow">
+      <div class="title-bar-button box-shadow noselect">
         Export
       </div>
 
-      <div class="title-bar-button box-shadow">
+      <div class="title-bar-button box-shadow noselect">
         Print
       </div>
 
-      <div class="title-bar-button box-shadow">
+      <div class="title-bar-button box-shadow noselect">
         Share
+      </div>
+
+      <div class="title-bar-button box-shadow noselect" onclick="toggle_theme()">
+        Theme
       </div>
 
       <div id="title-bar-name">
@@ -84,5 +88,7 @@
   </div>
 
 </body>
+  <script src="scripts/startup.js"></script>
+  <script src="scripts/utils.js"></script>
   <script src="scripts/app.js"></script>
 </html>

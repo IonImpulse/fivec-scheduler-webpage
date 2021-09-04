@@ -1,6 +1,7 @@
 /* Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
 @font-face {
     font-family: 'JetBrains Mono';
     src: url('https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsMono-Medium.woff2') format('woff2'),
@@ -14,6 +15,7 @@
     /* Colors - Light mode (default) */
     --background-main: #5a70c7;
     --background-alt: #F0F0F0;
+    --background-alt-hover: #c9c8c8;
     --text-main: #252525;
     --text-alt: #fdfdfd;
     --text-light: #616161;
@@ -27,12 +29,21 @@
 
 [data-theme="dark"] {
     /* Colors - Dark mode */
-    --background-main: #2E293A;
-    --background-alt: #6A627C;
+    --background-main: #333333;
+    --background-alt: #1b1b1b;
+    --background-alt-hover: #0c0c0c;
     --text-main: #dbdbdb;
-    --text-alt: #000000;
+    --text-alt: #131313;
+    --text-light: #dbdbdb;
 } 
 
+body {
+    background-color: var(--background-alt);
+}
+
+body * {
+    transition: all 0.2s ease-in-out;
+}
 .box-shadow {
     box-shadow: 0 0 var(--shadow-blur) var(--shadow-length) rgba(0, 0, 0, 0.2);
 }
@@ -40,6 +51,16 @@
 .box-shadow-img {
     -webkit-filter: drop-shadow(0 0 var(--shadow-blur) var(--shadow-length) rgba(0, 0, 0, 0.2));
     filter: drop-shadow(0 0 var(--shadow-blur) var(--shadow-length) rgba(0, 0, 0, 0.2));
+}
+
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
 }
 
 #main-section {
@@ -89,23 +110,30 @@
     border-radius: var(--roundedness);
     background-color: var(--background-alt);
     display: grid;
-    grid-template-columns: 5% repeat(5, 1fr);
-    grid-template-rows: repeat(340, 1fr); /* 300 is 15 hours (7AM to 10PM) in 20 five minute blocks */
+    grid-template-columns: 5% repeat(5, 1fr) 2%;
+    grid-template-rows: repeat(350, 1fr); /* 300 is 15 hours (7AM to 10PM) in 20 five minute blocks */
     grid-column-gap: 10px;
     height: 85vh;
     font-family: 'JetBrains Mono', monospace;
+    color: var(--text-main);
 }
 
 .title-bar-button {
     background-color: var(--background-alt);
     border-radius: var(--roundedness);
     text-align: center;
-    font-size: 18px;
+    font-size: 16px;
     line-height: 28px;
-    font-family: 'Quicksand', sans-serif;
+    font-family: 'JetBrains Mono', sans-serif;
     height: 30px;
     width: 100px;
     margin-right: 50px;
+    cursor: pointer;
+    color: var(--text-main)
+}
+
+.title-bar-button:hover {
+    background-color: var(--background-alt-hover);
 }
 
 .line {

@@ -12,7 +12,8 @@
   <meta name="description" content="" />
 
   <link href="css/main.css" rel="stylesheet" type="text/css" />
-
+  <link href="css/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+  
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
@@ -37,28 +38,30 @@
   <meta name="twitter:image" content="" />
 </head>
 
+<script src="scripts/prelude.js"></script>
+
 <body>
   <div id="main-section">
     <div id="title-bar" class="box-shadow">
       <img src="img/favicon.png" width="30px" class="box-shadow-img"></img>
 
-      <div class="title-bar-button box-shadow noselect">
+      <div class="title-bar-button box-shadow noselect" onclick="buttonImport()">
         Import
       </div>
 
-      <div class="title-bar-button box-shadow noselect">
+      <div class="title-bar-button box-shadow noselect" onclick="buttonExport()">
         Export
       </div>
 
-      <div class="title-bar-button box-shadow noselect">
+      <div class="title-bar-button box-shadow noselect" onclick="buttonPrint()">
         Print
       </div>
 
-      <div class="title-bar-button box-shadow noselect">
+      <div class="title-bar-button box-shadow noselect" onclick="buttonShare()">
         Share
       </div>
 
-      <div class="title-bar-button box-shadow noselect" onclick="toggle_theme()">
+      <div class="title-bar-button box-shadow noselect" onclick="buttonTheme()">
         Theme
       </div>
 
@@ -88,7 +91,10 @@
   </div>
 
 </body>
+  <script src="scripts/sweetalert2.min.js"></script>
   <script src="scripts/startup.js"></script>
   <script src="scripts/utils.js"></script>
   <script src="scripts/app.js"></script>
+  <script src="scripts/html2canvas.min.js"></script>
+  <script src="scripts/data.js"></script>
 </html>

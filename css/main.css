@@ -15,7 +15,7 @@
 
 :root {
   /* Colors - Light mode (default) */
-  --background-main: #5a70c7;
+  --background-main: #4f6fac;
   --background-alt: #f0f0f0;
   --background-alt-hover: #c9c8c8;
   --text-main: #252525;
@@ -25,6 +25,7 @@
   /* Misc. vars */
   --roundedness: 10px;
   --padding: 10px;
+  --padding-small: 5px;
   --shadow-length: 4px;
   --shadow-blur: 20px;
 }
@@ -41,6 +42,8 @@
 
 body {
   background-color: var(--background-alt);
+  display: flex;
+  flex-direction: row;
 }
 
 body * {
@@ -76,6 +79,7 @@ canvas {
 .swal2-actions * {
   font-family: "Quicksand", sans-serif;
 }
+
 #code-input {
   display: block;
   margin: 50px auto;
@@ -128,16 +132,18 @@ canvas {
   display: flex;
   flex-direction: column;
   width: 76%;
-  height: 92%;
-  margin: 1%;
+  height: 94vh;
+  margin-top: 1%;
+  margin-left: 1%;
 }
 
 #right-section {
-  display: flex;
-  flex-direction: column;
+  display: grid; 
+  grid-template-rows: repeat(2, 1fr);
   width: 20%;
-  height: 92%;
-  margin: 1%;
+  height: 94vh;
+  margin-top: 1%;
+  margin-left: 1%;
 }
 
 #title-bar {
@@ -217,4 +223,53 @@ canvas {
   border-left: 1px solid var(--text-light);
   border-right: 1px solid var(--text-light);
   opacity: 0.1;
+}
+
+#course-box {
+  background-color: var(--background-main);
+  border-radius: var(--roundedness);
+  padding: var(--padding);
+  width: 100%;
+  margin-bottom: 1vh;
+  grid-row-start: 1;
+  grid-row-end: 2;
+}
+
+#course-table {
+  border-radius: var(--roundedness);
+  background-color: var(--background-alt);
+  display: flex;
+  flex-direction: column;
+} 
+
+#course-list-box {
+  background-color: var(--background-main);
+  border-radius: var(--roundedness);
+  padding: var(--padding);
+  margin-top: 1vh;
+  width: 100%;
+  grid-row-start: 2;
+  grid-row-end: 3;
+}
+
+#course-list-table {
+  border-radius: var(--roundedness);
+  background-color: var(--background-alt);
+  display: flex;
+  flex-direction: column;
+} 
+
+.table-title {
+  font-family: "Montserrat", sans-serif;
+  font-size: larger;
+  color: var(--text-main);
+  padding: var(--padding);
+}
+
+.course-table-row {
+  font-family: "JetBrains Mono", sans-serif;
+  font-size: smaller;
+  color: var(--text-main);
+  padding: var(--padding-small);
+  border-radius: var(--roundedness);
 }

@@ -53,7 +53,14 @@ function buttonExport() {
 }
 
 function buttonPrint() {
+    Swal.fire({
+		title: 'Print',
+		icon: 'success',
+		text: 'Print dialogue was opened...',
+    })
 
+	let divContents = document.getElementById("schedule-box");
+	PrintElements.print([divContents]);
 }
 
 async function buttonShare() {
@@ -85,4 +92,18 @@ async function buttonShare() {
 
 function buttonTheme() {
     toggle_theme();
+}
+
+function buttonAbout() {
+	Swal.fire({
+		title: 'About',
+		icon: 'info',
+		html: `Created By: <b>Ethan Vazquez</b> HMC 25'<BR>` +
+		`Send comments/questions/bug reports to: <b>edv121@outlook.com</b><BR><BR>` +
+		`Webpage Repo: <a href="https://github.com/IonImpulse/fivec-scheduler-webpage">fivec-scheduler-webpage</a><br>` +
+		`API Repo: <a href="https://github.com/IonImpulse/fivec-scheduler-server">fivec-scheduler-server</a>.<BR><BR>` +
+		`<b><u>Credits:</b></u><BR>` +
+		`<b>html2canvas.js</b><br>Created by Niklas von Hertzen.<br>Licensed under the MIT License.<br>` +
+		`<b>sweetalert2.js</b><br>Created by Tristan Edwards & Limon Monte.<br>Licensed under the MIT License.<br>`
+	});
 }

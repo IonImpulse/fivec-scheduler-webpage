@@ -13,6 +13,8 @@
 
   <link href="css/main.css" rel="stylesheet" type="text/css" />
   <link href="css/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+  <link href="css/print.css" rel="stylesheet" type="text/css" />
+
   
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -65,15 +67,18 @@
         Theme
       </div>
 
+      <div class="title-bar-button box-shadow noselect" onclick="buttonAbout()">
+        About
+      </div>
+
       <div id="title-bar-name">
-        <span id="title-bar-5c">5c</span>heduler
+        <span id="title-bar-5c">5c</span>heduler.com
       </div>
 
     </div>
 
     <div id="schedule-box" class="box-shadow">
-      <div id="schedule-table" class="box-shadow">
-      </div>
+      <div id="schedule-table" class="box-shadow"></div>
     </div>
 
 
@@ -81,17 +86,23 @@
 
 
   <div id="right-section">
-    <div id="courses">
-
+    <div id="course-box" class="box-shadow">
+      <div id="course-table" class="box-shadow">
+        <div class="table-title">Courses Loaded</div>
+      </div>
     </div>
 
-    <div id="schedules">
-
+    <div id="course-list-box" class="box-shadow">
+      <div id="course-list-table" class="box-shadow">
+        <div class="table-title">Courses Lists Loaded</div>
+        <div class=""
+      </div>
     </div>
   </div>
 
 </body>
   <script src="scripts/sweetalert2.min.js"></script>
+  <script src="scripts/print_elements.js"></script>
   <script src="scripts/startup.js"></script>
   <script src="scripts/utils.js"></script>
   <script src="scripts/app.js"></script>

@@ -28,7 +28,7 @@ async function update_database() {
 
     let response;
 
-    if (Object.entries(current_data).length === 0 || current_data === null) {
+    if (current_data === null || Object.entries(current_data).length === 0) {
         response = fetch(`${API_URL}${FULL_UPDATE}`);
     } else {
         response = fetch(`${API_URL}${UPDATE_IF_STALE(current_data[0])}`);
@@ -38,7 +38,7 @@ async function update_database() {
     const data = await response.then(response => response.json());
 
     if (data != "No update needed") {
-        save_course_data("course_data", data);
+        save_json_data("course_data", data);
     }
 }
 

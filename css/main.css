@@ -20,7 +20,8 @@
   --background-main: #4f6fac;
   --background-alt: #f0f0f0;
   --background-alt-hover: #c9c8c8;
-  --search-button-background: #57ac4f;
+  --search-button-background: #4cad41;
+  --select-main: #ffffffe0;
   --text-main: #252525;
   --text-alt: #fdfdfd;
   --text-light: #616161;
@@ -46,9 +47,11 @@
   --background-main: #333333;
   --background-alt: #1b1b1b;
   --background-alt-hover: #0c0c0c;
+  --search-button-background: #57ac4f;
   --text-main: #dbdbdb;
   --text-alt: #131313;
   --text-light: #dbdbdb;
+  --select-main: #dfdede;
 }
 
 body {
@@ -306,8 +309,38 @@ canvas {
   border-radius: var(--roundedness);
 }
 
-.course-search-results {
+#course-search-results {
   overflow-x: hidden;
   overflow-y: auto;
-  height: 100px;
+  height: 40vh;
+  margin-top: 2vh;
+}
+
+.course-search-result {
+  font-family: "Roboto", sans-serif;
+  color: var(--text-alt);
+  border-radius: var(--roundedness);
+  padding: var(--padding-small);
+  margin: 1vh;
+  cursor: pointer;
+  transition: outline .05s;
+  outline: 0px solid var(--select-main);
+  outline-offset: -2px;
+}
+
+.course-clicked {
+  outline: 3px solid var(--select-main);
+  outline-offset: -2px;
+}
+
+.unselectable {
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+#course-add-num {
+  font-family: "JetBrains Mono", monospace;
 }

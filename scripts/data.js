@@ -8,6 +8,8 @@ const UPDATE_IF_STALE = function(timestamp) { return "updateIfStale/" + timestam
 const GET_UNIQUE_CODE = "getUniqueCode";
 const GET_COURSES_LIST_BY_CODE = function(code) { return "getCoursesListByCode/" + code; }
 
+var index;
+
 function load_json_data(name) {
     let data = localStorage.getItem(name);
     if (data != null && data != "" && data != "null" && data != "undefined" && data != "NaN" && data != undefined) {
@@ -39,6 +41,7 @@ async function update_database() {
 
     if (data != "No update needed") {
         save_json_data("course_data", data);
+        create_searcher();
     }
 }
 
@@ -57,6 +60,28 @@ function setup_course_lists() {
     }
 }
 
+function create_searcher() {
+    let current_data = load_json_data("course_data");
+
+    console.log("Building search index...");
+    index = elasticlunr(function () {
+        this.setRef('identifier');
+        this.addField('id');
+        this.addField('code');
+        this.addField('dept');
+        this.addField('section');
+        this.addField('title');
+        this.addField('description');
+        this.addField('instructors');
+    });
+
+    for (let i = 0; i < current_data[1].length; i++) {
+        index.addDoc(current_data[1][i]);
+    }
+    console.log(index);
+    console.log("Search index built.");
+}
 setup_course_lists();
 update_database();
 update_loop();
+create_searcher();

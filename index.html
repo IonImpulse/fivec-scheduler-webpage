@@ -46,7 +46,7 @@
   <div id="main-section">
     <div id="title-bar" class="box-shadow">
       <img src="img/favicon.png" width="30px" class="box-shadow-img"></img>
-
+      
       <div class="title-bar-button box-shadow noselect" onclick="buttonImport()">
         Import
       </div>
@@ -57,6 +57,10 @@
 
       <div class="title-bar-button box-shadow noselect" onclick="buttonPrint()">
         Print
+      </div>
+
+      <div class="title-bar-button box-shadow noselect search-button" onclick="buttonSearch()">
+        Search
       </div>
 
       <div class="title-bar-button box-shadow noselect" onclick="buttonShare()">
@@ -89,18 +93,19 @@
     <div id="course-box" class="box-shadow">
       <div id="course-table" class="box-shadow">
         <div class="table-title">Courses Loaded</div>
+        <div class="course-row"></div>
       </div>
     </div>
 
     <div id="course-list-box" class="box-shadow">
       <div id="course-list-table" class="box-shadow">
         <div class="table-title">Courses Lists Loaded</div>
-        <div class=""
       </div>
     </div>
   </div>
 
 </body>
+  <script src="scripts/elasticlunr.min.js"></script>
   <script src="scripts/sweetalert2.min.js"></script>
   <script src="scripts/print_elements.js"></script>
   <script src="scripts/startup.js"></script>

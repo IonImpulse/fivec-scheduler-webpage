@@ -63,6 +63,32 @@ function buttonPrint() {
 	PrintElements.print([divContents]);
 }
 
+
+function buttonSearch() {
+    let courses = load_json_data("course_data");
+
+    if (courses == null) {
+        Swal.fire({
+            title: 'Error fetching courses!',
+            icon: 'error'
+        });
+    } else {
+        Swal.fire({
+            title: 'Search Courses',
+            icon: 'info',
+            html: `<div><input class="swal2-input" id="course-input" onKeyUp="updateCourseSearch()"></div>` +
+            `<div id="course-search-results"></div><br>`,
+            showCloseButton: true,
+            showCancelButton: true,
+            confirmButtonText:
+            `<span onclick="addCourses()">Add <span id="course-add-num">0</span> course<span id="multiple-course-s">s</span></span>`,
+            cancelButtonText:
+            'Cancel',
+        });
+        updateCourseSearch();
+    }
+}
+
 async function buttonShare() {
     let current_courses = load_json_data("local_course_list")
 
@@ -106,4 +132,31 @@ function buttonAbout() {
 		`<b>html2canvas.js</b><br>Created by Niklas von Hertzen.<br>Licensed under the MIT License.<br>` +
 		`<b>sweetalert2.js</b><br>Created by Tristan Edwards & Limon Monte.<br>Licensed under the MIT License.<br>`
 	});
+}
+
+function updateCourseSearch() {
+    let input = document.getElementById("course-input");
+    let output = document.getElementById("course-search-results");
+    let results = index.search(input.value, {});
+
+    console.log(input.value);
+    console.log(results);
+
+    let colors = ["blue", "green", "red", "purple", "orange", "pink"]
+
+    output.innerHTML = "";
+    
+    for (let i = 0; i < results.length; i++) {
+        let course = results[i].doc;
+        let identifier = course.identifier;
+
+        let course_div = document.createElement("div");
+        course_div.className = "course-search-result";
+        
+        let color = colors[i % colors.length];
+
+        course_div.style.backgroundColor = `var(--course-${color})`;
+        course_div.innerText = identifier;
+        output.appendChild(course_div)
+    }
 }

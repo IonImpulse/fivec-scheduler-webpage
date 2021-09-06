@@ -1,7 +1,9 @@
 /* Fonts */
 @import url("https://fonts.googleapis.com/css2?family=Quicksand&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
 @font-face {
   font-family: "JetBrains Mono";
   src: url("https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsMono-Medium.woff2")
@@ -18,9 +20,18 @@
   --background-main: #4f6fac;
   --background-alt: #f0f0f0;
   --background-alt-hover: #c9c8c8;
+  --search-button-background: #57ac4f;
   --text-main: #252525;
   --text-alt: #fdfdfd;
   --text-light: #616161;
+
+  /* Colors for courses */
+  --course-blue: #4f6fac;
+  --course-green: #407c3b;
+  --course-red: #ac4f4f;
+  --course-purple: #86378d;
+  --course-orange: #b86c25;
+  --course-pink: #ac4f8d;
 
   /* Misc. vars */
   --roundedness: 10px;
@@ -184,7 +195,6 @@ canvas {
   ); /* 300 is 15 hours (7AM to 10PM) in 20 five minute blocks */
   grid-column-gap: 10px;
   height: 85vh;
-  font-family: "JetBrains Mono", monospace;
   color: var(--text-main);
 }
 
@@ -196,8 +206,9 @@ canvas {
   line-height: 28px;
   font-family: "JetBrains Mono", sans-serif;
   height: 30px;
-  width: 100px;
-  margin-right: 50px;
+  width: 90px;
+  margin-left: 20px;
+  margin-right: 20px;
   cursor: pointer;
   color: var(--text-main);
 }
@@ -208,6 +219,27 @@ canvas {
 
 .title-bar-button:active {
   transform: scale(0.95);
+}
+
+.search-button {
+  background-color: var(--search-button-background);
+  color: var(--text-alt);
+}
+
+.time {
+    font-size: 14px;
+    text-align: right;
+    color: var(--text-light);
+    font-family: "Bebas Neue", monospace;
+}
+
+.day {
+    font-size: 18px;
+    letter-spacing: 1px;
+    text-align: center;
+    padding: 4% 0%;
+    font-weight: 900;
+    font-family: 'Roboto', monospace;
 }
 
 .line {
@@ -267,9 +299,15 @@ canvas {
 }
 
 .course-table-row {
-  font-family: "JetBrains Mono", sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: smaller;
   color: var(--text-main);
   padding: var(--padding-small);
   border-radius: var(--roundedness);
+}
+
+.course-search-results {
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 100px;
 }

@@ -22,9 +22,6 @@ function generate_grid_times() {
         time.style.gridColumnEnd = 2;
         time.style.gridRowStart = 17 + ((i - 7) * 20);
         time.style.gridRowEnd = 17 + ((i - 6) * 20);
-        time.style.textAlign = "right";
-        time.style.color = "var(--text-light)";
-        time.style.fontSize = "12px";
         element.appendChild(time);
     }
 
@@ -37,9 +34,6 @@ function generate_grid_times() {
         time.style.gridColumnEnd = 2;
         time.style.gridRowStart = 17 + ((i - 7) * 20);
         time.style.gridRowEnd = 17 + ((i - 6) * 20);
-        time.style.textAlign = "right";
-        time.style.color = "var(--text-light)";
-        time.style.fontSize = "12px";
         element.appendChild(time);
     }
 }
@@ -58,10 +52,6 @@ function generate_days() {
         day.style.gridColumnEnd = i + 3;
         day.style.gridRowStart = 1;
         day.style.gridRowEnd = 20;
-        day.style.textAlign = "center";
-        day.style.padding = "4% 0%";
-        day.style.fontWeight = "600";
-        day.style.fontSize = "18px"
         element.appendChild(day);
     }
 }

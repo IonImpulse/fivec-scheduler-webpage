@@ -1,6 +1,6 @@
 var selected_courses = [];
 var all_courses_global = [];
-
+var all_desc_global = [];
 
 // *****
 // Title button functions
@@ -78,7 +78,8 @@ function buttonSearch() {
 			icon: 'error'
 		});
 	} else {
-    all_courses_global = courses[1];
+		all_courses_global = courses[1];
+		generateAllDescriptions();
 
 		Swal.fire({
 			title: 'Search Courses',
@@ -91,11 +92,11 @@ function buttonSearch() {
 				`<span onclick="addCourses()">Add <span id="course-add-num">0</span> course<span id="multiple-course-s">s</span></span>`,
 			cancelButtonText:
 				'Cancel',
-      customClass: 'swal-wide',
+			customClass: 'swal-wide',
 		});
 
 		document.getElementById("course-input").focus();
-		
+
 		updateCourseSearch();
 	}
 }
@@ -145,11 +146,11 @@ function buttonAbout() {
 	});
 }
 
-function debounce(func, timeout = 300){
+function debounce(func, timeout = 300) {
 	let timer;
 	return (...args) => {
-	  clearTimeout(timer);
-	  timer = setTimeout(() => { func.apply(this, args); }, timeout);
+		clearTimeout(timer);
+		timer = setTimeout(() => { func.apply(this, args); }, timeout);
 	};
 }
 
@@ -166,7 +167,7 @@ function expensiveCourseSearch() {
 
 		for (let i = 0; i < all_courses_global.length; i++) {
 			let course = all_courses_global[i];
-			
+
 			let course_div = createResultDiv(course, colors[i % colors.length], i);
 
 			if (selected_courses.includes(course.identifier)) {
@@ -174,27 +175,27 @@ function expensiveCourseSearch() {
 			}
 
 			output.appendChild(course_div)
-			
+
 		}
 
-    setCourseDescription(0);
+		setCourseDescription(0);
 
 	} else {
 		let results = fuzzy_searcher.search(input.value);
 
 		for (let i = 0; i < results.length; i++) {
 			let course = results[i].item;
-			
+
 			let course_div = createResultDiv(course, colors[i % colors.length], results[i].refIndex);
 
 			if (selected_courses.includes(course.identifier)) {
 				course_div.classList.add("course-clicked");
 			}
-			
+
 			output.appendChild(course_div)
 		}
 	}
-	
+
 }
 
 function createResultDiv(course, color, index) {
@@ -206,15 +207,15 @@ function createResultDiv(course, color, index) {
 	course_div.onclick = function () {
 		toggleCourseSelection(identifier)
 	};
-  course_div.onmouseover = function () {
-    setCourseDescription(index)
-  };
+	course_div.onmouseover = function () {
+		setCourseDescription(index)
+	};
 	course_div.style.backgroundColor = `var(--course-${color})`;
-  let course_code = `<b>${course.code} ${course.id} ${course.dept}-${course.section}</b>`;
-  let num_students = `<span class="align-right" ><b>${course.seats_taken}/${course.max_seats}</b></span>`;
+	let course_code = `<b>${course.code} ${course.id} ${course.dept}-${course.section}</b>`;
+	let num_students = `<span class="align-right" ><b>${course.seats_taken}/${course.max_seats}</b></span>`;
 
 	course_div.innerHTML = `${course_code}: ${course.title} ${num_students}`;
-	
+
 	return course_div;
 }
 
@@ -231,7 +232,7 @@ function toggleCourseSelection(identifier) {
 
 	el = document.getElementById("course-add-num");
 	el.innerText = selected_courses.length;
-	
+
 	el = document.getElementById("multiple-course-s");
 
 	if (selected_courses.length == 1) {
@@ -242,43 +243,56 @@ function toggleCourseSelection(identifier) {
 }
 
 function convertTime(time) {
-  let return_time = time.substring(0,5);
-  let first_two = parseInt(time.substring(0,2));
+	let return_time = time.substring(0, 5);
+	let first_two = parseInt(time.substring(0, 2));
 
-  if (first_two > 12) {
-    return (first_two - 12) + return_time.substring(2) + " PM";
-  } else {
-    return return_time + " AM";
-  }
+	if (first_two > 12) {
+		return (first_two - 12) + return_time.substring(2) + " PM";
+	} else {
+		return return_time + " AM";
+	}
 }
 
-
 function setCourseDescription(index) {
-  let course_search_desc = document.getElementById("course-search-desc");
+	let course_search_desc = document.getElementById("course-search-desc");
+	let desc = all_desc_global[index];
 
-  let course = all_courses_global[index];
+	course_search_desc.innerHTML = desc;
+}
 
-  course_search_desc.innerHTML = "";
+function generateAllDescriptions() {
+	all_desc_global = [];
+	for (let i = 0; i < all_courses_global.length; i++) {
+		let course = all_courses_global[i];
 
-  course_search_desc.innerHTML += `
-  <div class="title">${course.title}</div>
-  <div class="subtitle">${course.identifier}</div>
-  <div class="course-status ${course.status}">${course.status} - ${course.seats_taken}/${course.max_seats}</div>
-  `;
+		let course_search_desc = "";
 
-  for (let time of course.timing) {
-    let day_str = time.days.join(', ');
-    let start_time = convertTime(time.start_time);
-    let end_time = convertTime(time.end_time);
-    let local = time.location;
+		course_search_desc += `
+	<div class="title">${course.title}</div>
+	<div class="subtitle">${course.identifier}</div>
+	<div class="course-status ${course.status}">${course.status} - ${course.seats_taken}/${course.max_seats}</div>
+	`;
 
-    course_search_desc.innerHTML += `
-    <div class="timing"><b>${start_time}-${end_time}:</b> ${day_str} @ ${local.school}, ${local.building}, Room ${local.room}</div>`;
+		for (let time of course.timing) {
+			let day_str = time.days.join(', ');
+			let start_time = convertTime(time.start_time);
+			let end_time = convertTime(time.end_time);
+			let local = time.location;
 
-  }
+			course_search_desc += `
+	  <div class="timing"><b>${start_time}-${end_time}:</b> ${day_str} @ ${local.school}, ${local.building}, Room ${local.room}</div>`;
 
-  course_search_desc.innerHTML += `
-  <div class="description"><b>Description:</b>\n${course.description}</div>
-  `;
+		}
+
+		course_search_desc += `<div class="instructors"><i>${course.instructors.join(', ')}</i></div>`;
+
+		course_search_desc += `
+	<div class="description"><b>Description:</b>\n${course.description}</div>
+	`;
+
+
+		all_desc_global.push(course_search_desc);
+
+	}
 
 }

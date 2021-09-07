@@ -142,8 +142,17 @@ function buttonAbout() {
 	});
 }
 
+function debounce(func, timeout = 300){
+	let timer;
+	return (...args) => {
+	  clearTimeout(timer);
+	  timer = setTimeout(() => { func.apply(this, args); }, timeout);
+	};
+}
 
-function updateCourseSearch() {
+const updateCourseSearch = debounce(() => expensiveCourseSearch());
+
+function expensiveCourseSearch() {
 	const colors = ["blue", "green", "red", "purple", "orange", "pink"]
 
 	let input = document.getElementById("course-input");
@@ -155,7 +164,7 @@ function updateCourseSearch() {
 		for (let i = 0; i < all_courses_global.length; i++) {
 			let course = all_courses_global[i];
 			
-			let course_div = createResultDiv(course, colors[i % colors.length]);
+			let course_div = createResultDiv(course, colors[i % colors.length], i);
 
 			if (selected_courses.includes(course.identifier)) {
 				course_div.classList.add("course-clicked");
@@ -165,18 +174,15 @@ function updateCourseSearch() {
 			
 		}
 
-    setCourseDescription(all_courses_global[0].identifier);
+    setCourseDescription(0);
 
 	} else {
-		let results = index.search(input.value, { expand: true });
-
-		console.log(input.value);
-		console.log(results);
+		let results = fuzzy_searcher.search(input.value);
 
 		for (let i = 0; i < results.length; i++) {
-			let course = results[i].doc;
+			let course = results[i].item;
 			
-			let course_div = createResultDiv(course, colors[i % colors.length]);
+			let course_div = createResultDiv(course, colors[i % colors.length], results[i].refIndex);
 
 			if (selected_courses.includes(course.identifier)) {
 				course_div.classList.add("course-clicked");
@@ -188,7 +194,7 @@ function updateCourseSearch() {
 	
 }
 
-function createResultDiv(course, color) {
+function createResultDiv(course, color, index) {
 	let identifier = course.identifier;
 
 	let course_div = document.createElement("div");
@@ -198,7 +204,7 @@ function createResultDiv(course, color) {
 		toggleCourseSelection(identifier)
 	};
   course_div.onmouseover = function () {
-    setCourseDescription(identifier)
+    setCourseDescription(index)
   };
 	course_div.style.backgroundColor = `var(--course-${color})`;
   let course_code = `<b>${course.code} ${course.id} ${course.dept}-${course.section}</b>`;
@@ -244,10 +250,8 @@ function convertTime(time) {
 }
 
 
-function setCourseDescription(identifier) {
+function setCourseDescription(index) {
   let course_search_desc = document.getElementById("course-search-desc");
-  
-  let index = all_courses_global.findIndex(obj => obj.identifier==identifier);
 
   let course = all_courses_global[index];
 

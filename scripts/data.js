@@ -64,21 +64,20 @@ function create_searcher() {
     let current_data = load_json_data("course_data");
 
     console.log("Building search index...");
-    index = elasticlunr(function () {
-        this.setRef('identifier');
-        this.addField('id');
-        this.addField('code');
-        this.addField('dept');
-        this.addField('section');
-        this.addField('title');
-        this.addField('description');
-        this.addField('instructors');
-    });
+    const options = {
+        isCaseSensitive: false,
+        shouldSort: true,
+        keys: [
+          "id",
+          "code",
+          "dept",
+          "title",
+          "instructors",
+          "description",
+        ]
+    };
 
-    for (let i = 0; i < current_data[1].length; i++) {
-        index.addDoc(current_data[1][i]);
-    }
-    console.log(index);
+    fuzzy_searcher = new Fuse(current_data[1], options);
     console.log("Search index built.");
 }
 setup_course_lists();

@@ -1,3 +1,7 @@
+var selected_courses = [];
+var all_courses_global = [];
+
+
 // *****
 // Title button functions
 // *****
@@ -74,17 +78,20 @@ function buttonSearch() {
 			icon: 'error'
 		});
 	} else {
+    all_courses_global = courses[1];
+
 		Swal.fire({
 			title: 'Search Courses',
 			icon: 'info',
 			html: `<div><input class="swal2-input" id="course-input" onKeyUp="updateCourseSearch()"></div>` +
-				`<div id="course-search-results"></div><br>`,
+				`<div id="course-search-box"><div id="course-search-results"></div><div id="course-search-desc"></div></div><br>`,
 			showCloseButton: true,
 			showCancelButton: true,
 			confirmButtonText:
 				`<span onclick="addCourses()">Add <span id="course-add-num">0</span> course<span id="multiple-course-s">s</span></span>`,
 			cancelButtonText:
 				'Cancel',
+      customClass: 'swal-wide',
 		});
 		updateCourseSearch();
 	}
@@ -135,7 +142,6 @@ function buttonAbout() {
 	});
 }
 
-var selected_courses = [];
 
 function updateCourseSearch() {
 	const colors = ["blue", "green", "red", "purple", "orange", "pink"]
@@ -145,10 +151,9 @@ function updateCourseSearch() {
 	output.innerHTML = "";
 
 	if (input.value == "") {
-		let all_courses = load_json_data("course_data");
 
-		for (let i = 0; i < all_courses[1].length; i++) {
-			let course = all_courses[1][i];
+		for (let i = 0; i < all_courses_global.length; i++) {
+			let course = all_courses_global[i];
 			
 			let course_div = createResultDiv(course, colors[i % colors.length]);
 
@@ -159,6 +164,9 @@ function updateCourseSearch() {
 			output.appendChild(course_div)
 			
 		}
+
+    setCourseDescription(all_courses_global[0].identifier);
+
 	} else {
 		let results = index.search(input.value, { expand: true });
 
@@ -189,8 +197,14 @@ function createResultDiv(course, color) {
 	course_div.onclick = function () {
 		toggleCourseSelection(identifier)
 	};
+  course_div.onmouseover = function () {
+    setCourseDescription(identifier)
+  };
 	course_div.style.backgroundColor = `var(--course-${color})`;
-	course_div.innerText = identifier;
+  let course_code = `<b>${course.code} ${course.id} ${course.dept}-${course.section}</b>`;
+  let num_students = `<span class="align-right" ><b>${course.seats_taken}/${course.max_seats}</b></span>`;
+
+	course_div.innerHTML = `${course_code}: ${course.title} ${num_students}`;
 	
 	return course_div;
 }
@@ -216,4 +230,48 @@ function toggleCourseSelection(identifier) {
 	} else {
 		el.innerText = "s";
 	}
+}
+
+function convertTime(time) {
+  let return_time = time.substring(0,5);
+  let first_two = parseInt(time.substring(0,2));
+
+  if (first_two > 12) {
+    return (first_two - 12) + return_time.substring(2) + " PM";
+  } else {
+    return return_time + " AM";
+  }
+}
+
+
+function setCourseDescription(identifier) {
+  let course_search_desc = document.getElementById("course-search-desc");
+  
+  let index = all_courses_global.findIndex(obj => obj.identifier==identifier);
+
+  let course = all_courses_global[index];
+
+  course_search_desc.innerHTML = "";
+
+  course_search_desc.innerHTML += `
+  <div class="title">${course.title}</div>
+  <div class="subtitle">${course.identifier}</div>
+  <div class="course-status ${course.status}">${course.status} - ${course.seats_taken}/${course.max_seats}</div>
+  `;
+
+  for (let time of course.timing) {
+    let day_str = time.days.join(', ');
+    let start_time = convertTime(time.start_time);
+    let end_time = convertTime(time.end_time);
+    let local = time.location;
+
+    course_search_desc.innerHTML += `
+    <div class="timing"><b>${start_time}-${end_time}:</b> ${day_str} @ ${local.school}, ${local.building}, Room ${local.room}</div>`;
+
+  }
+
+  course_search_desc.innerHTML += `
+  <div class="description"><b>Description:</b>\n${course.description}</div>
+  `;
+
 }

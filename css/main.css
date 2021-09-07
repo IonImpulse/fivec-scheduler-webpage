@@ -21,10 +21,14 @@
   --background-alt: #f0f0f0;
   --background-alt-hover: #c9c8c8;
   --search-button-background: #4cad41;
-  --select-main: #ffffffe0;
+  --select-main: #000000;
   --text-main: #252525;
   --text-alt: #fdfdfd;
   --text-light: #616161;
+  
+  --course-open: #3c7a34;
+  --course-closed: #863333;
+  --course-reopened: #8d6435;
 
   /* Colors for courses */
   --course-blue: #4f6fac;
@@ -52,6 +56,10 @@
   --text-alt: #131313;
   --text-light: #dbdbdb;
   --select-main: #dfdede;
+
+  --course-open: #7ee271;
+  --course-closed: #e27878;
+  --course-reopened: #e0c06a;
 }
 
 body {
@@ -313,6 +321,7 @@ canvas {
   overflow-x: hidden;
   overflow-y: auto;
   height: 40vh;
+  width: 40vw;
   margin-top: 2vh;
 }
 
@@ -320,12 +329,18 @@ canvas {
   font-family: "Roboto", sans-serif;
   color: var(--text-alt);
   border-radius: var(--roundedness);
-  padding: var(--padding-small);
+  padding: var(--padding);
+  font-size: 16px;
   margin: 1vh;
   cursor: pointer;
   transition: outline .05s;
   outline: 0px solid var(--select-main);
   outline-offset: -2px;
+  text-align: left;
+}
+
+.course-search-result:hover {
+  filter: brightness(1.2);
 }
 
 .course-clicked {
@@ -341,6 +356,71 @@ canvas {
   user-select: none;
 }
 
+.swal-wide {
+  width:80vw !important;
+}
+
 #course-add-num {
   font-family: "JetBrains Mono", monospace;
+}
+
+#course-search-box {
+  display: flex;
+  flex-direction: row;
+}
+
+#course-search-desc {
+  width: 40vw;
+  padding: 2vw;
+  text-align: left;
+}
+
+.align-right {
+  text-align: right;
+  float: right;
+}
+
+#course-search-desc .title {
+  font-family: 'Roboto', sans-serif;
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--text-main);
+  margin-bottom: 1vh;
+}
+
+#course-search-desc .subtitle {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-light);
+}
+
+#course-search-desc .course-status {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-main);
+  margin-bottom: 1vh;
+}
+
+#course-search-desc .Closed {
+  color: var(--course-closed)
+}
+
+#course-search-desc .Open {
+  color: var(--course-open)
+}
+
+#course-search-desc .Reopened {
+  color: var(--course-reopened)
+}
+
+#course-search-desc .timing {
+  font-family: 'Roboto', monospace;
+  color: var(--text-main);
+  font-size: 14px;
+}
+
+#course-search-desc .description {
+  margin-top: 1vh;
+  font-family: 'Roboto', monospace;
+  color: var(--text-main);
+  font-size: 14px;
 }

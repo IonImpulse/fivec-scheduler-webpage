@@ -93,6 +93,9 @@ function buttonSearch() {
 				'Cancel',
       customClass: 'swal-wide',
 		});
+
+		document.getElementById("course-input").focus();
+		
 		updateCourseSearch();
 	}
 }

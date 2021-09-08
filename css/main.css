@@ -425,6 +425,11 @@ canvas {
   font-size: 14px;
 }
 
+#course-search-desc .instructors {
+  font-family: 'Roboto', monospace;
+  color: var(--text-main);
+  font-size: 14px;
+}
 #course-search-desc .description {
   margin-top: 1vh;
   font-family: 'Roboto', monospace;

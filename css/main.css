@@ -17,7 +17,7 @@
 
 :root {
   /* Colors - Light mode (default) */
-  --background-main: #554fac;
+  --background-main: #3465a5;
   --background-alt: #f0f0f0;
   --background-alt-hover: #c9c8c8;
   --search-button-background: #4cad41;
@@ -318,17 +318,17 @@ canvas {
 
 .course-table-row {
   font-family: "Roboto", sans-serif;
-  font-size: smaller;
+  font-size: 20px;
   color: var(--text-main);
-  padding: var(--padding-small);
+  padding: var(--padding);
   border-radius: var(--roundedness);
 }
 
 #course-search-results {
   overflow-x: hidden;
   overflow-y: auto;
-  height: 40vh;
-  width: 40vw;
+  height: 50vh;
+  width: 60vw;
   margin-top: 2vh;
 }
 
@@ -377,7 +377,7 @@ canvas {
 }
 
 #course-search-desc {
-  width: 40vw;
+  width: 30vw;
   padding: 2vw;
   text-align: left;
 }

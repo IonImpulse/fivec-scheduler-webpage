@@ -4,13 +4,13 @@
 
 // Runs all startup scripts
 function startup() {
-    generate_grid_times();
-    generate_days();
-    generate_lines();
+    generateGridTimes();
+    generateDays();
+    generateLines();
 }
 
 // Generates and sets divs for timeslots
-function generate_grid_times() {
+function generateGridTimes() {
     element = document.getElementById("schedule-table");
 
     for (let i = 7; i <= 12; i++) {
@@ -39,7 +39,7 @@ function generate_grid_times() {
 }
 
 // Generates days of the week
-function generate_days() {
+function generateDays() {
     element = document.getElementById("schedule-table");
     let days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
@@ -56,7 +56,7 @@ function generate_days() {
     }
 }
 
-function generate_lines() {
+function generateLines() {
     element = document.getElementById("schedule-table");
 
     for (let i = 0; i < 16; i++) {

@@ -196,6 +196,8 @@ function expensiveCourseSearch() {
 		}
 	}
 
+	output.scroll({top:0,behavior:'smooth'});
+
 }
 
 function createResultDiv(course, color, index) {
@@ -212,7 +214,7 @@ function createResultDiv(course, color, index) {
 	};
 	
 	course_div.style.backgroundColor = `var(--course-${color})`;
-	let course_code = `<b>${course.code} ${course.id} ${course.dept}-${course.section}</b>`;
+	let course_code = `<b>${course.identifier}</b>`;
 	let status = `<span class="status-highlight ${course.status}">${course.status}</span>`;
 	// Put the course code and status in a div on the right
 	let num_students = `<span class="align-right" ><b>${course.seats_taken}/${course.max_seats} ${status}</b></span>`;

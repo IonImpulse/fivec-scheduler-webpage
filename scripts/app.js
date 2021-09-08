@@ -15,7 +15,7 @@ function buttonImport() {
 		confirmButtonText: 'Load',
 		showLoaderOnConfirm: true,
 		preConfirm: () => {
-			return fetch(`${API_URL}${GET_COURSES_LIST_BY_CODE(document.getElementById("code-input"))}`)
+			return fetch(`${API_URL}${GET_COURSES_LIST_BY_CODE(document.getElementById("code-input").value.toUpperCase())}`)
 				.then(response => {
 					if (!response.ok) {
 						throw new Error(response.statusText)
@@ -135,7 +135,7 @@ function buttonAbout() {
 	Swal.fire({
 		title: 'About',
 		icon: 'info',
-		html: `Created By: <b>Ethan Vazquez</b> HMC 25'<BR>` +
+		html: `Created By: <b>Ethan Vazquez</b> HMC '25<BR>` +
 			`Send comments/questions/bug reports to: <b>edv121@outlook.com</b><BR><BR>` +
 			`Webpage Repo: <a href="https://github.com/IonImpulse/fivec-scheduler-webpage">fivec-scheduler-webpage</a><br>` +
 			`API Repo: <a href="https://github.com/IonImpulse/fivec-scheduler-server">fivec-scheduler-server</a>.<BR><BR>` +
@@ -206,12 +206,14 @@ function createResultDiv(course, color, index) {
 	course_div.onclick = function () {
 		toggleCourseSelection(identifier)
 	};
-  course_div.onmouseover = function () {
-    setCourseDescription(index)
-  };
-	course_div.style.backgroundColor = `var(--course-${color})`;
-  let course_code = `<b>${course.code} ${course.id} ${course.dept}-${course.section}</b>`;
-  let num_students = `<span class="align-right" ><b>${course.seats_taken}/${course.max_seats}</b></span>`;
+	course_div.onmouseover = function () {
+		setCourseDescription(index)
+	};
+		course_div.style.backgroundColor = `var(--course-${color})`;
+	let course_code = `<b>${course.code} ${course.id} ${course.dept}-${course.section}</b>`;
+	let status = `<span class="status-highlight ${course.status}">${course.status}</span>`;
+	// Put the course code and status in a div on the right
+	let num_students = `<span class="align-right" ><b>${course.seats_taken}/${course.max_seats} ${status}</b></span>`;
 
 	course_div.innerHTML = `${course_code}: ${course.title} ${num_students}`;
 	

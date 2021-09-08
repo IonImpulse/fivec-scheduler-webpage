@@ -17,10 +17,11 @@
 
 :root {
   /* Colors - Light mode (default) */
-  --background-main: #4f6fac;
+  --background-main: #554fac;
   --background-alt: #f0f0f0;
   --background-alt-hover: #c9c8c8;
   --search-button-background: #4cad41;
+  --search-button-hover: #43993a;
   --select-main: #000000;
   --text-main: #252525;
   --text-alt: #fdfdfd;
@@ -52,6 +53,7 @@
   --background-alt: #1b1b1b;
   --background-alt-hover: #0c0c0c;
   --search-button-background: #57ac4f;
+  --search-button-hover: #3a9232;
   --text-main: #dbdbdb;
   --text-alt: #131313;
   --text-light: #dbdbdb;
@@ -235,6 +237,11 @@ canvas {
 .search-button {
   background-color: var(--search-button-background);
   color: var(--text-alt);
+  width: 180px;
+}
+
+.search-button:hover {
+  background-color: var(--search-button-hover);
 }
 
 .time {
@@ -400,16 +407,16 @@ canvas {
   margin-bottom: 1vh;
 }
 
-#course-search-desc .Closed {
-  color: var(--course-closed)
+.Closed {
+  color: var(--course-closed) !important;
 }
 
-#course-search-desc .Open {
-  color: var(--course-open)
+.Open {
+  color: var(--course-open) !important;
 }
 
-#course-search-desc .Reopened {
-  color: var(--course-reopened)
+.Reopened {
+  color: var(--course-reopened) !important;
 }
 
 #course-search-desc .timing {
@@ -423,4 +430,14 @@ canvas {
   font-family: 'Roboto', monospace;
   color: var(--text-main);
   font-size: 14px;
+}
+
+#course-input {
+  width: 20vw;
+}
+
+.status-highlight {
+  background-color: var(--background-alt);
+  border-radius: var(--roundedness);
+  padding: var(--padding-small);
 }

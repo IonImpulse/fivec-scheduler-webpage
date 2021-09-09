@@ -3,12 +3,10 @@
 // *****
 
 const API_URL = "https://api.5cheduler.com/"
-const FULL_UPDATE = "fullupdate";
+const FULL_UPDATE = "fullUpdate";
 const UPDATE_IF_STALE = function(timestamp) { return "updateIfStale/" + timestamp; }
 const GET_UNIQUE_CODE = "getUniqueCode";
 const GET_COURSES_LIST_BY_CODE = function(code) { return "getCoursesListByCode/" + code; }
-
-var index;
 
 function load_json_data(name) {
     let data = localStorage.getItem(name);
@@ -60,9 +58,13 @@ function setup_course_lists() {
     }
 }
 
-function create_searcher() {
+async function create_searcher() {
     let current_data = load_json_data("course_data");
 
+    if (current_data == null) {
+        await update_database();
+        current_data = load_json_data("course_data");
+    }
     console.log("Building search index...");
     const options = {
         isCaseSensitive: false,
@@ -80,6 +82,7 @@ function create_searcher() {
     fuzzy_searcher = new Fuse(current_data[1], options);
     console.log("Search index built.");
 }
+
 setup_course_lists();
 update_database();
 update_loop();

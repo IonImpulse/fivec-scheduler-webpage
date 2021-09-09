@@ -1,7 +1,3 @@
-var selected_courses = [];
-var all_courses_global = [];
-var all_desc_global = [];
-
 // *****
 // Title button functions
 // *****
@@ -157,8 +153,6 @@ function debounce(func, timeout = 300) {
 const updateCourseSearch = debounce(() => expensiveCourseSearch());
 
 function expensiveCourseSearch() {
-	const colors = ["blue", "green", "red", "purple", "orange", "pink"]
-
 	let input = document.getElementById("course-input");
 	let output = document.getElementById("course-search-results");
 	output.innerHTML = "";
@@ -299,5 +293,26 @@ function generateAllDescriptions() {
 		all_desc_global.push(course_search_desc);
 
 	}
+}
 
+function addCourses() {
+	console.log(selected_courses)
+	let courses = [];
+	
+	// Find courses from identifier
+	for (let course of selected_courses) {
+		courses.push(all_courses_global.filter(e => e.identifier == course)[0]);
+	}
+
+	for (let course of courses) {
+		if (!loaded_local_courses.includes(course)) {
+			loaded_local_courses.push(course);
+		}
+	}
+
+	console.log(loaded_local_courses);
+
+	save_json_data("loaded_local_courses", loaded_local_courses);
+
+	updateLoadedCourses();
 }

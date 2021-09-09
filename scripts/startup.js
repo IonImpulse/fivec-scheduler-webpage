@@ -7,6 +7,9 @@ function startup() {
     generateGridTimes();
     generateDays();
     generateLines();
+    loadCourseData();
+    updateLoadedCourses();
+    updateLoadedCourseLists();
 }
 
 // Generates and sets divs for timeslots
@@ -83,5 +86,48 @@ function generateLines() {
         element.appendChild(line);
     }
 }
+
+function updateLoadedCourses() {
+    let el = document.getElementById("course-table");
+    let output = "";
+
+    if (loaded_local_courses.length > 0) {
+        for (let i = 0; i < loaded_local_courses.length; i++) {
+            output += `\n<div class="course-search-result course-loaded" style="background-color: var(--course-${colors[i % colors.length]});"><b>${loaded_local_courses[i].identifier}:</b> ${loaded_local_courses[i].title}</div>`;  
+        }
+    }
+    
+    el.innerHTML = output;
+}
+
+function updateLoadedCourseLists() {
+    let el = document.getElementById("course-list-table");
+    let output = `
+    <div class="course-search-result" style="background-color: var(--course-blue);">Local</div>
+    `;
+
+    if (loaded_course_lists.length > 0) {
+        for (let i = 0; i < loaded_course_lists.length; i++) {
+            output += `\n<div class="course-search-result .course-loaded" style="background-color: var(--course-${colors[i+1 % colors.length]});"><b>${loaded_course_lists[i].code}</b></div>`;  
+        }
+    }
+
+    el.innerHTML = output;
+}
+
+function loadCourseData() {
+    loaded_local_courses = load_json_data("loaded_local_courses");
+    loaded_course_lists = load_json_data("loaded_course_lists");
+
+    if (loaded_local_courses == null) {
+        loaded_local_courses = [];
+    }
+
+    if (loaded_course_lists == null) {
+        loaded_course_lists = [];
+    }
+
+}
+
 
 startup();

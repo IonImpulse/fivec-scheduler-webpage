@@ -98,9 +98,8 @@ function buttonSearch() {
 }
 
 async function buttonShare() {
-	let current_courses = load_json_data("local_course_list")
 
-	if (current_courses == null) {
+	if (loaded_local_courses.length == 0) {
 		Swal.fire({
 			title: 'No courses have been locally loaded!',
 			icon: 'error'
@@ -111,15 +110,13 @@ async function buttonShare() {
 			headers: {
 				'Content-Type': 'application/json;charset=utf-8'
 			},
-			body: JSON.stringify(user)
+			body: JSON.stringify(loaded_local_courses)
 		});
 
 		Swal.fire({
-			title: 'Export',
+			title: 'Share',
 			icon: 'success',
-			html:
-				'<div id="share-image"></div><br>' +
-				'To download, right click the image above and click "Save Image As...',
+			html: `<b>Code:<b><br>${response.json()}`,
 		})
 	}
 }

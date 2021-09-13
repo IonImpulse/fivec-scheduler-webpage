@@ -176,7 +176,11 @@ function expensiveCourseSearch() {
 		setCourseDescription(0);
 
 	} else {
-		let results = fuzzy_searcher.search(input.value);
+		let search_term = tweakSearch(input.value);
+
+		console.log(`${input.value} => ${search_term}`);
+
+		let results = fuzzy_searcher.search(search_term);
 
 		console.log(results);
 		
@@ -318,4 +322,33 @@ function addCourses() {
 	save_json_data("loaded_local_courses", loaded_local_courses);
 
 	updateLoadedCourses();
+}
+
+function tweakSearch(string) {
+	let return_string = string;
+
+	// Common replacements
+	// Type can be "full" or "any"
+	const replacements = [
+		{type:"full", },
+	];
+
+	for (replacement of replacements) {
+		return_string = return_string.replace(replacement[0], replacement[1]);
+	}
+
+	// Add a 0 to the course number
+	let num_corrected_string = "";
+
+	for (part of return_string.split(" ")) {
+		if (part.length == 2 && parseInt(part) != NaN) {
+			num_corrected_string += ` 0${part}`;
+		} else {
+			num_corrected_string += ` ${part}`;
+		}
+	}
+
+	return_string = num_corrected_string;
+
+	return return_string;
 }

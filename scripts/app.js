@@ -11,7 +11,7 @@ function buttonImport() {
 		confirmButtonText: 'Load',
 		showLoaderOnConfirm: true,
 		preConfirm: () => {
-			return fetch(`${API_URL}${GET_COURSES_LIST_BY_CODE(document.getElementById("code-input").value.toUpperCase())}`)
+			return fetch(`${API_URL}${GET_COURSE_LIST_BY_CODE(document.getElementById("code-input").value.toUpperCase())}`)
 				.then(response => {
 					if (!response.ok) {
 						throw new Error(response.statusText)
@@ -108,15 +108,19 @@ async function buttonShare() {
 		let response = await fetch(`${API_URL}${GET_UNIQUE_CODE}`, {
 			method: 'POST',
 			headers: {
-				'Content-Type': 'application/json;charset=utf-8'
+				'Content-Type': 'application/json;charset=utf-8',
+				'Access-Control-Allow-Origin': '*',
+				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify(loaded_local_courses)
 		});
 
+		let code = await response.json();
+
 		Swal.fire({
 			title: 'Share',
 			icon: 'success',
-			html: `<b>Code:<b><br>${response.json()}`,
+			html: `<b>Code:<b><br><b>${code}<b>`,
 		})
 	}
 }
@@ -174,6 +178,8 @@ function expensiveCourseSearch() {
 	} else {
 		let results = fuzzy_searcher.search(input.value);
 
+		console.log(results);
+		
 		for (let i = 0; i < results.length; i++) {
 			let course = results[i].item;
 

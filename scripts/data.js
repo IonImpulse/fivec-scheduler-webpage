@@ -4,9 +4,9 @@
 
 const API_URL = "https://api.5cheduler.com/"
 const FULL_UPDATE = "fullUpdate";
-const UPDATE_IF_STALE = function(timestamp) { return "updateIfStale/" + timestamp; }
+const UPDATE_IF_STALE = function (timestamp) { return "updateIfStale/" + timestamp; }
 const GET_UNIQUE_CODE = "getUniqueCode";
-const GET_COURSES_LIST_BY_CODE = function(code) { return "getCoursesListByCode/" + code; }
+const GET_COURSE_LIST_BY_CODE = function (code) { return "getCourseListByCode/" + code; }
 
 function load_json_data(name) {
     let data = localStorage.getItem(name);
@@ -44,7 +44,7 @@ async function update_database() {
 }
 
 function update_loop() {
-    setTimeout(function() {
+    setTimeout(function () {
         update_database();
         update_loop();
     }, 60000)
@@ -69,13 +69,19 @@ async function create_searcher() {
     const options = {
         isCaseSensitive: false,
         shouldSort: true,
+        minMatchCharLength: 2,
+        threshold: 0.7,
         keys: [
-          "id",
-          "code",
-          "dept",
-          "title",
-          "instructors",
-          "description",
+            {
+                name: "identifier",
+                weight: 100,
+            },
+            "id",
+            "code",
+            "dept",
+            "title",
+            "instructors",
+            "description",
         ]
     };
 

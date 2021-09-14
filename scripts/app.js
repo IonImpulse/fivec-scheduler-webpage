@@ -181,8 +181,6 @@ function expensiveCourseSearch() {
 		console.log(`${input.value} => ${search_term}`);
 
 		let results = fuzzy_searcher.search(search_term);
-
-		console.log(results);
 		
 		for (let i = 0; i < results.length; i++) {
 			let course = results[i].item;
@@ -329,12 +327,17 @@ function tweakSearch(string) {
 
 	// Common replacements
 	// Type can be "full" or "any"
+	// Full only matches full tokens/words separated by spaces
 	const replacements = [
-		{type:"full", },
+		{type:"full", search:"cs", replace:"csci"},
 	];
 
 	for (replacement of replacements) {
-		return_string = return_string.replace(replacement[0], replacement[1]);
+		if (replacement.type == "full") {
+			return_string = return_string.replace(new RegExp(`\\b${replacement.search}\\b`, 'g'), replacement.replace);
+		} else if (replacement.type == "any") {
+			return_string = return_string.replace(replacement.search, replacement.replace);
+		}
 	}
 
 	// Add a 0 to the course number

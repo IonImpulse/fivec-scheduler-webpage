@@ -2,9 +2,9 @@
 // Title button functions
 // *****
 
-function buttonImport() {
+function buttonLoad() {
 	Swal.fire({
-		title: 'Import Course Code',
+		title: 'Load Course Code',
 		html: `<div><input maxlength='7' id="code-input"></div>`,
 		focusConfirm: false,
 		showCancelButton: true,
@@ -26,10 +26,20 @@ function buttonImport() {
 		},
 		allowOutsideClick: () => !Swal.isLoading()
 	}).then((result) => {
-		if (result.isConfirmed) {
-			Swal.fire({
-				title: `Loaded courses!`
-			})
+		console.log(result);
+		if (result.value != "Invalid code") {
+
+			loaded_course_lists.push(result.value);
+			
+			Toast.fire({
+				title: 'Loaded course list',
+				icon: 'success'
+			});
+		} else {
+			Toast.fire({
+				title: 'Invalid code',
+				icon: 'error'
+			});
 		}
 	})
 }
@@ -85,10 +95,25 @@ function buttonSearch() {
 			showCloseButton: true,
 			showCancelButton: true,
 			confirmButtonText:
-				`<span onclick="addCourses()">Add <span id="course-add-num">0</span> course<span id="multiple-course-s">s</span></span>`,
+				`<span>Add <span id="course-add-num">0</span> course<span id="multiple-course-s">s</span></span>`,
 			cancelButtonText:
 				'Cancel',
 			customClass: 'swal-wide',
+		}).then((result) => {
+			if (result.isConfirmed) {
+				let num_courses = addCourses();
+
+				s = "s";
+
+				if (num_courses == 1) {
+					s = "";
+				}
+
+				Toast.fire({
+					icon: 'success',
+					title: `Added ${num_courses} Course${s}`
+				})
+			}
 		});
 
 		document.getElementById("course-input").focus();
@@ -96,6 +121,18 @@ function buttonSearch() {
 		updateCourseSearch();
 	}
 }
+
+const Toast = Swal.mixin({
+	toast: true,
+	position: 'top-end',
+	showConfirmButton: false,
+	timer: 3000,
+	timerProgressBar: true,
+	didOpen: (toast) => {
+	  toast.addEventListener('mouseenter', Swal.stopTimer)
+	  toast.addEventListener('mouseleave', Swal.resumeTimer)
+	}
+})
 
 async function buttonShare() {
 
@@ -132,7 +169,7 @@ function buttonTheme() {
 function buttonAbout() {
 	Swal.fire({
 		title: 'About',
-		icon: 'info',
+		icon: 'question',
 		html: `Created By: <b>Ethan Vazquez</b> HMC '25<BR>` +
 			`Send comments/questions/bug reports to: <b>edv121@outlook.com</b><BR><BR>` +
 			`Webpage Repo: <a href="https://github.com/IonImpulse/fivec-scheduler-webpage">fivec-scheduler-webpage</a><br>` +
@@ -309,9 +346,20 @@ function addCourses() {
 		courses.push(all_courses_global.filter(e => e.identifier == course)[0]);
 	}
 
+	let num_courses = 0;
+
 	for (let course of courses) {
-		if (!loaded_local_courses.includes(course)) {
+		let found = false;
+		for (let l_course of loaded_local_courses) {
+			if (l_course.identifier == course.identifier) {
+				found = true;
+				break;
+			}
+		}
+
+		if (!found) {
 			loaded_local_courses.push(course);
+			num_courses++;
 		}
 	}
 
@@ -320,6 +368,8 @@ function addCourses() {
 	save_json_data("loaded_local_courses", loaded_local_courses);
 
 	updateLoadedCourses();
+
+	return num_courses;
 }
 
 function tweakSearch(string) {

@@ -463,3 +463,17 @@ canvas {
   white-space:nowrap;
   text-overflow: ellipsis;
 }
+
+.code-explain {
+  font-family: 'Roboto', sans-serif;
+  font-size: 25px;
+}
+
+.code-share {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 40px;
+  color: var(--text-alt);
+  background-color: var(--text-main);
+  padding: var(--padding-small);
+  border-radius: var(--roundedness);
+}

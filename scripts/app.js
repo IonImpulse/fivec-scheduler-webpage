@@ -152,12 +152,18 @@ async function buttonShare() {
 			body: JSON.stringify(loaded_local_courses)
 		});
 
-		let code = await response.json();
+		const code = await response.json();
+
+		console.log(`${window.location.href}/${code}`);
+
+		const QRC = qrcodegen.QrCode;
+		const qr = QRC.encodeText(`${window.location.href}/${code}`, QRC.Ecc.HIGH);
+		const svg = toSvgString(qr, 2, "#FFFFFF", "#000000");
 
 		Swal.fire({
 			title: 'Share',
 			icon: 'success',
-			html: `<b>Code:<b><br><b>${code}<b>`,
+			html: `<div class="code-share">${code}</div><br>${svg}`,
 		})
 	}
 }

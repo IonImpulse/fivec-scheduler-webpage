@@ -33,10 +33,7 @@ function buttonLoad() {
 				icon: 'error'
 			});
 		} else if (result.value != undefined) {
-			loaded_course_lists.push(result.value);
-			save_json_data("loaded_course_lists", loaded_course_lists);
-			
-			updateLoadedCourseLists();
+			const course_list_result = addToCourseLists(result.value);
 
 			Toast.fire({
 				title: 'Loaded course list',
@@ -65,14 +62,13 @@ function buttonExport() {
 }
 
 function buttonPrint() {
-	Swal.fire({
-		title: 'Print',
-		icon: 'success',
-		text: 'Print dialogue was opened...',
-	})
-
 	let divContents = document.getElementById("schedule-box");
 	PrintElements.print([divContents]);
+
+	Toast.fire({
+		icon: 'info',
+		title: `Print dialogue opened`
+	});
 }
 
 
@@ -156,10 +152,12 @@ async function buttonShare() {
 
 		const code = await response.json();
 
-		console.log(`${window.location.href}?load=${code}`);
+		const qr_data = `${window.location.href}?code=${code}`;
+
+		console.log(qr_data);
 
 		const QRC = qrcodegen.QrCode;
-		const qr = QRC.encodeText(`${window.location.href}/${code}`, QRC.Ecc.HIGH);
+		const qr = QRC.encodeText(qr_data, QRC.Ecc.HIGH);
 		const svg = toSvgString(qr, 2, "#FFFFFF", "#000000");
 
 		Swal.fire({
@@ -188,7 +186,7 @@ function buttonAbout() {
 	});
 }
 
-function debounce(func, timeout = 300) {
+function debounce(func, timeout = 600) {
 	let timer;
 	return (...args) => {
 		clearTimeout(timer);
@@ -412,4 +410,25 @@ function tweakSearch(string) {
 	return_string = num_corrected_string;
 
 	return return_string;
+}
+
+function addToCourseLists(course_list) {
+	let found = false;
+
+	for (let l_course of loaded_course_lists) {
+		if (l_course.identifier == course_list.code) {
+			found = true;
+			break;
+		}
+	}
+
+	if (!found) {
+		loaded_course_lists.push(result.value);
+		save_json_data("loaded_course_lists", loaded_course_lists);
+		updateLoadedCourseLists();
+		
+		return true;
+	} else {
+		return false;
+	}
 }

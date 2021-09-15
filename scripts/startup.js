@@ -108,7 +108,7 @@ function updateLoadedCourses() {
 function updateLoadedCourseLists() {
     let el = document.getElementById("course-list-table");
     let output = `
-    <div class="course-search-result" style="background-color: var(--course-blue);">Local</div>
+    <div class="course-search-result" style="background-color: var(--course-blue);"><b>- Local -</b></div>
     `;
 
     if (loaded_course_lists.length > 0) {

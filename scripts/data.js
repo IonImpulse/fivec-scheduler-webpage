@@ -50,14 +50,6 @@ function update_loop() {
     }, 60000)
 }
 
-function setup_course_lists() {
-    let course_lists = load_json_data("course_lists");
-
-    if (course_lists == null) {
-        save_json_data("course_lists", []);
-    }
-}
-
 async function create_searcher() {
     let current_data = load_json_data("course_data");
 
@@ -89,7 +81,6 @@ async function create_searcher() {
     console.log("Search index built.");
 }
 
-setup_course_lists();
 update_database();
 update_loop();
 create_searcher();

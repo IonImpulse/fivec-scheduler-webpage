@@ -4,12 +4,17 @@
 
 // Runs all startup scripts
 function startup() {
+    // Website generation
     generateGridTimes();
     generateDays();
     generateLines();
     loadCourseData();
     updateLoadedCourses();
     updateLoadedCourseLists();
+
+    // Then, check if site was loaded from
+    // from QR code w/ course list code
+    loadPossibleCourseList();
 }
 
 // Generates and sets divs for timeslots
@@ -93,10 +98,10 @@ function updateLoadedCourses() {
 
     if (loaded_local_courses.length > 0) {
         for (let i = 0; i < loaded_local_courses.length; i++) {
-            output += `\n<div class="course-search-result course-loaded" style="background-color: var(--course-${colors[i % colors.length]});"><b>${loaded_local_courses[i].identifier}:</b> ${loaded_local_courses[i].title}</div>`;  
+            output += `\n<div class="course-search-result course-loaded" style="background-color: var(--course-${colors[i % colors.length]});"><b>${loaded_local_courses[i].identifier}:</b> ${loaded_local_courses[i].title}</div>`;
         }
     }
-    
+
     el.innerHTML = output;
 }
 
@@ -108,7 +113,7 @@ function updateLoadedCourseLists() {
 
     if (loaded_course_lists.length > 0) {
         for (let i = 0; i < loaded_course_lists.length; i++) {
-            output += `\n<div class="course-search-result .course-loaded" style="background-color: var(--course-${colors[i+1 % colors.length]});"><b>${loaded_course_lists[i].code}</b></div>`;  
+            output += `\n<div class="course-search-result .course-loaded" style="background-color: var(--course-${colors[i + 1 % colors.length]});"><b>${loaded_course_lists[i].code}</b></div>`;
         }
     }
 
@@ -129,5 +134,31 @@ function loadCourseData() {
 
 }
 
+function loadPossibleCourseList() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+
+    const code = urlParams.get('load');
+
+    if (code != null) {
+        fetch(`${API_URL}${GET_COURSE_LIST_BY_CODE(code.toUpperCase())}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(response.statusText)
+                }
+                return response.json()
+            })
+            .catch(error => {
+                Swal.showValidationMessage(
+                    `Invalid Code! ${error}`
+                )
+            }).then(data => {
+                if (data != null) {
+                    loaded_course_lists.push(data);
+                    save_json_data("loaded_course_lists", loaded_course_lists);
+                }
+            });
+    }
+}
 
 startup();

@@ -26,19 +26,21 @@ function buttonLoad() {
 		},
 		allowOutsideClick: () => !Swal.isLoading()
 	}).then((result) => {
-		console.log(result);
-		if (result.value != "Invalid code") {
-
+		console.log(result.value);
+		if (result.value == "Invalid code") {
+			Toast.fire({
+				title: 'Invalid code',
+				icon: 'error'
+			});
+		} else if (result.value != undefined) {
 			loaded_course_lists.push(result.value);
+			save_json_data("loaded_course_lists", loaded_course_lists);
+			
+			updateLoadedCourseLists();
 			
 			Toast.fire({
 				title: 'Loaded course list',
 				icon: 'success'
-			});
-		} else {
-			Toast.fire({
-				title: 'Invalid code',
-				icon: 'error'
 			});
 		}
 	})

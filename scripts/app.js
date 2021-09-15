@@ -154,7 +154,7 @@ async function buttonShare() {
 
 		const code = await response.json();
 
-		console.log(`${window.location.href}/${code}`);
+		console.log(`${window.location.href}?load=${code}`);
 
 		const QRC = qrcodegen.QrCode;
 		const qr = QRC.encodeText(`${window.location.href}/${code}`, QRC.Ecc.HIGH);

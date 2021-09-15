@@ -31,7 +31,7 @@ async function update_database() {
     if (current_data === null || Object.entries(current_data).length === 0) {
         response = fetch(`${API_URL}${FULL_UPDATE}`);
     } else {
-        response = fetch(`${API_URL}${UPDATE_IF_STALE(current_data[0])}`);
+        response = fetch(`${API_URL}${UPDATE_IF_STALE(current_data.timestamp)}`);
 
     }
 
@@ -77,7 +77,7 @@ async function create_searcher() {
         ]
     };
 
-    fuzzy_searcher = new Fuse(current_data[1], options);
+    fuzzy_searcher = new Fuse(current_data.courses, options);
     console.log("Search index built.");
 }
 

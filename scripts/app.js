@@ -37,7 +37,7 @@ function buttonLoad() {
 			save_json_data("loaded_course_lists", loaded_course_lists);
 			
 			updateLoadedCourseLists();
-			
+
 			Toast.fire({
 				title: 'Loaded course list',
 				icon: 'success'
@@ -86,7 +86,7 @@ function buttonSearch() {
 			icon: 'error'
 		});
 	} else {
-		all_courses_global = courses[1];
+		all_courses_global = courses.courses;
 		generateAllDescriptions();
 
 		Swal.fire({

@@ -448,3 +448,41 @@ function addToCourseLists(course_list) {
 		return false;
 	}
 }
+
+function deleteCourse(identifier) {
+	let found = false;
+
+	for (let i = 0; i < loaded_local_courses.length; i++) {
+		let course = loaded_local_courses[i];
+
+		if (course.identifier == identifier) {
+			found = true;
+			loaded_local_courses.splice(i, 1);
+			break;
+		}
+	}
+
+	if (found) {
+		save_json_data("loaded_local_courses", loaded_local_courses);
+		updateLoadedCourses();
+	}
+}
+
+function deleteCourseList(code) {
+	let found = false;
+
+	for (let i = 0; i < loaded_course_lists.length; i++) {
+		let course_list = loaded_course_lists[i];
+
+		if (course_list.code == code) {
+			found = true;
+			loaded_course_lists.splice(i, 1);
+			break;
+		}
+	}
+
+	if (found) {
+		save_json_data("loaded_course_lists", loaded_course_lists);
+		updateLoadedCourseLists();
+	}
+}

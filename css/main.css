@@ -34,7 +34,7 @@
   --course-reopened: #bb7c33;
 
   /* Misc. vars */
-  --roundedness: .7vmax;
+  --roundedness: .4vmax;
   --padding: .7vmax;
   --padding-small: 5px;
   --shadow-length: 4px;
@@ -127,13 +127,9 @@ canvas {
   box-shadow: 0 0 var(--shadow-blur) var(--shadow-length) rgba(0, 0, 0, 0.2);
 }
 
-.box-shadow-img {
-  -webkit-filter: drop-shadow(
-    0 0 var(--shadow-blur) var(--shadow-length) rgba(0, 0, 0, 0.2)
-  );
-  filter: drop-shadow(
-    0 0 var(--shadow-blur) var(--shadow-length) rgba(0, 0, 0, 0.2)
-  );
+.logo {
+  width: 30px;
+  height: 30px;
 }
 
 .inset-box-shadow {
@@ -316,7 +312,8 @@ a:visited {
 } 
 
 .table-title {
-  font-family: "Montserrat", sans-serif;
+  font-family: "Roboto", sans-serif;
+  font-weight: 900;
   font-size: larger;
   color: var(--text-main);
   padding: var(--padding);
@@ -461,9 +458,8 @@ a:visited {
 }
 
 .course-loaded {
-  overflow: hidden;
-  white-space:nowrap;
-  text-overflow: ellipsis;
+  
+  display: block;
 }
 
 .code-explain {
@@ -500,11 +496,32 @@ a:visited {
 
 .course-schedule-block .identifier {
   font-family: 'JetBrains Mono', monospace;
-  font-size: .5vw;
+  font-size: .6vw;
 }
 
 .course-schedule-block .room {
   font-family: 'Roboto', sans-serif;
   font-size: .7vw;
   font-weight: 600;
+}
+
+
+.course-info {
+  float: inline-start;
+  overflow: hidden;
+  white-space:nowrap;
+  text-overflow: ellipsis;
+  max-width: 90%;
+}
+.delete-course {
+  background-image: url(../img/delete.png);
+  background-size: cover;
+  width: 1vmax;
+  height: 1vmax;
+  float: inline-end;
+
+}
+
+.delete-course:hover {
+  filter: brightness(1.6);
 }

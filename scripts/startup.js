@@ -98,7 +98,7 @@ function updateLoadedCourses() {
 
     if (loaded_local_courses.length > 0) {
         for (let i = 0; i < loaded_local_courses.length; i++) {
-            output += `\n<div class="course-search-result course-loaded" style="background-color: ${colors[i % colors.length]};"><b>${loaded_local_courses[i].identifier}:</b> ${loaded_local_courses[i].title}</div>`;
+            output += `\n<div class="course-search-result course-loaded" style="background-color: ${colors[i % colors.length]};"><div class="course-info"><b>${loaded_local_courses[i].identifier}:</b> ${loaded_local_courses[i].title}</div><div class="delete-course" onclick="deleteCourse('${loaded_local_courses[i].identifier}')"></div></div>`;
         }
     }
     
@@ -106,11 +106,10 @@ function updateLoadedCourses() {
 
     let course_schedule_grid = document.getElementById("schedule-table");
 
-    // Remove all course divs
-    for (let node of course_schedule_grid.children) {
-        if (node.classList.contains("course-schedule-block")) {
-            node.remove();
-        }
+    let course_divs = course_schedule_grid.getElementsByClassName("course-schedule-block");
+
+    while(course_divs[0]) {
+        course_divs[0].parentNode.removeChild(course_divs[0]);
     }
 
     // Add new course divs
@@ -118,11 +117,12 @@ function updateLoadedCourses() {
     let max_grid_rows = 0;
 
     for (let course of loaded_local_courses) {
+        let time_index = 0;
         // Have to create one for each time slot it's in
         for (let time of course.timing) {
             // Create the div
             let course_div = document.createElement("div");
-            course_div.className = "course-schedule-block unselectable box-shadow";
+            course_div.className = "course-schedule-block unselectable";
             course_div.style.backgroundColor = `${colors[i % colors.length]}`;
 
             // Create the course title
@@ -147,13 +147,13 @@ function updateLoadedCourses() {
 
             // Set course behavior
             course_div.onclick = function () {
-                toggleCourseOverlay(course.identifier)
+                toggleCourseOverlay(course.identifier, time_index)
             };
             course_div.onmouseenter = function () {
-                showCourseOverlay(course.identifier, true)
+                showCourseOverlay(course.identifier, time_index, true)
             };
             course_div.onmouseleave = function () {
-                showCourseOverlay(course.identifier, false)
+                showCourseOverlay(course.identifier, time_index, false)
             };
 
             // Div has been created, now we need to place it on the grid
@@ -175,7 +175,8 @@ function updateLoadedCourses() {
 
                 // Add the div to the grid
                 course_schedule_grid.appendChild(course_div.cloneNode(true));
-            }    
+            } 
+            time_index++;   
         }
         i++;
     }
@@ -185,8 +186,6 @@ function updateLoadedCourses() {
     } else {
         max_grid_rows = Math.min(350, max_grid_rows + 20);
     }
-
-    console.log(max_grid_rows);
 
     course_schedule_grid.style.gridTemplateRows = `35px repeat(${max_grid_rows}, 1fr)`;
 }
@@ -232,7 +231,7 @@ function updateLoadedCourseLists() {
 
     if (loaded_course_lists.length > 0) {
         for (let i = 0; i < loaded_course_lists.length; i++) {
-            output += `\n<div class="course-search-result .course-loaded" style="background-color: ${colors[i + 1 % colors.length]};"><b>${loaded_course_lists[i].code}</b></div>`;
+            output += `\n<div class="course-search-result .course-loaded" style="background-color: ${colors[i + 1 % colors.length]};"><div class="course-info"><b>${loaded_course_lists[i].code}</b></div><div class="delete-course" onclick="deleteCourseList('${loaded_course_lists[i].code}')"></div></div>`;
         }
     }
 

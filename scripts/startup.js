@@ -28,8 +28,8 @@ function generateGridTimes() {
         time.innerHTML = i + ":00 AM";
         time.style.gridColumnStart = 1;
         time.style.gridColumnEnd = 2;
-        time.style.gridRowStart = 17 + ((i - 7) * 20);
-        time.style.gridRowEnd = 17 + ((i - 6) * 20);
+        time.style.gridRowStart = 2 + ((i - 7) * 20);
+        time.style.gridRowEnd = 2 + ((i - 6) * 20);
         element.appendChild(time);
     }
 
@@ -40,8 +40,8 @@ function generateGridTimes() {
         time.innerHTML = (i - 12) + ":00 PM";
         time.style.gridColumnStart = 1;
         time.style.gridColumnEnd = 2;
-        time.style.gridRowStart = 17 + ((i - 7) * 20);
-        time.style.gridRowEnd = 17 + ((i - 6) * 20);
+        time.style.gridRowStart = 2 + ((i - 7) * 20);
+        time.style.gridRowEnd = 2 + ((i - 6) * 20);
         element.appendChild(time);
     }
 }
@@ -59,7 +59,7 @@ function generateDays() {
         day.style.gridColumnStart = i + 2;
         day.style.gridColumnEnd = i + 3;
         day.style.gridRowStart = 1;
-        day.style.gridRowEnd = 20;
+        day.style.gridRowEnd = 2;
         element.appendChild(day);
     }
 }
@@ -73,8 +73,8 @@ function generateLines() {
         line.id = "h-line-" + i;
         line.style.gridColumnStart = 2;
         line.style.gridColumnEnd = 7;
-        line.style.gridRowStart = 20 + (i * 20);
-        line.style.gridRowEnd = 20 + (i * 20);
+        line.style.gridRowStart = 2 + (i * 20);
+        line.style.gridRowEnd = 2 + (i * 20);
         element.appendChild(line);
     }
 
@@ -84,8 +84,8 @@ function generateLines() {
         line.id = "v-line-" + i;
         line.style.gridColumnStart = i + 2;
         line.style.gridColumnEnd = i + 2;
-        line.style.gridRowStart = 20;
-        line.style.gridRowEnd = 20 + (16 * 20);
+        line.style.gridRowStart = 2;
+        line.style.gridRowEnd = 2 + (16 * 20);
 
 
         element.appendChild(line);
@@ -93,27 +93,146 @@ function generateLines() {
 }
 
 function updateLoadedCourses() {
-    let el = document.getElementById("course-table");
+    let course_list_table = document.getElementById("course-table");
     let output = "";
 
     if (loaded_local_courses.length > 0) {
         for (let i = 0; i < loaded_local_courses.length; i++) {
-            output += `\n<div class="course-search-result course-loaded" style="background-color: var(--course-${colors[i % colors.length]});"><b>${loaded_local_courses[i].identifier}:</b> ${loaded_local_courses[i].title}</div>`;
+            output += `\n<div class="course-search-result course-loaded" style="background-color: ${colors[i % colors.length]};"><b>${loaded_local_courses[i].identifier}:</b> ${loaded_local_courses[i].title}</div>`;
+        }
+    }
+    
+    course_list_table.innerHTML = output;
+
+    let course_schedule_grid = document.getElementById("schedule-table");
+
+    // Remove all course divs
+    for (let node of course_schedule_grid.children) {
+        if (node.classList.contains("course-schedule-block")) {
+            node.remove();
         }
     }
 
-    el.innerHTML = output;
+    // Add new course divs
+    let i = 0;
+    let max_grid_rows = 0;
+
+    for (let course of loaded_local_courses) {
+        // Have to create one for each time slot it's in
+        for (let time of course.timing) {
+            // Create the div
+            let course_div = document.createElement("div");
+            course_div.className = "course-schedule-block unselectable box-shadow";
+            course_div.style.backgroundColor = `${colors[i % colors.length]}`;
+
+            // Create the course title
+            let course_title = document.createElement("div");
+            course_title.className = "name";
+            course_title.innerHTML = course.title;
+
+            // Create the course identifier
+            let course_identifier = document.createElement("div");
+            course_identifier.className = "identifier";
+            course_identifier.innerHTML = course.identifier;
+
+            // Create the course room
+            let course_room = document.createElement("div");
+            course_room.className = "room";
+            course_room.innerHTML = `${time.location.building} ${time.location.room}`;
+
+            // Append all the elements
+            course_div.appendChild(course_title);
+            course_div.appendChild(course_identifier);
+            course_div.appendChild(course_room);
+
+            // Set course behavior
+            course_div.onclick = function () {
+                toggleCourseOverlay(course.identifier)
+            };
+            course_div.onmouseenter = function () {
+                showCourseOverlay(course.identifier, true)
+            };
+            course_div.onmouseleave = function () {
+                showCourseOverlay(course.identifier, false)
+            };
+
+            // Div has been created, now we need to place it on the grid
+            // Call timeToGrid to get an list of x and y coordinates, and
+            // create a div for each of them
+
+            const grid_layout = timeToGrid(time);
+
+            for (let layout of grid_layout) {
+                // Get the time slot
+                course_div.style.gridRowStart = layout.start_row;
+                course_div.style.gridRowEnd = layout.end_row;
+
+                max_grid_rows = Math.max(max_grid_rows, layout.end_row);
+
+                // Get the day
+                course_div.style.gridColumnStart = layout.start_column;
+                course_div.style.gridColumnEnd = layout.end_column;
+
+                // Add the div to the grid
+                course_schedule_grid.appendChild(course_div.cloneNode(true));
+            }    
+        }
+        i++;
+    }
+
+    if (max_grid_rows == 0) {
+        max_grid_rows = 350;
+    } else {
+        max_grid_rows = Math.min(350, max_grid_rows + 20);
+    }
+
+    console.log(max_grid_rows);
+
+    course_schedule_grid.style.gridTemplateRows = `50px repeat(${max_grid_rows}, 1fr)`;
+}
+
+function timeToGrid(time) {
+    const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+
+    let return_list = [];
+
+    for (let day of time.days) {
+        // Get the day
+        let day_index = days.indexOf(day);
+        let start_column = day_index + 2;
+        let end_column = day_index + 3;
+
+        // Get the start and end times
+        let start_time_array = time.start_time.split(":").map((x) => parseInt(x));
+        let end_time_array = time.end_time.split(":").map((x) => parseInt(x));
+
+        // Days start at 7:00 AM, so we need to adjust the start time
+        // Each hour is 20 grid units long
+        // Each 3 minutes is 1 grid unit
+        let start_row = ((start_time_array[0] - 7) * 20) + (Math.round(start_time_array[1] / 3)) + 2;
+        let end_row = ((end_time_array[0] - 7) * 20) + (Math.round(end_time_array[1] / 3)) + 2;
+
+        // Add the time slot to the return list
+        return_list.push({
+            start_column: start_column,
+            end_column: end_column,
+            start_row: start_row,
+            end_row: end_row,
+        });
+    }
+
+    return return_list;
 }
 
 function updateLoadedCourseLists() {
     let el = document.getElementById("course-list-table");
     let output = `
-    <div class="course-search-result" style="background-color: var(--course-blue);"><b>- Local -</b></div>
+    <div class="course-search-result" style="background-color: ${colors[0]};"><b>- Local -</b></div>
     `;
 
     if (loaded_course_lists.length > 0) {
         for (let i = 0; i < loaded_course_lists.length; i++) {
-            output += `\n<div class="course-search-result .course-loaded" style="background-color: var(--course-${colors[i + 1 % colors.length]});"><b>${loaded_course_lists[i].code}</b></div>`;
+            output += `\n<div class="course-search-result .course-loaded" style="background-color: ${colors[i + 1 % colors.length]};"><b>${loaded_course_lists[i].code}</b></div>`;
         }
     }
 

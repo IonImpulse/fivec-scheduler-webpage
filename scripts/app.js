@@ -44,21 +44,30 @@ function buttonLoad() {
 }
 
 function buttonExport() {
-	html2canvas(document.querySelector("#schedule-box"), {
+	rasterizeHTML.drawDocument(document.getElementById("schedule-box"), 
+		options = {
+			executeJs: true,
+			baseUrl: window.location.href,
+		}
+	)
+		.then(function success(renderResult) {
+			Swal.fire({
+				title: 'Export',
+				icon: 'success',
+				html:
+					'<div id="share-image"></div><br>' +
+					'To download, right click the image above and click "Save Image As...',
+			})
 
-	}).then(function (canvas) {
-
-		Swal.fire({
-			title: 'Export',
-			icon: 'success',
-			html:
-				'<div id="share-image"></div><br>' +
-				'To download, right click the image above and click "Save Image As...',
-		})
-
-		document.querySelector("#share-image").appendChild(canvas);
-
-	});
+			document.querySelector("#share-image").appendChild(renderResult.image);
+		}, function error(e) {
+			Swal.fire({
+				title: 'Export',
+				icon: 'error',
+				html:
+					`Error: ${e.message}`,
+			})
+		});
 }
 
 function buttonPrint() {
@@ -251,11 +260,11 @@ function createResultDiv(course, color, index) {
 	course_div.onclick = function () {
 		toggleCourseSelection(identifier)
 	};
-	course_div.onmouseover = function () {
+	course_div.onmouseenter = function () {
 		setCourseDescription(index)
 	};
 	
-	course_div.style.backgroundColor = `var(--course-${color})`;
+	course_div.style.backgroundColor = color;
 	let course_code = `<b>${course.identifier}</b>`;
 	let status = `<span class="status-highlight ${course.status}">${course.status}</span>`;
 	// Put the course code and status in a div on the right

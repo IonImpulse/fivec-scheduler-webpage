@@ -25,7 +25,6 @@ function buttonLoad() {
 		},
 		allowOutsideClick: () => !Swal.isLoading()
 	}).then((result) => {
-		console.log(result.value);
 		if (result.value == "Invalid code") {
 			Toast.fire({
 				title: 'Invalid code',
@@ -170,8 +169,6 @@ async function buttonShare() {
 
 		const qr_data = `${window.location.href}?code=${code}`;
 
-		console.log(qr_data);
-
 		const QRC = qrcodegen.QrCode;
 		const qr = QRC.encodeText(qr_data, QRC.Ecc.HIGH);
 		const svg = toSvgString(qr, 2, "#FFFFFF", "#000000");
@@ -237,7 +234,7 @@ function expensiveCourseSearch() {
 	} else {
 		let search_term = tweakSearch(input.value);
 
-		console.log(`${input.value} => ${search_term}`);
+		console.log(`INFO: search changed from "${input.value}" => "${search_term}"`);
 
 		let results = fuzzy_searcher.search(search_term);
 		
@@ -360,7 +357,6 @@ function generateAllDescriptions() {
 }
 
 function addCourses() {
-	console.log(selected_courses)
 	let courses = [];
 	
 	// Find courses from identifier
@@ -384,8 +380,6 @@ function addCourses() {
 			num_courses++;
 		}
 	}
-
-	console.log(loaded_local_courses);
 
 	save_json_data("loaded_local_courses", loaded_local_courses);
 

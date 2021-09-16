@@ -22,8 +22,6 @@ function save_json_data(name, data) {
 }
 
 async function update_database() {
-    console.log("Updating database...");
-
     let current_data = load_json_data("course_data");
 
     let response;
@@ -57,7 +55,6 @@ async function create_searcher() {
         await update_database();
         current_data = load_json_data("course_data");
     }
-    console.log("Building search index...");
     const options = {
         isCaseSensitive: false,
         shouldSort: true,
@@ -78,7 +75,6 @@ async function create_searcher() {
     };
 
     fuzzy_searcher = new Fuse(current_data.courses, options);
-    console.log("Search index built.");
 }
 
 update_database();

@@ -10,19 +10,18 @@ function buttonLoad() {
 		showCancelButton: true,
 		confirmButtonText: 'Load',
 		showLoaderOnConfirm: true,
-		preConfirm: () => {
-			return fetch(`${API_URL}${GET_COURSE_LIST_BY_CODE(document.getElementById("code-input").value.toUpperCase())}`)
-				.then(response => {
-					if (!response.ok) {
-						throw new Error(response.statusText)
-					}
-					return response.json()
-				})
-				.catch(error => {
-					Swal.showValidationMessage(
-						`Invalid Code! ${error}`
-					)
-				})
+		preConfirm: async () => {
+			try {
+				const response = await fetch(`${API_URL}${GET_COURSE_LIST_BY_CODE(document.getElementById("code-input").value.toUpperCase())}`)
+				if (!response.ok) {
+					throw new Error(response.statusText)
+				}
+				return await response.json()
+			} catch (error) {
+				Swal.showValidationMessage(
+					`Invalid Code! ${error}`
+				)
+			}
 		},
 		allowOutsideClick: () => !Swal.isLoading()
 	}).then((result) => {
@@ -35,10 +34,18 @@ function buttonLoad() {
 		} else if (result.value != undefined) {
 			const course_list_result = addToCourseLists(result.value);
 
-			Toast.fire({
-				title: 'Loaded course list',
-				icon: 'success'
-			});
+			if (course_list_result == true) {
+				Toast.fire({
+					title: 'Loaded course list',
+					icon: 'success'
+				});
+			} else {
+				Toast.fire({
+					title: 'Course list already loaded',
+					icon: 'error'
+				});
+			}
+			
 		}
 	})
 }
@@ -425,14 +432,14 @@ function addToCourseLists(course_list) {
 	let found = false;
 
 	for (let l_course of loaded_course_lists) {
-		if (l_course.identifier == course_list.code) {
+		if (l_course.code == course_list.code) {
 			found = true;
 			break;
 		}
 	}
 
 	if (!found) {
-		loaded_course_lists.push(result.value);
+		loaded_course_lists.push(course_list);
 		save_json_data("loaded_course_lists", loaded_course_lists);
 		updateLoadedCourseLists();
 		

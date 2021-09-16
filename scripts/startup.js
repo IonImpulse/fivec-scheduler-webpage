@@ -188,7 +188,7 @@ function updateLoadedCourses() {
 
     console.log(max_grid_rows);
 
-    course_schedule_grid.style.gridTemplateRows = `50px repeat(${max_grid_rows}, 1fr)`;
+    course_schedule_grid.style.gridTemplateRows = `35px repeat(${max_grid_rows}, 1fr)`;
 }
 
 function timeToGrid(time) {

@@ -27,6 +27,8 @@
   --text-alt: #fdfdfd;
   --text-light: #616161;
   
+  --text-course-schedule: #fdfdfd;
+
   --course-open: #39a32b;
   --course-closed: #b93838;
   --course-reopened: #bb7c33;
@@ -479,11 +481,15 @@ a:visited {
 }
 
 .course-schedule-block {
-  color: var(--text-alt);
-  padding: var(--padding);
+  color: var(--text-course-schedule);
+  padding: var(--padding-small);
   border-radius: var(--roundedness);
   z-index: 100;
   overflow: hidden;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .course-schedule-block .name {

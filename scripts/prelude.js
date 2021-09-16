@@ -16,7 +16,18 @@ var selected_courses = [];
 var loaded_local_courses = [];
 var loaded_course_lists = [];
 
-const colors = ["#4f6fac", "#407c3b", "#ac4f4f", "#86378d", "#b86c25", "#ac4f8d"];
+const colors = [
+    "#4f6fac", 
+    "#396F34", 
+    "#ac4f4f", 
+    "#86378d", 
+    "#b86c25", 
+    "#ac4f8d",
+    "#B88700",
+    "#26507d",
+    "#499112",
+    "#9B2608",
+];
 
 // *****
 // Prelude functions

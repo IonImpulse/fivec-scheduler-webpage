@@ -146,7 +146,7 @@ function updateLoadedCourses() {
     }
 }
 
-function createScheduleGridDiv(course, color, set_max_grid_rows = false) {
+function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_index=false) {
     let time_index = 0;
     let return_list = [];
     // Have to create one for each time slot it's in
@@ -156,6 +156,10 @@ function createScheduleGridDiv(course, color, set_max_grid_rows = false) {
         course_div.className = "course-schedule-block unselectable";
         course_div.style.backgroundColor = `${color}`;
 
+        if (low_z_index) {
+            course_div.className += " from-course-list";
+        }
+        
         // Create the course title
         let course_title = document.createElement("div");
         course_title.className = "name";
@@ -164,6 +168,7 @@ function createScheduleGridDiv(course, color, set_max_grid_rows = false) {
         // Create the course identifier
         let course_identifier = document.createElement("div");
         course_identifier.className = "identifier";
+
         course_identifier.innerHTML = course.identifier;
 
         // Create the course room
@@ -266,7 +271,7 @@ function updateLoadedCourseLists() {
     for (let course_list of loaded_course_lists) {
         let i = 0;
         for (let course of course_list.courses) {
-            let course_div_list = createScheduleGridDiv(course, colors[i % colors.length] + "66", set_max_grid_rows=true);
+            let course_div_list = createScheduleGridDiv(course, colors[i % colors.length] + "66", set_max_grid_rows=true, low_z_index=true);
     
             for (let course_div of course_div_list) {
                 course_schedule_grid.appendChild(course_div);

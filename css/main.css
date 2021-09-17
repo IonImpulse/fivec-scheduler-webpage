@@ -462,7 +462,6 @@ a:visited {
 }
 
 .course-loaded {
-  
   display: block;
 }
 
@@ -484,12 +483,16 @@ a:visited {
   color: var(--text-course-schedule);
   padding: var(--padding-small);
   border-radius: var(--roundedness);
-  z-index: 100;
+  z-index: 1000;
   overflow: hidden;
   text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.from-course-list {
+  z-index: 500;
 }
 
 .course-schedule-block .name {

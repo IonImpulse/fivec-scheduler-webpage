@@ -147,7 +147,7 @@ function buttonSearch() {
 
 		document.getElementById("course-input").focus();
 
-		updateCourseSearch();
+		expensiveCourseSearch();
 	}
 }
 
@@ -183,7 +183,7 @@ async function buttonShare() {
 
 		const code = await response.json();
 
-		const qr_data = `${window.location.href}?code=${code}`;
+		const qr_data = `5cheduler.com/?load=${code}`;
 
 		const QRC = qrcodegen.QrCode;
 		const qr = QRC.encodeText(qr_data, QRC.Ecc.HIGH);
@@ -204,7 +204,9 @@ function buttonTheme() {
 function buttonAbout() {
 	Swal.fire({
 		title: 'About',
-		icon: 'question',
+		imageUrl: 'img/favicon.png',
+		imageWidth: 100,
+		imageHeight: 100,
 		html: `Created By: <b>Ethan Vazquez</b> HMC '25<BR>` +
 			`Send comments/questions/bug reports to: <b>edv121@outlook.com</b><BR><BR>` +
 			`Webpage Repo: <a href="https://github.com/IonImpulse/fivec-scheduler-webpage">fivec-scheduler-webpage</a><br>` +
@@ -511,7 +513,7 @@ function mergeCourseList(code) {
 					loaded_local_courses.push(course);
 				}
 			}
-			
+
 			loaded_course_lists.splice(i, 1);
 			break;
 		}

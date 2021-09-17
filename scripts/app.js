@@ -49,31 +49,47 @@ function buttonLoad() {
 	})
 }
 
+function addStyle(el) {
+	let to_add = "<style>\n";
+	let css_rules = document.styleSheets[0].cssRules;
+	
+	for (let rule of css_rules) {
+		if (!rule.cssText.includes("url")) {
+			to_add += rule.cssText + "\n";
+		}
+	}
+
+	to_add += "</style>";
+	return to_add + el;
+}
+
 function buttonExport() {
-	rasterizeHTML.drawDocument(document.getElementById("schedule-box"), 
+	Swal.fire({
+		title: 'Export',
+		icon: 'success',
+		html:
+			'<div id="share-image"></div><br>' +
+			'To download, right click the image above and click "Save Image As...',
+	})
+
+	canvas = document.getElementById("share-image");
+
+	rasterizeHTML.drawHTML(addStyle(document.getElementById("schedule-box").cloneNode(true).innerHTML), canvas,
 		options = {
-			executeJs: true,
-			baseUrl: window.location.href,
+			width: "1920",
+			height: "1080",
 		}
 	)
-		.then(function success(renderResult) {
-			Swal.fire({
-				title: 'Export',
-				icon: 'success',
-				html:
-					'<div id="share-image"></div><br>' +
-					'To download, right click the image above and click "Save Image As...',
-			})
-
-			document.querySelector("#share-image").appendChild(renderResult.image);
-		}, function error(e) {
-			Swal.fire({
-				title: 'Export',
-				icon: 'error',
-				html:
-					`Error: ${e.message}`,
-			})
-		});
+	.then(function success(renderResult) {
+		document.querySelector("#share-image").appendChild(renderResult.image);
+	}, function error(e) {
+		Swal.fire({
+			title: 'Export',
+			icon: 'error',
+			html:
+				`Error: ${e.message}`,
+		})
+	});
 }
 
 function buttonPrint() {

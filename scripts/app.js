@@ -496,3 +496,30 @@ function deleteCourseList(code) {
 		updateSchedule();
 	}
 }
+
+function mergeCourseList(code) {
+	let found = false;
+
+	for (let i = 0; i < loaded_course_lists.length; i++) {
+		let course_list = loaded_course_lists[i];
+
+		if (course_list.code == code) {
+			found = true;
+			
+			for (let course of course_list.courses) {
+				if (!loaded_local_courses.map((el) => el.identifier).includes(course.identifier)) {
+					loaded_local_courses.push(course);
+				}
+			}
+			
+			loaded_course_lists.splice(i, 1);
+			break;
+		}
+	}
+
+	if (found) {
+		save_json_data("loaded_course_lists", loaded_course_lists);
+		save_json_data("loaded_local_courses", loaded_local_courses);
+		updateSchedule();
+	}
+}

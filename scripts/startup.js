@@ -92,9 +92,20 @@ function generateLines() {
 }
 
 function updateSchedule() {
+    max_grid_rows = 0;
+
     clearSchedule();
     updateLoadedCourses();
     updateLoadedCourseLists();
+
+    if (max_grid_rows == 0) {
+        max_grid_rows = 350;
+    } else {
+        max_grid_rows = Math.min(350, max_grid_rows + 20);
+    }
+
+    document.getElementById("schedule-table").style.gridTemplateRows = `35px repeat(${max_grid_rows}, 1fr)`;
+
 }
 
 function clearSchedule() {
@@ -123,7 +134,6 @@ function updateLoadedCourses() {
 
     // Add new course divs
     let i = 0;
-    max_grid_rows = 0;
 
     for (let course of loaded_local_courses) {
         let course_div_list = createScheduleGridDiv(course, colors[i % colors.length], set_max_grid_rows=true);
@@ -134,14 +144,6 @@ function updateLoadedCourses() {
 
         i++;
     }
-
-    if (max_grid_rows == 0) {
-        max_grid_rows = 350;
-    } else {
-        max_grid_rows = Math.min(350, max_grid_rows + 20);
-    }
-
-    course_schedule_grid.style.gridTemplateRows = `35px repeat(${max_grid_rows}, 1fr)`;
 }
 
 function createScheduleGridDiv(course, color, set_max_grid_rows = false) {
@@ -253,7 +255,7 @@ function updateLoadedCourseLists() {
 
     if (loaded_course_lists.length > 0) {
         for (let i = 0; i < loaded_course_lists.length; i++) {
-            output += `\n<div class="course-search-result .course-loaded" style="background-color: ${colors[i + 1 % colors.length]};"><div class="course-info"><b>${loaded_course_lists[i].code}</b></div><div class="delete-course" onclick="deleteCourseList('${loaded_course_lists[i].code}')"></div></div>`;
+            output += `\n<div class="course-search-result .course-loaded" style="background-color: ${colors[i + 1 % colors.length]};"><div class="course-info"><b>${loaded_course_lists[i].code}</b></div><div class="delete-course" onclick="deleteCourseList('${loaded_course_lists[i].code}')"></div><div class="merge-course" onclick="mergeCourseList('${loaded_course_lists[i].code}')"></div></div>`;
         }
     }
     

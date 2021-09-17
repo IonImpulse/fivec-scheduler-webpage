@@ -528,3 +528,16 @@ a:visited {
 .delete-course:hover {
   filter: brightness(1.6);
 }
+
+.merge-course {
+  background-image: url(../img/merge.png);
+  background-size: cover;
+  width: 1vmax;
+  height: 1vmax;
+  float: inline-end;
+  margin-right: .5vmax;
+}
+
+.merge-course:hover {
+  filter: brightness(1.6);
+}

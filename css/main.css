@@ -238,11 +238,15 @@ a:visited {
 .search-button {
   background-color: var(--search-button-background);
   color: var(--text-alt);
-  width: 180px;
+  width: 20%;
 }
 
 .search-button:hover {
   background-color: var(--search-button-hover);
+}
+
+.wide {
+  width: 10%;
 }
 
 .time {

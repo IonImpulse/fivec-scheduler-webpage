@@ -399,7 +399,7 @@ function addCourses() {
 
 	save_json_data("loaded_local_courses", loaded_local_courses);
 
-	updateLoadedCourses();
+	updateSchedule();
 
 	return num_courses;
 }
@@ -451,7 +451,7 @@ function addToCourseLists(course_list) {
 	if (!found) {
 		loaded_course_lists.push(course_list);
 		save_json_data("loaded_course_lists", loaded_course_lists);
-		updateLoadedCourseLists();
+		updateSchedule();
 		
 		return true;
 	} else {
@@ -474,7 +474,7 @@ function deleteCourse(identifier) {
 
 	if (found) {
 		save_json_data("loaded_local_courses", loaded_local_courses);
-		updateLoadedCourses();
+		updateSchedule();
 	}
 }
 
@@ -493,6 +493,6 @@ function deleteCourseList(code) {
 
 	if (found) {
 		save_json_data("loaded_course_lists", loaded_course_lists);
-		updateLoadedCourseLists();
+		updateSchedule();
 	}
 }

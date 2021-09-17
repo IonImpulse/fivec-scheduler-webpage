@@ -9,8 +9,7 @@ function startup() {
     generateDays();
     generateLines();
     loadCourseData();
-    updateLoadedCourses();
-    updateLoadedCourseLists();
+    updateSchedule();
 
     // Then, check if site was loaded from
     // from QR code w/ course list code
@@ -92,6 +91,22 @@ function generateLines() {
     }
 }
 
+function updateSchedule() {
+    clearSchedule();
+    updateLoadedCourses();
+    updateLoadedCourseLists();
+}
+
+function clearSchedule() {
+    let course_schedule_grid = document.getElementById("schedule-table");
+
+    let course_divs = course_schedule_grid.getElementsByClassName("course-schedule-block");
+
+    while (course_divs[0]) {
+        course_divs[0].parentNode.removeChild(course_divs[0]);
+    }
+}
+
 function updateLoadedCourses() {
     let course_list_table = document.getElementById("course-table");
     let output = "";
@@ -101,83 +116,22 @@ function updateLoadedCourses() {
             output += `\n<div class="course-search-result course-loaded" style="background-color: ${colors[i % colors.length]};"><div class="course-info"><b>${loaded_local_courses[i].identifier}:</b> ${loaded_local_courses[i].title}</div><div class="delete-course" onclick="deleteCourse('${loaded_local_courses[i].identifier}')"></div></div>`;
         }
     }
-    
+
     course_list_table.innerHTML = output;
 
     let course_schedule_grid = document.getElementById("schedule-table");
 
-    let course_divs = course_schedule_grid.getElementsByClassName("course-schedule-block");
-
-    while(course_divs[0]) {
-        course_divs[0].parentNode.removeChild(course_divs[0]);
-    }
-
     // Add new course divs
     let i = 0;
-    let max_grid_rows = 0;
+    max_grid_rows = 0;
 
     for (let course of loaded_local_courses) {
-        let time_index = 0;
-        // Have to create one for each time slot it's in
-        for (let time of course.timing) {
-            // Create the div
-            let course_div = document.createElement("div");
-            course_div.className = "course-schedule-block unselectable";
-            course_div.style.backgroundColor = `${colors[i % colors.length]}`;
+        let course_div_list = createScheduleGridDiv(course, colors[i % colors.length], set_max_grid_rows=true);
 
-            // Create the course title
-            let course_title = document.createElement("div");
-            course_title.className = "name";
-            course_title.innerHTML = course.title;
-
-            // Create the course identifier
-            let course_identifier = document.createElement("div");
-            course_identifier.className = "identifier";
-            course_identifier.innerHTML = course.identifier;
-
-            // Create the course room
-            let course_room = document.createElement("div");
-            course_room.className = "room";
-            course_room.innerHTML = `${time.location.building} ${time.location.room}`;
-
-            // Append all the elements
-            course_div.appendChild(course_title);
-            course_div.appendChild(course_identifier);
-            course_div.appendChild(course_room);
-
-            // Set course behavior
-            course_div.onclick = function () {
-                toggleCourseOverlay(course.identifier, time_index)
-            };
-            course_div.onmouseenter = function () {
-                showCourseOverlay(course.identifier, time_index, true)
-            };
-            course_div.onmouseleave = function () {
-                showCourseOverlay(course.identifier, time_index, false)
-            };
-
-            // Div has been created, now we need to place it on the grid
-            // Call timeToGrid to get an list of x and y coordinates, and
-            // create a div for each of them
-
-            const grid_layout = timeToGrid(time);
-
-            for (let layout of grid_layout) {
-                // Get the time slot
-                course_div.style.gridRowStart = layout.start_row;
-                course_div.style.gridRowEnd = layout.end_row;
-
-                max_grid_rows = Math.max(max_grid_rows, layout.end_row);
-
-                // Get the day
-                course_div.style.gridColumnStart = layout.start_column;
-                course_div.style.gridColumnEnd = layout.end_column;
-
-                // Add the div to the grid
-                course_schedule_grid.appendChild(course_div.cloneNode(true));
-            } 
-            time_index++;   
+        for (let course_div of course_div_list) {
+            course_schedule_grid.appendChild(course_div);
         }
+
         i++;
     }
 
@@ -190,6 +144,74 @@ function updateLoadedCourses() {
     course_schedule_grid.style.gridTemplateRows = `35px repeat(${max_grid_rows}, 1fr)`;
 }
 
+function createScheduleGridDiv(course, color, set_max_grid_rows = false) {
+    let time_index = 0;
+    let return_list = [];
+    // Have to create one for each time slot it's in
+    for (let time of course.timing) {
+        // Create the div
+        let course_div = document.createElement("div");
+        course_div.className = "course-schedule-block unselectable";
+        course_div.style.backgroundColor = `${color}`;
+
+        // Create the course title
+        let course_title = document.createElement("div");
+        course_title.className = "name";
+        course_title.innerHTML = course.title;
+
+        // Create the course identifier
+        let course_identifier = document.createElement("div");
+        course_identifier.className = "identifier";
+        course_identifier.innerHTML = course.identifier;
+
+        // Create the course room
+        let course_room = document.createElement("div");
+        course_room.className = "room";
+        course_room.innerHTML = `${time.location.building} ${time.location.room}`;
+
+        // Append all the elements
+        course_div.appendChild(course_title);
+        course_div.appendChild(course_identifier);
+        course_div.appendChild(course_room);
+
+        // Set course behavior
+        course_div.onclick = function () {
+            toggleCourseOverlay(course.identifier, time_index)
+        };
+        course_div.onmouseenter = function () {
+            showCourseOverlay(course.identifier, time_index, true)
+        };
+        course_div.onmouseleave = function () {
+            showCourseOverlay(course.identifier, time_index, false)
+        };
+
+        // Div has been created, now we need to place it on the grid
+        // Call timeToGrid to get an list of x and y coordinates, and
+        // create a div for each of them
+
+        const grid_layout = timeToGrid(time);
+
+        for (let layout of grid_layout) {
+            // Get the time slot
+            course_div.style.gridRowStart = layout.start_row;
+            course_div.style.gridRowEnd = layout.end_row;
+
+            if (set_max_grid_rows) {
+                max_grid_rows = Math.max(max_grid_rows, layout.end_row);
+            }
+
+            // Get the day
+            course_div.style.gridColumnStart = layout.start_column;
+            course_div.style.gridColumnEnd = layout.end_column;
+
+            // Add the div to the grid
+            return_list.push(course_div.cloneNode(true))
+        }
+        time_index++;
+    }
+
+    return return_list;
+}
 function timeToGrid(time) {
     const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
@@ -234,8 +256,23 @@ function updateLoadedCourseLists() {
             output += `\n<div class="course-search-result .course-loaded" style="background-color: ${colors[i + 1 % colors.length]};"><div class="course-info"><b>${loaded_course_lists[i].code}</b></div><div class="delete-course" onclick="deleteCourseList('${loaded_course_lists[i].code}')"></div></div>`;
         }
     }
-
+    
     el.innerHTML = output;
+
+    let course_schedule_grid = document.getElementById("schedule-table");
+    
+    for (let course_list of loaded_course_lists) {
+        let i = 0;
+        for (let course of course_list.courses) {
+            let course_div_list = createScheduleGridDiv(course, colors[i % colors.length] + "66", set_max_grid_rows=true);
+    
+            for (let course_div of course_div_list) {
+                course_schedule_grid.appendChild(course_div);
+            }
+    
+            i++;
+        }
+    }
 }
 
 function loadCourseData() {
@@ -274,6 +311,7 @@ function loadPossibleCourseList() {
                 if (data != null) {
                     loaded_course_lists.push(data);
                     save_json_data("loaded_course_lists", loaded_course_lists);
+                    updateSchedule();
                 }
             });
     }

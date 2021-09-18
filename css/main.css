@@ -1,66 +1,23 @@
-/* Fonts */
-@import url("https://fonts.googleapis.com/css2?family=Quicksand&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,900&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import "https://fonts.googleapis.com/css2?family=Quicksand&display=swap";
 
+@import "https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,900&display=swap";
+
+@import "https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap";
+
+/* CSSTidy 1.5.2: Sat, 18 Sep 2021 23:53:36 +0000 */
 @font-face {
   font-family: "JetBrains Mono";
-  src: url("https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsMono-Medium.woff2")
+  src: url(https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsMono-Medium.woff2)
       format("woff2"),
-    url("https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff/JetBrainsMono-Medium.woff")
+    url(https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff/JetBrainsMono-Medium.woff)
       format("woff");
   font-weight: 400;
   font-style: normal;
-  font-display: swap;
-}
-
-:root {
-  /* Colors - Light mode (default) */
-  --background-main: #3465a5;
-  --background-alt: #f0f0f0;
-  --background-alt-hover: #c9c8c8;
-  --search-button-background: #4cad41;
-  --search-button-hover: #43993a;
-  --select-main: #000000;
-  --text-main: #252525;
-  --text-alt: #fdfdfd;
-  --text-light: #616161;
-  
-  --text-course-schedule: #fdfdfd;
-
-  --course-open: #39a32b;
-  --course-closed: #b93838;
-  --course-reopened: #bb7c33;
-
-  /* Misc. vars */
-  --roundedness: .4vmax;
-  --padding: .7vmax;
-  --padding-small: 5px;
-  --shadow-length: 4px;
-  --shadow-blur: 20px;
-}
-
-[data-theme="dark"] {
-  /* Colors - Dark mode */
-  --background-main: #333333;
-  --background-alt: #1b1b1b;
-  --background-alt-hover: #0c0c0c;
-  --search-button-background: #57ac4f;
-  --search-button-hover: #3a9232;
-  --text-main: #dbdbdb;
-  --text-alt: #131313;
-  --text-light: #dbdbdb;
-  --select-main: #dfdede;
-
-  --course-open: #7ee271;
-  --course-closed: #e27878;
-  --course-reopened: #e0c06a;
 }
 
 body {
   background-color: var(--background-alt);
   display: flex;
-  flex-direction: row;
 }
 
 body * {
@@ -77,6 +34,7 @@ canvas {
   height: 200px;
   margin: 0 auto;
 }
+
 .swal2-title {
   font-family: "JetBrains Mono", monospace;
 }
@@ -100,7 +58,6 @@ canvas {
 #code-input {
   display: block;
   margin: 50px auto;
-  margin-left: 75px;
   border: none;
   width: 10.5ch;
   background: repeating-linear-gradient(
@@ -111,7 +68,7 @@ canvas {
       transparent 1.5ch
     )
     0 100%/10ch 2px no-repeat;
-  font: 5ch droid sans mono, consolas, monospace;
+  font: 5ch "droid sans mono", consolas, monospace;
   letter-spacing: 0.5ch;
   text-transform: uppercase;
   color: var(--text-main);
@@ -119,7 +76,7 @@ canvas {
 
 #code-input:focus {
   outline: none;
-  color: dodgerblue;
+  color: #1e90ff;
 }
 
 .box-shadow {
@@ -132,22 +89,12 @@ canvas {
 }
 
 .inset-box-shadow {
-  box-shadow: inset 0 0 var(--shadow-blur) var(--shadow-length) rgba(0, 0, 0, 0.2);
-}
-
-.noselect {
-  -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none; /* Safari */
-  -khtml-user-select: none; /* Konqueror HTML */
-  -moz-user-select: none; /* Old versions of Firefox */
-  -ms-user-select: none; /* Internet Explorer/Edge */
-  user-select: none; /* Non-prefixed version, currently
-                                    supported by Chrome, Edge, Opera and Firefox */
+  box-shadow: inset 0 0 var(--shadow-blur) var(--shadow-length)
+    rgba(0, 0, 0, 0.2);
 }
 
 #main-section {
   display: flex;
-  flex-direction: column;
   width: 76%;
   height: 94vh;
   margin-top: 1%;
@@ -166,17 +113,13 @@ canvas {
   background-color: var(--background-main);
   border-radius: var(--roundedness);
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
   margin-bottom: 10px;
   padding: var(--padding);
 }
 
 #title-bar-name {
-  font-family: "Montserrat", sans-serif;
-  font-size: larger;
   color: var(--text-alt);
+  font: larger "Montserrat", sans-serif;
 }
 
 #title-bar-5c {
@@ -193,20 +136,15 @@ canvas {
   border-radius: var(--roundedness);
   background-color: var(--background-alt);
   display: grid;
-  grid-template-columns: 5% repeat(5, 1fr) 2%;
-  grid-template-rows: 25px repeat(
-    350,
-    1fr
-  ); /* 300 is 15 hours (7AM to 10PM) in 20 five minute blocks */
-  grid-column-gap: 10px;
   height: 85vh;
   color: var(--text-main);
   overflow: hidden;
 }
+
 a:link {
   color: #83c3eb;
 }
-/* visited link */
+
 a:visited {
   color: #83c3eb;
 }
@@ -215,15 +153,13 @@ a:visited {
   background-color: var(--background-alt);
   border-radius: var(--roundedness);
   text-align: center;
-  font-size: 16px;
-  line-height: 28px;
-  font-family: "JetBrains Mono", sans-serif;
   height: 30px;
   width: 90px;
   margin-left: 20px;
   margin-right: 20px;
   cursor: pointer;
   color: var(--text-main);
+  font: 16px/28px "JetBrains Mono", sans-serif;
 }
 
 .title-bar-button:hover {
@@ -249,21 +185,17 @@ a:visited {
 }
 
 .time {
-    font-size: 12px;
-    text-align: right;
-    font-weight: 500;
-    color: var(--text-light);
-    font-family: "JetBrains Mono", monospace;
-    transform: translate(0, -7px);
+  text-align: right;
+  color: var(--text-light);
+  transform: translate(0, -7px);
+  font: 500 12px "JetBrains Mono", monospace;
 }
 
 .day {
-    font-size: 18px;
-    letter-spacing: 1px;
-    text-align: center;
-    padding: 4% 0%;
-    font-weight: 900;
-    font-family: 'Roboto', monospace;
+  letter-spacing: 1px;
+  text-align: center;
+  padding: 4% 0;
+  font: 900 18px "Roboto", monospace;
 }
 
 .line {
@@ -288,7 +220,6 @@ a:visited {
   width: auto;
   margin-bottom: 1vh;
   display: inline-block;
-  width: 100%;
 }
 
 #course-box {
@@ -298,7 +229,6 @@ a:visited {
   width: auto;
   margin-bottom: 1vh;
   display: inline-block;
-  width: 100%;
 }
 
 #course-table {
@@ -308,7 +238,7 @@ a:visited {
   width: 100%;
   max-height: 50vh;
   overflow: auto;
-} 
+}
 
 #course-info-table {
   border-radius: var(--roundedness);
@@ -333,26 +263,22 @@ a:visited {
   background-color: var(--background-alt);
   display: inline-block;
   width: 100%;
-} 
+}
 
 .table-title {
-  font-family: "Roboto", sans-serif;
-  font-weight: 900;
-  font-size: larger;
   color: var(--text-main);
   padding: var(--padding);
   background-color: var(--background-alt);
   border-radius: var(--roundedness);
   margin-bottom: 1vh;
-
+  font: 900 larger "Roboto", sans-serif;
 }
 
 .course-table-row {
-  font-family: "Roboto", sans-serif;
-  font-size: 20px;
   color: var(--text-main);
   padding: var(--padding);
   border-radius: var(--roundedness);
+  font: 20px "Roboto", sans-serif;
 }
 
 #course-search-results {
@@ -364,24 +290,18 @@ a:visited {
 }
 
 .course-search-result {
-  font-family: "Roboto", sans-serif;
   color: var(--text-alt);
   border-radius: var(--roundedness);
   padding: var(--padding);
-  font-size: 16px;
   margin: 1vh;
   cursor: pointer;
-  transition: outline .05s;
-  outline: 0px solid var(--select-main);
+  transition: outline 0.05s;
+  outline: 0 solid var(--select-main);
   outline-offset: -2px;
   text-align: left;
   overflow: hidden;
-  white-space:nowrap;
-  text-overflow: ellipsis;
-}
-
-.course-search-result:hover {
-  filter: brightness(1.2);
+  white-space: nowrap;
+  font: 16px "Roboto", sans-serif;
 }
 
 .course-clicked {
@@ -389,16 +309,8 @@ a:visited {
   outline-offset: -2px;
 }
 
-.unselectable {
-  -webkit-user-select: none;
-  -webkit-touch-callout: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
 .swal-wide {
-  width:80vw !important;
+  width: 80vw !important;
 }
 
 #course-add-num {
@@ -407,7 +319,6 @@ a:visited {
 
 #course-search-box {
   display: flex;
-  flex-direction: row;
 }
 
 #course-search-desc {
@@ -422,21 +333,18 @@ a:visited {
 }
 
 .course-desc .title {
-  font-family: 'Roboto', sans-serif;
-  font-size: 26px;
-  font-weight: 900;
   color: var(--text-main);
   margin-bottom: 1vh;
+  font: 900 26px "Roboto", sans-serif;
 }
 
 .course-desc .subtitle {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
   color: var(--text-light);
+  font: 12px "JetBrains Mono", monospace;
 }
 
 .course-desc .course-status {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   color: var(--text-main);
   margin-bottom: 1vh;
 }
@@ -454,21 +362,19 @@ a:visited {
 }
 
 #course-search-desc .timing {
-  font-family: 'Roboto', monospace;
   color: var(--text-main);
-  font-size: 14px;
+  font: 14px "Roboto", monospace;
 }
 
 #course-search-desc .instructors {
-  font-family: 'Roboto', monospace;
   color: var(--text-main);
-  font-size: 14px;
+  font: 14px "Roboto", monospace;
 }
+
 #course-search-desc .description {
   margin-top: 1vh;
-  font-family: 'Roboto', monospace;
   color: var(--text-main);
-  font-size: 14px;
+  font: 14px "Roboto", monospace;
 }
 
 #course-input {
@@ -486,17 +392,15 @@ a:visited {
 }
 
 .code-explain {
-  font-family: 'Roboto', sans-serif;
-  font-size: 25px;
+  font: 25px "Roboto", sans-serif;
 }
 
 .code-share {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 40px;
   color: var(--text-alt);
   background-color: var(--text-main);
   padding: var(--padding-small);
   border-radius: var(--roundedness);
+  font: 40px "JetBrains Mono", monospace;
 }
 
 .course-schedule-block {
@@ -507,8 +411,6 @@ a:visited {
   overflow: hidden;
   text-align: center;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   cursor: pointer;
 }
 
@@ -517,40 +419,30 @@ a:visited {
 }
 
 .course-schedule-block .name {
-  font-family: 'Roboto', sans-serif;
-  font-size: .7vw;
-  font-weight: 900;
+  font: 900 0.7vw "Roboto", sans-serif;
 }
 
 .course-schedule-block .identifier {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: .6vw;
+  font: 0.6vw "JetBrains Mono", monospace;
 }
 
 .course-schedule-block .room {
-  font-family: 'Roboto', sans-serif;
-  font-size: .7vw;
-  font-weight: 600;
+  font: 600 0.7vw "Roboto", sans-serif;
 }
 
 .course-info {
   float: inline-start;
   overflow: hidden;
-  white-space:nowrap;
-  text-overflow: ellipsis;
+  white-space: nowrap;
   max-width: 90%;
 }
+
 .delete-course {
   background-image: url(../img/delete.png);
   background-size: cover;
   width: 1vmax;
   height: 1vmax;
   float: inline-end;
-
-}
-
-.delete-course:hover {
-  filter: brightness(1.6);
 }
 
 .merge-course {
@@ -559,11 +451,7 @@ a:visited {
   width: 1vmax;
   height: 1vmax;
   float: inline-end;
-  margin-right: .5vmax;
-}
-
-.merge-course:hover {
-  filter: brightness(1.6);
+  margin-right: 0.5vmax;
 }
 
 #course-info-table {
@@ -580,16 +468,13 @@ a:visited {
 }
 
 #course-info-table .timing {
-  font-size: 12px;
-  font-family: 'Roboto';
+  font: 12px "Roboto";
 }
 
 #course-info-table .instructors {
-  font-size: 12px;
-  font-family: 'Roboto';
+  font: 12px "Roboto";
 }
 
 #course-info-table .description {
-  font-size: 12px;
-  font-family: 'Roboto';
+  font: 12px "Roboto";
 }

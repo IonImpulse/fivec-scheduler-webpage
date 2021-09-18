@@ -421,7 +421,7 @@ a:visited {
   float: right;
 }
 
-#course-search-desc .title {
+.course-desc .title {
   font-family: 'Roboto', sans-serif;
   font-size: 26px;
   font-weight: 900;
@@ -429,13 +429,13 @@ a:visited {
   margin-bottom: 1vh;
 }
 
-#course-search-desc .subtitle {
+.course-desc .subtitle {
   font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
   color: var(--text-light);
 }
 
-#course-search-desc .course-status {
+.course-desc .course-status {
   font-family: 'JetBrains Mono', monospace;
   color: var(--text-main);
   margin-bottom: 1vh;
@@ -509,6 +509,7 @@ a:visited {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  cursor: pointer;
 }
 
 .from-course-list {
@@ -563,4 +564,32 @@ a:visited {
 
 .merge-course:hover {
   filter: brightness(1.6);
+}
+
+#course-info-table {
+  height: 20vh auto;
+  max-height: 50vh;
+}
+
+#course-info-table * {
+  margin: var(--padding-small);
+}
+
+#course-info-table .title {
+  font-size: 18px;
+}
+
+#course-info-table .timing {
+  font-size: 12px;
+  font-family: 'Roboto';
+}
+
+#course-info-table .instructors {
+  font-size: 12px;
+  font-family: 'Roboto';
+}
+
+#course-info-table .description {
+  font-size: 12px;
+  font-family: 'Roboto';
 }

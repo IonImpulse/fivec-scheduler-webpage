@@ -120,7 +120,7 @@ function buttonSearch() {
 			title: 'Search Courses',
 			icon: 'info',
 			html: `<div><input class="swal2-input" id="course-input" onKeyUp="updateCourseSearch()"></div>` +
-				`<div id="course-search-box"><div id="course-search-results"></div><div id="course-search-desc"></div></div><br>`,
+				`<div id="course-search-box"><div id="course-search-results"></div><div id="course-search-desc" class="course-desc"></div></div><br>`,
 			showCloseButton: true,
 			showCancelButton: true,
 			confirmButtonText:
@@ -252,7 +252,7 @@ function expensiveCourseSearch() {
 	} else {
 		let search_term = tweakSearch(input.value);
 
-		console.log(`INFO: search changed from "${input.value}" => "${search_term}"`);
+		console.info(`INFO: search changed from "${input.value}" => "${search_term}"`);
 
 		let results = fuzzy_searcher.search(search_term);
 		
@@ -527,17 +527,18 @@ function mergeCourseList(code) {
 }
 
 function toggleCourseOverlay(identifier, time_index) {
-	if (overlay_status.status == true) {
-		overlay_status.status = false;
+	if (overlay_status == true) {
+		overlay_status = false;
 	} else {
-		overlay_status.status = true;
+		overlay_status = true;
 	}
 
 	showCourseOverlay(identifier, time_index, false);
 }
 
 function showCourseOverlay(identifier, time_index, is_hover) {
-	if (!(is_hover && overlay_status.status)) {
+
+	if (!(is_hover && overlay_status)) {
 		if (all_desc_global.length == 0) {
 			generateAllDescriptions();
 		}
@@ -554,7 +555,7 @@ function showCourseOverlay(identifier, time_index, is_hover) {
 		let course_info = all_desc_global[index];
 	
 		let course_info_table = document.getElementById("course-info-table");
-		
+	
 		course_info_table.innerHTML = course_info;
 	}	
 }

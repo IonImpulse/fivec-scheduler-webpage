@@ -164,7 +164,8 @@ function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_i
         let course_title = document.createElement("div");
         course_title.className = "name";
         course_title.innerHTML = course.title;
-
+        
+                
         // Create the course identifier
         let course_identifier = document.createElement("div");
         course_identifier.className = "identifier";
@@ -180,17 +181,6 @@ function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_i
         course_div.appendChild(course_title);
         course_div.appendChild(course_identifier);
         course_div.appendChild(course_room);
-
-        // Set course behavior
-        course_div.onclick = function () {
-            toggleCourseOverlay(course.identifier, time_index)
-        };
-        course_div.onmouseenter = function () {
-            showCourseOverlay(course.identifier, time_index, true)
-        };
-        course_div.onmouseleave = function () {
-            showCourseOverlay(course.identifier, time_index, false)
-        };
 
         // Div has been created, now we need to place it on the grid
         // Call timeToGrid to get an list of x and y coordinates, and
@@ -212,7 +202,18 @@ function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_i
             course_div.style.gridColumnEnd = layout.end_column;
 
             // Add the div to the grid
-            return_list.push(course_div.cloneNode(true))
+            let cloned_div = course_div.cloneNode(true);
+            // Set course behavior
+            cloned_div.onclick = function () {
+                toggleCourseOverlay(course.identifier, time_index)
+            };
+            cloned_div.onmouseenter = function () {
+                showCourseOverlay(course.identifier, time_index, true)
+            };
+            cloned_div.onmouseleave = function () {
+                showCourseOverlay(course.identifier, time_index, false)
+            };
+            return_list.push(cloned_div);
         }
         time_index++;
     }
@@ -283,6 +284,16 @@ function updateLoadedCourseLists() {
 }
 
 function loadCourseData() {
+    let course_data = load_json_data("course_data");
+
+    if (course_data == null) {
+        update_database().then(() => {
+            all_courses_global = load_json_data("course_data").courses;
+        });
+    } else {
+        all_courses_global = load_json_data("course_data").courses;
+    }
+    
     loaded_local_courses = load_json_data("loaded_local_courses");
     loaded_course_lists = load_json_data("loaded_course_lists");
 

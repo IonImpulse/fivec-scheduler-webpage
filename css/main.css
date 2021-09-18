@@ -281,6 +281,16 @@ a:visited {
   opacity: 0.1;
 }
 
+#course-info-box {
+  background-color: var(--background-main);
+  border-radius: var(--roundedness);
+  padding: var(--padding);
+  width: auto;
+  margin-bottom: 1vh;
+  display: inline-block;
+  width: 100%;
+}
+
 #course-box {
   background-color: var(--background-main);
   border-radius: var(--roundedness);
@@ -299,6 +309,15 @@ a:visited {
   max-height: 50vh;
   overflow: auto;
 } 
+
+#course-info-table {
+  border-radius: var(--roundedness);
+  background-color: var(--background-alt);
+  display: inline-block;
+  width: 100%;
+  max-height: 50vh;
+  overflow: auto;
+}
 
 #course-list-box {
   background-color: var(--background-main);

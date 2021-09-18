@@ -525,3 +525,36 @@ function mergeCourseList(code) {
 		updateSchedule();
 	}
 }
+
+function toggleCourseOverlay(identifier, time_index) {
+	if (overlay_status.status == true) {
+		overlay_status.status = false;
+	} else {
+		overlay_status.status = true;
+	}
+
+	showCourseOverlay(identifier, time_index, false);
+}
+
+function showCourseOverlay(identifier, time_index, is_hover) {
+	if (!(is_hover && overlay_status.status)) {
+		if (all_desc_global.length == 0) {
+			generateAllDescriptions();
+		}
+	
+		// get index of course
+		let index = 0;
+		for (let course of all_courses_global) {
+			if (course.identifier == identifier) {
+				break;
+			}
+			index++;
+		}
+	
+		let course_info = all_desc_global[index];
+	
+		let course_info_table = document.getElementById("course-info-table");
+		
+		course_info_table.innerHTML = course_info;
+	}	
+}

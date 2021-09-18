@@ -13,6 +13,7 @@ var all_desc_global = [];
 var fuzzy_searcher = [];
 var selected_courses = [];
 
+var overlay_status = { status: false, course_identifier: null };
 var loaded_local_courses = [];
 var loaded_course_lists = [];
 

@@ -326,10 +326,21 @@ function loadPossibleCourseList() {
                     `Invalid Code! ${error}`
                 )
             }).then(data => {
+                window.location.href = window.location.href.split("?")[0];
                 if (data != null) {
-                    loaded_course_lists.push(data);
-                    save_json_data("loaded_course_lists", loaded_course_lists);
-                    updateSchedule();
+                    const course_list_result = addToCourseLists(data);
+
+                    if (course_list_result == true) {
+                        Toast.fire({
+                            title: 'Loaded course list',
+                            icon: 'success'
+                        });
+                    } else {
+                        Toast.fire({
+                            title: 'Course list already loaded',
+                            icon: 'error'
+                        });
+                    }
                 }
             });
     }

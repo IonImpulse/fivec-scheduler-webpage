@@ -333,9 +333,12 @@ function convertTime(time) {
 
 function setCourseDescription(index) {
 	let course_search_desc = document.getElementById("course-search-desc");
-	let desc = all_desc_global[index];
+	let course_info = all_desc_global[index];
 
-	course_search_desc.innerHTML = desc;
+	if (course_search_desc.firstChild != null) {
+		course_search_desc.removeChild(course_search_desc.firstChild);
+	}
+	course_search_desc.appendChild(course_info.cloneNode(true));
 }
 
 function generateAllDescriptions() {
@@ -343,34 +346,50 @@ function generateAllDescriptions() {
 	for (let i = 0; i < all_courses_global.length; i++) {
 		let course = all_courses_global[i];
 
-		let course_search_desc = "";
+		let course_desc_node = document.createElement("div");
 
-		course_search_desc += `
-	<div class="title">${course.title}</div>
-	<div class="subtitle">${course.identifier}</div>
-	<div class="course-status ${course.status}">${course.status} - ${course.seats_taken}/${course.max_seats}</div>
-	`;
+		let title_node = document.createElement("div");
+		title_node.className = "title";
+		title_node.innerHTML += course.title;
+
+		let subtitle_node = document.createElement("div");
+		subtitle_node.className = "subtitle";
+		subtitle_node.innerHTML += course.identifier;
+
+		let status_node = document.createElement("div");
+		status_node.className = `course-status ${course.status}`;
+		status_node.innerHTML += `${course.status} - ${course.seats_taken}/${course.max_seats}`;
+
+		course_desc_node.appendChild(title_node);
+		course_desc_node.appendChild(subtitle_node);
+		course_desc_node.appendChild(status_node);
 
 		for (let time of course.timing) {
+			let timing_node = document.createElement("div");
+			timing_node.className = "timing";
+
 			let day_str = time.days.join(', ');
 			let start_time = convertTime(time.start_time);
 			let end_time = convertTime(time.end_time);
 			let local = time.location;
 
-			course_search_desc += `
-	  <div class="timing"><b>${start_time}-${end_time}:</b> ${day_str} @ ${local.school}, ${local.building}, Room ${local.room}</div>`;
+			timing_node.innerHTML += `<b>${start_time}-${end_time}:</b> ${day_str} @ ${local.school}, ${local.building}, Room ${local.room}`;
 
+			course_desc_node.appendChild(timing_node);
 		}
 
-		course_search_desc += `<div class="instructors"><i>${course.instructors.join(', ')}</i></div>`;
+		let instructor_node = document.createElement("div");
+		instructor_node.className = "instructors";
+		instructor_node.innerHTML += `<b>Instructors:</b> <i>${course.instructors.join(' & ')}</i>`;
 
-		course_search_desc += `
-	<div class="description"><b>Description:</b>\n${course.description}</div>
-	`;
+		let desc_node = document.createElement("div");
+		desc_node.className = "description";
+		desc_node.innerHTML += `<b>Description:</b>\n${course.description}`;
 
+		course_desc_node.appendChild(instructor_node);
+		course_desc_node.appendChild(desc_node);
 
-		all_desc_global.push(course_search_desc);
-
+		all_desc_global.push(course_desc_node);
 	}
 }
 
@@ -555,7 +574,23 @@ function showCourseOverlay(identifier, time_index, is_hover) {
 		let course_info = all_desc_global[index];
 	
 		let course_info_table = document.getElementById("course-info-table");
-	
-		course_info_table.innerHTML = course_info;
+		
+		if (course_info_table.firstChild != null) {
+			course_info_table.removeChild(course_info_table.firstChild);
+		}
+
+		let node_to_append = course_info.cloneNode(true);
+		
+		node_to_append.childNodes[node_to_append.childNodes.length - 1].remove();
+		
+		for (let i = 3; i < node_to_append.childNodes.length - 1; i++) {
+			if (i - 2 != time_index) {
+				node_to_append.childNodes[i].style.display = "none";
+			} else {
+				console.log(node_to_append.childNodes[i]);
+			}
+		}
+		
+		course_info_table.appendChild(node_to_append);
 	}	
 }

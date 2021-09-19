@@ -532,7 +532,6 @@ max-height:50vh
 
 #course-info-table * {
 margin:var(--padding-small);
-margin-left:var(--padding)
 }
 
 #course-info-table .title {

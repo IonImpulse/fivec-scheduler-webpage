@@ -327,6 +327,19 @@ function loadPossibleCourseList() {
                 )
             }).then(data => {
                 if (data != null) {
+                    const course_list_result = addToCourseLists(data);
+
+                    if (course_list_result == true) {
+                        Toast.fire({
+                            title: 'Loaded course list',
+                            icon: 'success'
+                        });
+                    } else {
+                        Toast.fire({
+                            title: 'Course list already loaded',
+                            icon: 'error'
+                        });
+                    }
                     loaded_course_lists.push(data);
                     save_json_data("loaded_course_lists", loaded_course_lists);
                     updateSchedule();

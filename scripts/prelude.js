@@ -13,7 +13,7 @@ var all_desc_global = [];
 var fuzzy_searcher = [];
 var selected_courses = [];
 
-var overlay_status = false;
+var overlay = { identifier: null, time_index: -1, locked: false };
 var loaded_local_courses = [];
 var loaded_course_lists = [];
 

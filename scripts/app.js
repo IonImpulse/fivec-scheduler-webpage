@@ -373,14 +373,14 @@ function generateAllDescriptions() {
 			let end_time = convertTime(time.end_time);
 			let local = time.location;
 
-			timing_node.innerHTML += `<b>${start_time}-${end_time}:</b> ${day_str} @ ${local.school}, ${local.building}, Room ${local.room}`;
+			timing_node.innerHTML += `<b>${start_time} - ${end_time}:</b> ${day_str}<br>@ ${local.school}, ${local.building}, Room ${local.room}`;
 
 			course_desc_node.appendChild(timing_node);
 		}
 
 		let instructor_node = document.createElement("div");
 		instructor_node.className = "instructors";
-		instructor_node.innerHTML += `<b>Instructors:</b> <i>${course.instructors.join(' & ')}</i>`;
+		instructor_node.innerHTML += `<br><b>Instructors:</b> <i>${course.instructors.join(' & ')}</i>`;
 
 		let desc_node = document.createElement("div");
 		desc_node.className = "description";
@@ -546,18 +546,26 @@ function mergeCourseList(code) {
 }
 
 function toggleCourseOverlay(identifier, time_index) {
-	if (overlay_status == true) {
-		overlay_status = false;
+	if (overlay.locked == true) {
+		if (overlay.identifier == identifier && overlay.time_index == time_index) {
+			overlay.locked = false;
+		} else {
+			overlay.locked = false;
+			showCourseOverlay(identifier, time_index);
+			overlay.locked = true;
+			overlay.locked = true;
+			overlay.identifier = identifier;
+			overlay.time_index = time_index;
+		}
 	} else {
-		overlay_status = true;
+		overlay.locked = true;
+		overlay.identifier = identifier;
+		overlay.time_index = time_index;
 	}
-
-	showCourseOverlay(identifier, time_index, false);
 }
 
-function showCourseOverlay(identifier, time_index, is_hover) {
-
-	if (!(is_hover && overlay_status)) {
+function showCourseOverlay(identifier, time_index) {
+	if (overlay.locked == false) {
 		if (all_desc_global.length == 0) {
 			generateAllDescriptions();
 		}
@@ -582,14 +590,6 @@ function showCourseOverlay(identifier, time_index, is_hover) {
 		let node_to_append = course_info.cloneNode(true);
 		
 		node_to_append.childNodes[node_to_append.childNodes.length - 1].remove();
-		
-		for (let i = 3; i < node_to_append.childNodes.length - 1; i++) {
-			if (i - 2 != time_index) {
-				node_to_append.childNodes[i].style.display = "none";
-			} else {
-				console.log(node_to_append.childNodes[i]);
-			}
-		}
 		
 		course_info_table.appendChild(node_to_append);
 	}	

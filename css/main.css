@@ -29,6 +29,7 @@ font-display:swap
 --course-reopened:#bb7c33;
 --roundedness:.4vmax;
 --padding:.7vmax;
+--padding-medium:7px;
 --padding-small:5px;
 --shadow-length:4px;
 --shadow-blur:20px
@@ -451,6 +452,11 @@ padding:var(--padding-small)
 display:block
 }
 
+.course-loaded {
+font-size: 16px;
+padding: var(--padding-medium);
+}
+
 .code-explain {
 font:25px 'Roboto',sans-serif
 }
@@ -527,25 +533,22 @@ filter:brightness(1.6)
 
 #course-info-table {
 height:20vh auto;
-max-height:50vh
+max-height:50vh;
+box-sizing: border-box;      
+padding:1vh;
 }
 
-#course-info-table * {
-margin:var(--padding-small);
-}
 
 #course-info-table .title {
 font-size:18px
 }
 
 #course-info-table .timing {
+color:var(--text-main);
 font:12px 'Roboto'
 }
 
 #course-info-table .instructors {
-font:12px 'Roboto'
-}
-
-#course-info-table .description {
+color:var(--text-main);
 font:12px 'Roboto'
 }

@@ -326,6 +326,7 @@ function loadPossibleCourseList() {
                     `Invalid Code! ${error}`
                 )
             }).then(data => {
+                window.location.href = window.location.href.split("?")[0];
                 if (data != null) {
                     const course_list_result = addToCourseLists(data);
 
@@ -340,9 +341,6 @@ function loadPossibleCourseList() {
                             icon: 'error'
                         });
                     }
-                    loaded_course_lists.push(data);
-                    save_json_data("loaded_course_lists", loaded_course_lists);
-                    updateSchedule();
                 }
             });
     }

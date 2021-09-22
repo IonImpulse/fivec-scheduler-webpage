@@ -118,10 +118,6 @@ width:30px;
 height:30px
 }
 
-.inset-box-shadow {
-box-shadow:inset 0 0 var(--shadow-blur) var(--shadow-length) rgba(0,0,0,0.2)
-}
-
 .noselect {
 -webkit-touch-callout:none;
 -webkit-user-select:none;

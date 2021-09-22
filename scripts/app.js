@@ -273,29 +273,6 @@ function expensiveCourseSearch() {
 
 }
 
-function createResultDiv(course, color, index) {
-	let identifier = course.identifier;
-
-	let course_div = document.createElement("div");
-	course_div.className = "course-search-result unselectable";
-	course_div.id = identifier;
-	course_div.onclick = function () {
-		toggleCourseSelection(identifier)
-	};
-	course_div.onmouseenter = function () {
-		setCourseDescription(index)
-	};
-	
-	course_div.style.backgroundColor = color;
-	let course_code = `<b>${course.identifier}</b>`;
-	let status = `<span class="status-highlight ${course.status}">${course.status}</span>`;
-	// Put the course code and status in a div on the right
-	let num_students = `<span class="align-right" ><b>${course.seats_taken}/${course.max_seats} ${status}</b></span>`;
-
-	course_div.innerHTML = `${course_code}: ${course.title} ${num_students}`;
-
-	return course_div;
-}
 
 function toggleCourseSelection(identifier) {
 	let el = document.getElementById(identifier);
@@ -339,58 +316,6 @@ function setCourseDescription(index) {
 		course_search_desc.removeChild(course_search_desc.firstChild);
 	}
 	course_search_desc.appendChild(course_info.cloneNode(true));
-}
-
-function generateAllDescriptions() {
-	all_desc_global = [];
-	for (let i = 0; i < all_courses_global.length; i++) {
-		let course = all_courses_global[i];
-
-		let course_desc_node = document.createElement("div");
-
-		let title_node = document.createElement("div");
-		title_node.className = "title";
-		title_node.innerHTML += course.title;
-
-		let subtitle_node = document.createElement("div");
-		subtitle_node.className = "subtitle";
-		subtitle_node.innerHTML += course.identifier;
-
-		let status_node = document.createElement("div");
-		status_node.className = `course-status ${course.status}`;
-		status_node.innerHTML += `${course.status} - ${course.seats_taken}/${course.max_seats}`;
-
-		course_desc_node.appendChild(title_node);
-		course_desc_node.appendChild(subtitle_node);
-		course_desc_node.appendChild(status_node);
-
-		for (let time of course.timing) {
-			let timing_node = document.createElement("div");
-			timing_node.className = "timing";
-
-			let day_str = time.days.join(', ');
-			let start_time = convertTime(time.start_time);
-			let end_time = convertTime(time.end_time);
-			let local = time.location;
-
-			timing_node.innerHTML += `<b>${start_time} - ${end_time}:</b> ${day_str}<br>@ ${local.school}, ${local.building}, Room ${local.room}`;
-
-			course_desc_node.appendChild(timing_node);
-		}
-
-		let instructor_node = document.createElement("div");
-		instructor_node.className = "instructors";
-		instructor_node.innerHTML += `<br><b>Instructors:</b> <i>${course.instructors.join(' & ')}</i>`;
-
-		let desc_node = document.createElement("div");
-		desc_node.className = "description";
-		desc_node.innerHTML += `<b>Description:</b>\n${course.description}`;
-
-		course_desc_node.appendChild(instructor_node);
-		course_desc_node.appendChild(desc_node);
-
-		all_desc_global.push(course_desc_node);
-	}
 }
 
 function addCourses() {

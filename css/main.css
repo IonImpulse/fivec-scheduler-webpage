@@ -111,13 +111,9 @@ outline:none;
 color:#1e90ff
 }
 
-.box-shadow {
-box-shadow:0 0 var(--shadow-blur) var(--shadow-length) rgba(0,0,0,0.2)
-}
-
 .logo {
-width:30px;
-height:30px
+width:32px;
+height:32px
 }
 
 .noselect {
@@ -195,14 +191,16 @@ color:#83c3eb
 .title-bar-button {
 background-color:var(--background-alt);
 border-radius:var(--roundedness);
+padding-left:var(--padding-medium);
+padding-right:var(--padding-medium);
 text-align:center;
-height:30px;
-width:90px;
+height:32px;
+width:140px;
 margin-left:1vw;
 margin-right:1vw;
 cursor:pointer;
 color:var(--text-main);
-font:.7vw/1.2vw "JetBrains Mono",sans-serif
+font:1em/1.8em "JetBrains Mono",sans-serif
 }
 
 .title-bar-button:hover {
@@ -221,10 +219,6 @@ width:20%
 
 .search-button:hover {
 background-color:var(--search-button-hover)
-}
-
-.wide {
-width:10%
 }
 
 .time {

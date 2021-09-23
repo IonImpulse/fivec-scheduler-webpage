@@ -119,7 +119,7 @@ function clearSchedule() {
 }
 
 function removeAllChildren(element) {
-    while (element.firstChild) {
+    while (element.firstChild != null) {
         element.removeChild(element.firstChild);
     }
 }

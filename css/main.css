@@ -14,6 +14,8 @@ font-display:swap
 }
 
 :root {
+--logo-primary:#3900C3;
+--logo-secondary:#98AFCD;
 --background-main:#3465a5;
 --background-alt:#f0f0f0;
 --background-alt-hover:#c9c8c8;
@@ -161,7 +163,7 @@ font:larger "Montserrat",sans-serif
 }
 
 #title-bar-5c {
-color:var(--text-main)
+background-color:var(--logo-primary)
 }
 
 #schedule-box {
@@ -196,11 +198,11 @@ border-radius:var(--roundedness);
 text-align:center;
 height:30px;
 width:90px;
-margin-left:20px;
-margin-right:20px;
+margin-left:1vw;
+margin-right:1vw;
 cursor:pointer;
 color:var(--text-main);
-font:16px/28px "JetBrains Mono",sans-serif
+font:.7vw/1.2vw "JetBrains Mono",sans-serif
 }
 
 .title-bar-button:hover {
@@ -391,12 +393,13 @@ float:right
 
 .course-desc .title {
 color:var(--text-main);
-margin-bottom:1vh;
+margin-bottom:.5vh;
 font:900 26px 'Roboto',sans-serif
 }
 
 .course-desc .subtitle {
 color:var(--text-light);
+margin-bottom:.5vh;
 font:12px 'JetBrains Mono',monospace
 }
 

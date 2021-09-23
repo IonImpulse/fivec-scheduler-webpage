@@ -230,7 +230,11 @@ const updateCourseSearch = debounce(() => expensiveCourseSearch());
 function expensiveCourseSearch() {
 	let input = document.getElementById("course-input");
 	let output = document.getElementById("course-search-results");
-	output.innerHTML = "";
+	
+	if (output == null) {
+		return
+	}
+	removeAllChildren(output);
 
 	if (input.value == "") {
 
@@ -351,13 +355,17 @@ function addCourses() {
 }
 
 function tweakSearch(string) {
-	let return_string = string;
+	let return_string = string.toLowerCase();
 
 	// Common replacements
 	// Type can be "full" or "any"
 	// Full only matches full tokens/words separated by spaces
 	const replacements = [
 		{type:"full", search:"cs", replace:"csci"},
+		{type:"full", search:"hmc", replace:"HarveyMudd"},
+		{type:"full", search:"cmc", replace:"ClaremontMckenna"},
+		{type:"full", search:"harvey mudd", replace:"HarveyMudd"},
+		{type:"full", search:"claremont mckenna", replace:"ClaremontMckenna"},
 	];
 
 	for (replacement of replacements) {
@@ -372,7 +380,13 @@ function tweakSearch(string) {
 	let num_corrected_string = "";
 
 	for (part of return_string.split(" ")) {
-		if (part.length == 2 && parseInt(part) != NaN) {
+		// JS is horrible, to see if a string is a number or no
+		// I have to parse it then take the output and convert
+		// that back to a string.
+		//
+		// Then I can compare it to the string value of "NaN" to see
+		// if it's a number or not.
+		if (part.length == 2 && `${parseInt(part)}` != "NaN") {
 			num_corrected_string += ` 0${part}`;
 		} else {
 			num_corrected_string += ` ${part}`;
@@ -381,7 +395,7 @@ function tweakSearch(string) {
 
 	return_string = num_corrected_string;
 
-	return return_string;
+	return return_string.trim().toLowerCase();
 }
 
 function addToCourseLists(course_list) {

@@ -130,7 +130,6 @@ function createLoadedDiv(text, color) {
     let div = document.createElement("div");
     div.className = "course-search-result course-loaded";
     div.style.backgroundColor = color;
-    console.log(div.backgroundColor);
     let info = document.createElement("div");
     info.className = "course-info";
     info.innerHTML = text;

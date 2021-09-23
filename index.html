@@ -40,6 +40,7 @@
   <meta name="twitter:image" content="" />
 </head>
 
+<!--- Prelude sets global variables and theming before CSS is shown -->
 <script src="scripts/prelude.js"></script>
 
 <body>
@@ -76,10 +77,6 @@
         About
       </div>
 
-      <div id="title-bar-name">
-        <span id="title-bar-5c">5c</span>heduler.com
-      </div>
-
     </div>
 
     <div id="schedule-box" class="box-shadow">
@@ -114,12 +111,14 @@
   </div>
 
 </body>
+  <!--- Load libraries first -->
   <script src="scripts/libs/fuse.js"></script>
   <script src="scripts/libs/sweetalert2.min.js"></script>
   <script src="scripts/libs/print_elements.js"></script>
   <script src="scripts/libs/qrcodegen-v1.7.0-es6.js"></script>
   <script src="scripts/libs/rasterizeHTML.allinone.js"></script>
 
+  <!--- Then load scripts -->
   <script src="scripts/constructors.js"></script>
   <script src="scripts/utils.js"></script>
   <script src="scripts/app.js"></script>

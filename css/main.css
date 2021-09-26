@@ -21,7 +21,6 @@ font-display:swap
 --background-alt-hover:#c9c8c8;
 --search-button-background:#4cad41;
 --search-button-hover:#43993a;
---select-main:#000;
 --text-main:#252525;
 --text-alt:#fdfdfd;
 --text-light:#616161;
@@ -46,7 +45,6 @@ font-display:swap
 --text-main:#dbdbdb;
 --text-alt:#131313;
 --text-light:#bdbdbd;
---select-main:#dfdede;
 --course-open:#7ee271;
 --course-closed:#e27878;
 --course-reopened:#e0c06a
@@ -270,15 +268,6 @@ max-height:50vh;
 overflow:auto
 }
 
-#course-info-table {
-border-radius:var(--roundedness);
-background-color:var(--background-alt);
-display:inline-block;
-width:100%;
-max-height:50vh;
-overflow:auto
-}
-
 #course-list-box {
 background-color:var(--background-main);
 border-radius:var(--roundedness);
@@ -325,23 +314,21 @@ border-radius:var(--roundedness);
 padding:var(--padding);
 margin:1vh;
 cursor:pointer;
-transition:outline .05s;
 outline:0 solid var(--select-main);
 outline-offset:-2px;
 text-align:left;
 overflow:hidden;
 white-space:nowrap;
 text-overflow:ellipsis;
-font:16px "Roboto",sans-serif
+font:16px "Roboto",sans-serif;
 }
 
+.add-course-selected {
+transform:scale(.9);
+}
+    
 .course-search-result:hover {
-filter:brightness(1.2)
-}
-
-.course-clicked {
-outline:3px solid var(--select-main);
-outline-offset:-2px
+filter:brightness(1.1)
 }
 
 .unselectable {
@@ -443,13 +430,16 @@ padding:var(--padding-small)
 }
 
 .course-loaded {
+font-size: 16px;
+padding: var(--padding-medium);
 display:block
 }
 
-.course-loaded {
-font-size: 16px;
-padding: var(--padding-medium);
+.selected {
+transform:scale(1.04);
+z-index:10000;
 }
+
 
 .code-explain {
 font:25px 'Roboto',sans-serif
@@ -460,7 +450,8 @@ color:var(--text-alt);
 background-color:var(--text-main);
 padding:var(--padding-small);
 border-radius:var(--roundedness);
-font:40px 'JetBrains Mono',monospace
+font-family:'JetBrains Mono',monospace;
+font-size: 50px;
 }
 
 .course-schedule-block {
@@ -474,6 +465,10 @@ display:flex;
 flex-direction:column;
 justify-content:center;
 cursor:pointer
+}
+
+.course-schedule-block:hover {
+filter:brightness(1.1)
 }
 
 .from-course-list {
@@ -526,12 +521,16 @@ filter:brightness(1.6)
 }
 
 #course-info-table {
-height:20vh auto;
+height:22vh;
 max-height:50vh;
 box-sizing: border-box;      
 padding:1vh;
+border-radius:var(--roundedness);
+background-color:var(--background-alt);
+display:inline-block;
+width:100%;
+overflow:auto
 }
-
 
 #course-info-table .title {
 font-size:18px

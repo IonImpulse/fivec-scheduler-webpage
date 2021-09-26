@@ -285,7 +285,7 @@ function expensiveCourseSearch() {
 			let course_div = createResultDiv(course, colors[i % colors.length], i);
 
 			if (selected_courses.includes(course.identifier)) {
-				course_div.classList.add("course-clicked");
+				course_div.classList.add("add-course-selected");
 			}
 
 			output.appendChild(course_div)
@@ -307,7 +307,7 @@ function expensiveCourseSearch() {
 			let course_div = createResultDiv(course, colors[i % colors.length], results[i].refIndex);
 
 			if (selected_courses.includes(course.identifier)) {
-				course_div.classList.add("course-clicked");
+				course_div.classList.add("add-course-selected");
 			}
 
 			output.appendChild(course_div)
@@ -324,7 +324,7 @@ function toggleCourseSelection(identifier) {
 
 	if (el.className == "course-search-result unselectable") {
 		selected_courses.push(el.id);
-		el.className = "course-search-result unselectable course-clicked";
+		el.className = "course-search-result unselectable add-course-selected";
 	} else {
 		selected_courses.splice(selected_courses.indexOf(el.id), 1);
 		el.className = "course-search-result unselectable";
@@ -525,25 +525,53 @@ function mergeCourseList(code) {
 	}
 }
 
-function toggleCourseOverlay(identifier, time_index) {
-	if (overlay.locked == true) {
-		if (overlay.identifier == identifier && overlay.time_index == time_index) {
-			overlay.locked = false;
-		} else {
-			overlay.locked = false;
-			showCourseOverlay(identifier, time_index);
-			overlay.locked = true;
-			overlay.identifier = identifier;
-			overlay.time_index = time_index;
-		}
-	} else {
-		overlay.locked = true;
-		overlay.identifier = identifier;
-		overlay.time_index = time_index;
+function highlightCourses(identifier) {
+	let els = document.getElementsByClassName(`${identifier}-loaded`);
+
+	for (let el of els) {
+		el.classList.add("selected");
 	}
 }
 
-function showCourseOverlay(identifier, time_index) {
+function removeHighlightCourses(identifier) {
+	let els = document.getElementsByClassName(`${identifier}-loaded`);
+
+	for (let el of els) {
+		el.classList.remove("selected");
+	}
+}
+
+function toggleCourseOverlay(identifier) {
+	// Case one: nothing has happened yet
+	if (overlay.locked == false) {
+		overlay.locked = true;
+		overlay.identifier = identifier;
+
+		// Highlight the courses
+		highlightCourses(identifier);
+	}
+	// Case two: we're already showing the overlay, and it's the same course
+	else if (overlay.locked == true && overlay.identifier == identifier) {
+		overlay.locked = false;
+		overlay.identifier = "";
+
+		// Remove the highlight
+		removeHighlightCourses(identifier);
+	}
+	// Case three: we're already showing the overlay, and it's a different course
+	else if (overlay.locked == true && overlay.identifier != identifier) {
+		// Remove the highlight
+		removeHighlightCourses(overlay.identifier);
+
+		overlay.locked = true;
+		overlay.identifier = identifier;
+
+		// Highlight the courses
+		highlightCourses(identifier);
+	}
+}
+
+function showCourseOverlay(identifier) {
 	if (overlay.locked == false) {
 		if (all_desc_global.length == 0) {
 			generateAllDescriptions();

@@ -11,7 +11,13 @@ const GET_COURSE_LIST_BY_CODE = function (code) { return "getCourseListByCode/" 
 function load_json_data(name) {
     let data = localStorage.getItem(name);
     if (data != null && data != "" && data != "null" && data != "undefined" && data != "NaN" && data != undefined) {
-        return JSON.parse(data);
+        try {
+            data = JSON.parse(data);
+        } catch (e) {
+            localStorage.removeItem(name);
+            data = null;
+        }
+        return data;
     } else {
         return null;
     }

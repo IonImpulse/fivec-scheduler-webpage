@@ -62,7 +62,7 @@ function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_i
     for (let time of course.timing) {
         // Create the div
         let course_div = document.createElement("div");
-        course_div.className = "course-schedule-block unselectable";
+        course_div.className = `${course.identifier}-loaded course-schedule-block unselectable`;
         course_div.style.backgroundColor = color;
 
         if (low_z_index) {
@@ -114,14 +114,12 @@ function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_i
             let cloned_div = course_div.cloneNode(true);
             // Set course behavior
             cloned_div.onclick = function () {
-                toggleCourseOverlay(course.identifier, time_index)
+                toggleCourseOverlay(course.identifier)
             };
             cloned_div.onmouseenter = function () {
-                showCourseOverlay(course.identifier, time_index, true)
+                showCourseOverlay(course.identifier)
             };
-            cloned_div.onmouseleave = function () {
-                showCourseOverlay(course.identifier, time_index, false)
-            };
+
             return_list.push(cloned_div);
         }
         time_index++;
@@ -166,7 +164,16 @@ function createLoadedCourseListDiv(code, color) {
 
 function createLoadedCourseDiv(identifier, title, color) {
     let div = createLoadedDiv(`<b>${identifier}: </b>${title}`, color);
-    
+
+    div.classList.add(`${identifier}-loaded`);
+
+    div.onclick = function () {
+        toggleCourseOverlay(identifier)
+    };
+    div.onmouseenter = function () {
+        showCourseOverlay(identifier)
+    };
+
     let delete_button = document.createElement("div");
     delete_button.className = "delete-course";
     delete_button.onclick = function () {

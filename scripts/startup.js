@@ -141,7 +141,7 @@ function updateLoadedCourses() {
     let i = 0;
 
     for (let course of loaded_local_courses) {
-        let course_div_list = createScheduleGridDiv(course, colors[i % colors.length], set_max_grid_rows=true);
+        let course_div_list = createScheduleGridDiv(course, colors[i % colors.length], set_max_grid_rows = true);
 
         for (let course_div of course_div_list) {
             course_schedule_grid.appendChild(course_div);
@@ -195,18 +195,18 @@ function updateLoadedCourseLists() {
             el.appendChild(createLoadedCourseListDiv(loaded_course_lists[i].code, colors[i + 1 % colors.length]));
         }
     }
-    
+
     let course_schedule_grid = document.getElementById("schedule-table");
-    
+
     for (let course_list of loaded_course_lists) {
         let i = 0;
         for (let course of course_list.courses) {
-            let course_div_list = createScheduleGridDiv(course, colors[i % colors.length] + "66", set_max_grid_rows=true, low_z_index=true);
-    
+            let course_div_list = createScheduleGridDiv(course, colors[i % colors.length] + "66", set_max_grid_rows = true, low_z_index = true);
+
             for (let course_div of course_div_list) {
                 course_schedule_grid.appendChild(course_div);
             }
-    
+
             i++;
         }
     }
@@ -222,7 +222,7 @@ function loadCourseData() {
     } else {
         all_courses_global = load_json_data("course_data").courses;
     }
-    
+
     loaded_local_courses = load_json_data("loaded_local_courses");
     loaded_course_lists = load_json_data("loaded_course_lists");
 

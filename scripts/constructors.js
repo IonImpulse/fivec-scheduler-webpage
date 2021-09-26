@@ -43,8 +43,13 @@ function generateAllDescriptions() {
 		desc_node.className = "description";
 		desc_node.innerHTML += `<b>Description:</b>\n${course.description}`;
 
+        let notes_node = document.createElement("div");
+		notes_node.className = "notes";
+		notes_node.innerHTML += `<b>Notes:</b> <i>${course.notes}</i>`;
+
 		course_desc_node.appendChild(instructor_node);
 		course_desc_node.appendChild(desc_node);
+        course_desc_node.appendChild(notes_node);
 
 		all_desc_global.push(course_desc_node);
 	}

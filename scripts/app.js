@@ -5,7 +5,7 @@
 function buttonLoad() {
 	Swal.fire({
 		title: 'Load Course Code',
-		html: `<div><input maxlength='7' id="code-input"></div>`,
+		html: `<div><input maxlength='7' id="code-input" oninput="checkIfFull()"></div>`,
 		focusConfirm: false,
 		showCancelButton: true,
 		confirmButtonText: 'Load',
@@ -44,44 +44,65 @@ function buttonLoad() {
 					icon: 'error'
 				});
 			}
-			
+
 		}
 	})
 }
 
-function addStyle(el) {
-	let to_add = "<style>\n";
-	let css_rules = document.styleSheets[0].cssRules;
-	
-	for (let rule of css_rules) {
-		if (!rule.cssText.includes("url")) {
-			to_add += rule.cssText + "\n";
-		}
+function checkIfFull() {
+	if (document.getElementById("code-input").value.length == 7) {
+		document.getElementsByClassName("swal2-confirm swal2-styled")[0].focus();
+	}
+}
+
+function copyStyle(target, source) {
+	s = getComputedStyle(source);
+
+	for (let key of s) {
+		let prop = key.replace(/\-([a-z])/g, v => v[1].toUpperCase());
+		target.style[prop] = s[key];
 	}
 
-	to_add += "</style>";
-	return to_add + el;
+	for (let i = 0; i < source.children.length; i++) {
+		copyStyle(target.children[i], source.children[i]);
+	}
 }
 
 function buttonExport() {
 	Swal.fire({
 		title: 'Export',
 		icon: 'success',
-		html:
-			'<div id="share-image"></div><br>' +
-			'To download, right click the image above and click "Save Image As...',
+		html: '<canvas id="export-holder" alt="schedule"></canvas><br>Right click on the image above and select "Save Image As..." to download',
+		customClass: 'swal-medium-wide',
+	});
+
+	Swal.showLoading();
+
+	canvas = document.getElementById("export-holder");
+	source = document.getElementById("schedule-box");
+	screenshotToCanvas(canvas, source);
+}
+
+function screenshotToCanvas(canvas, source) {
+	target = source.cloneNode(true);
+
+	let x = source.offsetWidth;
+	let y = source.offsetHeight;
+
+	copyStyle(target, source);
+
+	rasterizeHTML.drawHTML(target.innerHTML, canvas, {
+		width: `${x}`,
+		height: `${y}`,
 	})
-
-	canvas = document.getElementById("share-image");
-
-	rasterizeHTML.drawHTML(addStyle(document.getElementById("schedule-box").cloneNode(true).innerHTML), canvas,
-		options = {
-			width: "1920",
-			height: "1080",
-		}
-	)
 	.then(function success(renderResult) {
-		document.querySelector("#share-image").appendChild(renderResult.image);
+		canvas.width = x;
+		canvas.height = y;
+		canvas.style.width = `${x / 2}px`;
+		canvas.style.height = `${y / 2}px`;
+		context = canvas.getContext('2d');
+		context.drawImage(renderResult.image, 0, 0, width = x, height = y);
+		Swal.hideLoading();
 	}, function error(e) {
 		Swal.fire({
 			title: 'Export',
@@ -93,15 +114,33 @@ function buttonExport() {
 }
 
 function buttonPrint() {
-	let divContents = document.getElementById("schedule-box");
-	PrintElements.print([divContents]);
+	let windowContent = '<!DOCTYPE html>';
+	windowContent += '<html>';
+	windowContent += '<head><title>Print canvas</title></head>';
+	windowContent += '<body>';
+	windowContent += '<canvas id="print-holder"></canvas>';
+	windowContent += '</body>';
+	windowContent += '</html>';
+
+	const printWin = window.open('', '', 'width=' + Math.min(screen.availWidth/2, 800) + ',height=' + Math.min(screen.availHeight/2, 600));
+	printWin.document.open();
+	printWin.document.write(windowContent); 
+	source = document.getElementById("schedule-box");
+	canvas = printWin.document.getElementById("print-holder");
+	screenshotToCanvas(canvas, source);
+
+	printWin.focus();
+	setTimeout(function() {
+		printWin.print();
+		printWin.document.close();
+		printWin.close();
+	},200);     
 
 	Toast.fire({
 		icon: 'info',
 		title: `Print dialogue opened`
 	});
 }
-
 
 function buttonSearch() {
 	let courses = load_json_data("course_data");
@@ -158,8 +197,8 @@ const Toast = Swal.mixin({
 	timer: 3000,
 	timerProgressBar: true,
 	didOpen: (toast) => {
-	  toast.addEventListener('mouseenter', Swal.stopTimer)
-	  toast.addEventListener('mouseleave', Swal.resumeTimer)
+		toast.addEventListener('mouseenter', Swal.stopTimer)
+		toast.addEventListener('mouseleave', Swal.resumeTimer)
 	}
 })
 
@@ -207,13 +246,15 @@ function buttonAbout() {
 		imageUrl: 'img/favicon.png',
 		imageWidth: 100,
 		imageHeight: 100,
-		html: `Created By: <b>Ethan Vazquez</b> HMC '25<BR>` +
+		html: `<div id="about-desc"> Created By: <b>Ethan Vazquez</b> HMC '25<BR>` +
 			`Send comments/questions/bug reports to: <b>edv121@outlook.com</b><BR><BR>` +
 			`Webpage Repo: <a href="https://github.com/IonImpulse/fivec-scheduler-webpage">fivec-scheduler-webpage</a><br>` +
 			`API Repo: <a href="https://github.com/IonImpulse/fivec-scheduler-server">fivec-scheduler-server</a>.<BR><BR>` +
 			`<b><u>Credits:</b></u><BR>` +
-			`<b>html2canvas.js</b><br>Created by Niklas von Hertzen.<br>Licensed under the MIT License.<br>` +
-			`<b>sweetalert2.js</b><br>Created by Tristan Edwards & Limon Monte.<br>Licensed under the MIT License.<br>`
+			`<b>fuse.js</b><br>Created by Kiro Risk.<br>Licensed under the Apache License 2.0.<br>` +
+			`<b>sweetalert2.js</b><br>Created by Tristan Edwards & Limon Monte.<br>Licensed under the MIT License.<br>` +
+			`<b>qrcodegen.js</b><br>Created by Nayuki.<br>Licensed under the MIT License.<br>` +
+			`<b>rasterizeHTML.js</b><br>Created by cburgmer.<br>Licensed under the MIT License.<br></div>`
 	});
 }
 
@@ -230,7 +271,7 @@ const updateCourseSearch = debounce(() => expensiveCourseSearch());
 function expensiveCourseSearch() {
 	let input = document.getElementById("course-input");
 	let output = document.getElementById("course-search-results");
-	
+
 	if (output == null) {
 		return
 	}
@@ -259,7 +300,7 @@ function expensiveCourseSearch() {
 		console.info(`INFO: search changed from "${input.value}" => "${search_term}"`);
 
 		let results = fuzzy_searcher.search(search_term);
-		
+
 		for (let i = 0; i < results.length; i++) {
 			let course = results[i].item;
 
@@ -273,7 +314,7 @@ function expensiveCourseSearch() {
 		}
 	}
 
-	output.scroll({top:0,behavior:'smooth'});
+	output.scroll({ top: 0, behavior: 'smooth' });
 
 }
 
@@ -324,7 +365,7 @@ function setCourseDescription(index) {
 
 function addCourses() {
 	let courses = [];
-	
+
 	// Find courses from identifier
 	for (let course of selected_courses) {
 		courses.push(all_courses_global.filter(e => e.identifier == course)[0]);
@@ -361,11 +402,11 @@ function tweakSearch(string) {
 	// Type can be "full" or "any"
 	// Full only matches full tokens/words separated by spaces
 	const replacements = [
-		{type:"full", search:"cs", replace:"csci"},
-		{type:"full", search:"hmc", replace:"HarveyMudd"},
-		{type:"full", search:"cmc", replace:"ClaremontMckenna"},
-		{type:"full", search:"harvey mudd", replace:"HarveyMudd"},
-		{type:"full", search:"claremont mckenna", replace:"ClaremontMckenna"},
+		{ type: "full", search: "cs", replace: "csci" },
+		{ type: "full", search: "hmc", replace: "HarveyMudd" },
+		{ type: "full", search: "cmc", replace: "ClaremontMckenna" },
+		{ type: "full", search: "harvey mudd", replace: "HarveyMudd" },
+		{ type: "full", search: "claremont mckenna", replace: "ClaremontMckenna" },
 	];
 
 	for (replacement of replacements) {
@@ -412,7 +453,7 @@ function addToCourseLists(course_list) {
 		loaded_course_lists.push(course_list);
 		save_json_data("loaded_course_lists", loaded_course_lists);
 		updateSchedule();
-		
+
 		return true;
 	} else {
 		return false;
@@ -465,7 +506,7 @@ function mergeCourseList(code) {
 
 		if (course_list.code == code) {
 			found = true;
-			
+
 			for (let course of course_list.courses) {
 				if (!loaded_local_courses.map((el) => el.identifier).includes(course.identifier)) {
 					loaded_local_courses.push(course);
@@ -492,7 +533,6 @@ function toggleCourseOverlay(identifier, time_index) {
 			overlay.locked = false;
 			showCourseOverlay(identifier, time_index);
 			overlay.locked = true;
-			overlay.locked = true;
 			overlay.identifier = identifier;
 			overlay.time_index = time_index;
 		}
@@ -508,7 +548,7 @@ function showCourseOverlay(identifier, time_index) {
 		if (all_desc_global.length == 0) {
 			generateAllDescriptions();
 		}
-	
+
 		// get index of course
 		let index = 0;
 		for (let course of all_courses_global) {
@@ -517,19 +557,19 @@ function showCourseOverlay(identifier, time_index) {
 			}
 			index++;
 		}
-	
+
 		let course_info = all_desc_global[index];
-	
+
 		let course_info_table = document.getElementById("course-info-table");
-		
+
 		if (course_info_table.firstChild != null) {
 			course_info_table.removeChild(course_info_table.firstChild);
 		}
 
 		let node_to_append = course_info.cloneNode(true);
-		
-		node_to_append.childNodes[node_to_append.childNodes.length - 1].remove();
-		
+
+		node_to_append.childNodes[node_to_append.childNodes.length - 2].remove();
+
 		course_info_table.appendChild(node_to_append);
-	}	
+	}
 }

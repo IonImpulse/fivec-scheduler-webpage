@@ -45,7 +45,7 @@ font-display:swap
 --search-button-hover:#3a9232;
 --text-main:#dbdbdb;
 --text-alt:#131313;
---text-light:#dbdbdb;
+--text-light:#bdbdbd;
 --select-main:#dfdede;
 --course-open:#7ee271;
 --course-closed:#e27878;
@@ -96,19 +96,18 @@ font-family:"Quicksand",sans-serif
 #code-input {
 display:block;
 margin:50px auto;
-margin-left:75px;
 border:none;
 width:10.5ch;
 background:repeating-linear-gradient(90deg,dimgrey 0,dimgrey 1ch,transparent 0,transparent 1.5ch) 0 100%/10ch 2px no-repeat;
-font:5ch "droid sans mono",consolas,monospace;
+font:5ch "JetBrains mono",consolas,monospace;
 letter-spacing:.5ch;
 text-transform:uppercase;
-color:var(--text-main)
+color:var(--course-open);
 }
 
 #code-input:focus {
 outline:none;
-color:#1e90ff
+color:var(--text-main)
 }
 
 .logo {
@@ -153,15 +152,6 @@ margin-bottom:10px;
 padding:var(--padding)
 }
 
-#title-bar-name {
-color:var(--text-alt);
-font:larger "Montserrat",sans-serif
-}
-
-#title-bar-5c {
-background-color:var(--logo-primary)
-}
-
 #schedule-box {
 background-color:var(--background-main);
 border-radius:var(--roundedness);
@@ -173,8 +163,9 @@ border-radius:var(--roundedness);
 background-color:var(--background-alt);
 display:grid;
 grid-template-columns:5% repeat(5,1fr) 2%;
-grid-template-rows:25px repeat(350,1fr);
+grid-template-rows:1vh repeat(350,1fr);
 grid-column-gap:10px;
+min-height:500px;
 height:85vh;
 color:var(--text-main);
 overflow:hidden
@@ -365,6 +356,10 @@ user-select:none
 width:80vw!important
 }
 
+.swal-medium-wide {
+width:60vw!important
+}
+
 #course-add-num {
 font-family:"JetBrains Mono",monospace
 }
@@ -426,6 +421,12 @@ font:14px 'Roboto',monospace
 }
 
 #course-search-desc .description {
+margin-top:1vh;
+color:var(--text-main);
+font:14px 'Roboto',monospace
+}
+
+#course-search-desc .notes {
 margin-top:1vh;
 color:var(--text-main);
 font:14px 'Roboto',monospace
@@ -544,4 +545,14 @@ font:12px 'Roboto'
 #course-info-table .instructors {
 color:var(--text-main);
 font:12px 'Roboto'
+}
+
+#course-info-table .notes {
+color:var(--text-main);
+font:12px 'Roboto'
+}
+
+#about-desc {
+color:var(--text-main);
+font:16px 'Roboto',sans-serif
 }

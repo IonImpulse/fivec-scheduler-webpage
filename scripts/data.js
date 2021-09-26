@@ -63,7 +63,7 @@ async function create_searcher() {
         keys: [
             {
                 name: "identifier",
-                weight: 100,
+                weight: 2,
             },
             "id",
             "code",

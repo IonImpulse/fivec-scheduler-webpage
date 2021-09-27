@@ -8,12 +8,16 @@ function startup() {
     generateGridTimes();
     generateDays();
     generateLines();
-    loadCourseData();
-    updateSchedule();
 
-    // Then, check if site was loaded from
-    // from QR code w/ course list code
-    loadPossibleCourseList();
+    update_database().then(() => {
+        create_searcher();
+        update_loop();
+        loadCourseData();
+        updateSchedule();
+        // Then, check if site was loaded from
+        // from QR code w/ course list code
+        loadPossibleCourseList();
+    });
 }
 
 // Generates and sets divs for timeslots

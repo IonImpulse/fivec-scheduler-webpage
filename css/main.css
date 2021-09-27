@@ -28,7 +28,7 @@ font-display:swap
 --course-open:#39a32b;
 --course-closed:#b93838;
 --course-reopened:#bb7c33;
---roundedness:.4vmax;
+--roundedness:.3vmax;
 --padding:.7vmax;
 --padding-medium:7px;
 --padding-small:5px;
@@ -264,7 +264,7 @@ border-radius:var(--roundedness);
 background-color:var(--background-alt);
 display:inline-block;
 width:100%;
-max-height:50vh;
+max-height:30vh;
 overflow:auto
 }
 
@@ -281,7 +281,9 @@ width:100%
 border-radius:var(--roundedness);
 background-color:var(--background-alt);
 display:inline-block;
-width:100%
+width:100%;
+max-height:11vh;
+overflow:auto
 }
 
 .table-title {
@@ -488,11 +490,11 @@ font:600 .7vw 'Roboto',sans-serif
 }
 
 .course-info {
-float:inline-start;
 overflow:hidden;
 white-space:nowrap;
 text-overflow:ellipsis;
-max-width:90%
+max-width:90%;
+float:left;
 }
 
 .delete-course {
@@ -500,7 +502,8 @@ background-image:url(../img/delete.png);
 background-size:cover;
 width:1vmax;
 height:1vmax;
-float:inline-end
+float:right;
+clear:right;
 }
 
 .delete-course:hover {

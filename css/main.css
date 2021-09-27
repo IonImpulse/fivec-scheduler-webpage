@@ -490,11 +490,11 @@ font:600 .7vw 'Roboto',sans-serif
 }
 
 .course-info {
-float:inline-start;
 overflow:hidden;
 white-space:nowrap;
 text-overflow:ellipsis;
-max-width:90%
+max-width:90%;
+float:left;
 }
 
 .delete-course {
@@ -502,7 +502,8 @@ background-image:url(../img/delete.png);
 background-size:cover;
 width:1vmax;
 height:1vmax;
-float:inline-end
+float:right;
+clear:right;
 }
 
 .delete-course:hover {

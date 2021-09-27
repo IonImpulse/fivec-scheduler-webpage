@@ -116,13 +116,15 @@ function screenshotToCanvas(canvas, source) {
 function buttonPrint() {
 	let windowContent = '<!DOCTYPE html>';
 	windowContent += '<html>';
-	windowContent += '<head><title>Print canvas</title></head>';
+	windowContent += '<head><title>Print canvas</title><style>';
+	windowContent += '@page { size: auto;  margin: 0mm auto; }';
+	windowContent += '</style></head>';
 	windowContent += '<body>';
 	windowContent += '<canvas id="print-holder"></canvas>';
 	windowContent += '</body>';
 	windowContent += '</html>';
 
-	const printWin = window.open('', '', 'width=' + Math.min(screen.availWidth/2, 800) + ',height=' + Math.min(screen.availHeight/2, 600));
+	const printWin = window.open('', '', 'width=' + screen.availWidth + ',height=' + screen.availHeight);
 	printWin.document.open();
 	printWin.document.write(windowContent); 
 	source = document.getElementById("schedule-box");

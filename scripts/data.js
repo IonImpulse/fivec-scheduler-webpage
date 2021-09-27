@@ -28,6 +28,7 @@ function save_json_data(name, data) {
 }
 
 async function update_database() {
+    console.debug("Updating database...");
     let current_data = load_json_data("course_data");
 
     let response;
@@ -82,7 +83,3 @@ async function create_searcher() {
 
     fuzzy_searcher = new Fuse(current_data.courses, options);
 }
-
-update_database();
-update_loop();
-create_searcher();

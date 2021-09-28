@@ -16,6 +16,7 @@ var selected_courses = [];
 var overlay = { identifier: null, time_index: -1, locked: false };
 var loaded_local_courses = [];
 var loaded_course_lists = [];
+var vertical_layout = false;
 
 const colors = [
     "#4f6fac", 
@@ -47,5 +48,9 @@ function getTheme() {
         }
     }
 }
+function isVerticalLayout() {
+    vertical_layout = window.matchMedia("only screen and (max-width: 760px)").matches;
+}
 
 getTheme();
+isVerticalLayout();

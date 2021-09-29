@@ -620,7 +620,7 @@ MOBILE MODE CSS
         justify-content: center;
     }
     .selected {
-        transform:scale(1.5);
+        transform:scale(1.2);
     }
     .course-schedule-block * {
         font-size:.7vh !important;

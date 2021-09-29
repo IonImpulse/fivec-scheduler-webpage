@@ -8,7 +8,6 @@ function startup() {
     generateGridTimes();
     generateDays();
     generateLines();
-
     update_database().then(() => {
         create_searcher();
         update_loop();
@@ -18,6 +17,8 @@ function startup() {
         // from QR code w/ course list code
         loadPossibleCourseList();
     });
+    window.addEventListener('resize', updateScheduleSizing);
+    updateScheduleSizing();
 }
 
 // Generates and sets divs for timeslots
@@ -52,7 +53,20 @@ function generateGridTimes() {
 // Generates days of the week
 function generateDays() {
     element = document.getElementById("schedule-table");
-    let days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+    
+    let divs = element.getElementsByClassName("day");
+    while (divs.length > 0) {
+        divs[0].remove()
+    }
+    
+    let days_short = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+    let days_full = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+
+    if (vertical_layout) {
+        days = days_short;
+    } else {
+        days = days_full;
+    }
 
     for (let i = 0; i < days.length; i++) {
         let day = document.createElement("div");
@@ -66,7 +80,13 @@ function generateDays() {
         element.appendChild(day);
     }
 }
+function updateScheduleSizing() {
+    let current_layout = vertical_layout;
 
+    if (current_layout != isVerticalLayout()) {
+        generateDays();
+    }
+}
 function generateLines() {
     element = document.getElementById("schedule-table");
 

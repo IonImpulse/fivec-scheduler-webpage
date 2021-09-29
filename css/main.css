@@ -28,7 +28,7 @@ font-display:swap
 --course-open:#39a32b;
 --course-closed:#b93838;
 --course-reopened:#bb7c33;
---roundedness:.3vmax;
+--roundedness:5px;
 --padding:.7vmax;
 --padding-medium:7px;
 --padding-small:5px;
@@ -243,7 +243,6 @@ opacity:.1
 background-color:var(--background-main);
 border-radius:var(--roundedness);
 padding:var(--padding);
-width:auto;
 margin-bottom:1vh;
 display:inline-block;
 width:100%
@@ -253,7 +252,6 @@ width:100%
 background-color:var(--background-main);
 border-radius:var(--roundedness);
 padding:var(--padding);
-width:auto;
 margin-bottom:1vh;
 display:inline-block;
 width:100%
@@ -272,7 +270,6 @@ overflow:auto
 background-color:var(--background-main);
 border-radius:var(--roundedness);
 padding:var(--padding);
-margin-top:1vh;
 display:inline-block;
 width:100%
 }
@@ -478,15 +475,15 @@ z-index:500
 }
 
 .course-schedule-block .name {
-font:900 .7vw 'Roboto',sans-serif
+font:900 .7vmax 'Roboto',sans-serif
 }
 
 .course-schedule-block .identifier {
-font:.6vw 'JetBrains Mono',monospace
+font:.6vmax 'JetBrains Mono',monospace
 }
 
 .course-schedule-block .room {
-font:600 .7vw 'Roboto',sans-serif
+font:600 .7vmax 'Roboto',sans-serif
 }
 
 .course-info {
@@ -527,7 +524,7 @@ filter:brightness(1.6)
 height:22vh;
 max-height:50vh;
 box-sizing: border-box;      
-padding:1vh;
+padding:var(--padding);
 border-radius:var(--roundedness);
 background-color:var(--background-alt);
 display:inline-block;
@@ -557,4 +554,124 @@ font:12px 'Roboto'
 #about-desc {
 color:var(--text-main);
 font:16px 'Roboto',sans-serif
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+MOBILE MODE CSS
+*/
+
+@media only screen and (max-width: 760px) {
+    body {
+        flex-direction:column
+    }
+    #main-section {
+        width:100%;
+        height:100%;
+        margin: 0 auto;
+    }
+    #left-section {
+        height:100%;
+        margin: 0 auto;
+    }
+    #right-section {
+        height:100%;
+        width:95vw;
+        margin: 0 auto;
+        margin-top: 1vh;
+        overflow: hidden;
+    }
+
+    .time {
+        font-size:8px;
+        transform: translate(2px,-4px)
+    }
+    .title-bar-button {
+        font-size:17px;
+        width: 20vw;
+    }
+    .search-button {
+        width: 80vw;
+        margin-top: 1vh;
+        margin-bottom: 1vh;
+    }
+    .logo {
+        display: none;
+    }
+    #title-bar {
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: center;
+    }
+    .selected {
+        transform:scale(1.5);
+    }
+    .course-schedule-block * {
+        font-size:.7vh !important;
+    }
+    .swal-wide {
+        width:100vw !important;
+    }
+    #course-search-box {
+        flex-direction: column;
+        width: 100%;
+    }
+    #course-search-results  {
+        width: 100%;
+    }
+    #course-search-desc {
+        width: 100%;
+    }
+    #course-input {
+        width: 50vw;
+    }
+    .swal2-info {
+        display: none !important;
+    }
+    .align-right {
+        margin-top: 1vh;
+        margin-bottom: .2vh;
+    }
+    .day {
+        font-size: 4vw;
+        line-height: 30px;
+    }
+    .delete-course {
+        width:3vmax;
+        height:3vmax;
+    }
+    .table-title {
+        width: 89vw;
+    }
+    #course-info-box {
+        width: 92vw;
+    }
+    #course-info-table {
+        width: 91vw;
+    }
+    #course-table {
+        width: 91vw;
+    }
+    #course-list-table {
+        width: 91vw;
+    }
+    #course-box {
+        width: 92vw;
+    }
 }

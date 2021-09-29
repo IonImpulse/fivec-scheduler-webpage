@@ -477,15 +477,15 @@ z-index:500
 }
 
 .course-schedule-block .name {
-font:900 .7vw 'Roboto',sans-serif
+font:900 .7vmax 'Roboto',sans-serif
 }
 
 .course-schedule-block .identifier {
-font:.6vw 'JetBrains Mono',monospace
+font:.6vmax 'JetBrains Mono',monospace
 }
 
 .course-schedule-block .room {
-font:600 .7vw 'Roboto',sans-serif
+font:600 .7vmax 'Roboto',sans-serif
 }
 
 .course-info {
@@ -602,7 +602,7 @@ MOBILE MODE CSS
         transform: translate(2px,-4px)
     }
     .title-bar-button {
-        font-size:4vw;
+        font-size:17px;
         width: 20vw;
     }
     .search-button {
@@ -618,6 +618,41 @@ MOBILE MODE CSS
         flex-direction: row;
         justify-content: center;
     }
-
-
+    .selected {
+        transform:scale(1.5);
+    }
+    .course-schedule-block * {
+        font-size:.7vh !important;
+    }
+    .swal-wide {
+        width:100vw !important;
+    }
+    #course-search-box {
+        flex-direction: column;
+        width: 100%;
+    }
+    #course-search-results  {
+        width: 100%;
+    }
+    #course-search-desc {
+        width: 100%;
+    }
+    #course-input {
+        width: 50vw;
+    }
+    .swal2-info {
+        display: none !important;
+    }
+    .align-right {
+        margin-top: 1vh;
+        margin-bottom: .2vh;
+    }
+    .day {
+        font-size: 4vw;
+        line-height: 30px;
+    }
+    .delete-course {
+        width:3vmax;
+        height:3vmax;
+    }
 }

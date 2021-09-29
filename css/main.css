@@ -28,7 +28,7 @@ font-display:swap
 --course-open:#39a32b;
 --course-closed:#b93838;
 --course-reopened:#bb7c33;
---roundedness:.3vmax;
+--roundedness:5px;
 --padding:.7vmax;
 --padding-medium:7px;
 --padding-small:5px;
@@ -252,7 +252,6 @@ width:100%
 background-color:var(--background-main);
 border-radius:var(--roundedness);
 padding:var(--padding);
-width:auto;
 margin-bottom:1vh;
 display:inline-block;
 width:100%
@@ -271,7 +270,6 @@ overflow:auto
 background-color:var(--background-main);
 border-radius:var(--roundedness);
 padding:var(--padding);
-margin-top:1vh;
 display:inline-block;
 width:100%
 }
@@ -526,7 +524,7 @@ filter:brightness(1.6)
 height:22vh;
 max-height:50vh;
 box-sizing: border-box;      
-padding:1vh;
+padding:var(--padding);
 border-radius:var(--roundedness);
 background-color:var(--background-alt);
 display:inline-block;
@@ -590,11 +588,14 @@ MOBILE MODE CSS
     }
     #left-section {
         height:100%;
+        margin: 0 auto;
     }
     #right-section {
         height:100%;
+        width:95vw;
         margin: 0 auto;
-        width: 100%;
+        margin-top: 1vh;
+        overflow: hidden;
     }
 
     .time {
@@ -654,5 +655,23 @@ MOBILE MODE CSS
     .delete-course {
         width:3vmax;
         height:3vmax;
+    }
+    .table-title {
+        width: 89vw;
+    }
+    #course-info-box {
+        width: 92vw;
+    }
+    #course-info-table {
+        width: 91vw;
+    }
+    #course-table {
+        width: 91vw;
+    }
+    #course-list-table {
+        width: 91vw;
+    }
+    #course-box {
+        width: 92vw;
     }
 }

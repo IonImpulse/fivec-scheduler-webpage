@@ -561,6 +561,7 @@ function toggleCourseOverlay(identifier) {
 
 		// Highlight the courses
 		highlightCourses(identifier);
+		showCourseOverlay(identifier, override=true);
 	}
 	// Case two: we're already showing the overlay, and it's the same course
 	else if (overlay.locked == true && overlay.identifier == identifier) {
@@ -580,11 +581,12 @@ function toggleCourseOverlay(identifier) {
 
 		// Highlight the courses
 		highlightCourses(identifier);
+		showCourseOverlay(identifier, override=true);
 	}
 }
 
-function showCourseOverlay(identifier) {
-	if (overlay.locked == false) {
+function showCourseOverlay(identifier, override=false) {
+	if (overlay.locked == false || override == true) {
 		if (all_desc_global.length == 0) {
 			generateAllDescriptions();
 		}

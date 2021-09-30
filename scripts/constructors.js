@@ -131,7 +131,7 @@ function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_i
 
 function createLoadedDiv(text, color) {
     let div = document.createElement("div");
-    div.className = "course-search-result course-loaded";
+    div.className = "course-search-result course-loaded unselectable";
     div.style.backgroundColor = color;
     let info = document.createElement("div");
     info.className = "course-info";

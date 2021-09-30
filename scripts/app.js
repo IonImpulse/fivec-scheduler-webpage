@@ -238,7 +238,7 @@ async function buttonShare() {
 
 		const code = await response.json();
 
-		const qr_data = `5cheduler.com/?load=${code}`;
+		const qr_data = `https://www.5cheduler.com/?load=${code}`;
 
 		const QRC = qrcodegen.QrCode;
 		const qr = QRC.encodeText(qr_data, QRC.Ecc.HIGH);
@@ -247,8 +247,15 @@ async function buttonShare() {
 		Swal.fire({
 			title: 'Share',
 			icon: 'success',
-			html: `<div class="code-share">${code}</div><br>${svg}`,
-		})
+			html: `<div class="code-share">${code}</div><div class="code-explain">or</div><div id="code-link" class="unselectable">Copy Link</div><div class="qr-code">${svg}</div>`,
+		});
+
+		document.getElementById("code-link").addEventListener("click", function() {
+			let el = document.getElementById("code-link");
+			navigator.clipboard.writeText(qr_data);
+			el.className = "code-copied unselectable";
+			el.innerHTML = "Copied!";
+		});
 	}
 }
 

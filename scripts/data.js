@@ -60,7 +60,7 @@ async function update_database() {
 function update_courses(source, target) {
     // Update local courses
     for (let i = 0; i < target.length; i++) {
-        if (source.contains(target[i].identifier)) {
+        if (source.includes(target[i].identifier)) {
             target[i] = source[i];
         }
     }

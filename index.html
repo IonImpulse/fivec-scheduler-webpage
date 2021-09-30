@@ -46,32 +46,32 @@
     <div id="title-bar" class="">
       <a href="https://www.5cheduler.com" class="logo"><img src="img/favicon.png" alt="5cheduler.com" class="logo"></a>
       
-      <div class="title-bar-button noselect" onclick="buttonExport()">
+      <div data-message="Export button" tabindex="0" class="title-bar-button noselect" onclick="buttonExport()">
         Export
       </div>
 
-      <div class="title-bar-button noselect" onclick="buttonPrint()">
+      <div data-message="Print button" tabindex="0" class="title-bar-button noselect" onclick="buttonPrint()">
         Print
       </div>
 
-      <div class="title-bar-button noselect" onclick="buttonShare()">
+      <div data-message="Share button" tabindex="0" class="title-bar-button noselect" onclick="buttonShare()">
         Share
       </div>
 
 
-      <div class="title-bar-button noselect search-button" onclick="buttonSearch()">
+      <div data-message="Search button" tabindex="0" class="title-bar-button noselect search-button" onclick="buttonSearch()">
         Search
       </div>
 
-      <div class="title-bar-button noselect" onclick="buttonLoad()">
+      <div data-message="Load button" tabindex="0" class="title-bar-button noselect" onclick="buttonLoad()">
         Load
       </div>
 
-      <div class="title-bar-button noselect" onclick="buttonTheme()">
+      <div data-message="Theme button" tabindex="0" class="title-bar-button noselect" onclick="buttonTheme()">
         Theme
       </div>
 
-      <div class="title-bar-button noselect" onclick="buttonAbout()">
+      <div data-message="About button" tabindex="0" class="title-bar-button noselect" onclick="buttonAbout()">
         About
       </div>
 
@@ -119,4 +119,7 @@
   <script src="scripts/app.js"></script>
   <script src="scripts/data.js"></script>
   <script src="scripts/startup.js"></script>
+  <!--- Polyfill for accessability uses-->
+  <script src="https://cdn.polyfill.io/v2/polyfill.js?features=Element.prototype.classList"></script>
+  <script src="https://unpkg.com/focus-visible"></script>
 </html>

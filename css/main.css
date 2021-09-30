@@ -369,7 +369,7 @@ padding:var(--padding-medium)
 
 .selected {
 transform:scale(1.04);
-z-index:10000
+z-index:10000 !important;
 }
 
 .code-explain {
@@ -381,10 +381,38 @@ background-color:var(--text-main);
 border-radius:var(--roundedness);
 color:var(--text-alt);
 font-family:"JetBrains Mono",monospace;
-font-size:50px;
-padding:var(--padding-small)
+font-size:45px;
+padding:var(--padding-small);
+margin-bottom:10px;
 }
 
+#code-link {
+background-color:var(--text-main);
+color:var(--text-alt);
+font-family:"JetBrains Mono",monospace;
+font-size:25px;
+border-radius: var(--roundedness);
+padding:var(--padding-small);
+cursor:pointer;
+margin-bottom:20px;
+margin-top:12px;
+}
+
+#code-link:hover {
+filter:brightness(1.1);
+}
+#code-link:active {
+transform:scale(0.95)
+}
+
+.code-copied {
+background-color: var(--course-open) !important;
+}
+
+.qr-code {
+width:80%;
+margin: 0 auto;
+}
 .course-schedule-block {
 border-radius:var(--roundedness);
 color:var(--text-course-schedule);
@@ -458,7 +486,9 @@ font-size:18px
 
 #about-desc {
 color:var(--text-main);
-font:16px Roboto,sans-serif
+font:16px Roboto,sans-serif;
+text-align: center;
+line-height: 20px;
 }
 
 .swal2-title,#course-add-num {

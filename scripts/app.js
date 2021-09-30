@@ -238,7 +238,7 @@ async function buttonShare() {
 
 		const code = await response.json();
 
-		const qr_data = `5cheduler.com/?load=${code}`;
+		const qr_data = `https://www.5cheduler.com/?load=${code}`;
 
 		const QRC = qrcodegen.QrCode;
 		const qr = QRC.encodeText(qr_data, QRC.Ecc.HIGH);
@@ -247,8 +247,15 @@ async function buttonShare() {
 		Swal.fire({
 			title: 'Share',
 			icon: 'success',
-			html: `<div class="code-share">${code}</div><br>${svg}`,
-		})
+			html: `<div class="code-share">${code}</div><div class="code-explain">or</div><div id="code-link" class="unselectable">Copy Link</div><div class="qr-code">${svg}</div>`,
+		});
+
+		document.getElementById("code-link").addEventListener("click", function() {
+			let el = document.getElementById("code-link");
+			navigator.clipboard.writeText(qr_data);
+			el.className = "code-copied unselectable";
+			el.innerHTML = "Copied!";
+		});
 	}
 }
 
@@ -264,8 +271,10 @@ function buttonAbout() {
 		imageHeight: 100,
 		html: `<div id="about-desc"> Created By: <b>Ethan Vazquez</b> HMC '25<BR>` +
 			`Send comments/questions/bug reports to: <b>edv121@outlook.com</b><BR><BR>` +
-			`Webpage Repo: <a href="https://github.com/IonImpulse/fivec-scheduler-webpage">fivec-scheduler-webpage</a><br>` +
-			`API Repo: <a href="https://github.com/IonImpulse/fivec-scheduler-server">fivec-scheduler-server</a>.<BR><BR>` +
+			`<b>Webpage Repo:</b> <a href="https://github.com/IonImpulse/fivec-scheduler-webpage">fivec-scheduler-webpage</a><br>` +
+			`Built using <a href="https://www.javatpoint.com/what-is-vanilla-javascript">VanillaJS</a><br>` +
+			`<b>API Repo:</b> <a href="https://github.com/IonImpulse/fivec-scheduler-server">fivec-scheduler-server</a>.<br>` +
+			`Built using <a href="https://www.rust-lang.org/">Rust</a><BR><BR>` +
 			`<b><u>Credits:</b></u><BR>` +
 			`<b>fuse.js</b><br>Created by Kiro Risk.<br>Licensed under the Apache License 2.0.<br>` +
 			`<b>sweetalert2.js</b><br>Created by Tristan Edwards & Limon Monte.<br>Licensed under the MIT License.<br>` +

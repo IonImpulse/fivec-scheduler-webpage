@@ -434,7 +434,7 @@ width:1vmax
 .merge-course {
 background-image:url(../img/merge.png);
 background-size:cover;
-float:inline-end;
+float:right;
 height:1vmax;
 margin-right:.5vmax;
 width:1vmax

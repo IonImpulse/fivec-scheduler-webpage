@@ -45,12 +45,32 @@ async function update_database() {
     if (data != "No update needed") {
         save_json_data("course_data", data);
         create_searcher();
+
+        // Update currently loaded courses
+        loaded_local_courses = update_courses(data.courses, loaded_local_courses);
+        for (let i = 0; i < loaded_course_lists.length; i++) {
+            loaded_course_lists[i] = update_courses(data.course, loaded_course_lists[i])
+        }
+
+        save_json_data("loaded_local_courses", loaded_local_courses);
+        save_json_data("loaded_course_lists", loaded_course_lists);
     }
 }
 
+function update_courses(source, target) {
+    // Update local courses
+    for (let i = 0; i < target.length; i++) {
+        if (source.contains(target[i].identifier)) {
+            target[i] = source[i];
+        }
+    }
+
+    return target
+}
 function update_loop() {
     setTimeout(function () {
         update_database();
+        updateSchedule();
         update_loop();
     }, 60000)
 }

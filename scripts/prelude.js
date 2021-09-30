@@ -52,5 +52,11 @@ function isVerticalLayout() {
     vertical_layout = window.matchMedia("only screen and (max-width: 760px)").matches;
 }
 
+document.addEventListener("keydown", function(event) {
+    if (event.code === "Enter") {
+        document.activeElement.click();
+    }
+});
+
 getTheme();
 isVerticalLayout();

@@ -186,7 +186,11 @@ function buttonSearch() {
 			}
 		});
 		let input = document.getElementById("course-input");
-
+		document.getElementById("course-search-results").addEventListener("keydown", function(event) {
+			if (event.code === "Enter") {
+				document.activeElement.click();
+			}
+		});
 		input.focus();
 		input.addEventListener("keydown", function(event) {
 			// Number 13 is the "Enter" key on the keyboard

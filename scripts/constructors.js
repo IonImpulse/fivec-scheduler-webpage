@@ -191,6 +191,7 @@ function createResultDiv(course, color, index) {
 	let course_div = document.createElement("div");
 	course_div.className = "course-search-result unselectable";
 	course_div.id = identifier;
+    course_div.tabIndex = 0;
 	course_div.onclick = function () {
 		toggleCourseSelection(identifier)
 	};

@@ -271,8 +271,10 @@ function buttonAbout() {
 		imageHeight: 100,
 		html: `<div id="about-desc"> Created By: <b>Ethan Vazquez</b> HMC '25<BR>` +
 			`Send comments/questions/bug reports to: <b>edv121@outlook.com</b><BR><BR>` +
-			`Webpage Repo: <a href="https://github.com/IonImpulse/fivec-scheduler-webpage">fivec-scheduler-webpage</a><br>` +
-			`API Repo: <a href="https://github.com/IonImpulse/fivec-scheduler-server">fivec-scheduler-server</a>.<BR><BR>` +
+			`<b>Webpage Repo:</b> <a href="https://github.com/IonImpulse/fivec-scheduler-webpage">fivec-scheduler-webpage</a><br>` +
+			`Built using <a href="https://www.javatpoint.com/what-is-vanilla-javascript">VanillaJS</a><br>` +
+			`<b>API Repo:</b> <a href="https://github.com/IonImpulse/fivec-scheduler-server">fivec-scheduler-server</a>.<br>` +
+			`Built using <a href="https://www.rust-lang.org/">Rust</a><BR><BR>` +
 			`<b><u>Credits:</b></u><BR>` +
 			`<b>fuse.js</b><br>Created by Kiro Risk.<br>Licensed under the Apache License 2.0.<br>` +
 			`<b>sweetalert2.js</b><br>Created by Tristan Edwards & Limon Monte.<br>Licensed under the MIT License.<br>` +

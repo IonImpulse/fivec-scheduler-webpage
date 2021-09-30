@@ -486,7 +486,9 @@ font-size:18px
 
 #about-desc {
 color:var(--text-main);
-font:16px Roboto,sans-serif
+font:16px Roboto,sans-serif;
+text-align: center;
+line-height: 20px;
 }
 
 .swal2-title,#course-add-num {

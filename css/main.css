@@ -536,7 +536,7 @@ color:var(--text-main);
 font:12px Roboto
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 760px) {
 body {
 flex-direction:column
 }

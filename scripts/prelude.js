@@ -49,7 +49,7 @@ function getTheme() {
     }
 }
 function isVerticalLayout() {
-    vertical_layout = window.matchMedia("only screen and (max-width: 760px)").matches;
+    vertical_layout = window.matchMedia("only screen and (max-width: 900px)").matches;
 }
 
 document.addEventListener("keydown", function(event) {

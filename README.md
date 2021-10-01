@@ -32,3 +32,5 @@ Live at [www.5cheduler.com](https://www.5cheduler.com/)
    - CSS: 9 KB
    - HTML: 1 KB
    - Course Data: 151 KB
+- Request map:
+- ![requestmap_https __www 5cheduler com_](https://user-images.githubusercontent.com/24578597/135673047-104d184d-a6c8-4e2a-8e67-cc9924c2daba.png)

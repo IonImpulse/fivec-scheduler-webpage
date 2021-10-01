@@ -11,7 +11,7 @@ Live at [www.5cheduler.com](https://www.5cheduler.com/)
 - 🔍 **Human-friendly**, typo-resistant search engine for all courses at the [Claremont Colleges](https://www.claremont.edu/)
 - 💻 Rounded & **Animated** UI
 - 🌗 Light & **Dark** Mode
-- 📧 **Share and load** schedules with a **7** character **code**
+- 📧 **Share and load** schedules code, link, or QR code
 - 💾 **Export** schedule as image
 - 🖨 **Print schedule** directly 
 - 📱 **Mobile**-optimized mode

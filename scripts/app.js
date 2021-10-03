@@ -24,14 +24,14 @@ function buttonLoad() {
 			}
 		},
 		allowOutsideClick: () => !Swal.isLoading()
-	}).then((result) => {
+	}).then( async (result) => {
 		if (result.value == "Invalid code") {
 			Toast.fire({
 				title: 'Invalid code',
 				icon: 'error'
 			});
 		} else if (result.value != undefined) {
-			const course_list_result = addToCourseLists(result.value);
+			const course_list_result = await addToCourseLists(result.value);
 
 			if (course_list_result == true) {
 				Toast.fire({
@@ -165,9 +165,9 @@ function buttonSearch() {
 			cancelButtonText:
 				'Cancel',
 			customClass: 'swal-wide',
-		}).then((result) => {
+		}).then(async (result) => {
 			if (result.isConfirmed) {
-				let num_courses = addCourses();
+				let num_courses = await addCourses();
 
 				s = "s";
 
@@ -472,7 +472,7 @@ async function addToCourseLists(course_list) {
 
 	if (!found) {
 		loaded_course_lists.push(course_list);
-		save_json_data("loaded_course_lists", loaded_course_lists);
+		await save_json_data("loaded_course_lists", loaded_course_lists);
 		updateSchedule();
 
 		return true;

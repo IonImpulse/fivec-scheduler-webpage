@@ -1,3 +1,4 @@
+
 // *****
 // Functions to get and handle data from the server
 // *****
@@ -8,53 +9,71 @@ const UPDATE_IF_STALE = function (timestamp) { return "updateIfStale/" + timesta
 const GET_UNIQUE_CODE = "getUniqueCode";
 const GET_COURSE_LIST_BY_CODE = function (code) { return "getCourseListByCode/" + code; }
 
-function load_json_data(name) {
-    let data = localStorage.getItem(name);
-    if (data != null && data != "" && data != "null" && data != "undefined" && data != "NaN" && data != undefined) {
-        try {
-            data = JSON.parse(data);
-        } catch (e) {
-            localStorage.removeItem(name);
-            data = null;
-        }
-        return data;
-    } else {
-        return null;
-    }
+async function load_json_data(name) {
+    console.info(`Loading ${name}...`);
+    return localforage.getItem(name);
 }
 
-function save_json_data(name, data) {
-    localStorage.setItem(name, JSON.stringify(data));
+async function save_json_data(name, data) {
+    console.info(`Saving ${name}...`);
+    return localforage.setItem(name, data);
 }
 
-async function update_database() {
+async function update_database(full=false) {
     console.debug("Updating database...");
-    let current_data = load_json_data("course_data");
+    let current_data = await load_json_data("course_data");
+   
+    loaded_local_courses = await load_json_data("loaded_local_courses");
+    loaded_course_lists = await load_json_data("loaded_course_lists");
+
+    if (loaded_local_courses == null) {
+        loaded_local_courses = [];
+    }
+
+    if (loaded_course_lists == null) {
+        loaded_course_lists = [];
+    }
 
     let response;
 
-    if (current_data === null || Object.entries(current_data).length === 0) {
+    if (current_data === null || current_data.timestamp == undefined || Object.entries(current_data).length === 0) {
+        console.debug("No data found, requesting full update...");
         response = fetch(`${API_URL}${FULL_UPDATE}`);
     } else {
+        console.debug("Found data, requesting update if stale...");
         response = fetch(`${API_URL}${UPDATE_IF_STALE(current_data.timestamp)}`);
 
     }
 
-    const data = await response.then(response => response.json());
+    const data = await response;
+    const json = await data.json();
 
-    if (data != "No update needed") {
-        save_json_data("course_data", data);
-        create_searcher();
-
+    if (json != "No update needed") {
+        console.debug("New data found...");
+        await save_json_data("course_data", json);
+        all_courses_global = json.courses;
+    
         // Update currently loaded courses
-        loaded_local_courses = update_courses(data.courses, loaded_local_courses);
+        loaded_local_courses = update_courses(all_courses_global, loaded_local_courses);
         for (let i = 0; i < loaded_course_lists.length; i++) {
-            loaded_course_lists[i] = update_courses(data.course, loaded_course_lists[i])
+            loaded_course_lists[i] = update_courses(all_courses_global, loaded_course_lists[i])
         }
 
-        save_json_data("loaded_local_courses", loaded_local_courses);
-        save_json_data("loaded_course_lists", loaded_course_lists);
+        await save_json_data("loaded_local_courses", loaded_local_courses);
+        await save_json_data("loaded_course_lists", loaded_course_lists);
+    } else {
+        all_courses_global = current_data.courses;
     }
+
+    if (full || json != "No update needed") {
+        console.log(
+            `Total Courses Loaded: ${all_courses_global.length}\nTotal Local Courses Loaded: ${loaded_local_courses.length}\nTotal Course Lists Loaded: ${loaded_course_lists.length}`
+        );
+        create_searcher();
+    }
+
+
+
 }
 
 function update_courses(source, target) {
@@ -76,12 +95,6 @@ function update_loop() {
 }
 
 async function create_searcher() {
-    let current_data = load_json_data("course_data");
-
-    if (current_data == null) {
-        await update_database();
-        current_data = load_json_data("course_data");
-    }
     const options = {
         isCaseSensitive: false,
         shouldSort: true,
@@ -101,5 +114,5 @@ async function create_searcher() {
         ]
     };
 
-    fuzzy_searcher = new Fuse(current_data.courses, options);
+    fuzzy_searcher = new Fuse(all_courses_global, options);
 }

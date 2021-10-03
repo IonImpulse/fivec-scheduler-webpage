@@ -3,22 +3,21 @@
 // *****
 
 // Runs all startup scripts
-function startup() {
+async function startup() {
     // Website generation
     generateGridTimes();
     generateDays();
     generateLines();
-    update_database().then(() => {
-        create_searcher();
-        update_loop();
-        loadCourseData();
-        updateSchedule();
-        // Then, check if site was loaded from
-        // from QR code w/ course list code
-        loadPossibleCourseList();
-    });
     window.addEventListener('resize', updateScheduleSizing);
     updateScheduleSizing();
+
+    await update_database(full=true);
+    update_loop();
+    updateSchedule();
+    // Then, check if site was loaded from
+    // from QR code w/ course list code
+    loadPossibleCourseList();
+    generateAllDescriptions();
 }
 
 // Generates and sets divs for timeslots
@@ -234,30 +233,6 @@ function updateLoadedCourseLists() {
             i++;
         }
     }
-}
-
-function loadCourseData() {
-    let course_data = load_json_data("course_data");
-
-    if (course_data == null) {
-        update_database().then(() => {
-            all_courses_global = load_json_data("course_data").courses;
-        });
-    } else {
-        all_courses_global = load_json_data("course_data").courses;
-    }
-
-    loaded_local_courses = load_json_data("loaded_local_courses");
-    loaded_course_lists = load_json_data("loaded_course_lists");
-
-    if (loaded_local_courses == null) {
-        loaded_local_courses = [];
-    }
-
-    if (loaded_course_lists == null) {
-        loaded_course_lists = [];
-    }
-
 }
 
 function loadPossibleCourseList() {

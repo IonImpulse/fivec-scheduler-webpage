@@ -145,18 +145,14 @@ function buttonPrint() {
 }
 
 function buttonSearch() {
-	let courses = load_json_data("course_data");
 	selected_courses = [];
 
-	if (courses == null) {
+	if (all_courses_global == null) {
 		Swal.fire({
 			title: 'Error fetching courses!',
 			icon: 'error'
 		});
 	} else {
-		all_courses_global = courses.courses;
-		generateAllDescriptions();
-
 		Swal.fire({
 			title: 'Search Courses',
 			icon: 'info',
@@ -388,7 +384,7 @@ function setCourseDescription(index) {
 	course_search_desc.appendChild(course_info.cloneNode(true));
 }
 
-function addCourses() {
+async function addCourses() {
 	let courses = [];
 
 	// Find courses from identifier
@@ -413,7 +409,7 @@ function addCourses() {
 		}
 	}
 
-	save_json_data("loaded_local_courses", loaded_local_courses);
+	await save_json_data("loaded_local_courses", loaded_local_courses);
 
 	updateSchedule();
 
@@ -464,7 +460,7 @@ function tweakSearch(string) {
 	return return_string.trim().toLowerCase();
 }
 
-function addToCourseLists(course_list) {
+async function addToCourseLists(course_list) {
 	let found = false;
 
 	for (let l_course of loaded_course_lists) {
@@ -485,7 +481,7 @@ function addToCourseLists(course_list) {
 	}
 }
 
-function deleteCourse(identifier) {
+async function deleteCourse(identifier) {
 	let found = false;
 
 	for (let i = 0; i < loaded_local_courses.length; i++) {
@@ -499,12 +495,12 @@ function deleteCourse(identifier) {
 	}
 
 	if (found) {
-		save_json_data("loaded_local_courses", loaded_local_courses);
+		await save_json_data("loaded_local_courses", loaded_local_courses);
 		updateSchedule();
 	}
 }
 
-function deleteCourseList(code) {
+async function deleteCourseList(code) {
 	let found = false;
 
 	for (let i = 0; i < loaded_course_lists.length; i++) {
@@ -518,12 +514,12 @@ function deleteCourseList(code) {
 	}
 
 	if (found) {
-		save_json_data("loaded_course_lists", loaded_course_lists);
+		await save_json_data("loaded_course_lists", loaded_course_lists);
 		updateSchedule();
 	}
 }
 
-function mergeCourseList(code) {
+async function mergeCourseList(code) {
 	let found = false;
 
 	for (let i = 0; i < loaded_course_lists.length; i++) {
@@ -544,8 +540,8 @@ function mergeCourseList(code) {
 	}
 
 	if (found) {
-		save_json_data("loaded_course_lists", loaded_course_lists);
-		save_json_data("loaded_local_courses", loaded_local_courses);
+		await save_json_data("loaded_course_lists", loaded_course_lists);
+		await save_json_data("loaded_local_courses", loaded_local_courses);
 		updateSchedule();
 	}
 }

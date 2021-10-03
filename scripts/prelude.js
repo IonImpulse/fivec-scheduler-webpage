@@ -5,9 +5,14 @@ before HTML and other scripts are loaded
 Contains ALL global variables used.
 */
 
+// Version number
+// Will delete localStorage variables when updating
+const current_version = 1.1;
+
 // *****
 // Global Variables
 // *****
+var timestamp_global = 0;
 var all_courses_global = [];
 var all_desc_global = [];
 var fuzzy_searcher = [];
@@ -52,11 +57,26 @@ function isVerticalLayout() {
     vertical_layout = window.matchMedia("only screen and (max-width: 760px)").matches;
 }
 
+function getVersion() {
+    let old_version = localStorage.getItem("version");
+
+    if (old_version == null) {
+        old_version = 0;
+    }
+
+    if (parseInt(old_version) < current_version) {
+        localStorage.clear();
+        localStorage.setItem("version", `${current_version}`)
+    }
+}
+
 document.addEventListener("keydown", function(event) {
     if (event.code === "Enter") {
         document.activeElement.click();
     }
 });
+
+getVersion();
 
 getTheme();
 isVerticalLayout();

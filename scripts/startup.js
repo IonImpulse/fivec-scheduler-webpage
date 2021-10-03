@@ -18,6 +18,11 @@ async function startup() {
     // from QR code w/ course list code
     loadPossibleCourseList();
     generateAllDescriptions();
+
+    // Finally, remove fade-in class
+    let fader = document.getElementById("fader")
+    fader.classList.add('fade-out');
+
 }
 
 // Generates and sets divs for timeslots

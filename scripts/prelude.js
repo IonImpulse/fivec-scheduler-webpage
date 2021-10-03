@@ -50,12 +50,11 @@ function getTheme() {
         }
         localStorage.setItem("theme", theme);
     }
+
     if (theme == "light") {
         document.documentElement.setAttribute('data-theme', 'light');
     } else if (theme == "dark") {
         document.documentElement.setAttribute('data-theme', 'dark');
-    } else {
-        document.documentElement.setAttribute('data-theme', 'light');
     }
 }
 
@@ -69,8 +68,7 @@ function getVersion() {
     if (old_version == null) {
         old_version = 0;
     }
-
-    if (parseInt(old_version) != current_version) {
+    if (old_version != current_version) {
         localStorage.clear();
         localStorage.setItem("version", `${current_version}`)
     }

@@ -70,6 +70,46 @@ max-height:100%;
 max-width:100%
 }
 
+
+
+#fader {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+z-index: 999999;
+pointer-events: none;
+background: var(--background-alt);
+animation-duration: 300ms;
+animation-timing-function: ease-in-out;
+}
+
+
+
+@keyframes fade-out {
+    from { opacity: 1 }
+      to { opacity: 0 }
+}
+
+@keyframes fade-in {
+    from { opacity: 0 }
+      to { opacity: 1 }
+}
+
+#fader.fade-out {
+    opacity: 0;
+    animation-name: fade-out;
+}
+
+#fader.fade-in {
+    opacity: 1;
+    animation-name: fade-in;
+}
+
+
+
+
 #share-image {
 height:200px;
 margin:0 auto;

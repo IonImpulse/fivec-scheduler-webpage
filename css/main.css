@@ -522,7 +522,9 @@ font:14px Roboto,monospace
 #course-search-desc .description,#course-search-desc .notes {
 color:var(--text-main);
 font:14px Roboto,monospace;
-margin-top:1vh
+margin-top:1vh;
+max-height: 15vh;
+overflow:auto
 }
 
 .delete-course:hover,.merge-course:hover {

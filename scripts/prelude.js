@@ -42,15 +42,20 @@ const colors = [
 function getTheme() {
     let theme = localStorage.getItem("theme");
     if (theme == null) {
-        theme = "light";
-    } else {
-        if (theme == "light") {
-            document.documentElement.setAttribute('data-theme', 'light');
-        } else if (theme == "dark") {
-            document.documentElement.setAttribute('data-theme', 'dark');
+        const darkThemeMq = window.matchMedia("(prefers-color-scheme: dark)");
+        if (darkThemeMq.matches) {
+            theme = "dark";
         } else {
-            document.documentElement.setAttribute('data-theme', 'light');
+            theme = "light";
         }
+        localStorage.setItem("theme", theme);
+    }
+    if (theme == "light") {
+        document.documentElement.setAttribute('data-theme', 'light');
+    } else if (theme == "dark") {
+        document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+        document.documentElement.setAttribute('data-theme', 'light');
     }
 }
 function isVerticalLayout() {

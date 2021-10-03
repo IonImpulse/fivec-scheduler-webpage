@@ -7,7 +7,7 @@ Contains ALL global variables used.
 
 // Version number
 // Will delete localStorage variables when updating
-const current_version = 1.1;
+const current_version = 1.2;
 
 // *****
 // Global Variables
@@ -58,6 +58,7 @@ function getTheme() {
         document.documentElement.setAttribute('data-theme', 'light');
     }
 }
+
 function isVerticalLayout() {
     vertical_layout = window.matchMedia("only screen and (max-width: 760px)").matches;
 }
@@ -69,7 +70,7 @@ function getVersion() {
         old_version = 0;
     }
 
-    if (parseInt(old_version) < current_version) {
+    if (parseInt(old_version) != current_version) {
         localStorage.clear();
         localStorage.setItem("version", `${current_version}`)
     }

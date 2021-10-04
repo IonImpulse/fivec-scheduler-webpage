@@ -9,12 +9,14 @@ Live at [www.5cheduler.com](https://www.5cheduler.com/)
 ## Features
 - 🚀 Superfast loading times
 - 🔍 **Human-friendly**, typo-resistant search engine for all courses at the [Claremont Colleges](https://www.claremont.edu/)
-- 💻 Rounded & **Animated** UI
 - 🌗 Light & **Dark** Mode
 - 📧 **Share and load** schedules as a code, link, or QR code
-- 💾 **Export** schedule as image
+- 📸 **Export** schedule as image
 - 🖨 **Print schedule** directly 
 - 📱 **Mobile**-optimized mode
+- 🔰 Works as a ***Progressive Web App*** (PWA)
+   - 📲 Installs as an app on your phone/desktop
+   - 💾 Can be run entirely **offline**
 
 ## Screenshots
 ![Screenshot Desktop](https://raw.githubusercontent.com/IonImpulse/fivec-scheduler-webpage/main/img/theme_change_screenshot.png)

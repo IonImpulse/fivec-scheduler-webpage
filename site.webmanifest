@@ -1,6 +1,6 @@
 {
-    "name": "",
-    "short_name": "",
+    "name": "5cheduler - Course Scheduler for the 5Cs",
+    "short_name": "5cheduler",
     "icons": [
         {
             "src": "/android-chrome-192x192.png?v=1.1",
@@ -13,7 +13,10 @@
             "type": "image/png"
         }
     ],
-    "theme_color": "#ffffff",
-    "background_color": "#ffffff",
-    "display": "standalone"
+    "theme_color": "#3900c3",
+    "background_color": "#1b1b1b",
+    "orientation": "portrait",
+    "display": "minimal-ui",
+    "scope": "/",
+    "start_url": "/"
 }

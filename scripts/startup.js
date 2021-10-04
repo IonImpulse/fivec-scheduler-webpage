@@ -260,6 +260,7 @@ function loadPossibleCourseList() {
 
     const code = urlParams.get('load');
 
+    // TODO: rewrite as async await
     if (code != null) {
         fetch(`${API_URL}${GET_COURSE_LIST_BY_CODE(code.toUpperCase())}`)
             .then(response => {

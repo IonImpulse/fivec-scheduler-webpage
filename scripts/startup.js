@@ -31,12 +31,13 @@ async function startup() {
     // Then, check if site was loaded from
     // from QR code w/ course list code
     loadPossibleCourseList();
-    generateAllDescriptions();
 
-    // Finally, remove fade-in class
+    // Remove fade-in class
     let fader = document.getElementById("fader")
     fader.classList.add('fade-out');
 
+    // Finally, generate descriptions
+    generateAllDescriptions();
 }
 
 // Generates and sets divs for timeslots

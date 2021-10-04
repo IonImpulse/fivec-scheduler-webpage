@@ -19,7 +19,6 @@ self.addEventListener('install', (event) => {
                 'scripts/libs/sweetalert2.min.js',
                 'img/delete.png',
                 'img/merge.png',
-                'img/favicon.png',
                 'android-chrome-192x192.png',
                 'android-chrome-512x512.png',
                 'apple-touch-icon.png',

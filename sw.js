@@ -4,11 +4,8 @@ self.addEventListener('install', (event) => {
         caches.open('v1').then((cache) => {
             return cache.addAll([
                 'index.html',
-                'css/',
                 'css/main.css',
                 'css/sweetalert2.min.css',
-                'scripts/',
-                'scripts/libs/',
                 'scripts/app.js',
                 'scripts/constructors.js',
                 'scripts/data.js',
@@ -20,11 +17,9 @@ self.addEventListener('install', (event) => {
                 'scripts/libs/qrcodegen-v1.7.0-es6.js',
                 'scripts/libs/rasterizeHTML.allinone.js',
                 'scripts/libs/sweetalert2.min.js',
-                'img/',
                 'img/delete.png',
                 'img/merge.png',
                 'img/favicon.png',
-                'CNAME',
                 'android-chrome-192x192.png',
                 'android-chrome-512x512.png',
                 'apple-touch-icon.png',

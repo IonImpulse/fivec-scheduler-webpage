@@ -11,7 +11,7 @@ src:url(https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsM
 :root {
 --background-alt:#f0f0f0;
 --background-alt-hover:#c9c8c8;
---background-main:#3465a5;
+--background-main:#2c80c4;
 --course-closed:#b93838;
 --course-open:#39a32b;
 --course-reopened:#bb7c33;
@@ -21,8 +21,7 @@ src:url(https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsM
 --padding-medium:7px;
 --padding-small:5px;
 --roundedness:5px;
---search-button-background:#4cad41;
---search-button-hover:#43993a;
+--search-button-background:#28ac1c;
 --shadow-blur:20px;
 --shadow-length:4px;
 --text-alt:#fdfdfd;
@@ -39,7 +38,6 @@ src:url(https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsM
 --course-open:#7ee271;
 --course-reopened:#e0c06a;
 --search-button-background:#57ac4f;
---search-button-hover:#3a9232;
 --text-alt:#131313;
 --text-light:#bdbdbd;
 --text-main:#dbdbdb
@@ -210,7 +208,7 @@ width:140px
 }
 
 .title-bar-button:hover {
-background-color:var(--background-alt-hover)
+filter:brightness(1.1);
 }
 
 .title-bar-button:active {
@@ -221,10 +219,6 @@ transform:scale(0.95)
 background-color:var(--search-button-background);
 color:var(--text-alt);
 width:20%
-}
-
-.search-button:hover {
-background-color:var(--search-button-hover)
 }
 
 .time {

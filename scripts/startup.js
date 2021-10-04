@@ -11,6 +11,20 @@ async function startup() {
     window.addEventListener('resize', updateScheduleSizing);
     updateScheduleSizing();
 
+    // Then, check if site was loaded from
+    // as a PWA *before* attempting to load
+    // assets/data
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('../sw.js', {scope: '../'})
+        .then((reg) => {
+          // registration worked
+          console.log('Registration succeeded. Scope is ' + reg.scope);
+        }).catch((error) => {
+          // registration failed
+          console.log('Registration failed with ' + error);
+        });
+    }
+
     await update_database(full=true);
     update_loop();
     updateSchedule();

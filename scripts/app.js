@@ -262,7 +262,7 @@ function buttonTheme() {
 function buttonAbout() {
 	Swal.fire({
 		title: 'About',
-		imageUrl: 'img/favicon.png',
+		imageUrl: 'android-chrome-192x192.png?v=1.2',
 		imageWidth: 100,
 		imageHeight: 100,
 		html: `<div id="about-desc"> Created By: <b>Ethan Vazquez</b> HMC '25<BR>` +

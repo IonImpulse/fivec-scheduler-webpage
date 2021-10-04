@@ -16,7 +16,7 @@
     "theme_color": "#3900c3",
     "background_color": "#1b1b1b",
     "orientation": "portrait",
-    "display": "minimal-ui",
+    "display": "fullscreen",
     "scope": "/",
     "start_url": "/"
 }

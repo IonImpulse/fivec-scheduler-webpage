@@ -1,7 +1,7 @@
 // On install, cache everything
 self.addEventListener('install', (event) => {
     event.waitUntil(
-        caches.open('v1').then((cache) => {
+        caches.open('v1.1').then((cache) => {
             return cache.addAll([
                 'index.html',
                 'css/main.css',
@@ -56,7 +56,7 @@ self.addEventListener('fetch', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
-    var cacheKeeplist = ['v1'];
+    var cacheKeeplist = ['v1.1'];
 
     event.waitUntil(
         caches.keys().then((keyList) => {

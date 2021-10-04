@@ -1,7 +1,8 @@
+const current_version = '1.0.1';
 // On install, cache everything
 self.addEventListener('install', (event) => {
     event.waitUntil(
-        caches.open('v1.1').then((cache) => {
+        caches.open(current_version).then((cache) => {
             return cache.addAll([
                 'index.html',
                 'css/main.css',
@@ -42,7 +43,7 @@ self.addEventListener('fetch', (event) => {
         caches.match(event.request).then((resp) => {
             return resp || fetch(event.request).then((response) => {
                 let responseClone = response.clone();
-                caches.open('v1').then((cache) => {
+                caches.open(current_version).then((cache) => {
                     cache.put(event.request, responseClone);
                 });
 
@@ -55,7 +56,7 @@ self.addEventListener('fetch', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
-    var cacheKeeplist = ['v1.1'];
+    var cacheKeeplist = [current_version];
 
     event.waitUntil(
         caches.keys().then((keyList) => {

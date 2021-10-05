@@ -329,7 +329,6 @@ function expensiveCourseSearch() {
 		const results = search_courses(search_term);
 
 		console.info(`INFO: found ${results.length} results`);
-		console.log(results);
 		
 		for (let i = 0; i < results.length; i++) {
 			let course = results[i].obj;

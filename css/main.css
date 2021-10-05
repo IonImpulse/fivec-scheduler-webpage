@@ -158,17 +158,17 @@ user-select:none
 display:flex;
 flex-direction:column;
 height:94vh;
-margin-left:1%;
-margin-top:1%;
+margin-left:.5%;
+margin-top:.5%;
 width:76%
 }
 
 #right-section {
 display:inline-block;
 height:94vh;
-margin-left:1%;
-margin-top:1%;
-width:20%
+margin-left:.5%;
+margin-top:.5%;
+width:21%
 }
 
 .title-bar {

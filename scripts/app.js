@@ -72,7 +72,7 @@ function buttonExport() {
 	Swal.fire({
 		title: 'Export',
 		icon: 'success',
-		html: '<canvas id="export-holder" alt="schedule"></canvas><br>Right click on the image above and select "Save Image As..." to download',
+		html: '<canvas id="export-holder" alt="schedule"></canvas><br><b>Downloading...</b>',
 		customClass: 'swal-medium-wide',
 	});
 
@@ -81,6 +81,14 @@ function buttonExport() {
 	canvas = document.getElementById("export-holder");
 	source = document.getElementById("schedule-box");
 	screenshotToCanvas(canvas, source);
+	setTimeout(download_link, 1000);
+}
+
+function download_link() {
+	var link = document.createElement('a');
+	link.download = 'schedule.png';
+	link.href = document.getElementById('export-holder').toDataURL()
+	link.click();
 }
 
 function screenshotToCanvas(canvas, source) {
@@ -623,36 +631,5 @@ function showCourseOverlay(identifier, override=false) {
 		node_to_append.childNodes[node_to_append.childNodes.length - 2].remove();
 
 		course_info_table.appendChild(node_to_append);
-	}
-}
-
-function starCourse(identifier) {
-	// Stop bubbling onclick event
-	if (!e) var e = window.event;
-    e.cancelBubble = true;
-    if (e.stopPropagation) e.stopPropagation();
-	
-	if (starred_courses.includes(identifier)) {
-		starred_courses.splice(starred_courses.indexOf(identifier), 1);
-	} else {
-		starred_courses.push(identifier);
-	}
-
-	save_json_data("starred_courses", starred_courses);
-
-	let els = document.getElementsByClassName(`${identifier}-loaded`);
-
-	for (let el of els) {
-		el.classList.toggle("starred-course");
-		el.getElementsByClassName("star-course")[0].classList.toggle("filled");
-	}
-}
-
-function showStarCourse(identifier) {
-	let els = document.getElementsByClassName(`${identifier}-loaded`);
-
-	for (let el of els) {
-		el.classList.add("starred-course");
-		el.getElementsByClassName("star-course")[0].classList.add("filled");
 	}
 }

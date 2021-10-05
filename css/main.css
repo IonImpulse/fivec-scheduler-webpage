@@ -586,7 +586,8 @@ line-height: 20px;
 }
 
 .swal2-title,#course-add-num {
-font-family:"JetBrains Mono",monospace
+font-family:"Roboto",sans-serif;
+font-weight: 600;
 }
 
 .swal2-textarea,.swal2-html-container,.swal2-validation-message,.swal2-actions * {

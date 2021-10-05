@@ -122,6 +122,10 @@ function search_courses(query) {
         if (results.length == 0) {
             results = fuzzysort.go(query, all_courses_global, options);
         }
+
+        if (results.length == 0) {
+            results = fuzzysort.go(terms.join("-"), all_courses_global, options);
+        }
         
     } else {
         results = fuzzysort.go(query, all_courses_global, options);

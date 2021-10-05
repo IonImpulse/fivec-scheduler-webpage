@@ -1,4 +1,4 @@
-@import "https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,600;0,900;1,400;1,900&display=swap";
+@import "https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,600;0,700;1,400;1,700&display=swap";
 
 @font-face {
 font-display:swap;
@@ -27,7 +27,13 @@ src:url(https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsM
 --text-alt:#fdfdfd;
 --text-course-schedule:#fdfdfd;
 --text-light:#616161;
---text-main:#252525
+--text-main:#252525;
+--theme-icon:url(../img/theme-light.png);
+--export-icon:url(../img/export-light.png);
+--print-icon:url(../img/print-light.png);
+--about-icon:url(../img/about-light.png);
+--star-course-empty:url(../img/star-empty-light.png);
+--star-course-filled:url(../img/star-filled-light.png);
 }
 
 [data-theme="dark"] {
@@ -40,7 +46,13 @@ src:url(https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsM
 --search-button-background:#57ac4f;
 --text-alt:#131313;
 --text-light:#bdbdbd;
---text-main:#dbdbdb
+--text-main:#dbdbdb;
+--theme-icon:url(../img/theme-dark.png);
+--export-icon:url(../img/export-dark.png);
+--print-icon:url(../img/print-dark.png);
+--about-icon:url(../img/about-dark.png);
+--star-course-empty:url(../img/star-empty-dark.png);
+--star-course-filled:url(../img/star-filled-dark.png);
 }
 
 body {
@@ -50,7 +62,7 @@ flex-direction:row;
 }
 
 body * {
-transition:all .15s ease-in-out
+transition:all .05s ease-in-out
 }
 
 *:focus{
@@ -68,8 +80,6 @@ max-height:100%;
 max-width:100%
 }
 
-
-
 #fader {
 position: fixed;
 top: 0;
@@ -82,7 +92,6 @@ background: var(--background-alt);
 animation-duration: 300ms;
 animation-timing-function: ease-in-out;
 }
-
 
 
 @keyframes fade-out {
@@ -104,9 +113,6 @@ animation-timing-function: ease-in-out;
     opacity: 1;
     animation-name: fade-in;
 }
-
-
-
 
 #share-image {
 height:200px;
@@ -133,7 +139,10 @@ outline:none
 
 .logo {
 height:32px;
-width:32px
+width:32px;
+position: absolute;
+float:left;
+clear:left;
 }
 
 .noselect {
@@ -162,7 +171,7 @@ margin-top:1%;
 width:20%
 }
 
-#title-bar {
+.title-bar {
 align-items:center;
 background-color:var(--background-main);
 border-radius:var(--roundedness);
@@ -197,14 +206,39 @@ background-color:var(--background-alt);
 border-radius:var(--roundedness);
 color:var(--text-main);
 cursor:pointer;
-font:1em/1.8em "JetBrains Mono",sans-serif;
 height:32px;
-margin-left:1vw;
-margin-right:1vw;
+width:32px;
+background-size:32px 32px;
+text-align:center;
+}
+
+.title-bar-button.export {
+background-image:var(--export-icon);
+}
+
+.title-bar-button.print {
+background-image:var(--print-icon);
+}
+
+.title-bar-button.theme {
+background-image:var(--theme-icon);
+}
+
+.title-bar-button.about {
+background-image:var(--about-icon);
+}
+
+.title-bar-button.text {
 padding-left:var(--padding-medium);
 padding-right:var(--padding-medium);
-text-align:center;
-width:140px
+font:1em/1.8em "JetBrains Mono",sans-serif;
+filter:none;
+}
+
+.title-bar-button.wide {
+width:140px;
+margin-left: 8vw;
+margin-right: 8vw;
 }
 
 .title-bar-button:hover {
@@ -218,7 +252,7 @@ transform:scale(0.95)
 .search-button {
 background-color:var(--search-button-background);
 color:var(--text-alt);
-width:20%
+width:40%
 }
 
 .time {
@@ -229,7 +263,7 @@ transform:translate(0,-7px)
 }
 
 .day {
-font:900 18px Roboto,monospace;
+font:700 18px Roboto,monospace;
 letter-spacing:1px;
 padding:4% 0;
 text-align:center
@@ -280,7 +314,7 @@ width:100%
 background-color:var(--background-alt);
 border-radius:var(--roundedness);
 color:var(--text-main);
-font:900 larger Roboto,sans-serif;
+font:700 larger Roboto,sans-serif;
 margin-bottom:1vh;
 padding:var(--padding)
 }
@@ -353,7 +387,7 @@ text-align:right
 
 .course-desc .title {
 color:var(--text-main);
-font:900 26px Roboto,sans-serif;
+font:700 26px Roboto,sans-serif;
 margin-bottom:.5vh
 }
 
@@ -455,15 +489,22 @@ justify-content:center;
 overflow:hidden;
 padding:var(--padding-small);
 text-align:center;
-z-index:1000
+z-index:1000;
+position: relative;
+filter:opacity(.9)
 }
 
 .from-course-list {
-z-index:500
+z-index:500;
+filter:opacity(.5)
 }
 
+.starred-course{
+z-index:1050;
+filter:opacity(1)
+}
 .course-schedule-block .name {
-font:900 .7vmax Roboto,sans-serif
+font:700 .7vmax Roboto,sans-serif
 }
 
 .course-schedule-block .identifier {
@@ -471,15 +512,36 @@ font:.6vmax "JetBrains Mono",monospace
 }
 
 .course-schedule-block .room {
-font:600 .7vmax Roboto,sans-serif
+font:400 italic .7vmax Roboto,sans-serif
 }
 
 .course-info {
 float:left;
-max-width:90%;
+max-width:80%;
 overflow:hidden;
 text-overflow:ellipsis;
 white-space:nowrap
+}
+
+.star-course {
+background-image:var(--star-course-empty);
+background-size:cover;
+clear:left;
+float:left;
+height:1vmax;
+width:1vmax;
+margin-right: var(--padding-medium);
+z-index: 100000;
+}
+
+.star-course.top-right{
+position:absolute;
+top:6px;
+right:0
+}
+
+.star-course.filled{
+background-image:var(--star-course-filled);
 }
 
 .delete-course {
@@ -535,7 +597,7 @@ a:link,a:visited {
 color:#83c3eb
 }
 
-#course-info-box,#course-box {
+#course-info-box,#course-box, #extra-buttons {
 background-color:var(--background-main);
 border-radius:var(--roundedness);
 display:inline-block;
@@ -544,8 +606,14 @@ padding:var(--padding);
 width:100%
 }
 
+
+#extra-buttons {
+display:flex;
+flex-direction:row;
+justify-content:space-evenly;
+}
 .course-search-result:hover,.course-schedule-block:hover {
-filter:brightness(1.1)
+filter:brightness(1.1) opacity(1)
 }
 
 #course-search-desc .timing,#course-search-desc .instructors {
@@ -601,16 +669,15 @@ transform:translate(2px,-4px)
 
 .title-bar-button {
 font-size:17px;
-width:20vw
 }
 
 .search-button {
 margin-bottom:1vh;
 margin-top:1vh;
-width:80vw
+width:90vw
 }
 
-#title-bar {
+.title-bar {
 flex-direction:row;
 flex-wrap:wrap;
 justify-content:center
@@ -677,16 +744,21 @@ font-size:1vmax!important
 display:none
 }
 
-.delete-course,.merge-course {
+.delete-course,.merge-course,.star-course {
 height:3vmax;
 width:3vmax
+}
+
+.star-course.on-grid{
+width:2vmax;
+height:2vmax;
 }
 
 #course-info-box,#course-box {
 width:92vw
 }
 
-#course-info-table,#course-list-table {
+#course-info-table,#course-list-table,#extra-buttons {
 width:91vw
 }
 }

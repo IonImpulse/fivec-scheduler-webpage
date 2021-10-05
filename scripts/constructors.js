@@ -87,8 +87,8 @@ function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_i
         course_room.innerHTML = `${time.location.building} ${time.location.room}`;
 
         // Append all the elements
-        course_div.appendChild(course_title);
         course_div.appendChild(course_identifier);
+        course_div.appendChild(course_title);
         course_div.appendChild(course_room);
 
         // Div has been created, now we need to place it on the grid
@@ -119,6 +119,15 @@ function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_i
             cloned_div.onmouseenter = function () {
                 showCourseOverlay(course.identifier)
             };
+
+            // Create the star div
+            let star_button = document.createElement("div");
+            star_button.className = "star-course on-grid top-right";
+            star_button.onclick = function () {
+                starCourse(course.identifier);
+            };
+    
+            cloned_div.appendChild(star_button);
 
             return_list.push(cloned_div);
         }
@@ -180,7 +189,14 @@ function createLoadedCourseDiv(identifier, title, color) {
         deleteCourse(identifier);
     };
 
+    let star_button = document.createElement("div");
+    star_button.className = "star-course";
+    star_button.onclick = function () {
+        starCourse(identifier);
+    };
+    
     div.appendChild(delete_button);
+    div.insertBefore(star_button,div.firstChild);
 
     return div;
 }

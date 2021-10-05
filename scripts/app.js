@@ -633,3 +633,34 @@ function showCourseOverlay(identifier, override=false) {
 		course_info_table.appendChild(node_to_append);
 	}
 }
+
+function starCourse(identifier) {
+	// Stop bubbling onclick event
+	if (!e) var e = window.event;
+    e.cancelBubble = true;
+    if (e.stopPropagation) e.stopPropagation();
+	
+	if (starred_courses.includes(identifier)) {
+		starred_courses.splice(starred_courses.indexOf(identifier), 1);
+	} else {
+		starred_courses.push(identifier);
+	}
+
+	save_json_data("starred_courses", starred_courses);
+
+	let els = document.getElementsByClassName(`${identifier}-loaded`);
+
+	for (let el of els) {
+		el.classList.toggle("starred-course");
+		el.getElementsByClassName("star-course")[0].classList.toggle("filled");
+	}
+}
+
+function showStarCourse(identifier) {
+	let els = document.getElementsByClassName(`${identifier}-loaded`);
+
+	for (let el of els) {
+		el.classList.add("starred-course");
+		el.getElementsByClassName("star-course")[0].classList.add("filled");
+	}
+}

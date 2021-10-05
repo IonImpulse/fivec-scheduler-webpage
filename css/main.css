@@ -433,7 +433,7 @@ padding:var(--padding-medium)
 
 .selected {
 transform:scale(1.04);
-z-index:10000 !important;
+z-index:1051 !important;
 }
 
 .code-explain {

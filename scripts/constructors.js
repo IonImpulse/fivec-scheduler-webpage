@@ -120,6 +120,15 @@ function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_i
                 showCourseOverlay(course.identifier)
             };
 
+            // Create the star div
+            let star_button = document.createElement("div");
+            star_button.className = "star-course on-grid top-right";
+            star_button.onclick = function () {
+                starCourse(course.identifier);
+            };
+    
+            cloned_div.appendChild(star_button);
+
             return_list.push(cloned_div);
         }
         time_index++;
@@ -180,7 +189,14 @@ function createLoadedCourseDiv(identifier, title, color) {
         deleteCourse(identifier);
     };
 
+    let star_button = document.createElement("div");
+    star_button.className = "star-course";
+    star_button.onclick = function () {
+        starCourse(identifier);
+    };
+    
     div.appendChild(delete_button);
+    div.insertBefore(star_button,div.firstChild);
 
     return div;
 }

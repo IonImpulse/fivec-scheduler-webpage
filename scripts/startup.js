@@ -140,6 +140,7 @@ function updateSchedule() {
     clearSchedule();
     updateLoadedCourses();
     updateLoadedCourseLists();
+    updateStarredCourses();
 
     if (max_grid_rows == 0) {
         max_grid_rows = 350;
@@ -244,7 +245,7 @@ function updateLoadedCourseLists() {
     for (let course_list of loaded_course_lists) {
         let i = 0;
         for (let course of course_list.courses) {
-            let course_div_list = createScheduleGridDiv(course, colors[i % colors.length] + "66", set_max_grid_rows = true, low_z_index = true);
+            let course_div_list = createScheduleGridDiv(course, colors[i % colors.length], set_max_grid_rows = true, low_z_index = true);
 
             for (let course_div of course_div_list) {
                 course_schedule_grid.appendChild(course_div);
@@ -252,6 +253,12 @@ function updateLoadedCourseLists() {
 
             i++;
         }
+    }
+}
+
+function updateStarredCourses() {
+    for (let identifier of starred_courses) {
+        showStarCourse(identifier);
     }
 }
 

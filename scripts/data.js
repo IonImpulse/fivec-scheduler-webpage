@@ -26,6 +26,8 @@ async function update_database(full=false) {
     loaded_local_courses = await load_json_data("loaded_local_courses");
     loaded_course_lists = await load_json_data("loaded_course_lists");
 
+    starred_courses = await load_json_data("starred_courses");
+
     if (loaded_local_courses == null) {
         loaded_local_courses = [];
     }
@@ -34,6 +36,10 @@ async function update_database(full=false) {
         loaded_course_lists = [];
     }
 
+    if (starred_courses == null) {
+        starred_courses = [];
+    }
+    
     let response;
 
     if (current_data === null || current_data.timestamp == undefined || Object.entries(current_data).length === 0) {

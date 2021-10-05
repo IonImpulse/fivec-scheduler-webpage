@@ -1,4 +1,4 @@
-const current_version = '1.1.1';
+const current_version = '1.2.0';
 // On install, cache everything
 self.addEventListener('install', (event) => {
     event.waitUntil(
@@ -20,6 +20,18 @@ self.addEventListener('install', (event) => {
                 'scripts/libs/sweetalert2.min.js',
                 'img/delete.png',
                 'img/merge.png',
+                'img/about-dark.png',
+                'img/about-light.png',
+                'img/print-dark.png',
+                'img/print-light.png',
+                'img/export-dark.png',
+                'img/export-light.png',
+                'img/theme-dark.png',
+                'img/theme-light.png',
+                'img/star-empty-dark.png',
+                'img/star-empty-light.png',
+                'img/star-filled-dark.png',
+                'img/star-filled-light.png',
                 'android-chrome-192x192.png',
                 'android-chrome-512x512.png',
                 'apple-touch-icon.png',

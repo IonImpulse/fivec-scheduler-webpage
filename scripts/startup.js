@@ -176,6 +176,7 @@ function updateLoadedCourses() {
 
     if (loaded_local_courses.length > 0) {
         for (let i = 0; i < loaded_local_courses.length; i++) {
+
             course_list_table.appendChild(createLoadedCourseDiv(loaded_local_courses[i].identifier, loaded_local_courses[i].title, colors[i % colors.length]));
         }
     }
@@ -186,13 +187,15 @@ function updateLoadedCourses() {
     let i = 0;
 
     for (let course of loaded_local_courses) {
-        let course_div_list = createScheduleGridDiv(course, colors[i % colors.length], set_max_grid_rows = true);
+        if (course.timing[0].days[0] != "NA") {
+            let course_div_list = createScheduleGridDiv(course, colors[i % colors.length], set_max_grid_rows = true);
 
-        for (let course_div of course_div_list) {
-            course_schedule_grid.appendChild(course_div);
+            for (let course_div of course_div_list) {
+                course_schedule_grid.appendChild(course_div);
+            }
+
+            i++;
         }
-
-        i++;
     }
 }
 
@@ -246,13 +249,15 @@ function updateLoadedCourseLists() {
     for (let course_list of loaded_course_lists) {
         let i = 0;
         for (let course of course_list.courses) {
-            let course_div_list = createScheduleGridDiv(course, colors[i % colors.length], set_max_grid_rows = true, low_z_index = true);
+            if (course.timing[0].days[0] != "NA") {
+                let course_div_list = createScheduleGridDiv(course, colors[i % colors.length], set_max_grid_rows = true, low_z_index = true);
 
-            for (let course_div of course_div_list) {
-                course_schedule_grid.appendChild(course_div);
+                for (let course_div of course_div_list) {
+                    course_schedule_grid.appendChild(course_div);
+                }
+
+                i++;
             }
-
-            i++;
         }
     }
 }

@@ -156,7 +156,7 @@ function buttonSearch() {
 		Swal.fire({
 			title: 'Search Courses',
 			icon: 'info',
-			html: `<div><input class="swal2-input" id="course-input" onKeyUp="updateCourseSearch()"></div>` +
+			html: `<div><input class="swal2-input" id="course-input" onKeyUp="expensiveCourseSearch()"></div>` +
 				`<div id="course-search-box"><div id="course-search-results"></div><div id="course-search-desc" class="course-desc"></div></div><br>`,
 			showCloseButton: true,
 			showCancelButton: true,
@@ -272,7 +272,7 @@ function buttonAbout() {
 			`<b>API Repo:</b> <a href="https://github.com/IonImpulse/fivec-scheduler-server">fivec-scheduler-server</a>.<br>` +
 			`Built using <a href="https://www.rust-lang.org/">Rust</a><BR><BR>` +
 			`<b><u>Credits:</b></u><BR>` +
-			`<b>fuse.js</b><br>Created by Kiro Risk.<br>Licensed under the Apache License 2.0.<br>` +
+			`<b>fuzzysort.js</b><br>Created by Stephen Kamenar.<br>Licensed under the MIT License.<br>` +
 			`<b>sweetalert2.js</b><br>Created by Tristan Edwards & Limon Monte.<br>Licensed under the MIT License.<br>` +
 			`<b>qrcodegen.js</b><br>Created by Nayuki.<br>Licensed under the MIT License.<br>` +
 			`<b>rasterizeHTML.js</b><br>Created by cburgmer.<br>Licensed under the MIT License.<br></div>`
@@ -286,8 +286,6 @@ function debounce(func, timeout = 600) {
 		timer = setTimeout(() => { func.apply(this, args); }, timeout);
 	};
 }
-
-const updateCourseSearch = debounce(() => expensiveCourseSearch());
 
 function expensiveCourseSearch() {
 	let input = document.getElementById("course-input");
@@ -316,16 +314,19 @@ function expensiveCourseSearch() {
 		setCourseDescription(0);
 
 	} else {
-		let search_term = tweakSearch(input.value);
+		const search_term = tweakSearch(input.value);
 
 		console.info(`INFO: search changed from "${input.value}" => "${search_term}"`);
 
-		let results = fuzzy_searcher.search(search_term);
+		const results = search_courses(search_term);
 
+		console.info(`INFO: found ${results.length} results`);
+		console.log(results);
+		
 		for (let i = 0; i < results.length; i++) {
-			let course = results[i].item;
-
-			let course_div = createResultDiv(course, colors[i % colors.length], results[i].refIndex);
+			let course = results[i].obj;
+			
+			let course_div = createResultDiv(course, colors[i % colors.length], course.descIndex);
 
 			if (selected_courses.includes(course.identifier)) {
 				course_div.classList.add("add-course-selected");

@@ -71,9 +71,6 @@ async function update_database(full=false) {
         );
         create_searcher();
     }
-
-
-
 }
 
 function update_courses(source, target) {
@@ -95,24 +92,41 @@ function update_loop() {
 }
 
 async function create_searcher() {
-    const options = {
-        isCaseSensitive: false,
-        shouldSort: true,
-        minMatchCharLength: 2,
-        threshold: 0.7,
-        keys: [
-            {
-                name: "identifier",
-                weight: 2,
-            },
-            "id",
-            "code",
-            "dept",
-            "title",
-            "instructors",
-            "description",
-        ]
-    };
+    all_courses_global.forEach((t, index) => t.descIndex = index);
+    all_courses_global.forEach(t => t.instructorString = t.instructors.join(" "));
+    all_courses_global.forEach(t => t.filePrepared = fuzzysort.prepare(t.file));
+}
 
-    fuzzy_searcher = new Fuse(all_courses_global, options);
+function search_courses(query) {
+    const options = {
+        limit: 100, // don't return more results than you need!
+        allowTypo: true, // if you don't care about allowing typos
+        threshold: -10000, // don't return bad results
+        keys: ['identifier', 'title', 'instructorString',], // keys to search
+    }
+
+    let results = [];
+
+    if (query.includes(" ")) {
+        let terms = query.split(" ");
+        for (let search_term of terms) {
+            let temp_results = fuzzysort.go(search_term.trim(), all_courses_global, options);
+            
+            if (results.length > 0) {
+                results = results.filter(t => temp_results.map(t => t.obj.identifier).includes(t.obj.identifier));
+            } else {
+                results = temp_results;
+            }
+        }
+
+        if (results.length == 0) {
+            results = fuzzysort.go(query, all_courses_global, options);
+        }
+        
+    } else {
+        results = fuzzysort.go(query, all_courses_global, options);
+    }
+
+
+    return results;
 }

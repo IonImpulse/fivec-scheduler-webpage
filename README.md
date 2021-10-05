@@ -8,7 +8,7 @@ Live at [www.5cheduler.com](https://www.5cheduler.com/)
 
 ## Features
 - 🚀 Superfast loading times
-- 🔍 **Human-friendly**, typo-resistant search engine for all courses at the [Claremont Colleges](https://www.claremont.edu/)
+- 🔍 **SUPERFAST** typo-resistant search engine for all courses at the [Claremont Colleges](https://www.claremont.edu/)
 - 🌗 Light & **Dark** Mode
 - 📧 **Share and load** schedules as a code, link, or QR code
 - 📸 **Export** schedule as image

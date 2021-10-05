@@ -27,7 +27,11 @@ src:url(https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsM
 --text-alt:#fdfdfd;
 --text-course-schedule:#fdfdfd;
 --text-light:#616161;
---text-main:#252525
+--text-main:#252525;
+--theme-icon:url(../img/theme-light.png);
+--export-icon:url(../img/export-light.png);
+--print-icon:url(../img/print-light.png);
+--about-icon:url(../img/about-light.png);
 }
 
 [data-theme="dark"] {
@@ -40,7 +44,11 @@ src:url(https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsM
 --search-button-background:#57ac4f;
 --text-alt:#131313;
 --text-light:#bdbdbd;
---text-main:#dbdbdb
+--text-main:#dbdbdb;
+--theme-icon:url(../img/theme-dark.png);
+--export-icon:url(../img/export-dark.png);
+--print-icon:url(../img/print-dark.png);
+--about-icon:url(../img/about-dark.png);
 }
 
 body {
@@ -50,7 +58,7 @@ flex-direction:row;
 }
 
 body * {
-transition:all .15s ease-in-out
+transition:all .1s ease-in-out
 }
 
 *:focus{
@@ -68,8 +76,6 @@ max-height:100%;
 max-width:100%
 }
 
-
-
 #fader {
 position: fixed;
 top: 0;
@@ -82,7 +88,6 @@ background: var(--background-alt);
 animation-duration: 300ms;
 animation-timing-function: ease-in-out;
 }
-
 
 
 @keyframes fade-out {
@@ -104,9 +109,6 @@ animation-timing-function: ease-in-out;
     opacity: 1;
     animation-name: fade-in;
 }
-
-
-
 
 #share-image {
 height:200px;
@@ -197,14 +199,39 @@ background-color:var(--background-alt);
 border-radius:var(--roundedness);
 color:var(--text-main);
 cursor:pointer;
-font:1em/1.8em "JetBrains Mono",sans-serif;
 height:32px;
+width:32px;
+background-size:32px 32px;
 margin-left:1vw;
 margin-right:1vw;
+text-align:center;
+}
+
+.title-bar-button.export {
+background-image:var(--export-icon);
+}
+
+.title-bar-button.print {
+background-image:var(--print-icon);
+}
+
+.title-bar-button.theme {
+background-image:var(--theme-icon);
+}
+
+.title-bar-button.about {
+background-image:var(--about-icon);
+}
+
+.title-bar-button.text {
 padding-left:var(--padding-medium);
 padding-right:var(--padding-medium);
-text-align:center;
-width:140px
+font:1em/1.8em "JetBrains Mono",sans-serif;
+filter:none;
+}
+
+.title-bar-button.wide {
+width:140px;
 }
 
 .title-bar-button:hover {
@@ -218,7 +245,7 @@ transform:scale(0.95)
 .search-button {
 background-color:var(--search-button-background);
 color:var(--text-alt);
-width:20%
+width:40%
 }
 
 .time {
@@ -601,13 +628,12 @@ transform:translate(2px,-4px)
 
 .title-bar-button {
 font-size:17px;
-width:20vw
 }
 
 .search-button {
 margin-bottom:1vh;
 margin-top:1vh;
-width:80vw
+width:90vw
 }
 
 #title-bar {

@@ -1,4 +1,4 @@
-@import "https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,600;0,900;1,400;1,900&display=swap";
+@import "https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,600;0,700;1,400;1,700&display=swap";
 
 @font-face {
 font-display:swap;
@@ -229,7 +229,7 @@ transform:translate(0,-7px)
 }
 
 .day {
-font:900 18px Roboto,monospace;
+font:700 18px Roboto,monospace;
 letter-spacing:1px;
 padding:4% 0;
 text-align:center
@@ -280,7 +280,7 @@ width:100%
 background-color:var(--background-alt);
 border-radius:var(--roundedness);
 color:var(--text-main);
-font:900 larger Roboto,sans-serif;
+font:700 larger Roboto,sans-serif;
 margin-bottom:1vh;
 padding:var(--padding)
 }
@@ -353,7 +353,7 @@ text-align:right
 
 .course-desc .title {
 color:var(--text-main);
-font:900 26px Roboto,sans-serif;
+font:700 26px Roboto,sans-serif;
 margin-bottom:.5vh
 }
 
@@ -463,7 +463,7 @@ z-index:500
 }
 
 .course-schedule-block .name {
-font:900 .7vmax Roboto,sans-serif
+font:700 .7vmax Roboto,sans-serif
 }
 
 .course-schedule-block .identifier {
@@ -471,7 +471,7 @@ font:.6vmax "JetBrains Mono",monospace
 }
 
 .course-schedule-block .room {
-font:600 .7vmax Roboto,sans-serif
+font:400 italic .7vmax Roboto,sans-serif
 }
 
 .course-info {

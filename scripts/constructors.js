@@ -87,8 +87,8 @@ function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_i
         course_room.innerHTML = `${time.location.building} ${time.location.room}`;
 
         // Append all the elements
-        course_div.appendChild(course_title);
         course_div.appendChild(course_identifier);
+        course_div.appendChild(course_title);
         course_div.appendChild(course_room);
 
         // Div has been created, now we need to place it on the grid

@@ -754,11 +754,11 @@ width:2vmax;
 height:2vmax;
 }
 
-#course-info-box,#course-box {
+#course-info-box,#course-box,#extra-buttons {
 width:92vw
 }
 
-#course-info-table,#course-list-table,#extra-buttons {
+#course-info-table,#course-list-table {
 width:91vw
 }
 }

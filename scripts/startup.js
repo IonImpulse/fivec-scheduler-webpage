@@ -38,6 +38,7 @@ async function startup() {
 
     // Finally, generate descriptions
     generateAllDescriptions();
+    create_searcher();
 }
 
 // Generates and sets divs for timeslots

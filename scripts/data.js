@@ -75,7 +75,6 @@ async function update_database(full=false) {
         console.log(
             `Total Courses Loaded: ${all_courses_global.length}\nTotal Local Courses Loaded: ${loaded_local_courses.length}\nTotal Course Lists Loaded: ${loaded_course_lists.length}`
         );
-        create_searcher();
     }
 }
 

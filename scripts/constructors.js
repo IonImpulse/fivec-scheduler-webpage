@@ -67,7 +67,6 @@ function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_i
     for (let time of course.timing) {
         // The days equality section is a bit of a hack
         let search = displayed_timing.findIndex(x => `${x.days}` == `${time.days}` && x.start_time == time.start_time && x.end_time == time.end_time);
-        console.log(search);
         if (search != -1) {
             displayed_timing[search].locations.push(time.location);
         } else {
@@ -79,9 +78,6 @@ function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_i
             });
         }
     }
-
-    console.log(displayed_timing);
-
     for (let time of displayed_timing) {
         // Create the div
         let course_div = document.createElement("div");

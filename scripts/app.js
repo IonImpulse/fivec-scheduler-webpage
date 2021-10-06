@@ -4,7 +4,7 @@
 
 function buttonLoad() {
 	Swal.fire({
-		title: 'Load Course Code',
+		title: 'Load Course List',
 		html: `<div><input maxlength='7' id="code-input" oninput="checkIfFull()"></div>`,
 		focusConfirm: false,
 		showCancelButton: true,
@@ -86,7 +86,12 @@ function buttonExport() {
 
 function download_link() {
 	var link = document.createElement('a');
-	link.download = 'schedule.png';
+	let date = new Date();
+	console.log(date.toLocaleString('en-US'));
+	let date_string = date.toLocaleString('en-US');
+	date_string = date_string.replace(/,/g, "").replace(/ /g, "_").replace(/:/g,"-").replace(/\//g, "-");
+	console.log(date_string);
+	link.download = `schedule-${date_string}.png`;
 	link.href = document.getElementById('export-holder').toDataURL()
 	link.click();
 }
@@ -196,8 +201,9 @@ function buttonSearch() {
 			}
 		});
 		input.focus();
+
+		// For screenreaders/text browsers, we need to make the content available to the user in a non-visual way.
 		input.addEventListener("keydown", function(event) {
-			// Number 13 is the "Enter" key on the keyboard
 			if (event.code === "Enter") {
 			  // Cancel the default action, if needed
 			  event.preventDefault();
@@ -206,7 +212,9 @@ function buttonSearch() {
 			}
 		}); 
 
-		expensiveCourseSearch();
+		setTimeout(() => {
+			expensiveCourseSearch()
+		}, 10);
 	}
 }
 

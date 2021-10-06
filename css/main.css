@@ -33,6 +33,7 @@ src:url(https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsM
 --star-course-empty:url(../img/star-empty-light.png);
 --star-course-filled:url(../img/star-filled-light.png);
 --load-icon:url(../img/load-light.png);
+--share-icon:url(../img/share-light.png);
 }
 
 [data-theme="dark"] {
@@ -50,9 +51,8 @@ src:url(https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsM
 --export-icon:url(../img/export-dark.png);
 --print-icon:url(../img/print-dark.png);
 --about-icon:url(../img/about-dark.png);
---star-course-empty:url(../img/star-empty-dark.png);
---star-course-filled:url(../img/star-filled-dark.png);
 --load-icon:url(../img/load-dark.png);
+--share-icon:url(../img/share-dark.png);
 }
 
 body {
@@ -208,8 +208,10 @@ color:var(--text-main);
 cursor:pointer;
 height:32px;
 width:32px;
-background-size:32px 32px;
+background-size:30px 30px;
 text-align:center;
+background-repeat: no-repeat;
+background-position: center;
 }
 
 .title-bar-button.export {
@@ -228,11 +230,12 @@ background-image:var(--theme-icon);
 background-image:var(--about-icon);
 }
 
-.title-bar-button.text {
-padding-left:var(--padding-medium);
-padding-right:var(--padding-medium);
-font:1em/1.9em "JetBrains Mono",sans-serif;
-filter:none;
+.title-bar-button.load {
+background-image:var(--load-icon);
+}
+
+.title-bar-button.share {
+background-image:var(--share-icon);
 }
 
 .title-bar-button.wide {
@@ -250,6 +253,10 @@ transform:scale(0.95)
 }
 
 .search-button {
+padding-left:var(--padding-medium);
+padding-right:var(--padding-medium);
+font:1em/1.9em "JetBrains Mono",sans-serif;
+filter:none;
 background-color:var(--search-button-background);
 color:var(--text-alt);
 width:40%

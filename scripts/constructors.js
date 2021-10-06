@@ -1,4 +1,4 @@
-function generateAllDescriptions() {
+async function generateAllDescriptions() {
 	all_desc_global = [];
 	for (let i = 0; i < all_courses_global.length; i++) {
 		let course = all_courses_global[i];

@@ -19,7 +19,7 @@ src:url(https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsM
 --padding-medium:7px;
 --padding-small:5px;
 --roundedness:5px;
---search-button-background:#28ac1c;
+--search-button-background:rgb(64, 187, 33);
 --shadow-blur:20px;
 --shadow-length:4px;
 --text-alt:#fdfdfd;
@@ -229,7 +229,7 @@ background-image:var(--about-icon);
 .title-bar-button.text {
 padding-left:var(--padding-medium);
 padding-right:var(--padding-medium);
-font:1em/1.8em "JetBrains Mono",sans-serif;
+font:1em/1.9em "JetBrains Mono",sans-serif;
 filter:none;
 }
 

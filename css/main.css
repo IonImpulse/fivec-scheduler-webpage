@@ -32,6 +32,7 @@ src:url(https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsM
 --about-icon:url(../img/about-light.png);
 --star-course-empty:url(../img/star-empty-light.png);
 --star-course-filled:url(../img/star-filled-light.png);
+--load-icon:url(../img/load-light.png);
 }
 
 [data-theme="dark"] {
@@ -51,6 +52,7 @@ src:url(https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsM
 --about-icon:url(../img/about-dark.png);
 --star-course-empty:url(../img/star-empty-dark.png);
 --star-course-filled:url(../img/star-filled-dark.png);
+--load-icon:url(../img/load-dark.png);
 }
 
 body {

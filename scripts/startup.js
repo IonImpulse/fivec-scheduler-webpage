@@ -49,7 +49,11 @@ function generateGridTimes() {
         let time = document.createElement("div");
         time.className = "time";
         time.id = "time-" + i;
-        time.innerHTML = i + ":00 AM";
+        if (i == 12) {
+            time.innerHTML = i + ":00 PM";
+        } else {
+            time.innerHTML = i + ":00 AM";
+        }
         time.style.gridColumnStart = 1;
         time.style.gridColumnEnd = 2;
         time.style.gridRowStart = 2 + ((i - 7) * 20);

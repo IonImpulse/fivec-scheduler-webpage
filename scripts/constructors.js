@@ -59,7 +59,30 @@ function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_i
     let time_index = 0;
     let return_list = [];
     // Have to create one for each time slot it's in
+    //
+    // But first, we need to figure out if there are duplicate times
+    // for multiple rooms
+    let displayed_timing = [];
+
     for (let time of course.timing) {
+        // The days equality section is a bit of a hack
+        let search = displayed_timing.findIndex(x => `${x.days}` == `${time.days}` && x.start_time == time.start_time && x.end_time == time.end_time);
+        console.log(search);
+        if (search != -1) {
+            displayed_timing[search].locations.push(time.location);
+        } else {
+            displayed_timing.push({
+                days: time.days,
+                start_time: time.start_time,
+                end_time: time.end_time,
+                locations: [time.location]
+            });
+        }
+    }
+
+    console.log(displayed_timing);
+
+    for (let time of displayed_timing) {
         // Create the div
         let course_div = document.createElement("div");
         course_div.className = `${course.identifier}-loaded course-schedule-block unselectable`;
@@ -81,10 +104,10 @@ function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_i
 
         course_identifier.innerHTML = course.identifier;
 
-        // Create the course room
+        // Create the course room(s)
         let course_room = document.createElement("div");
         course_room.className = "room";
-        course_room.innerHTML = `${time.location.building} ${time.location.room}`;
+        course_room.innerHTML = time.locations.map(x => `${x.building} ${x.room}`).join("<br>");
 
         // Append all the elements
         course_div.appendChild(course_identifier);

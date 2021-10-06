@@ -113,7 +113,7 @@ function search_courses(query) {
     let results = [];
 
     if (query.includes(" ")) {
-        let terms = query.split(" ");
+        const terms = query.split(" ");
         for (let search_term of terms) {
             let temp_results = fuzzysort.go(search_term.trim(), all_courses_global, options);
             
@@ -124,13 +124,15 @@ function search_courses(query) {
             }
         }
 
-        if (results.length == 0) {
-            results = fuzzysort.go(query, all_courses_global, options);
+        if (results.length < 10) {
+            const results_dash = fuzzysort.go(terms.join("-"), all_courses_global, options);
+            const results_norm = fuzzysort.go(query, all_courses_global, options);
+            // Join results for all unique results
+            const results_combined = join_results(results_dash, results_norm);
+            results = join_results(results_combined, results);
         }
-
-        if (results.length == 0) {
-            results = fuzzysort.go(terms.join("-"), all_courses_global, options);
-        }
+        
+        results = results.sort((a, b) => b.score - a.score);
         
     } else {
         results = fuzzysort.go(query, all_courses_global, options);
@@ -138,4 +140,8 @@ function search_courses(query) {
 
 
     return results;
+}
+
+function join_results(arr1, arr2) {
+    return arr1.concat(arr2.filter((t, i) => !arr1.map(t => t.obj.identifier).includes(t.obj.identifier)))
 }

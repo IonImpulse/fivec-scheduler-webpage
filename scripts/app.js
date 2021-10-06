@@ -214,7 +214,7 @@ function buttonSearch() {
 
 		setTimeout(() => {
 			expensiveCourseSearch()
-		}, 10);
+		}, 100);
 	}
 }
 
@@ -458,7 +458,7 @@ function tweakSearch(string) {
 	let num_corrected_string = "";
 
 	for (part of return_string.split(" ")) {
-		// JS is horrible, to see if a string is a number or no
+		// JS is horrible, to see if a string is a number or not
 		// I have to parse it then take the output and convert
 		// that back to a string.
 		//

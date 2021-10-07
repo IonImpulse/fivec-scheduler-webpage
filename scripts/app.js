@@ -169,7 +169,7 @@ function buttonSearch() {
 		Swal.fire({
 			title: 'Search Courses',
 			icon: 'info',
-			html: `<div><input class="swal2-input" id="course-input" onKeyUp="expensiveCourseSearch()"></div>` +
+			html: `<div><input class="swal2-input" id="course-input" onKeyUp="processChange()"></div>` +
 				`<div id="course-search-box"><div id="course-search-results"></div><div id="course-search-desc" class="course-desc"></div></div><br>`,
 			showCloseButton: true,
 			showCancelButton: true,
@@ -295,11 +295,13 @@ function buttonAbout() {
 	});
 }
 
-function debounce(func, timeout = 600) {
+const processChange = debounce(() => expensiveCourseSearch());
+
+function debounce(func) {
 	let timer;
 	return (...args) => {
 		clearTimeout(timer);
-		timer = setTimeout(() => { func.apply(this, args); }, timeout);
+		timer = setTimeout(() => { func.apply(this, args); }, debounce_timer);
 	};
 }
 

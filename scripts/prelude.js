@@ -24,17 +24,18 @@ var loaded_local_courses = [];
 var loaded_course_lists = [];
 var vertical_layout = false;
 
+var debounce_timer = 300;
+
 const colors = [
-    "#4f6fac", 
+    "#2c5b8e",
     "#396F34", 
     "#ac4f4f", 
-    "#86378d", 
+    "#86378d",
     "#b86c25", 
     "#ac4f8d",
     "#B88700",
-    "#26507d",
     "#499112",
-    "#50B6B9",
+    "#3d7991",
 ];
 
 // *****

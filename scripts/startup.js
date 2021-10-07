@@ -36,9 +36,37 @@ async function startup() {
     let fader = document.getElementById("fader")
     fader.classList.add('fade-out');
 
-    // Finally, generate descriptions
+    // Generate descriptions & searcher
     generateAllDescriptions();
     create_searcher();
+
+    // Finally, benchmark to get approx speed index
+    testSpeed();
+
+}
+
+function testSpeed() {
+    // Old way to test speed of computer
+    // Really gives more of a "JS Speed Index" then an accurate
+    // speed of the computer in ghz
+    var _speedconstant = 8.9997e-9; //if speed=(c*a)/t, then constant=(s*t)/a and time=(a*c)/s
+    var d = new Date();
+    var amount = 150000000;
+    var estprocessor = 1.7; //average processor speed, in GHZ
+    console.log("JSBenchmark by Aaron Becker, running loop "+amount+" times.     Estimated time (for "+estprocessor+"ghz processor) is "+(Math.round(((_speedconstant*amount)/estprocessor)*100)/100)+"s");
+    for (var i = amount; i>0; i--) {} 
+    var newd = new Date();
+    var accnewd = Number(String(newd.getSeconds())+"."+String(newd.getMilliseconds()));
+    var accd = Number(String(d.getSeconds())+"."+String(d.getMilliseconds())); 
+    var di = accnewd-accd;
+    //console.log(accnewd,accd,di);
+    if (d.getMinutes() != newd.getMinutes()) {
+    di = (60*(newd.getMinutes()-d.getMinutes()))+di}
+    spd = ((_speedconstant*amount)/di);
+    if (spd > 1) {
+        debounce_timer
+    }
+    console.log("Time: "+Math.round(di*1000)/1000+"s, estimated speed: "+Math.round(spd*1000)/1000+"GHZ");
 }
 
 // Generates and sets divs for timeslots

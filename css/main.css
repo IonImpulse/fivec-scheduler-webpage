@@ -35,6 +35,7 @@ src:url(https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsM
 --star-course-filled:url(../img/star-filled-light.png);
 --load-icon:url(../img/load-light.png);
 --share-icon:url(../img/share-light.png);
+--cal-icon:url(../img/cal-light.png);
 }
 
 [data-theme="dark"] {
@@ -56,6 +57,7 @@ src:url(https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsM
 --about-icon:url(../img/about-dark.png);
 --load-icon:url(../img/load-dark.png);
 --share-icon:url(../img/share-dark.png);
+--cal-icon:url(../img/cal-dark.png);
 }
 
 .noscript {
@@ -234,6 +236,10 @@ background-image:var(--export-icon);
 
 .title-bar-button.print {
 background-image:var(--print-icon);
+}
+
+.title-bar-button.cal {
+background-image:var(--cal-icon);
 }
 
 .title-bar-button.theme {

@@ -10,12 +10,10 @@ const GET_UNIQUE_CODE = "getUniqueCode";
 const GET_COURSE_LIST_BY_CODE = function (code) { return "getCourseListByCode/" + code; }
 
 async function load_json_data(name) {
-    console.info(`Loading ${name}...`);
     return localforage.getItem(name);
 }
 
 async function save_json_data(name, data) {
-    console.info(`Saving ${name}...`);
     return localforage.setItem(name, data);
 }
 

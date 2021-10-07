@@ -26,6 +26,7 @@ src:url(https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsM
 --text-course-schedule:#fdfdfd;
 --text-light:#616161;
 --text-main:#252525;
+--link-color:#106497;
 --theme-icon:url(../img/theme-light.png);
 --export-icon:url(../img/export-light.png);
 --print-icon:url(../img/print-light.png);
@@ -45,14 +46,27 @@ src:url(https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsM
 --course-reopened:#e0c06a;
 --search-button-background:#57ac4f;
 --text-alt:#131313;
+--text-course-schedule:#e9e9e9;
 --text-light:#bdbdbd;
 --text-main:#dbdbdb;
+--link-color:#83c3eb;
 --theme-icon:url(../img/theme-dark.png);
 --export-icon:url(../img/export-dark.png);
 --print-icon:url(../img/print-dark.png);
 --about-icon:url(../img/about-dark.png);
 --load-icon:url(../img/load-dark.png);
 --share-icon:url(../img/share-dark.png);
+}
+
+.noscript {
+z-index: 999999;
+display: flex;
+justify-content: center;
+align-items: center;
+text-align: center;
+min-height: 100vh;
+min-width: 100vw;
+font: 1.5rem/1.5rem "JetBrains Mono", monospace;
 }
 
 body {
@@ -86,7 +100,7 @@ top: 0;
 left: 0;
 width: 100%;
 height: 100%;
-z-index: 999999;
+z-index: 99999;
 pointer-events: none;
 background: var(--background-alt);
 animation-duration: 300ms;
@@ -343,7 +357,7 @@ width:60vw
 
 .course-search-result {
 border-radius:var(--roundedness);
-color:var(--text-alt);
+color:var(--text-course-schedule);
 cursor:pointer;
 font:16px Roboto,sans-serif;
 margin:1vh;
@@ -602,7 +616,7 @@ font-family:"Roboto",sans-serif
 }
 
 a:link,a:visited {
-color:#83c3eb
+color:var(--link-color)
 }
 
 #course-info-box,#course-box, #extra-buttons {

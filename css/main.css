@@ -36,6 +36,7 @@ src:url(https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsM
 --load-icon:url(../img/load-light.png);
 --share-icon:url(../img/share-light.png);
 --cal-icon:url(../img/cal-light.png);
+--dl-icon:url(../img/dl-light.png);
 }
 
 [data-theme="dark"] {
@@ -58,6 +59,7 @@ src:url(https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsM
 --load-icon:url(../img/load-dark.png);
 --share-icon:url(../img/share-dark.png);
 --cal-icon:url(../img/cal-dark.png);
+--dl-icon:url(../img/dl-dark.png);
 }
 
 .noscript {
@@ -257,6 +259,12 @@ background-image:var(--load-icon);
 .title-bar-button.share {
 background-image:var(--share-icon);
 }
+
+.title-bar-button.dl {
+background-image:var(--dl-icon);
+margin-right:var(--padding);
+}
+
 
 .title-bar-button.wide {
 width:140px;
@@ -664,6 +672,23 @@ filter:brightness(1.6)
 #course-info-table .timing,#course-info-table .instructors,#course-info-table .notes {
 color:var(--text-main);
 font:12px Roboto
+}
+
+.ical-box {
+display: flex;
+flex-direction: column;
+justify-content: center;
+}
+
+.ical-dl-holder {
+background-color: var(--background-main);
+border-radius: var(--roundedness);
+color: var(--text-course-schedule);
+display: flex;
+flex-direction: row;
+padding:var(--padding);
+margin:var(--padding-small);
+align-items: center;
 }
 
 @media only screen and (max-width: 760px) {

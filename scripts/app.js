@@ -271,6 +271,66 @@ async function buttonShare() {
 	}
 }
 
+function buttonCal() {
+	if (loaded_local_courses.length == 0) {
+		Swal.fire({
+			title: 'No courses have been locally loaded!',
+			icon: 'error'
+		})
+	} else {
+		ical_all = generateICal(loaded_local_courses);
+		ical_starred = generateICal(loaded_course_lists.filter(course => starred_courses.includes(course.identifier)));
+		ical_nstarred = generateICal(loaded_course_lists.filter(course => !starred_courses.includes(course.identifier)));
+
+		Swal.fire({
+			title: 'Save as iCal',
+			icon: 'success',
+			html: `<div class="ical-box">
+				<div class="ical-dl-holder">
+					<div onclick="downloadICal(ical_all)" class="title-bar-button dl"></div>
+					Download all courses
+				</div>
+				<div class="ical-dl-holder">
+					<div onclick="downloadICal(ical_starred)" class="title-bar-button dl"></div>
+					Download starred courses
+				</div>
+				<div class="ical-dl-holder">
+					<div onclick="downloadICal(ical_nstarred)" class="title-bar-button dl"></div>
+					Download unstarred courses
+				</div>
+			</div>`,
+		});
+	}
+}
+
+function downloadICal(ical) {
+	console.log(ical.calendar());
+	ical.download("courses");
+}
+
+function generateICal(courses) {
+	let ical = ics();
+
+	courses.forEach(course => {
+		course.timing.forEach(timing => {
+			let start = new Date(timing.start_time);
+			let end = new Date(timing.end_time);
+
+			console.log(start, end);
+			
+			let location = `${timing.location.school} ${timing.location.building} ${timing.location.room}`;
+			let rrule = {
+				freq: 'WEEKLY',
+				byday: timing.days.map(day => day.toUpperCase().substring(0, 2)),
+			};
+
+			ical.addEvent(course.name, course.description, location, start, end, rrule);
+		});
+	});
+
+	return ical;
+}
+
 function buttonTheme() {
 	toggle_theme();
 }

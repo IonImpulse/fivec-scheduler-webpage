@@ -1,4 +1,4 @@
-const current_version = '1.2.4';
+const current_version = '1.3.0';
 // On install, cache everything
 self.addEventListener('install', (event) => {
     event.waitUntil(
@@ -18,6 +18,7 @@ self.addEventListener('install', (event) => {
                 'scripts/libs/qrcodegen-v1.7.0-es6.js',
                 'scripts/libs/rasterizeHTML.allinone.js',
                 'scripts/libs/sweetalert2.min.js',
+                'scripts/libs/ics.deps.min.js',
                 'img/delete.png',
                 'img/merge.png',
                 'img/about-dark.png',
@@ -34,6 +35,10 @@ self.addEventListener('install', (event) => {
                 'img/share-light.png',
                 'img/load-dark.png',
                 'img/load-light.png',
+                'img/cal-dark.png',
+                'img/cal-light.png',
+                'img/dl-dark.png',
+                'img/dl-light.png',
                 'android-chrome-192x192.png',
                 'android-chrome-512x512.png',
                 'apple-touch-icon.png',
@@ -45,6 +50,7 @@ self.addEventListener('install', (event) => {
                 'safari-pinned-tab.svg',
                 'site.webmanifest',
                 'sw.js',
+                'robots.txt',
             ]);
         })
     );

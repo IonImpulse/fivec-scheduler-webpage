@@ -24,7 +24,7 @@ var loaded_local_courses = [];
 var loaded_course_lists = [];
 var vertical_layout = false;
 
-var debounce_timer = 300;
+var debounce_timer = 100;
 
 const colors = [
     "#2c5b8e",
@@ -83,6 +83,5 @@ document.addEventListener("keydown", function(event) {
 });
 
 getVersion();
-
 getTheme();
 isVerticalLayout();

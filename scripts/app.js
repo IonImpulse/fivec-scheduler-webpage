@@ -334,11 +334,7 @@ function expensiveCourseSearch() {
 	} else {
 		const search_term = tweakSearch(input.value);
 
-		console.info(`INFO: search changed from "${input.value}" => "${search_term}"`);
-
 		const results = search_courses(search_term);
-
-		console.info(`INFO: found ${results.length} results`);
 		
 		for (let i = 0; i < results.length; i++) {
 			let course = results[i].obj;

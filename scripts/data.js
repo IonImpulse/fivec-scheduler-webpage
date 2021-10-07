@@ -17,7 +17,7 @@ async function save_json_data(name, data) {
     return localforage.setItem(name, data);
 }
 
-async function update_database(full=false) {
+async function update_database(full=true) {
     console.debug("Updating database...");
     let current_data = await load_json_data("course_data");
    
@@ -70,6 +70,8 @@ async function update_database(full=false) {
     }
 
     if (full || json != "No update needed") {
+        generateAllDescriptions();
+        create_searcher();
         console.log(
             `Total Courses Loaded: ${all_courses_global.length}\nTotal Local Courses Loaded: ${loaded_local_courses.length}\nTotal Course Lists Loaded: ${loaded_course_lists.length}`
         );

@@ -55,6 +55,36 @@ async function generateAllDescriptions() {
 	}
 }
 
+function sanitizeCourseList(courses) {
+    let sanitized = [];
+    for (let course of courses.filter(course => course.timing[0].start_time != "00:00:00")) {
+
+        let displayed_timing = [];
+
+        for (let time of course.timing) {
+            // The days equality section is a bit of a hack
+            let search = displayed_timing.findIndex(x => `${x.days}` == `${time.days}` && x.start_time == time.start_time && x.end_time == time.end_time);
+            if (search != -1) {
+                displayed_timing[search].locations.push(time.location);
+            } else {
+                displayed_timing.push({
+                    days: time.days,
+                    start_time: time.start_time,
+                    end_time: time.end_time,
+                    locations: [time.location]
+                });
+            }
+        }
+
+        let sanitized_course = course;
+        sanitized_course.displayed_timing = displayed_timing;
+
+        sanitized.push(sanitized_course);
+    }
+
+    return sanitized;
+}
+
 function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_index=false) {
     let time_index = 0;
     let return_list = [];
@@ -62,23 +92,7 @@ function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_i
     //
     // But first, we need to figure out if there are duplicate times
     // for multiple rooms
-    let displayed_timing = [];
-
-    for (let time of course.timing) {
-        // The days equality section is a bit of a hack
-        let search = displayed_timing.findIndex(x => `${x.days}` == `${time.days}` && x.start_time == time.start_time && x.end_time == time.end_time);
-        if (search != -1) {
-            displayed_timing[search].locations.push(time.location);
-        } else {
-            displayed_timing.push({
-                days: time.days,
-                start_time: time.start_time,
-                end_time: time.end_time,
-                locations: [time.location]
-            });
-        }
-    }
-    for (let time of displayed_timing) {
+    for (let time of course.displayed_timing) {
         // Create the div
         let course_div = document.createElement("div");
         course_div.className = `${course.identifier}-loaded course-schedule-block unselectable`;

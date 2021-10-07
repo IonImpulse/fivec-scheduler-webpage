@@ -279,8 +279,8 @@ function buttonCal() {
 		})
 	} else {
 		ical_all = generateICal(loaded_local_courses);
-		ical_starred = generateICal(loaded_course_lists.filter(course => starred_courses.includes(course.identifier)));
-		ical_nstarred = generateICal(loaded_course_lists.filter(course => !starred_courses.includes(course.identifier)));
+		ical_starred = generateICal(loaded_local_courses.filter(course => starred_courses.includes(course.identifier)));
+		ical_nstarred = generateICal(loaded_local_courses.filter(course => !starred_courses.includes(course.identifier)));
 
 		Swal.fire({
 			title: 'Save as iCal',
@@ -304,27 +304,38 @@ function buttonCal() {
 }
 
 function downloadICal(ical) {
-	console.log(ical.calendar());
 	ical.download("courses");
+}
+
+function nextDate(day_name) {
+	let day_index = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].indexOf(day_name);
+
+    var today = new Date();
+    today.setDate(today.getDate() + (day_index - 1 - today.getDay() + 7) % 7 + 1);
+    return today;
 }
 
 function generateICal(courses) {
 	let ical = ics();
 
-	courses.forEach(course => {
+	let sanitized_courses = sanitizeCourseList(courses);
+	
+	sanitized_courses.forEach(course => {
 		course.timing.forEach(timing => {
-			let start = new Date(timing.start_time);
-			let end = new Date(timing.end_time);
+			let next_valid_date = nextDate(timing.days[0]);
 
-			console.log(start, end);
+			let start_time = `${next_valid_date.getFullYear()}/${next_valid_date.getMonth()}/${next_valid_date.getDate()} ${timing.start_time}`;
+
+			let end_time = `${next_valid_date.getFullYear()}/${next_valid_date.getMonth()}/${next_valid_date.getDate()} ${timing.end_time}`;
+
+			let days = timing.days.map(day => day.toUpperCase().substring(0, 2));
 			
 			let location = `${timing.location.school} ${timing.location.building} ${timing.location.room}`;
 			let rrule = {
 				freq: 'WEEKLY',
-				byday: timing.days.map(day => day.toUpperCase().substring(0, 2)),
+				byday: days,
 			};
-
-			ical.addEvent(course.name, course.description, location, start, end, rrule);
+			ical.addEvent(course.title, course.description, location, start_time, end_time, rrule);
 		});
 	});
 

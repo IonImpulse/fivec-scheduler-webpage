@@ -25,7 +25,7 @@ async function startup() {
         });
     }
 
-    await update_database(full=true);
+    await update_database(full=false);
     update_loop();
     updateSchedule();
     // Then, check if site was loaded from
@@ -195,7 +195,9 @@ function updateLoadedCourses() {
     // Add new course divs
     let i = 0;
 
-    for (let course of loaded_local_courses) {
+    let sanitized_courses = sanitizeCourseList(loaded_local_courses);
+
+    for (let course of sanitized_courses) {
         if (course.timing[0].days[0] != "NA") {
             let course_div_list = createScheduleGridDiv(course, colors[i % colors.length], set_max_grid_rows = true);
 

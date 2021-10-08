@@ -107,7 +107,7 @@ height: 100%;
 z-index: 99999;
 pointer-events: none;
 background: var(--background-alt);
-animation-duration: 300ms;
+animation-duration: 100ms;
 animation-timing-function: ease-in-out;
 }
 
@@ -263,6 +263,7 @@ background-image:var(--share-icon);
 .title-bar-button.dl {
 background-image:var(--dl-icon);
 margin-right:var(--padding);
+width: 80px;
 }
 
 
@@ -691,6 +692,10 @@ margin:var(--padding-small);
 align-items: center;
 }
 
+.ical-explain {
+text-align: left;
+margin-bottom: 20px;
+}
 @media only screen and (max-width: 760px) {
 body {
 flex-direction:column

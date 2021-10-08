@@ -286,6 +286,17 @@ function buttonCal() {
 			title: 'Save as iCal',
 			icon: 'success',
 			html: `<div class="ical-box">
+			<div class="ical-explain">
+			<b>Google Calendar:</b><br>
+			1. Click on the <b>Settings</b> gear on the top right<br>
+			2. Click on <b>Settings</b> and go to <b>Import & Export</b><br>
+			3. Select the downloaded .ics file and click <b>Import</b><br>
+			<br>
+			<b>Apple Calendar:</b><br>
+			1. With the calendar app open, go to <b>File > Import</b><br>
+			2. Select the downloaded .ics file and click <b>Import</b><br>
+			3. Select which calendars to add the events to<br> 
+			</div>
 				<div class="ical-dl-holder">
 					<div onclick="downloadICal(ical_all)" class="title-bar-button dl"></div>
 					Download all courses

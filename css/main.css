@@ -698,18 +698,17 @@ margin-bottom: 20px;
 }
 @media only screen and (max-width: 760px) {
 body {
-flex-direction:column
+flex-direction:column;
+scroll-snap-type: y proximity;
+/* Reserve space for header plus some extra space for sneak peeking. */
+overflow-y: scroll;
 }
 
 #main-section {
 height:100%;
 margin:0 auto;
-width:100%
-}
-
-#left-section {
-height:100%;
-margin:0 auto
+width:100%;
+scroll-snap-align: start;
 }
 
 #right-section {
@@ -717,7 +716,8 @@ height:100%;
 margin:0 auto;
 margin-top:1vh;
 overflow:hidden;
-width:95vw
+width:95vw;
+scroll-snap-align: start;
 }
 
 .time {

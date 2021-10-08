@@ -259,16 +259,15 @@ function updateLoadedCourseLists() {
 
     for (let course_list of loaded_course_lists) {
         let i = 0;
-        for (let course of course_list.courses) {
-            if (course.timing[0].days[0] != "NA") {
-                let course_div_list = createScheduleGridDiv(course, colors[i % colors.length], set_max_grid_rows = true, low_z_index = true);
+        let sanitized_courses = sanitizeCourseList(course_list.courses);
+        for (let course of sanitized_courses) {
+            let course_div_list = createScheduleGridDiv(course, colors[i % colors.length], set_max_grid_rows = true, low_z_index = true);
 
-                for (let course_div of course_div_list) {
-                    course_schedule_grid.appendChild(course_div);
-                }
-
-                i++;
+            for (let course_div of course_div_list) {
+                course_schedule_grid.appendChild(course_div);
             }
+
+            i++;
         }
     }
 }

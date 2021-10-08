@@ -58,7 +58,6 @@ async function generateAllDescriptions() {
 function sanitizeCourseList(courses) {
     let sanitized = [];
     for (let course of courses.filter(course => course.timing[0].start_time != "00:00:00")) {
-
         let displayed_timing = [];
 
         for (let time of course.timing) {
@@ -86,7 +85,6 @@ function sanitizeCourseList(courses) {
 }
 
 function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_index=false) {
-    let time_index = 0;
     let return_list = [];
     // Have to create one for each time slot it's in
     //
@@ -164,7 +162,6 @@ function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_i
 
             return_list.push(cloned_div);
         }
-        time_index++;
     }
 
     return return_list;

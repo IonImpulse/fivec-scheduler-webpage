@@ -363,7 +363,7 @@ padding:var(--padding)
 }
 
 #course-search-results {
-height:50vh;
+height:60vh;
 margin-top:2vh;
 overflow-x:hidden;
 overflow-y:auto;

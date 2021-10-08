@@ -168,7 +168,7 @@ function buttonSearch() {
 	} else {
 		Swal.fire({
 			title: 'Search Courses',
-			icon: 'info',
+			icon: '',
 			html: `<div><input class="swal2-input" id="course-input" onKeyUp="processChange()"></div>` +
 				`<div id="course-search-box"><div id="course-search-results"></div><div id="course-search-desc" class="course-desc"></div></div><br>`,
 			showCloseButton: true,

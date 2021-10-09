@@ -18,7 +18,7 @@ src:url(https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsM
 --padding:.7vmax;
 --padding-medium:7px;
 --padding-small:5px;
---roundedness:5px;
+--roundedness:4px;
 --search-button-background:rgb(64, 187, 33);
 --shadow-blur:20px;
 --shadow-length:4px;
@@ -80,7 +80,7 @@ flex-direction:row;
 }
 
 body * {
-transition:all .05s ease-in-out
+transition:color .05s ease-in-out,background-color .2s ease-in-out, transform .05s ease-in-out;
 }
 
 *:focus{

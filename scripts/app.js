@@ -250,7 +250,7 @@ async function buttonShare() {
 
 		const code = await response.json();
 
-		const qr_data = `https://www.5cheduler.com/?load=${code}`;
+		const qr_data = `https://www.5scheduler.io/?load=${code}`;
 
 		const QRC = qrcodegen.QrCode;
 		const qr = QRC.encodeText(qr_data, QRC.Ecc.HIGH);

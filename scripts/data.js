@@ -3,7 +3,7 @@
 // Functions to get and handle data from the server
 // *****
 
-const API_URL = "https://api.5cheduler.com/"
+const API_URL = "https://api.5scheduler.io/"
 const FULL_UPDATE = "fullUpdate";
 const UPDATE_IF_STALE = function (timestamp) { return "updateIfStale/" + timestamp; }
 const GET_UNIQUE_CODE = "getUniqueCode";

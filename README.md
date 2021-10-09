@@ -1,9 +1,9 @@
 # ![Logo](https://raw.githubusercontent.com/IonImpulse/fivec-scheduler-webpage/main/favicon-32x32.png) **5c**heduler.com - Course Scheduler for the 5Cs
 ***Currently in Beta***
 
-5cheduler.com is a fast, responsive, and modern course scheduler for the five Claremont Colleges (the 5Cs).
+5scheduler.io is a fast, responsive, and modern course scheduler for the five Claremont Colleges (the 5Cs).
 
-Live at [www.5cheduler.com](https://www.5cheduler.com/)
+Live at [www.5scheduler.io](https://www.5scheduler.io/)
 
 
 ## Features
@@ -35,4 +35,4 @@ Live at [www.5cheduler.com](https://www.5cheduler.com/)
    - HTML: 1 KB
    - Course Data: 230 KB
 - Request map:
-- ![requestmap_https __www 5cheduler com_](https://user-images.githubusercontent.com/24578597/135673047-104d184d-a6c8-4e2a-8e67-cc9924c2daba.png)
+- ![requestmap_https __www 5scheduler io_](https://user-images.githubusercontent.com/24578597/135673047-104d184d-a6c8-4e2a-8e67-cc9924c2daba.png)

@@ -1,6 +1,6 @@
 {
-    "name": "5cheduler - Course Scheduler for the 5Cs",
-    "short_name": "5cheduler",
+    "name": "5scheduler - Course Scheduler for the 5Cs",
+    "short_name": "5scheduler",
     "icons": [
         {
             "src": "/android-chrome-192x192.png?v=1.2",

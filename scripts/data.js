@@ -23,7 +23,7 @@ async function update_database(full=true) {
    
     loaded_local_courses = await load_json_data("loaded_local_courses");
     loaded_course_lists = await load_json_data("loaded_course_lists");
-
+    loaded_custom_courses = await load_json_data("loaded_custom_courses");
     starred_courses = await load_json_data("starred_courses");
 
     if (loaded_local_courses == null) {
@@ -32,6 +32,10 @@ async function update_database(full=true) {
 
     if (loaded_course_lists == null) {
         loaded_course_lists = [];
+    }
+
+    if (loaded_custom_courses == null) {
+        loaded_custom_courses = [];
     }
 
     if (starred_courses == null) {
@@ -72,10 +76,11 @@ async function update_database(full=true) {
     if (full || json != "No update needed") {
         generateAllDescriptions();
         create_searcher();
-        console.log(
-            `Total Courses Loaded: ${all_courses_global.length}\nTotal Local Courses Loaded: ${loaded_local_courses.length}\nTotal Course Lists Loaded: ${loaded_course_lists.length}`
-        );
     }
+
+    console.log(
+        `Total Courses Loaded: ${all_courses_global.length}\nTotal Local Courses Loaded: ${loaded_local_courses.length}\nTotal Course Lists Loaded: ${loaded_course_lists.length}\nTotal Custom Courses Loaded: ${loaded_custom_courses.length}`
+    );
 }
 
 function update_courses(source, target) {

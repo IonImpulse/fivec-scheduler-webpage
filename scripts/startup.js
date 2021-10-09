@@ -149,6 +149,7 @@ function updateSchedule() {
 
     clearSchedule();
     updateLoadedCourses();
+    updateLoadedCustomCourses();
     updateLoadedCourseLists();
     updateStarredCourses();
 
@@ -196,6 +197,25 @@ function updateLoadedCourses() {
     let i = 0;
 
     let sanitized_courses = sanitizeCourseList(loaded_local_courses);
+
+    for (let course of sanitized_courses) {
+        if (course.timing[0].days[0] != "NA") {
+            let course_div_list = createScheduleGridDiv(course, colors[i % colors.length], set_max_grid_rows = true);
+
+            for (let course_div of course_div_list) {
+                course_schedule_grid.appendChild(course_div);
+            }
+
+            i++;
+        }
+    }
+}
+
+function updateLoadedCustomCourses() {
+    let course_schedule_grid = document.getElementById("schedule-table");
+    let i = 0;
+
+    let sanitized_courses = sanitizeCourseList(loaded_custom_courses);
 
     for (let course of sanitized_courses) {
         if (course.timing[0].days[0] != "NA") {

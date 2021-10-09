@@ -68,6 +68,202 @@ function copyStyle(target, source) {
 	}
 }
 
+function buttonCustomCourse() {
+	Swal.fire({
+		title: 'Custom Course Manager',
+		icon: '',
+		html: `
+		<div class="custom-course-manager">
+			<div class="course-box">
+				<div class="header">Custom Courses</div>
+				<div id="custom-course-list" class="list">
+					No custom courses have been created yet! <br>
+					Click the "Create New" button to start. <br>
+					You can add courses to the schedule by clicking the "Add" button.
+				</div>
+			</div>
+			<div class="create-course-form">
+				<div class="header">Create New Course</div>
+				<div class="form-group">
+					<div>
+						<label for="course-title">Title*: </label>
+						<input type="text" id="course-title" class="swal2-input" placeholder="Title">
+					</div>
+					
+					<div>
+						<label for="course-title">Identifier: </label>
+						<input type="text" id="course-title" class="swal2-input" placeholder="Title">
+					</div>
+
+					<div>
+						<label for="course-title">Instructors: </label>
+						<input type="text" id="course-title" class="swal2-input" placeholder="Title">
+					</div>
+
+					<div>
+						<label for="course-title">Description: </label>
+						<input type="text" id="course-title" class="swal2-input" placeholder="Title">
+					</div>
+
+					<div>
+						<label for="course-title">Notes: </label>
+						<input type="text" id="course-title" class="swal2-input" placeholder="Title">
+					</div>
+
+					<div>
+						<label for="course-title">Days*: </label>
+						<input type="text" id="course-title" class="swal2-input" placeholder="Title">
+					</div>
+
+					<div>
+						<label for="course-title">Start Time*: </label>
+						<input type="text" id="course-title" class="swal2-input" placeholder="Title">
+					</div>
+
+					<div>
+						<label for="course-title">End Time*: </label>
+						<input type="text" id="course-title" class="swal2-input" placeholder="Title">
+					</div>
+
+					<div>
+						<label for="course-title">Location*: </label>
+						<input type="text" id="course-title" class="swal2-input" placeholder="Title">
+					</div>
+
+				</div>
+
+				<div id="add-new-course" class="title-bar-button unselectable course-button" onclick="submitNewCourse()">Add</div>
+			</div>
+			<div class="right-panel">
+				<div id="create-course" class="title-bar-button unselectable course-button" onclick="createNewCourse()">Create New</div>
+				<div class="course-desc"></div>
+				<div class="course-options">
+					<div class="title-bar-button unselectable course-button" onclick="addToSchedule()">Add</div>
+					<div class="title-bar-button unselectable course-button" onclick="editCourse()">Edit</div>
+					<div class="title-bar-button unselectable course-button" onclick="deleteCourse()">Delete</div>
+				</div>
+			</div>
+		</div>
+		`,
+		showCloseButton: true,
+		showCancelButton: false,
+		confirmButtonText:
+			`Done`,
+		customClass: 'swal-wide',
+	}).then(async (result) => {
+		await save_json_data("loaded_custom_courses", loaded_custom_courses);
+
+		Toast.fire({
+			icon: 'success',
+			title: `Saved custom course preferences`
+		})
+	});
+
+	updateCustomCourseList();
+}
+
+function updateCustomCourseList() {
+	try {
+		const el = document.getElementById("custom-course-list");
+		if (loaded_custom_courses.length > 0) {
+			el.innerHTML = "";
+			
+			let i = 0;
+			for (let course of loaded_custom_courses) {
+				let course_div = createLoadedCourseDiv(course.identifier, course.title, colors[i % colors.length]);
+				el.appendChild(course_div);
+				i++;
+			}
+			
+		} else {
+			el.innerHTML = "No custom courses have been created yet! <br> Click the \"Create New\" button to start. <br> You can add courses to the schedule by clicking the \"Add\" button.";
+		}
+	} catch (error) {
+		return;
+	}
+	
+}
+
+function createNewCourse() {
+	const right_panel = document.getElementsByClassName("right-panel")[0];
+	const course_form = document.getElementsByClassName("create-course-form")[0];
+
+	right_panel.style.display = "none";
+	course_form.style.display = "block";
+}
+
+async function submitNewCourse() {
+	const form = document.getElementsByClassName("form-group")[0];
+
+	const title = form.children[0].children[1].value ?? " ";
+	let identifier = form.children[1].children[1].value ?? " ";
+	const instructors = form.children[2].children[1].value ?? " ";
+	const description = form.children[3].children[1].value ?? " ";
+	const notes = form.children[4].children[1].value ?? " ";
+	const days = form.children[5].children[1].value ?? " ";
+	const start_time = form.children[6].children[1].value ?? " ";
+	const end_time = form.children[7].children[1].value ?? " ";
+	const location = form.children[8].children[1].value ?? " ";
+
+	if (title.trim() != "" && start_time.trim() != "" && end_time.trim() != "" && location.trim() != "") {
+		if (identifier.trim() == "") {
+			identifier = `CUSTOM-`;
+			for (let part of title.split(" ")) {
+				identifier += part.charAt(0).toUpperCase();
+			}
+		}
+		
+		const new_course = {
+			title: title,
+			identifier: identifier,
+			instructors: [instructors],
+			description: description,
+			notes: notes,
+			id: "",
+			code: "",
+			dept: "",
+			section: "",
+			max_seats: 0,
+			seats_taken: 0,
+			seats_remaining: 0,
+			credits: 0,
+			status: "Open",
+			timing: [{
+				days: [days],
+				start_time: start_time,
+				end_time: end_time,
+				location: {
+					school: "",
+					building: "",
+					room: location,
+				}
+			}]
+		}
+
+		let exists = loaded_custom_courses.findIndex(course => course.identifier == new_course.identifier);
+
+		if (exists != -1) {
+			loaded_custom_courses[exists] = new_course;
+		} else {
+			loaded_custom_courses.push(new_course);
+		}
+
+		await save_json_data("loaded_custom_courses", loaded_custom_courses);
+
+		const right_panel = document.getElementsByClassName("right-panel")[0];
+		const course_form = document.getElementsByClassName("create-course-form")[0];
+
+		right_panel.style.display = "block";
+		course_form.style.display = "none";
+
+		generateAllDescriptions();
+		updateCustomCourseList();
+		updateSchedule();
+	} else {
+		
+	}
+}
+
 function buttonExport() {
 	Swal.fire({
 		title: 'Export',
@@ -220,7 +416,7 @@ function buttonSearch() {
 
 const Toast = Swal.mixin({
 	toast: true,
-	position: 'top-end',
+	position: 'bottom-end',
 	showConfirmButton: false,
 	timer: 3000,
 	timerProgressBar: true,
@@ -404,7 +600,7 @@ function expensiveCourseSearch() {
 			let course_div = createResultDiv(course, colors[i % colors.length], i);
 
 			if (selected_courses.includes(course.identifier)) {
-				course_div.classList.add("add-course-selected");
+				course_div.classList.add("selected");
 			}
 
 			output.appendChild(course_div)
@@ -424,7 +620,7 @@ function expensiveCourseSearch() {
 			let course_div = createResultDiv(course, colors[i % colors.length], course.descIndex);
 
 			if (selected_courses.includes(course.identifier)) {
-				course_div.classList.add("add-course-selected");
+				course_div.classList.add("selected");
 			}
 
 			output.appendChild(course_div)
@@ -441,7 +637,7 @@ function toggleCourseSelection(identifier) {
 
 	if (el.className == "course-search-result unselectable") {
 		selected_courses.push(el.id);
-		el.className = "course-search-result unselectable add-course-selected";
+		el.className = "course-search-result unselectable selected";
 	} else {
 		selected_courses.splice(selected_courses.indexOf(el.id), 1);
 		el.className = "course-search-result unselectable";
@@ -593,7 +789,27 @@ async function deleteCourse(identifier) {
 	if (found) {
 		await save_json_data("loaded_local_courses", loaded_local_courses);
 		updateSchedule();
+		return;
+	} 
+
+	found = false;
+
+	for (let i = 0; i < loaded_custom_courses.length; i++) {
+		let course = loaded_custom_courses[i];
+
+		if (course.identifier == identifier) {
+			found = true;
+			loaded_custom_courses.splice(i, 1);
+			break;
+		}
 	}
+
+	if (found) {
+		await save_json_data("loaded_custom_courses", loaded_custom_courses);
+		updateCustomCourseList();
+		updateSchedule();
+		return;
+	} 
 }
 
 async function deleteCourseList(code) {
@@ -697,12 +913,11 @@ function showCourseOverlay(identifier, override=false) {
 		}
 
 		// get index of course
-		let index = 0;
-		for (let course of all_courses_global) {
-			if (course.identifier == identifier) {
-				break;
-			}
-			index++;
+		let index = all_courses_global.findIndex((el) => el.identifier == identifier);
+
+		if (index == -1) {
+			index = loaded_custom_courses.findIndex((el) => el.identifier == identifier);
+			index += all_courses_global.length;
 		}
 
 		let course_info = all_desc_global[index];

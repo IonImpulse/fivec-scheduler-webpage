@@ -22,6 +22,7 @@ var starred_courses = [];
 var overlay = { identifier: null, time_index: -1, locked: false };
 var loaded_local_courses = [];
 var loaded_course_lists = [];
+var loaded_custom_courses = [];
 var vertical_layout = false;
 
 var debounce_timer = 100;

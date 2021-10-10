@@ -79,66 +79,79 @@ function buttonCustomCourse() {
 				<div id="custom-course-list" class="list">
 					No custom courses have been created yet! <br>
 					Click the "Create New" button to start. <br>
-					You can add courses to the schedule by clicking the "Add" button.
+					Custom courses will be automatically added to your schedule.
 				</div>
 			</div>
 			<div class="create-course-form">
 				<div class="header">Create New Course</div>
 				<div class="form-group">
 					<div>
-						<label for="course-title">Title*: </label>
-						<input type="text" id="course-title" class="swal2-input" placeholder="Title">
+						<label for="course-title">Title*</label>
+						<div>
+							<input type="text" id="course-title" class="swal2-input" placeholder="Title" required>
+							<span class="validity"></span>
+						</div>
 					</div>
 					
 					<div>
-						<label for="course-title">Identifier: </label>
-						<input type="text" id="course-title" class="swal2-input" placeholder="Title">
+						<label for="course-days">Days*</label>
+						<div>
+							<input type="text" id="course-days" class="swal2-input" placeholder="Days" required>
+							<span class="validity"></span>
+						</div>
 					</div>
 
 					<div>
-						<label for="course-title">Instructors: </label>
-						<input type="text" id="course-title" class="swal2-input" placeholder="Title">
+						<label for="course-start-time">Start Time*</label>
+						<div>
+							<input type="time" min="7:00" max="22:00" id="course-start-time" class="swal2-input" placeholder="" required>
+							<span class="validity"></span>
+						</div>
 					</div>
 
 					<div>
-						<label for="course-title">Description: </label>
-						<input type="text" id="course-title" class="swal2-input" placeholder="Title">
+						<label for="course-end-time">End Time*</label>
+						<div>
+							<input type="time" min="7:00" max="22:00" id="course-end-time" class="swal2-input" placeholder="" required>
+							<span class="validity"></span>
+						</div>
 					</div>
 
 					<div>
-						<label for="course-title">Notes: </label>
-						<input type="text" id="course-title" class="swal2-input" placeholder="Title">
+						<label for="course-location">Location*</label>
+						<div>
+							<input type="text" id="course-location" class="swal2-input" placeholder="Location" required>
+							<span class="validity"></span>
+						</div>
 					</div>
 
 					<div>
-						<label for="course-title">Days*: </label>
-						<input type="text" id="course-title" class="swal2-input" placeholder="Title">
+						<label for="course-identifier">Identifier</label>
+						<input type="text" id="course-identifier" class="swal2-input" placeholder="Identifier">
 					</div>
 
 					<div>
-						<label for="course-title">Start Time*: </label>
-						<input type="text" id="course-title" class="swal2-input" placeholder="Title">
+						<label for="course-instructors">Instructors</label>
+						<input type="text" id="course-instructors" class="swal2-input" placeholder="Instructor">
 					</div>
 
 					<div>
-						<label for="course-title">End Time*: </label>
-						<input type="text" id="course-title" class="swal2-input" placeholder="Title">
+						<label for="course-description">Description</label>
+						<input type="text" id="course-description" class="swal2-input" placeholder="Description">
 					</div>
 
 					<div>
-						<label for="course-title">Location*: </label>
-						<input type="text" id="course-title" class="swal2-input" placeholder="Title">
+						<label for="course-notes">Notes</label>
+						<input type="text" id="course-notes" class="swal2-input" placeholder="Notes">
 					</div>
-
 				</div>
 
-				<div id="add-new-course" class="title-bar-button unselectable course-button" onclick="submitNewCourse()">Add</div>
+				<div tabindex="0" id="add-new-course" class="title-bar-button unselectable course-button" onclick="submitNewCourse()">Add</div>
 			</div>
 			<div class="right-panel">
 				<div id="create-course" class="title-bar-button unselectable course-button" onclick="createNewCourse()">Create New</div>
 				<div class="course-desc"></div>
 				<div class="course-options">
-					<div class="title-bar-button unselectable course-button" onclick="addToSchedule()">Add</div>
 					<div class="title-bar-button unselectable course-button" onclick="editCourse()">Edit</div>
 					<div class="title-bar-button unselectable course-button" onclick="deleteCourse()">Delete</div>
 				</div>
@@ -157,6 +170,12 @@ function buttonCustomCourse() {
 			icon: 'success',
 			title: `Saved custom course preferences`
 		})
+	});
+
+	document.getElementsByClassName("custom-course-manager")[0].addEventListener("keydown", function(event) {
+		if (event.code === "Enter") {
+			document.activeElement.click();
+		}
 	});
 
 	updateCustomCourseList();
@@ -195,21 +214,21 @@ function createNewCourse() {
 async function submitNewCourse() {
 	const form = document.getElementsByClassName("form-group")[0];
 
-	const title = form.children[0].children[1].value ?? " ";
-	let identifier = form.children[1].children[1].value ?? " ";
-	const instructors = form.children[2].children[1].value ?? " ";
-	const description = form.children[3].children[1].value ?? " ";
-	const notes = form.children[4].children[1].value ?? " ";
-	const days = form.children[5].children[1].value ?? " ";
-	const start_time = form.children[6].children[1].value ?? " ";
-	const end_time = form.children[7].children[1].value ?? " ";
-	const location = form.children[8].children[1].value ?? " ";
+	const title = form.getElementById("course-title").value ?? " ";
+	let identifier = form.getElementById("course-identifier").value ?? " ";
+	const instructors = form.getElementById("course-instructors").value ?? " ";
+	const description = form.getElementById("course-description").value ?? " ";
+	const notes = form.getElementById("course-notes").value ?? " ";
+	const days = form.getElementById("course-days").value ?? " ";
+	const start_time = form.getElementById("course-start-time").value ?? " ";
+	const end_time = form.getElementById("course-end-time").value ?? " ";
+	const location = form.getElementById("course-location").value ?? " ";
 
 	if (title.trim() != "" && start_time.trim() != "" && end_time.trim() != "" && location.trim() != "") {
 		if (identifier.trim() == "") {
 			identifier = `CUSTOM-`;
 			for (let part of title.split(" ")) {
-				identifier += part.charAt(0).toUpperCase();
+				identifier += part.substring(0,4).toUpperCase();
 			}
 		}
 		

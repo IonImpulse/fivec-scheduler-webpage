@@ -84,6 +84,7 @@ document.addEventListener("keydown", function(event) {
     }
 });
 
+
 getVersion();
 getTheme();
 isVerticalLayout();

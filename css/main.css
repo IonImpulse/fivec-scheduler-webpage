@@ -769,7 +769,8 @@ color: var(--text-main);
 border-radius: var(--roundedness);
 padding: var(--padding);
 display: flex;
-flex-direction: column;
+flex-direction: row;
+flex-wrap:wrap;
 align-items: start;
 margin-bottom: var(--padding);
 }
@@ -779,7 +780,7 @@ height: 25px;
 font: 14px Roboto,sans-serif;
 font-weight: 500;
 margin: 0 auto;
-margin-left: var(--padding);
+width: 8vw;
 }
 
 .custom-course-manager .create-course-form .form-group label {
@@ -790,6 +791,7 @@ font-weight: 700;
 display:flex;
 flex-direction: column;
 align-items: start;
+margin: var(--padding-small);
 }
 
 .custom-course-manager .create-course-form .form-group * {
@@ -801,6 +803,22 @@ width: 20%;
 line-height: 32px;
 margin: 0 auto;
 margin-bottom: var(--padding);
+}
+
+input + span {
+padding-right: 30px;
+}
+
+input:invalid+span:after {
+position: absolute;
+content: '✖';
+padding-left: 5px;
+}
+
+input:valid+span:after {
+position: absolute;
+content: '✓';
+padding-left: 5px;
 }
 
 

@@ -1,4 +1,4 @@
-# ![Logo](https://raw.githubusercontent.com/IonImpulse/fivec-scheduler-webpage/main/favicon-32x32.png) **5c**heduler.com - Course Scheduler for the 5Cs
+# ![Logo](https://raw.githubusercontent.com/IonImpulse/fivec-scheduler-webpage/main/favicon-32x32.png) 5scheduler.io - Course Scheduler for the 5Cs
 ***Currently in Beta***
 
 5scheduler.io is a fast, responsive, and modern course scheduler for the five Claremont Colleges (the 5Cs).

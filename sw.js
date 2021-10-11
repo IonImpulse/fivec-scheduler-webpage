@@ -1,4 +1,4 @@
-const current_version = '1.4.0';
+const current_version = '1.4.1';
 // On install, cache everything
 self.addEventListener('install', (event) => {
     event.waitUntil(
@@ -12,7 +12,6 @@ self.addEventListener('install', (event) => {
                 'scripts/data.js',
                 'scripts/prelude.js',
                 'scripts/startup.js',
-                'scripts/utils.js',
                 'scripts/libs/fuzzysort.js',
                 'scripts/libs/localforage.min.js',
                 'scripts/libs/qrcodegen-v1.7.0-es6.js',

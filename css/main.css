@@ -329,10 +329,6 @@ opacity:.5
 
 .highlight {
 background-color:var(--text-light);
-border-bottom:1px solid var(--text-light);
-border-left:1px solid var(--text-light);
-border-right:1px solid var(--text-light);
-border-top:1px solid var(--text-light);
 opacity:.1
 }
 

@@ -4,14 +4,7 @@
 
 // Runs all startup scripts
 async function startup() {
-    // Website generation
-    generateGridTimes();
-    generateDays();
-    generateLines();
-    window.addEventListener('resize', updateScheduleSizing);
-    updateScheduleSizing();
-
-    // Then, check if site was loaded from
+    // First, check if site was loaded from
     // as a PWA *before* attempting to load
     // assets/data
     if ('serviceWorker' in navigator) {
@@ -24,8 +17,16 @@ async function startup() {
           console.log('Registration failed with ' + error);
         });
     }
+    // Then, call an update request
+    let update = update_database(full=false);
+    // Website generation
+    generateGridTimes();
+    generateDays();
+    generateLines();
+    window.addEventListener('resize', updateScheduleSizing);
+    updateScheduleSizing();
 
-    await update_database(full=false);
+    await update;
     update_loop();
     updateSchedule();
     // Then, check if site was loaded from

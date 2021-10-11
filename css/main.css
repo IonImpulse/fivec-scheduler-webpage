@@ -398,7 +398,7 @@ white-space:nowrap
 
 .selected {
 outline: 6px solid #33b4f0 !important;
-outline-offset: -3px !important;
+outline-offset: -6px !important;
 z-index:1051 !important;
 }
 
@@ -781,6 +781,8 @@ font: 14px Roboto,sans-serif;
 font-weight: 500;
 margin: 0 auto;
 width: 8vw;
+background-color: var(--text-light);
+color: var(--text-alt);
 }
 
 .custom-course-manager .create-course-form .form-group label {
@@ -820,7 +822,6 @@ position: absolute;
 content: '✓';
 padding-left: 5px;
 }
-
 
 @media only screen and (max-width: 760px) {
 body {

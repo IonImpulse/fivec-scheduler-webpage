@@ -162,7 +162,7 @@ function buttonCustomCourse() {
 		showCancelButton: false,
 		confirmButtonText:
 			`Done`,
-		customClass: 'swal-wide',
+		customClass: 'swal-medium-wide',
 	}).then(async (result) => {
 		await save_json_data("loaded_custom_courses", loaded_custom_courses);
 
@@ -214,15 +214,15 @@ function createNewCourse() {
 async function submitNewCourse() {
 	const form = document.getElementsByClassName("form-group")[0];
 
-	const title = form.getElementById("course-title").value ?? " ";
-	let identifier = form.getElementById("course-identifier").value ?? " ";
-	const instructors = form.getElementById("course-instructors").value ?? " ";
-	const description = form.getElementById("course-description").value ?? " ";
-	const notes = form.getElementById("course-notes").value ?? " ";
-	const days = form.getElementById("course-days").value ?? " ";
-	const start_time = form.getElementById("course-start-time").value ?? " ";
-	const end_time = form.getElementById("course-end-time").value ?? " ";
-	const location = form.getElementById("course-location").value ?? " ";
+	const title = document.getElementById("course-title").value ?? " ";
+	let identifier = document.getElementById("course-identifier").value ?? " ";
+	const instructors = document.getElementById("course-instructors").value ?? " ";
+	const description = document.getElementById("course-description").value ?? " ";
+	const notes = document.getElementById("course-notes").value ?? " ";
+	const days = document.getElementById("course-days").value ?? " ";
+	const start_time = document.getElementById("course-start-time").value ?? " ";
+	const end_time = document.getElementById("course-end-time").value ?? " ";
+	const location = document.getElementById("course-location").value ?? " ";
 
 	if (title.trim() != "" && start_time.trim() != "" && end_time.trim() != "" && location.trim() != "") {
 		if (identifier.trim() == "") {

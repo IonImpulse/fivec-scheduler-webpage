@@ -243,7 +243,6 @@ async function submitNewCourse() {
 async function editCourse() {
 	const custom_course_list = document.getElementById("custom-course-list");
 	let els = custom_course_list.getElementsByClassName("selected") ?? [];
-	console.log(els);
 
 	if (els.length > 0) {
 		let el = els[0];
@@ -262,8 +261,8 @@ async function editCourse() {
 		populateField("course-instructors", course.instructors[0]);
 		populateField("course-description", course.description);
 		populateField("course-notes", course.notes);
-		populateField("course-start-time", course.timing[0].start_time.splice(0,5));
-		populateField("course-end-time", course.timing[0].end_time.splice(0,5));
+		populateField("course-start-time", course.timing[0].start_time.substring(0,5));
+		populateField("course-end-time", course.timing[0].end_time.substring(0,5));
 		populateField("course-location", course.timing[0].location.room);
 
 		let day_names = ["monday", "tuesday", "wednesday", "thursday", "friday",];

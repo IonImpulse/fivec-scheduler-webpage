@@ -24,16 +24,26 @@ function buttonLoad() {
 			}
 		},
 		allowOutsideClick: () => !Swal.isLoading()
-	}).then( async (result) => {
+	}).then(async (result) => {
 		if (result.value == "Invalid code") {
 			Toast.fire({
 				title: 'Invalid code',
 				icon: 'error'
 			});
 		} else if (result.value != undefined) {
-			const course_list_result = await addToCourseLists(result.value);
+			let tuple = result.value;
 
-			if (course_list_result == true) {
+			let course_list = {
+				code: tuple.code,
+				courses: tuple.courses.local_courses,
+			};
+
+			let custom_courses = tuple.courses.custom_courses;
+
+			const course_list_result = await addToCourseLists(course_list);
+			const custom_list_result = await addToCustomCourseList(custom_courses);
+
+			if (course_list_result) {
 				Toast.fire({
 					title: 'Loaded course list',
 					icon: 'success'
@@ -45,6 +55,19 @@ function buttonLoad() {
 				});
 			}
 
+			if (custom_list_result == 0) {
+				Toast.fire({
+					title: 'Loaded custom courses',
+					icon: 'success'
+				});
+			} else {
+				Toast.fire({
+					title: `Custom courses loaded with ${custom_list_result} conflicts`,
+					icon: 'warn'
+				});
+			}
+
+			updateSchedule();
 		}
 	})
 }
@@ -65,6 +88,190 @@ function copyStyle(target, source) {
 
 	for (let i = 0; i < source.children.length; i++) {
 		copyStyle(target.children[i], source.children[i]);
+	}
+}
+
+function buttonCustomCourse() {
+	Swal.fire({
+		title: 'Custom Course Manager',
+		icon: '',
+		html: custom_course_popup,
+		showCloseButton: true,
+		showCancelButton: false,
+		confirmButtonText:
+			`Done`,
+		customClass: 'swal-medium-wide',
+	}).then(async (result) => {
+		await save_json_data("loaded_custom_courses", loaded_custom_courses);
+
+		Toast.fire({
+			icon: 'success',
+			title: `Saved custom course preferences`
+		})
+	});
+
+	document.getElementsByClassName("custom-course-manager")[0].addEventListener("keydown", function (event) {
+		if (event.code === "Enter") {
+			document.activeElement.click();
+		}
+	});
+
+	updateCustomCourseList();
+}
+
+function updateCustomCourseList() {
+	try {
+		const el = document.getElementById("custom-course-list");
+		if (loaded_custom_courses.length > 0) {
+			el.innerHTML = "";
+
+			let i = 0;
+			for (let course of loaded_custom_courses) {
+				let course_div = createLoadedCourseDiv(course.identifier, course.title, colors[i % colors.length]);
+				el.appendChild(course_div);
+				i++;
+			}
+
+		} else {
+			el.innerHTML = "No custom courses have been created yet! <br> Click the \"Create New\" button to start. <br> You can add courses to the schedule by clicking the \"Add\" button.";
+		}
+	} catch (error) {
+		return;
+	}
+
+}
+
+function createNewCourse() {
+	const right_panel = document.getElementsByClassName("right-panel")[0];
+	const course_form = document.getElementsByClassName("create-course-form")[0];
+
+	right_panel.style.display = "none";
+	course_form.style.display = "block";
+}
+
+function cancelNewCourse() {
+	const right_panel = document.getElementsByClassName("right-panel")[0];
+	const course_form = document.getElementsByClassName("create-course-form")[0];
+
+	right_panel.style.display = "block";
+	course_form.style.display = "none";
+}
+
+function populateField(element_name, value) {
+	document.getElementById(element_name).value = value;
+}
+
+async function submitNewCourse() {
+	const form = document.getElementsByClassName("form-group")[0];
+
+	const title = document.getElementById("course-title").value ?? " ";
+	let identifier = document.getElementById("course-identifier").value ?? " ";
+	const instructors = document.getElementById("course-instructors").value ?? " ";
+	const description = document.getElementById("course-description").value ?? " ";
+	const notes = document.getElementById("course-notes").value ?? " ";
+	const start_time = document.getElementById("course-start-time").value ?? " ";
+	const end_time = document.getElementById("course-end-time").value ?? " ";
+	const location = document.getElementById("course-location").value ?? " ";
+
+	let days = [];
+	let day_names = ["monday", "tuesday", "wednesday", "thursday", "friday",];
+	for (let day_name of day_names) {
+		if (document.getElementById(`${day_name}-check`).checked) {
+			days.push(day_name.replace(/^\w/, (c) => c.toUpperCase()));
+		}
+	}
+
+	if (title.trim() != "" && start_time.trim() != "" && end_time.trim() != "" && location.trim() != "" && days.length > 0) {
+		if (identifier.trim() == "") {
+			identifier = `CUSTOM-`;
+			for (let part of title.split(" ")) {
+				identifier += part.substring(0, 4).toUpperCase();
+			}
+		}
+
+		const new_course = {
+			title: title,
+			identifier: identifier,
+			instructors: [instructors],
+			description: description,
+			notes: notes,
+			id: "",
+			code: "",
+			dept: "",
+			section: "",
+			max_seats: 0,
+			seats_taken: 0,
+			seats_remaining: 0,
+			credits: 0,
+			status: "Open",
+			timing: [{
+				days: days,
+				start_time: `${start_time}:00`,
+				end_time: `${end_time}:00`,
+				location: {
+					school: "NA",
+					building: "",
+					room: location,
+				}
+			}]
+		}
+
+		let exists = loaded_custom_courses.findIndex(course => course.identifier == new_course.identifier);
+
+		if (exists != -1) {
+			loaded_custom_courses[exists] = new_course;
+		} else {
+			loaded_custom_courses.push(new_course);
+		}
+
+		await save_json_data("loaded_custom_courses", loaded_custom_courses);
+
+		const right_panel = document.getElementsByClassName("right-panel")[0];
+		const course_form = document.getElementsByClassName("create-course-form")[0];
+
+		right_panel.style.display = "block";
+		course_form.style.display = "none";
+
+		generateAllDescriptions();
+		updateCustomCourseList();
+		updateSchedule();
+	} else {
+
+	}
+}
+
+async function editCourse() {
+	const custom_course_list = document.getElementById("custom-course-list");
+	let els = custom_course_list.getElementsByClassName("selected") ?? [];
+	console.log(els);
+
+	if (els.length > 0) {
+		let el = els[0];
+		let course_id = el.classList[3].replace("-loaded", "");
+
+		const right_panel = document.getElementsByClassName("right-panel")[0];
+		const course_form = document.getElementsByClassName("create-course-form")[0];
+
+		right_panel.style.display = "none";
+		course_form.style.display = "block";
+
+		const course = loaded_custom_courses.find(course => course.identifier == course_id);
+
+		populateField("course-title", course.title);
+		populateField("course-identifier", course.identifier);
+		populateField("course-instructors", course.instructors[0]);
+		populateField("course-description", course.description);
+		populateField("course-notes", course.notes);
+		populateField("course-start-time", course.timing[0].start_time.splice(0,5));
+		populateField("course-end-time", course.timing[0].end_time.splice(0,5));
+		populateField("course-location", course.timing[0].location.room);
+
+		let day_names = ["monday", "tuesday", "wednesday", "thursday", "friday",];
+		for (let day_name of day_names) {
+			if (course.timing[0].days.includes(day_name.replace(/^\w/, (c) => c.toUpperCase()))) {
+				document.getElementById(`${day_name}-check`).checked = true;
+			}
+		}
 	}
 }
 
@@ -89,7 +296,7 @@ function download_link() {
 	let date = new Date();
 	console.log(date.toLocaleString('en-US'));
 	let date_string = date.toLocaleString('en-US');
-	date_string = date_string.replace(/,/g, "").replace(/ /g, "_").replace(/:/g,"-").replace(/\//g, "-");
+	date_string = date_string.replace(/,/g, "").replace(/ /g, "_").replace(/:/g, "-").replace(/\//g, "-");
 	console.log(date_string);
 	link.download = `schedule-${date_string}.png`;
 	link.href = document.getElementById('export-holder').toDataURL()
@@ -108,22 +315,22 @@ function screenshotToCanvas(canvas, source) {
 		width: `${x}`,
 		height: `${y}`,
 	})
-	.then(function success(renderResult) {
-		canvas.width = x;
-		canvas.height = y;
-		canvas.style.width = `${x / 2}px`;
-		canvas.style.height = `${y / 2}px`;
-		context = canvas.getContext('2d');
-		context.drawImage(renderResult.image, 0, 0, width = x, height = y);
-		Swal.hideLoading();
-	}, function error(e) {
-		Swal.fire({
-			title: 'Export',
-			icon: 'error',
-			html:
-				`Error: ${e.message}`,
-		})
-	});
+		.then(function success(renderResult) {
+			canvas.width = x;
+			canvas.height = y;
+			canvas.style.width = `${x / 2}px`;
+			canvas.style.height = `${y / 2}px`;
+			context = canvas.getContext('2d');
+			context.drawImage(renderResult.image, 0, 0, width = x, height = y);
+			Swal.hideLoading();
+		}, function error(e) {
+			Swal.fire({
+				title: 'Export',
+				icon: 'error',
+				html:
+					`Error: ${e.message}`,
+			})
+		});
 }
 
 function buttonPrint() {
@@ -139,17 +346,17 @@ function buttonPrint() {
 
 	const printWin = window.open('', '', 'width=' + screen.availWidth + ',height=' + screen.availHeight);
 	printWin.document.open();
-	printWin.document.write(windowContent); 
+	printWin.document.write(windowContent);
 	source = document.getElementById("schedule-box");
 	canvas = printWin.document.getElementById("print-holder");
 	screenshotToCanvas(canvas, source);
 
 	printWin.focus();
-	setTimeout(function() {
+	setTimeout(function () {
 		printWin.print();
 		printWin.document.close();
 		printWin.close();
-	},200);     
+	}, 200);
 
 	Toast.fire({
 		icon: 'info',
@@ -169,7 +376,7 @@ function buttonSearch() {
 		Swal.fire({
 			title: 'Search Courses',
 			icon: '',
-			html: `<div><input class="swal2-input" id="course-input" onKeyUp="processChange()"></div>` +
+			html: `<div><input class="input" id="course-input" onKeyUp="processChange()"></div>` +
 				`<div id="course-search-box"><div id="course-search-results"></div><div id="course-search-desc" class="course-desc"></div></div><br>`,
 			showCloseButton: true,
 			showCancelButton: true,
@@ -195,7 +402,7 @@ function buttonSearch() {
 			}
 		});
 		let input = document.getElementById("course-input");
-		document.getElementById("course-search-results").addEventListener("keydown", function(event) {
+		document.getElementById("course-search-results").addEventListener("keydown", function (event) {
 			if (event.code === "Enter") {
 				document.activeElement.click();
 			}
@@ -203,14 +410,14 @@ function buttonSearch() {
 		input.focus();
 
 		// For screenreaders/text browsers, we need to make the content available to the user in a non-visual way.
-		input.addEventListener("keydown", function(event) {
+		input.addEventListener("keydown", function (event) {
 			if (event.code === "Enter") {
-			  // Cancel the default action, if needed
-			  event.preventDefault();
-			  // Trigger the button element with a click
-			  expensiveCourseSearch();
+				// Cancel the default action, if needed
+				event.preventDefault();
+				// Trigger the button element with a click
+				expensiveCourseSearch();
 			}
-		}); 
+		});
 
 		setTimeout(() => {
 			expensiveCourseSearch()
@@ -220,7 +427,7 @@ function buttonSearch() {
 
 const Toast = Swal.mixin({
 	toast: true,
-	position: 'top-end',
+	position: 'bottom-end',
 	showConfirmButton: false,
 	timer: 3000,
 	timerProgressBar: true,
@@ -245,7 +452,7 @@ async function buttonShare() {
 				'Access-Control-Allow-Origin': '*',
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify(loaded_local_courses)
+			body: JSON.stringify([loaded_local_courses, loaded_custom_courses])
 		});
 
 		const code = await response.json();
@@ -262,7 +469,7 @@ async function buttonShare() {
 			html: `<div class="code-share">${code}</div><div class="code-explain">or</div><div id="code-link" class="unselectable">Copy Link</div><div class="qr-code">${svg}</div>`,
 		});
 
-		document.getElementById("code-link").addEventListener("click", function() {
+		document.getElementById("code-link").addEventListener("click", function () {
 			let el = document.getElementById("code-link");
 			navigator.clipboard.writeText(qr_data);
 			el.className = "code-copied unselectable";
@@ -321,16 +528,16 @@ function downloadICal(ical) {
 function nextDate(day_name) {
 	let day_index = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].indexOf(day_name);
 
-    var today = new Date();
-    today.setDate(today.getDate() + (day_index - 1 - today.getDay() + 7) % 7 + 1);
-    return today;
+	var today = new Date();
+	today.setDate(today.getDate() + (day_index - 1 - today.getDay() + 7) % 7 + 1);
+	return today;
 }
 
 function generateICal(courses) {
 	let ical = ics();
 
 	let sanitized_courses = sanitizeCourseList(courses);
-	
+
 	sanitized_courses.forEach(course => {
 		course.timing.forEach(timing => {
 			let next_valid_date = nextDate(timing.days[0]);
@@ -340,7 +547,7 @@ function generateICal(courses) {
 			let end_time = `${next_valid_date.getFullYear()}/${next_valid_date.getMonth()}/${next_valid_date.getDate()} ${timing.end_time}`;
 
 			let days = timing.days.map(day => day.toUpperCase().substring(0, 2));
-			
+
 			let location = `${timing.location.school} ${timing.location.building} ${timing.location.room}`;
 			let rrule = {
 				freq: 'WEEKLY',
@@ -404,7 +611,7 @@ function expensiveCourseSearch() {
 			let course_div = createResultDiv(course, colors[i % colors.length], i);
 
 			if (selected_courses.includes(course.identifier)) {
-				course_div.classList.add("add-course-selected");
+				course_div.classList.add("selected");
 			}
 
 			output.appendChild(course_div)
@@ -417,14 +624,14 @@ function expensiveCourseSearch() {
 		const search_term = tweakSearch(input.value);
 
 		const results = search_courses(search_term);
-		
+
 		for (let i = 0; i < results.length; i++) {
 			let course = results[i].obj;
-			
+
 			let course_div = createResultDiv(course, colors[i % colors.length], course.descIndex);
 
 			if (selected_courses.includes(course.identifier)) {
-				course_div.classList.add("add-course-selected");
+				course_div.classList.add("selected");
 			}
 
 			output.appendChild(course_div)
@@ -441,7 +648,7 @@ function toggleCourseSelection(identifier) {
 
 	if (el.className == "course-search-result unselectable") {
 		selected_courses.push(el.id);
-		el.className = "course-search-result unselectable add-course-selected";
+		el.className = "course-search-result unselectable selected";
 	} else {
 		selected_courses.splice(selected_courses.indexOf(el.id), 1);
 		el.className = "course-search-result unselectable";
@@ -569,12 +776,29 @@ async function addToCourseLists(course_list) {
 	if (!found) {
 		loaded_course_lists.push(course_list);
 		await save_json_data("loaded_course_lists", loaded_course_lists);
-		updateSchedule();
 
 		return true;
 	} else {
 		return false;
 	}
+}
+
+async function addToCustomCourseList(custom_courses) {
+	let number_of_conflicts = 0;
+	for (let course of custom_courses) {
+		if (loaded_custom_courses.filter(x => x.identifier == course.identifier) > 0) {
+			number_of_conflicts++;
+		} else {
+			loaded_custom_courses.push(course);
+		}
+	}
+
+	if (custom_courses.length - number_of_conflicts > 0) {
+		await generateAllDescriptions(false);
+		await save_json_data("loaded_custom_courses", loaded_custom_courses);
+	}
+
+	return number_of_conflicts;
 }
 
 async function deleteCourse(identifier) {
@@ -593,6 +817,26 @@ async function deleteCourse(identifier) {
 	if (found) {
 		await save_json_data("loaded_local_courses", loaded_local_courses);
 		updateSchedule();
+		return;
+	}
+
+	found = false;
+
+	for (let i = 0; i < loaded_custom_courses.length; i++) {
+		let course = loaded_custom_courses[i];
+
+		if (course.identifier == identifier) {
+			found = true;
+			loaded_custom_courses.splice(i, 1);
+			break;
+		}
+	}
+
+	if (found) {
+		await save_json_data("loaded_custom_courses", loaded_custom_courses);
+		updateCustomCourseList();
+		updateSchedule();
+		return;
 	}
 }
 
@@ -666,7 +910,7 @@ function toggleCourseOverlay(identifier) {
 
 		// Highlight the courses
 		highlightCourses(identifier);
-		showCourseOverlay(identifier, override=true);
+		showCourseOverlay(identifier, override = true);
 	}
 	// Case two: we're already showing the overlay, and it's the same course
 	else if (overlay.locked == true && overlay.identifier == identifier) {
@@ -686,23 +930,22 @@ function toggleCourseOverlay(identifier) {
 
 		// Highlight the courses
 		highlightCourses(identifier);
-		showCourseOverlay(identifier, override=true);
+		showCourseOverlay(identifier, override = true);
 	}
 }
 
-function showCourseOverlay(identifier, override=false) {
+function showCourseOverlay(identifier, override = false) {
 	if (overlay.locked == false || override == true) {
 		if (all_desc_global.length == 0) {
 			generateAllDescriptions();
 		}
 
 		// get index of course
-		let index = 0;
-		for (let course of all_courses_global) {
-			if (course.identifier == identifier) {
-				break;
-			}
-			index++;
+		let index = all_courses_global.findIndex((el) => el.identifier == identifier);
+
+		if (index == -1) {
+			index = loaded_custom_courses.findIndex((el) => el.identifier == identifier);
+			index += all_courses_global.length;
 		}
 
 		let course_info = all_desc_global[index];
@@ -724,9 +967,9 @@ function showCourseOverlay(identifier, override=false) {
 function starCourse(identifier) {
 	// Stop bubbling onclick event
 	if (!e) var e = window.event;
-    e.cancelBubble = true;
-    if (e.stopPropagation) e.stopPropagation();
-	
+	e.cancelBubble = true;
+	if (e.stopPropagation) e.stopPropagation();
+
 	if (starred_courses.includes(identifier)) {
 		starred_courses.splice(starred_courses.indexOf(identifier), 1);
 	} else {
@@ -750,4 +993,32 @@ function showStarCourse(identifier) {
 		el.classList.add("starred-course");
 		el.getElementsByClassName("star-course")[0].classList.add("filled");
 	}
+}
+
+function toggle_theme() {
+	if (document.documentElement.getAttribute("data-theme") != "dark") {
+		document.documentElement.setAttribute('data-theme', 'dark');
+		localStorage.setItem("theme", "dark");
+	}
+	else {
+		document.documentElement.setAttribute('data-theme', 'light');
+		localStorage.setItem("theme", "light");
+	}
+}
+
+function toSvgString(qr, border, lightColor, darkColor) {
+	if (border < 0)
+		throw "Border must be non-negative";
+	let parts = [];
+	for (let y = 0; y < qr.size; y++) {
+		for (let x = 0; x < qr.size; x++) {
+			if (qr.getModule(x, y))
+				parts.push(`M${x + border},${y + border}h1v1h-1z`);
+		}
+	}
+	return `<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 ${qr.size + border * 2} ${qr.size + border * 2}" stroke="none">
+<rect width="100%" height="100%" fill="${lightColor}"/>
+<path d="${parts.join(" ")}" fill="${darkColor}"/>
+</svg>
+`
 }

@@ -1,7 +1,15 @@
-async function generateAllDescriptions() {
-	all_desc_global = [];
-	for (let i = 0; i < all_courses_global.length; i++) {
-		let course = all_courses_global[i];
+async function generateAllDescriptions(full=true) {
+    if (full == true) {
+        all_desc_global = [];
+    }
+	for (let i = all_desc_global.length; i < all_courses_global.length + loaded_custom_courses.length; i++) {
+        let course;
+
+        if (i < all_courses_global.length) {
+            course = all_courses_global[i];
+        } else {
+            course = loaded_custom_courses[i - all_courses_global.length];
+        }
 
 		let course_desc_node = document.createElement("div");
 

@@ -32,7 +32,7 @@
   <link href="css/sweetalert2.min.css" rel="stylesheet" type="text/css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
   
   <!-- Images -->
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=1.2">
@@ -55,7 +55,7 @@
   <svg id="fader"></svg>
 
   <div id="main-section">
-    <div class="title-bar">
+    <div class="title-bar shadow">
       <a href="https://www.5scheduler.io" class="logo"><img src="favicon-32x32.png?v=1.2" alt="5scheduler.io" class="logo"></a>
       
       <div title="Share" tabindex="0" class="title-bar-button share wide noselect" onclick="buttonShare()">
@@ -69,7 +69,7 @@
       </div>
     </div>
 
-    <div id="schedule-box" class="">
+    <div id="schedule-box" class="shadow">
       <div id="schedule-table" class=""></div>
     </div>
 
@@ -77,7 +77,10 @@
   </div>
 
   <div id="right-section">
-    <div id="extra-buttons" class="course-desc">
+    <div id="extra-buttons" class="course-desc shadow">
+      <div title="Custom Course Manager" tabindex="0" class="title-bar-button noselect custom-course" onclick="buttonCustomCourse()">
+      </div>
+
       <div title="Export" tabindex="0" class="title-bar-button noselect export" onclick="buttonExport()">
       </div>
 
@@ -93,24 +96,23 @@
       <div title="About" tabindex="0" class="title-bar-button noselect about" onclick="buttonAbout()">
       </div>
     </div>
-    <div id="course-info-box" class="course-desc">
+    <div id="course-info-box" class="course-desc shadow">
       <div class="table-title">Course Info</div>
       <div id="course-info-table" class="">
 
       </div>
     </div>
 
-    <div id="course-box" class="">
+    <div id="course-box" class="shadow">
       <div class="table-title">Courses Loaded</div>
       <div id="course-table" class="">
         
       </div>
     </div>
 
-    <div id="course-list-box" class="">
+    <div id="course-list-box" class="shadow">
       <div class="table-title">Course Lists Loaded</div>
       <div id="course-list-table" class="">
-        
       </div>
     </div>
   </div>    
@@ -124,7 +126,6 @@
   <script src="scripts/libs/ics.deps.min.js"></script>
   <!--- Then load scripts -->
   <script src="scripts/constructors.js"></script>
-  <script src="scripts/utils.js"></script>
   <script src="scripts/app.js"></script>
   <script src="scripts/data.js"></script>
   <script src="scripts/startup.js"></script>

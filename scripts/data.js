@@ -23,7 +23,7 @@ async function update_database(full=true) {
    
     loaded_local_courses = await load_json_data("loaded_local_courses");
     loaded_course_lists = await load_json_data("loaded_course_lists");
-
+    loaded_custom_courses = await load_json_data("loaded_custom_courses");
     starred_courses = await load_json_data("starred_courses");
 
     if (loaded_local_courses == null) {
@@ -34,23 +34,34 @@ async function update_database(full=true) {
         loaded_course_lists = [];
     }
 
+    if (loaded_custom_courses == null) {
+        loaded_custom_courses = [];
+    }
+
     if (starred_courses == null) {
         starred_courses = [];
     }
     
     let response;
+    let json;
 
-    if (current_data === null || current_data.timestamp == undefined || Object.entries(current_data).length === 0) {
-        console.debug("No data found, requesting full update...");
-        response = fetch(`${API_URL}${FULL_UPDATE}`);
-    } else {
-        console.debug("Found data, requesting update if stale...");
-        response = fetch(`${API_URL}${UPDATE_IF_STALE(current_data.timestamp)}`);
-
+    try {
+        if (current_data === null || current_data.timestamp == undefined || Object.entries(current_data).length === 0) {
+            console.debug("No data found, requesting full update...");
+            response = fetch(`${API_URL}${FULL_UPDATE}`);
+        } else {
+            console.debug("Found data, requesting update if stale...");
+            response = fetch(`${API_URL}${UPDATE_IF_STALE(current_data.timestamp)}`);
+    
+        }
+    
+        let data = await response;
+        json = await data.json();
+    } catch (error) {
+        console.warn(`${error}\nError occurred while fetching data, falling back on local cache...`);
+        json = "No update needed";
     }
-
-    const data = await response;
-    const json = await data.json();
+    
 
     if (json != "No update needed") {
         console.debug("New data found...");
@@ -72,10 +83,11 @@ async function update_database(full=true) {
     if (full || json != "No update needed") {
         generateAllDescriptions();
         create_searcher();
-        console.log(
-            `Total Courses Loaded: ${all_courses_global.length}\nTotal Local Courses Loaded: ${loaded_local_courses.length}\nTotal Course Lists Loaded: ${loaded_course_lists.length}`
-        );
     }
+
+    console.log(
+        `Total Courses Loaded: ${all_courses_global.length}\nTotal Local Courses Loaded: ${loaded_local_courses.length}\nTotal Course Lists Loaded: ${loaded_course_lists.length}\nTotal Custom Courses Loaded: ${loaded_custom_courses.length}`
+    );
 }
 
 function update_courses(source, target) {

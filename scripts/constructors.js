@@ -9,7 +9,6 @@ async function generateAllDescriptions(full=true) {
             course = all_courses_global[i];
         } else {
             course = loaded_custom_courses[i - all_courses_global.length];
-            console.log(course);
         }
 
 		let course_desc_node = document.createElement("div");

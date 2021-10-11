@@ -31,10 +31,17 @@ function buttonLoad() {
 				icon: 'error'
 			});
 		} else if (result.value != undefined) {
-			let (course_list, custom_courses_list) = result.value;
+			let tuple = result.value;
+
+			let course_list = {
+				code: tuple.code,
+				courses: tuple.courses.local_courses,
+			};
+
+			let custom_courses = tuple.courses.custom_courses;
 
 			const course_list_result = await addToCourseLists(course_list);
-			const custom_list_result = await addToCustomCourseList(custom_courses_list);
+			const custom_list_result = await addToCustomCourseList(custom_courses);
 
 			if (course_list_result) {
 				Toast.fire({
@@ -60,6 +67,7 @@ function buttonLoad() {
 				});
 			}
 
+			updateSchedule();
 		}
 	})
 }
@@ -198,10 +206,10 @@ async function submitNewCourse() {
 			status: "Open",
 			timing: [{
 				days: days,
-				start_time: start_time,
-				end_time: end_time,
+				start_time: `${start_time}:00`,
+				end_time: `${end_time}:00`,
 				location: {
-					school: "",
+					school: "NA",
 					building: "",
 					room: location,
 				}
@@ -254,8 +262,8 @@ async function editCourse() {
 		populateField("course-instructors", course.instructors[0]);
 		populateField("course-description", course.description);
 		populateField("course-notes", course.notes);
-		populateField("course-start-time", course.timing[0].start_time);
-		populateField("course-end-time", course.timing[0].end_time);
+		populateField("course-start-time", course.timing[0].start_time.splice(0,5));
+		populateField("course-end-time", course.timing[0].end_time.splice(0,5));
 		populateField("course-location", course.timing[0].location.room);
 
 		let day_names = ["monday", "tuesday", "wednesday", "thursday", "friday",];
@@ -444,7 +452,7 @@ async function buttonShare() {
 				'Access-Control-Allow-Origin': '*',
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify((loaded_local_courses, loaded_custom_courses))
+			body: JSON.stringify([loaded_local_courses, loaded_custom_courses])
 		});
 
 		const code = await response.json();
@@ -768,7 +776,6 @@ async function addToCourseLists(course_list) {
 	if (!found) {
 		loaded_course_lists.push(course_list);
 		await save_json_data("loaded_course_lists", loaded_course_lists);
-		updateSchedule();
 
 		return true;
 	} else {
@@ -779,11 +786,16 @@ async function addToCourseLists(course_list) {
 async function addToCustomCourseList(custom_courses) {
 	let number_of_conflicts = 0;
 	for (let course of custom_courses) {
-		if (custom_course_list.filter(x => x.identifier == course.identifier) > 0) {
+		if (loaded_custom_courses.filter(x => x.identifier == course.identifier) > 0) {
 			number_of_conflicts++;
 		} else {
-			custom_course_list.push(course);
+			loaded_custom_courses.push(course);
 		}
+	}
+
+	if (custom_courses.length - number_of_conflicts > 0) {
+		await generateAllDescriptions(false);
+		await save_json_data("loaded_custom_courses", loaded_custom_courses);
 	}
 
 	return number_of_conflicts;

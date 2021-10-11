@@ -24,7 +24,7 @@ function buttonLoad() {
 			}
 		},
 		allowOutsideClick: () => !Swal.isLoading()
-	}).then( async (result) => {
+	}).then(async (result) => {
 		if (result.value == "Invalid code") {
 			Toast.fire({
 				title: 'Invalid code',
@@ -172,7 +172,7 @@ function buttonCustomCourse() {
 		})
 	});
 
-	document.getElementsByClassName("custom-course-manager")[0].addEventListener("keydown", function(event) {
+	document.getElementsByClassName("custom-course-manager")[0].addEventListener("keydown", function (event) {
 		if (event.code === "Enter") {
 			document.activeElement.click();
 		}
@@ -186,21 +186,21 @@ function updateCustomCourseList() {
 		const el = document.getElementById("custom-course-list");
 		if (loaded_custom_courses.length > 0) {
 			el.innerHTML = "";
-			
+
 			let i = 0;
 			for (let course of loaded_custom_courses) {
 				let course_div = createLoadedCourseDiv(course.identifier, course.title, colors[i % colors.length]);
 				el.appendChild(course_div);
 				i++;
 			}
-			
+
 		} else {
 			el.innerHTML = "No custom courses have been created yet! <br> Click the \"Create New\" button to start. <br> You can add courses to the schedule by clicking the \"Add\" button.";
 		}
 	} catch (error) {
 		return;
 	}
-	
+
 }
 
 function createNewCourse() {
@@ -228,10 +228,10 @@ async function submitNewCourse() {
 		if (identifier.trim() == "") {
 			identifier = `CUSTOM-`;
 			for (let part of title.split(" ")) {
-				identifier += part.substring(0,4).toUpperCase();
+				identifier += part.substring(0, 4).toUpperCase();
 			}
 		}
-		
+
 		const new_course = {
 			title: title,
 			identifier: identifier,
@@ -279,7 +279,7 @@ async function submitNewCourse() {
 		updateCustomCourseList();
 		updateSchedule();
 	} else {
-		
+
 	}
 }
 
@@ -304,7 +304,7 @@ function download_link() {
 	let date = new Date();
 	console.log(date.toLocaleString('en-US'));
 	let date_string = date.toLocaleString('en-US');
-	date_string = date_string.replace(/,/g, "").replace(/ /g, "_").replace(/:/g,"-").replace(/\//g, "-");
+	date_string = date_string.replace(/,/g, "").replace(/ /g, "_").replace(/:/g, "-").replace(/\//g, "-");
 	console.log(date_string);
 	link.download = `schedule-${date_string}.png`;
 	link.href = document.getElementById('export-holder').toDataURL()
@@ -323,22 +323,22 @@ function screenshotToCanvas(canvas, source) {
 		width: `${x}`,
 		height: `${y}`,
 	})
-	.then(function success(renderResult) {
-		canvas.width = x;
-		canvas.height = y;
-		canvas.style.width = `${x / 2}px`;
-		canvas.style.height = `${y / 2}px`;
-		context = canvas.getContext('2d');
-		context.drawImage(renderResult.image, 0, 0, width = x, height = y);
-		Swal.hideLoading();
-	}, function error(e) {
-		Swal.fire({
-			title: 'Export',
-			icon: 'error',
-			html:
-				`Error: ${e.message}`,
-		})
-	});
+		.then(function success(renderResult) {
+			canvas.width = x;
+			canvas.height = y;
+			canvas.style.width = `${x / 2}px`;
+			canvas.style.height = `${y / 2}px`;
+			context = canvas.getContext('2d');
+			context.drawImage(renderResult.image, 0, 0, width = x, height = y);
+			Swal.hideLoading();
+		}, function error(e) {
+			Swal.fire({
+				title: 'Export',
+				icon: 'error',
+				html:
+					`Error: ${e.message}`,
+			})
+		});
 }
 
 function buttonPrint() {
@@ -354,17 +354,17 @@ function buttonPrint() {
 
 	const printWin = window.open('', '', 'width=' + screen.availWidth + ',height=' + screen.availHeight);
 	printWin.document.open();
-	printWin.document.write(windowContent); 
+	printWin.document.write(windowContent);
 	source = document.getElementById("schedule-box");
 	canvas = printWin.document.getElementById("print-holder");
 	screenshotToCanvas(canvas, source);
 
 	printWin.focus();
-	setTimeout(function() {
+	setTimeout(function () {
 		printWin.print();
 		printWin.document.close();
 		printWin.close();
-	},200);     
+	}, 200);
 
 	Toast.fire({
 		icon: 'info',
@@ -410,7 +410,7 @@ function buttonSearch() {
 			}
 		});
 		let input = document.getElementById("course-input");
-		document.getElementById("course-search-results").addEventListener("keydown", function(event) {
+		document.getElementById("course-search-results").addEventListener("keydown", function (event) {
 			if (event.code === "Enter") {
 				document.activeElement.click();
 			}
@@ -418,14 +418,14 @@ function buttonSearch() {
 		input.focus();
 
 		// For screenreaders/text browsers, we need to make the content available to the user in a non-visual way.
-		input.addEventListener("keydown", function(event) {
+		input.addEventListener("keydown", function (event) {
 			if (event.code === "Enter") {
-			  // Cancel the default action, if needed
-			  event.preventDefault();
-			  // Trigger the button element with a click
-			  expensiveCourseSearch();
+				// Cancel the default action, if needed
+				event.preventDefault();
+				// Trigger the button element with a click
+				expensiveCourseSearch();
 			}
-		}); 
+		});
 
 		setTimeout(() => {
 			expensiveCourseSearch()
@@ -477,7 +477,7 @@ async function buttonShare() {
 			html: `<div class="code-share">${code}</div><div class="code-explain">or</div><div id="code-link" class="unselectable">Copy Link</div><div class="qr-code">${svg}</div>`,
 		});
 
-		document.getElementById("code-link").addEventListener("click", function() {
+		document.getElementById("code-link").addEventListener("click", function () {
 			let el = document.getElementById("code-link");
 			navigator.clipboard.writeText(qr_data);
 			el.className = "code-copied unselectable";
@@ -536,16 +536,16 @@ function downloadICal(ical) {
 function nextDate(day_name) {
 	let day_index = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].indexOf(day_name);
 
-    var today = new Date();
-    today.setDate(today.getDate() + (day_index - 1 - today.getDay() + 7) % 7 + 1);
-    return today;
+	var today = new Date();
+	today.setDate(today.getDate() + (day_index - 1 - today.getDay() + 7) % 7 + 1);
+	return today;
 }
 
 function generateICal(courses) {
 	let ical = ics();
 
 	let sanitized_courses = sanitizeCourseList(courses);
-	
+
 	sanitized_courses.forEach(course => {
 		course.timing.forEach(timing => {
 			let next_valid_date = nextDate(timing.days[0]);
@@ -555,7 +555,7 @@ function generateICal(courses) {
 			let end_time = `${next_valid_date.getFullYear()}/${next_valid_date.getMonth()}/${next_valid_date.getDate()} ${timing.end_time}`;
 
 			let days = timing.days.map(day => day.toUpperCase().substring(0, 2));
-			
+
 			let location = `${timing.location.school} ${timing.location.building} ${timing.location.room}`;
 			let rrule = {
 				freq: 'WEEKLY',
@@ -632,10 +632,10 @@ function expensiveCourseSearch() {
 		const search_term = tweakSearch(input.value);
 
 		const results = search_courses(search_term);
-		
+
 		for (let i = 0; i < results.length; i++) {
 			let course = results[i].obj;
-			
+
 			let course_div = createResultDiv(course, colors[i % colors.length], course.descIndex);
 
 			if (selected_courses.includes(course.identifier)) {
@@ -809,7 +809,7 @@ async function deleteCourse(identifier) {
 		await save_json_data("loaded_local_courses", loaded_local_courses);
 		updateSchedule();
 		return;
-	} 
+	}
 
 	found = false;
 
@@ -828,7 +828,7 @@ async function deleteCourse(identifier) {
 		updateCustomCourseList();
 		updateSchedule();
 		return;
-	} 
+	}
 }
 
 async function deleteCourseList(code) {
@@ -901,7 +901,7 @@ function toggleCourseOverlay(identifier) {
 
 		// Highlight the courses
 		highlightCourses(identifier);
-		showCourseOverlay(identifier, override=true);
+		showCourseOverlay(identifier, override = true);
 	}
 	// Case two: we're already showing the overlay, and it's the same course
 	else if (overlay.locked == true && overlay.identifier == identifier) {
@@ -921,11 +921,11 @@ function toggleCourseOverlay(identifier) {
 
 		// Highlight the courses
 		highlightCourses(identifier);
-		showCourseOverlay(identifier, override=true);
+		showCourseOverlay(identifier, override = true);
 	}
 }
 
-function showCourseOverlay(identifier, override=false) {
+function showCourseOverlay(identifier, override = false) {
 	if (overlay.locked == false || override == true) {
 		if (all_desc_global.length == 0) {
 			generateAllDescriptions();
@@ -958,9 +958,9 @@ function showCourseOverlay(identifier, override=false) {
 function starCourse(identifier) {
 	// Stop bubbling onclick event
 	if (!e) var e = window.event;
-    e.cancelBubble = true;
-    if (e.stopPropagation) e.stopPropagation();
-	
+	e.cancelBubble = true;
+	if (e.stopPropagation) e.stopPropagation();
+
 	if (starred_courses.includes(identifier)) {
 		starred_courses.splice(starred_courses.indexOf(identifier), 1);
 	} else {
@@ -984,4 +984,32 @@ function showStarCourse(identifier) {
 		el.classList.add("starred-course");
 		el.getElementsByClassName("star-course")[0].classList.add("filled");
 	}
+}
+
+function toggle_theme() {
+	if (document.documentElement.getAttribute("data-theme") != "dark") {
+		document.documentElement.setAttribute('data-theme', 'dark');
+		localStorage.setItem("theme", "dark");
+	}
+	else {
+		document.documentElement.setAttribute('data-theme', 'light');
+		localStorage.setItem("theme", "light");
+	}
+}
+
+function toSvgString(qr, border, lightColor, darkColor) {
+	if (border < 0)
+		throw "Border must be non-negative";
+	let parts = [];
+	for (let y = 0; y < qr.size; y++) {
+		for (let x = 0; x < qr.size; x++) {
+			if (qr.getModule(x, y))
+				parts.push(`M${x + border},${y + border}h1v1h-1z`);
+		}
+	}
+	return `<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 ${qr.size + border * 2} ${qr.size + border * 2}" stroke="none">
+<rect width="100%" height="100%" fill="${lightColor}"/>
+<path d="${parts.join(" ")}" fill="${darkColor}"/>
+</svg>
+`
 }

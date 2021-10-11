@@ -43,18 +43,25 @@ async function update_database(full=true) {
     }
     
     let response;
+    let json;
 
-    if (current_data === null || current_data.timestamp == undefined || Object.entries(current_data).length === 0) {
-        console.debug("No data found, requesting full update...");
-        response = fetch(`${API_URL}${FULL_UPDATE}`);
-    } else {
-        console.debug("Found data, requesting update if stale...");
-        response = fetch(`${API_URL}${UPDATE_IF_STALE(current_data.timestamp)}`);
-
+    try {
+        if (current_data === null || current_data.timestamp == undefined || Object.entries(current_data).length === 0) {
+            console.debug("No data found, requesting full update...");
+            response = fetch(`${API_URL}${FULL_UPDATE}`);
+        } else {
+            console.debug("Found data, requesting update if stale...");
+            response = fetch(`${API_URL}${UPDATE_IF_STALE(current_data.timestamp)}`);
+    
+        }
+    
+        let data = await response;
+        json = await data.json();
+    } catch (error) {
+        console.warn(`${error}\nError occurred while fetching data, falling back on local cache...`);
+        json = "No update needed";
     }
-
-    const data = await response;
-    const json = await data.json();
+    
 
     if (json != "No update needed") {
         console.debug("New data found...");

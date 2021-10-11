@@ -8,9 +8,9 @@ src:url(https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsM
 
 :root {
 --page-background:#eeeef7;
---background-alt:#eaedf1;
+--background-alt:#f0f1f3;
 --background-main:#ffffff;
---button-main:#e9f0f7;
+--button-main:#ecf0f5;
 --button-outline:#00000033;
 --course-closed:#b93838;
 --course-open:#39a32b;
@@ -48,7 +48,7 @@ src:url(https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsM
 --background-alt:#1b1b1b;
 --background-main:#333;
 --button-main:#1b1b1b;
---button-outline:#c5c5c533;
+--button-outline:#1d1d1d33;
 --course-closed:#e27878;
 --course-open:#7ee271;
 --course-reopened:#e0c06a;
@@ -233,7 +233,7 @@ overflow:hidden
 .title-bar-button {
 background-color:var(--button-main);
 border-radius:var(--roundedness);
-color:var(--text-course-schedule);
+color:var(--text-main);
 cursor:pointer;
 height:32px;
 width:32px;
@@ -691,7 +691,7 @@ justify-content: center;
 }
 
 .ical-dl-holder {
-background-color: var(--background-main);
+background-color: var(--background-alt);
 border-radius: var(--roundedness);
 color: var(--text-main);
 display: flex;
@@ -744,6 +744,7 @@ overflow:auto;
 
 .custom-course-manager * #create-course, .custom-course-manager * #add-new-course {
 background-color: var(--search-button-background);
+color: var(--text-alt);
 }
 
 .custom-course-manager * .course-desc {

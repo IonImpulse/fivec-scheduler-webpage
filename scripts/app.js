@@ -72,92 +72,7 @@ function buttonCustomCourse() {
 	Swal.fire({
 		title: 'Custom Course Manager',
 		icon: '',
-		html: `
-		<div class="custom-course-manager">
-			<div class="course-box">
-				<div class="header">Custom Courses</div>
-				<div id="custom-course-list" class="list">
-					No custom courses have been created yet! <br>
-					Click the "Create New" button to start. <br>
-					Custom courses will be automatically added to your schedule.
-				</div>
-			</div>
-			<div class="create-course-form">
-				<div class="header">Create New Course</div>
-				<div class="form-group">
-					<div>
-						<label for="course-title">Title*</label>
-						<div>
-							<input type="text" id="course-title" class="swal2-input" placeholder="Title" required>
-							<span class="validity"></span>
-						</div>
-					</div>
-					
-					<div>
-						<label for="course-days">Days*</label>
-						<div>
-							<input type="text" id="course-days" class="swal2-input" placeholder="Days" required>
-							<span class="validity"></span>
-						</div>
-					</div>
-
-					<div>
-						<label for="course-start-time">Start Time*</label>
-						<div>
-							<input type="time" min="7:00" max="22:00" id="course-start-time" class="swal2-input" placeholder="" required>
-							<span class="validity"></span>
-						</div>
-					</div>
-
-					<div>
-						<label for="course-end-time">End Time*</label>
-						<div>
-							<input type="time" min="7:00" max="22:00" id="course-end-time" class="swal2-input" placeholder="" required>
-							<span class="validity"></span>
-						</div>
-					</div>
-
-					<div>
-						<label for="course-location">Location*</label>
-						<div>
-							<input type="text" id="course-location" class="swal2-input" placeholder="Location" required>
-							<span class="validity"></span>
-						</div>
-					</div>
-
-					<div>
-						<label for="course-identifier">Identifier</label>
-						<input type="text" id="course-identifier" class="swal2-input" placeholder="Identifier">
-					</div>
-
-					<div>
-						<label for="course-instructors">Instructors</label>
-						<input type="text" id="course-instructors" class="swal2-input" placeholder="Instructor">
-					</div>
-
-					<div>
-						<label for="course-description">Description</label>
-						<input type="text" id="course-description" class="swal2-input" placeholder="Description">
-					</div>
-
-					<div>
-						<label for="course-notes">Notes</label>
-						<input type="text" id="course-notes" class="swal2-input" placeholder="Notes">
-					</div>
-				</div>
-
-				<div tabindex="0" id="add-new-course" class="title-bar-button unselectable course-button" onclick="submitNewCourse()">Add</div>
-			</div>
-			<div class="right-panel">
-				<div id="create-course" class="title-bar-button unselectable course-button" onclick="createNewCourse()">Create New</div>
-				<div class="course-desc"></div>
-				<div class="course-options">
-					<div class="title-bar-button unselectable course-button" onclick="editCourse()">Edit</div>
-					<div class="title-bar-button unselectable course-button" onclick="deleteCourse()">Delete</div>
-				</div>
-			</div>
-		</div>
-		`,
+		html: custom_course_popup,
 		showCloseButton: true,
 		showCancelButton: false,
 		confirmButtonText:
@@ -211,6 +126,18 @@ function createNewCourse() {
 	course_form.style.display = "block";
 }
 
+function cancelNewCourse() {
+	const right_panel = document.getElementsByClassName("right-panel")[0];
+	const course_form = document.getElementsByClassName("create-course-form")[0];
+
+	right_panel.style.display = "block";
+	course_form.style.display = "none";
+}
+
+function populateField(element_name, value) {
+	document.getElementById(element_name).value = value;
+}
+
 async function submitNewCourse() {
 	const form = document.getElementsByClassName("form-group")[0];
 
@@ -219,12 +146,19 @@ async function submitNewCourse() {
 	const instructors = document.getElementById("course-instructors").value ?? " ";
 	const description = document.getElementById("course-description").value ?? " ";
 	const notes = document.getElementById("course-notes").value ?? " ";
-	const days = document.getElementById("course-days").value ?? " ";
 	const start_time = document.getElementById("course-start-time").value ?? " ";
 	const end_time = document.getElementById("course-end-time").value ?? " ";
 	const location = document.getElementById("course-location").value ?? " ";
 
-	if (title.trim() != "" && start_time.trim() != "" && end_time.trim() != "" && location.trim() != "") {
+	let days = [];
+	let day_names = ["monday", "tuesday", "wednesday", "thursday", "friday",];
+	for (let day_name of day_names) {
+		if (document.getElementById(`${day_name}-check`).checked) {
+			days.push(day_name.replace(/^\w/, (c) => c.toUpperCase()));
+		}
+	}
+
+	if (title.trim() != "" && start_time.trim() != "" && end_time.trim() != "" && location.trim() != "" && days.length > 0) {
 		if (identifier.trim() == "") {
 			identifier = `CUSTOM-`;
 			for (let part of title.split(" ")) {
@@ -248,7 +182,7 @@ async function submitNewCourse() {
 			credits: 0,
 			status: "Open",
 			timing: [{
-				days: [days],
+				days: days,
 				start_time: start_time,
 				end_time: end_time,
 				location: {
@@ -280,6 +214,41 @@ async function submitNewCourse() {
 		updateSchedule();
 	} else {
 
+	}
+}
+
+async function editCourse() {
+	const custom_course_list = document.getElementById("custom-course-list");
+	let els = custom_course_list.getElementsByClassName("selected") ?? [];
+	console.log(els);
+
+	if (els.length > 0) {
+		let el = els[0];
+		let course_id = el.classList[3].replace("-loaded", "");
+
+		const right_panel = document.getElementsByClassName("right-panel")[0];
+		const course_form = document.getElementsByClassName("create-course-form")[0];
+
+		right_panel.style.display = "none";
+		course_form.style.display = "block";
+
+		const course = loaded_custom_courses.find(course => course.identifier == course_id);
+
+		populateField("course-title", course.title);
+		populateField("course-identifier", course.identifier);
+		populateField("course-instructors", course.instructors[0]);
+		populateField("course-description", course.description);
+		populateField("course-notes", course.notes);
+		populateField("course-start-time", course.timing[0].start_time);
+		populateField("course-end-time", course.timing[0].end_time);
+		populateField("course-location", course.timing[0].location.room);
+
+		let day_names = ["monday", "tuesday", "wednesday", "thursday", "friday",];
+		for (let day_name of day_names) {
+			if (course.timing[0].days.includes(day_name.replace(/^\w/, (c) => c.toUpperCase()))) {
+				document.getElementById(`${day_name}-check`).checked = true;
+			}
+		}
 	}
 }
 
@@ -384,7 +353,7 @@ function buttonSearch() {
 		Swal.fire({
 			title: 'Search Courses',
 			icon: '',
-			html: `<div><input class="swal2-input" id="course-input" onKeyUp="processChange()"></div>` +
+			html: `<div><input class="input" id="course-input" onKeyUp="processChange()"></div>` +
 				`<div id="course-search-box"><div id="course-search-results"></div><div id="course-search-desc" class="course-desc"></div></div><br>`,
 			showCloseButton: true,
 			showCancelButton: true,

@@ -712,8 +712,9 @@ flex-direction:row;
 height: 60vh;
 }
 
-.custom-course-manager .course-box {
+.course-box {
 margin-right: var(--padding);
+width: 40vw;
 }
 
 .custom-course-manager * .header {
@@ -738,13 +739,41 @@ flex-direction:column;
 background-color: var(--background-main);
 border-radius: var(--roundedness);
 padding: var(--padding);
-width: 90%;
 overflow:auto;
 }
 
-.custom-course-manager * #create-course, .custom-course-manager * #add-new-course {
+.create-course-form {
+width: 60vw;
+}
+
+#create-course, #edit-course{
+width: 12vw;
+height: 12vh;
+text-align: center;
+line-height: 12vh;
+}
+
+#edit-course {
+width:10vw;
+}
+#create-course, #add-new-course  {
 background-color: var(--search-button-background);
 color: var(--text-alt);
+width: 10vw;
+}
+
+#cancel-new-course{
+background-color: var(--course-closed);
+color: var(--text-alt);
+width: 4vw;
+}
+
+.button-group {
+display: flex;
+flex-direction: row;
+justify-content: space-evenly;
+width: 50%;
+margin: 0 auto;
 }
 
 .custom-course-manager * .course-desc {
@@ -777,31 +806,45 @@ align-items: start;
 margin-bottom: var(--padding);
 }
 
-.custom-course-manager .create-course-form .form-group .swal2-input {
-height: 25px;
-font: 14px Roboto,sans-serif;
-font-weight: 500;
-margin: 0 auto;
-width: 8vw;
-background-color: var(--text-light);
-color: var(--text-alt);
-}
-
-.custom-course-manager .create-course-form .form-group label {
+label {
 font: 18px Roboto;
 font-weight: 700;
+-moz-user-select:none;
+-ms-user-select:none;
+-webkit-touch-callout:none;
+-webkit-user-select:none;
+user-select:none
 }
+
+.day-checkboxes {
+line-height: 1px;
+margin: var(--padding);
+position: relative;
+}
+
+.day-checkbox {
+width: 1vw;
+height: 1vw;
+margin: 0 auto;
+margin: var(--padding);
+}
+
+.small-label {
+position: absolute;
+font: 12px Roboto;
+font-weight: 700;
+margin: 0 auto;
+transform: translateY(-15px);
+margin: var(--padding);
+top: 0px;
+}
+
 .custom-course-manager .create-course-form .form-group >* {
 display:flex;
 flex-direction: column;
 align-items: start;
 margin: var(--padding-small);
 }
-
-.custom-course-manager .create-course-form .form-group * {
-margin-bottom: var(--padding);
-}
-
 .course-button {
 width: 20%;
 line-height: 32px;
@@ -809,20 +852,32 @@ margin: 0 auto;
 margin-bottom: var(--padding);
 }
 
-input + span {
-padding-right: 30px;
+.input {
+background-color: var(--text-alt);
+color: var(--text-main);
+width: 10vw;
+border-radius: var(--roundedness);
+outline: 1px solid #00000000;
+outline-offset: -1px;
+border: none;
+margin-top: 1px;
+box-shadow: 0 0 0 1px var(--button-outline);
+padding: var(--padding);
+font: 16px Roboto,sans-serif;
+font-weight: 500;
+transition: outline 0.2s ease-in-out;
 }
 
-input:invalid+span:after {
-position: absolute;
-content: '✖';
-padding-left: 5px;
+.custom-course-input:not(:placeholder-shown).custom-course-input:valid {
+outline: 2px solid var(--course-open);
 }
 
-input:valid+span:after {
-position: absolute;
-content: '✔';
-padding-left: 5px;
+.custom-course-input:invalid {
+outline: 2px solid var(--course-closed);
+}
+
+.input:focus {
+outline: 2px solid var(--link-color);
 }
 
 @media only screen and (max-width: 760px) {

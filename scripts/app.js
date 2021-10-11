@@ -31,9 +31,12 @@ function buttonLoad() {
 				icon: 'error'
 			});
 		} else if (result.value != undefined) {
-			const course_list_result = await addToCourseLists(result.value);
+			let (course_list, custom_courses_list) = result.value;
 
-			if (course_list_result == true) {
+			const course_list_result = await addToCourseLists(course_list);
+			const custom_list_result = await addToCustomCourseList(custom_courses_list);
+
+			if (course_list_result) {
 				Toast.fire({
 					title: 'Loaded course list',
 					icon: 'success'
@@ -42,6 +45,18 @@ function buttonLoad() {
 				Toast.fire({
 					title: 'Course list already loaded',
 					icon: 'error'
+				});
+			}
+
+			if (custom_list_result == 0) {
+				Toast.fire({
+					title: 'Loaded custom courses',
+					icon: 'success'
+				});
+			} else {
+				Toast.fire({
+					title: `Custom courses loaded with ${custom_list_result} conflicts`,
+					icon: 'warn'
 				});
 			}
 
@@ -429,7 +444,7 @@ async function buttonShare() {
 				'Access-Control-Allow-Origin': '*',
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify(loaded_local_courses)
+			body: JSON.stringify((loaded_local_courses, loaded_custom_courses))
 		});
 
 		const code = await response.json();
@@ -759,6 +774,19 @@ async function addToCourseLists(course_list) {
 	} else {
 		return false;
 	}
+}
+
+async function addToCustomCourseList(custom_courses) {
+	let number_of_conflicts = 0;
+	for (let course of custom_courses) {
+		if (custom_course_list.filter(x => x.identifier == course.identifier) > 0) {
+			number_of_conflicts++;
+		} else {
+			custom_course_list.push(course);
+		}
+	}
+
+	return number_of_conflicts;
 }
 
 async function deleteCourse(identifier) {

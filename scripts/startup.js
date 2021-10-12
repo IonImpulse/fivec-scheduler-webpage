@@ -299,7 +299,7 @@ function updateStarredCourses() {
     }
 }
 
-function loadPossibleCourseList() {
+async function loadPossibleCourseList() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
 

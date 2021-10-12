@@ -60,21 +60,47 @@ self.addEventListener('install', (event) => {
 // Catch and intercept all fetch requests
 // and service them with the SW
 self.addEventListener('fetch', (event) => {
-    console.log(event);
-    event.respondWith(
-        caches.match(event.request).then((resp) => {
-            return resp || fetch(event.request).then((response) => {
-                let responseClone = response.clone();
-                caches.open(current_version).then((cache) => {
-                    cache.put(event.request, responseClone);
-                });
-
-                return response;
-            }).catch(() => {
-                return caches.match('favicon-32x32.png');
+    if (event.request.url.startsWith("https://api.5scheduler.io/")) {
+        if (event.request.method === 'POST') {
+            event.respondWith(
+                fetch(event.request).then((response) => {
+                    return response;
+                }).catch((error) => {
+                    return "offline";
+                }));
+        } else {
+            if (event.request.url.contains("updateIfStale")) {
+                event.respondWith(
+                    fetch(event.request).then((response) => {
+                        return response;
+                    }).catch((error) => {
+                        return {json: "No update needed"};
+                    }));
+            } else if (event.request.url.contains("fullUpdate")) {
+                event.respondWith(
+                    fetch(event.request).then((response) => {
+                        return response;
+                    }).catch((error) => {
+                        return {json: {timestamp: 0, courses: []}};
+                    }));
+            }
+        }
+    } else {
+        event.respondWith(
+            caches.match(event.request).then((resp) => {
+                return resp || fetch(event.request).then((response) => {
+                    let responseClone = response.clone();
+                    caches.open(current_version).then((cache) => {
+                        cache.put(event.request, responseClone);
+                    });
+    
+                    return response;
+                }).catch(() => {
+                    return caches.match('favicon-32x32.png');
+                })
             })
-        })
-    );
+        );
+    }
 });
 
 self.addEventListener('activate', (event) => {

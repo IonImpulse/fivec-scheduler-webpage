@@ -198,7 +198,7 @@ async function submitNewCourse() {
 		right_panel.style.display = "block";
 		course_form.style.display = "none";
 
-		generateAllDescriptions();
+		updateDescAndSearcher();
 		updateCustomCourseList();
 		updateSchedule();
 	} else {
@@ -631,17 +631,6 @@ function toggleCourseSelection(identifier) {
 	}
 }
 
-function convertTime(time) {
-	let return_time = time.substring(0, 5);
-	let first_two = parseInt(time.substring(0, 2));
-
-	if (first_two > 12) {
-		return (first_two - 12) + return_time.substring(2) + " PM";
-	} else {
-		return return_time + " AM";
-	}
-}
-
 function setCourseDescription(index) {
 	let course_search_desc = document.getElementById("course-search-desc");
 	let course_info = all_desc_global[index];
@@ -649,7 +638,11 @@ function setCourseDescription(index) {
 	if (course_search_desc.firstChild != null) {
 		course_search_desc.removeChild(course_search_desc.firstChild);
 	}
-	course_search_desc.appendChild(course_info.cloneNode(true));
+
+	let node_to_append = document.createElement("div")
+	node_to_append.innerHTML = course_info;
+
+	course_search_desc.appendChild(node_to_append);
 }
 
 async function addCourses() {
@@ -759,7 +752,7 @@ async function addToCustomCourseList(custom_courses) {
 	}
 
 	if (custom_courses.length - number_of_conflicts > 0) {
-		await generateAllDescriptions(false);
+		await updateDescAndSearcher(false);
 		await save_json_data("loaded_custom_courses", loaded_custom_courses);
 	}
 
@@ -902,7 +895,7 @@ function toggleCourseOverlay(identifier) {
 function showCourseOverlay(identifier, override = false) {
 	if (overlay.locked == false || override == true) {
 		if (all_desc_global.length == 0) {
-			generateAllDescriptions();
+			updateDescAndSearcher();
 		}
 
 		// get index of course
@@ -921,7 +914,8 @@ function showCourseOverlay(identifier, override = false) {
 			course_info_table.removeChild(course_info_table.firstChild);
 		}
 
-		let node_to_append = course_info.cloneNode(true);
+		let node_to_append = document.createElement("div")
+		node_to_append.innerHTML = course_info;
 
 		node_to_append.childNodes[node_to_append.childNodes.length - 2].remove();
 

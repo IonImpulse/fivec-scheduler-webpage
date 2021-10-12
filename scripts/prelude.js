@@ -15,7 +15,6 @@ const current_version = 1.2;
 var timestamp_global = 0;
 var all_courses_global = [];
 var all_desc_global = [];
-var fuzzy_searcher = [];
 var selected_courses = [];
 var starred_courses = [];
 

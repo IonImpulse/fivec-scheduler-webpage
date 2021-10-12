@@ -81,8 +81,7 @@ async function update_database(full=true) {
     }
 
     if (full || json != "No update needed") {
-        generateAllDescriptions();
-        create_searcher();
+        updateDescAndSearcher();
     }
 
     console.log(
@@ -106,12 +105,6 @@ function update_loop() {
         updateSchedule();
         update_loop();
     }, 60000)
-}
-
-async function create_searcher() {
-    all_courses_global.forEach((t, index) => t.descIndex = index);
-    all_courses_global.forEach(t => t.instructorString = t.instructors.join(" "));
-    all_courses_global.forEach(t => t.filePrepared = fuzzysort.prepare(t.file));
 }
 
 function search_courses(query) {

@@ -1,4 +1,4 @@
-const current_version = '1.4.5';
+const current_version = '1.4.9';
 // On install, cache everything
 self.addEventListener('install', (event) => {
     event.waitUntil(
@@ -69,14 +69,14 @@ self.addEventListener('fetch', (event) => {
                     return "offline";
                 }));
         } else {
-            if (event.request.url.contains("updateIfStale")) {
+            if (event.request.url.includes("updateIfStale")) {
                 event.respondWith(
                     fetch(event.request).then((response) => {
                         return response;
                     }).catch((error) => {
                         return {json: "No update needed"};
                     }));
-            } else if (event.request.url.contains("fullUpdate")) {
+            } else if (event.request.url.includes("fullUpdate")) {
                 event.respondWith(
                     fetch(event.request).then((response) => {
                         return response;

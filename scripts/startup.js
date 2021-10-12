@@ -37,10 +37,26 @@ async function startup() {
     let fader = document.getElementById("fader")
     fader.classList.add('fade-out');
 
-    // Generate descriptions & searcher
-    generateAllDescriptions();
-    create_searcher();
+    // Start worker threads to generate descriptions + searcher
+    updateDescAndSearcher(false);
 }
+
+async function updateDescAndSearcher(full=true) {
+    var desc_worker = new Worker('scripts/workers/descriptions.js');
+    var searcher_worker = new Worker('scripts/workers/searcher.js');
+
+    desc_worker.onmessage = function(e) {
+        all_desc_global = e.data;
+    }
+
+    searcher_worker.onmessage = function(e) {
+        all_courses_global = e.data;
+    }
+
+    desc_worker.postMessage([[], all_courses_global, loaded_custom_courses, full]);
+    searcher_worker.postMessage([all_courses_global]);
+}
+
 // Generates and sets divs for timeslots
 function generateGridTimes() {
     element = document.getElementById("schedule-table");

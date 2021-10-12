@@ -33,6 +33,13 @@ async function startup() {
     // from QR code w/ course list code
     loadPossibleCourseList();
 
+    // Load Roboto font:
+    let link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = "https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap";
+    document.head.appendChild(link)
+
     // Remove fade-in class
     let fader = document.getElementById("fader")
     fader.classList.add('fade-out');

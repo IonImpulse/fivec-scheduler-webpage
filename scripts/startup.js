@@ -318,7 +318,7 @@ async function loadPossibleCourseList() {
                 Swal.showValidationMessage(
                     `Invalid Code! ${error}`
                 )
-            }).then(data => {
+            }).then(async data => {
                 window.location.href = window.location.href.split("?")[0];
                 if (data != null) {
                     let tuple = result.value;

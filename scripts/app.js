@@ -276,7 +276,7 @@ async function editCourse() {
 
 function buttonExport() {
 	Swal.fire({
-		title: 'Export',
+		title: 'Save As Image',
 		icon: 'success',
 		html: '<canvas id="export-holder" alt="schedule"></canvas><br><b>Downloading...</b>',
 		customClass: 'swal-medium-wide',

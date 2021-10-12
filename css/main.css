@@ -107,7 +107,7 @@ height: 100%;
 z-index: 99999;
 pointer-events: none;
 background: var(--background-alt);
-animation-duration: 100ms;
+animation-duration: 10ms;
 animation-timing-function: ease-in-out;
 }
 

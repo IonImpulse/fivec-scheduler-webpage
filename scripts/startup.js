@@ -321,7 +321,17 @@ function loadPossibleCourseList() {
             }).then(data => {
                 window.location.href = window.location.href.split("?")[0];
                 if (data != null) {
-                    const course_list_result = addToCourseLists(data);
+                    let tuple = result.value;
+
+                    let course_list = {
+                        code: tuple.code,
+                        courses: tuple.courses.local_courses,
+                    };
+
+                    let custom_courses = tuple.courses.custom_courses;
+
+                    const course_list_result = await addToCourseLists(course_list);
+                    const custom_list_result = await addToCustomCourseList(custom_courses);
 
                     if (course_list_result == true) {
                         Toast.fire({

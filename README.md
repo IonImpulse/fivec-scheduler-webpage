@@ -7,8 +7,8 @@ Live at [www.5scheduler.io](https://www.5scheduler.io/)
 
 
 ## Features
-- 🚀 Superfast loading times
-- 🔍 **SUPERFAST** typo-resistant search engine for all courses at the [Claremont Colleges](https://www.claremont.edu/)
+- 🚀 **SUPERFAST** everything - tested to be the fastest course scheduler for the 5Cs
+- 🔍 **Fast** & **Smart** typo-resistant search engine for all courses at the [Claremont Colleges](https://www.claremont.edu/)
 - 🌗 Light & **Dark** Mode
 - 📧 **Share and load** schedules as a code, link, or QR code
 - ⚙ Add **Custom** courses
@@ -26,14 +26,14 @@ Live at [www.5scheduler.io](https://www.5scheduler.io/)
 
 
 ## Stats for Nerds
-- Built using vanilla JS, CSS, & HMTL5
+- Built using plain JS, CSS, & HMTL5
 - API repo at [fivec-scheduler-server](https://github.com/IonImpulse/fivec-scheduler-server), built using Rust
-- Website first run size is ~447 KB, compressed using GZip
-   - Fonts: 109 KB
-   - JS: 63 KB
-   - Images: 39 KB
-   - CSS: 9 KB
-   - HTML: 1 KB
-   - Course Data: 230 KB
-- Request map:
-- ![requestmap_https __www 5scheduler io_](https://user-images.githubusercontent.com/24578597/135673047-104d184d-a6c8-4e2a-8e67-cc9924c2daba.png)
+- Website first run size is ~758 KB, subsequent runs are <1 KB. C ompressed using GZip
+   - Course data: 423 KB
+   - Fonts: 127 KB
+   - Images: 115 KB
+   - JS: 68 KB
+   - CSS: 8 KB
+   - HTML: 3 KB
+- Scored 100/100 for all tests in Google Lighthouse
+- Speed index of 2.7s for first run, 1.7s for repeat runs on WebPageTest

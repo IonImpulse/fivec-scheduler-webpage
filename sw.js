@@ -60,6 +60,7 @@ self.addEventListener('install', (event) => {
 // Catch and intercept all fetch requests
 // and service them with the SW
 self.addEventListener('fetch', (event) => {
+    console.log(event);
     event.respondWith(
         caches.match(event.request).then((resp) => {
             return resp || fetch(event.request).then((response) => {

@@ -1,4 +1,4 @@
-const current_version = '1.4.9';
+const current_version = '1.5.0';
 // On install, cache everything
 self.addEventListener('install', (event) => {
     event.waitUntil(
@@ -18,6 +18,8 @@ self.addEventListener('install', (event) => {
                 'scripts/libs/rasterizeHTML.allinone.js',
                 'scripts/libs/sweetalert2.min.js',
                 'scripts/libs/ics.deps.min.js',
+                'scripts/workers/descriptions.js',
+                'scripts/workers/searcher.js',
                 'img/delete.png',
                 'img/merge.png',
                 'img/about-dark.png',
@@ -47,6 +49,11 @@ self.addEventListener('install', (event) => {
                 'favicon-16x16.png',
                 'favicon-32x32.png',
                 'favicon.ico',
+                'fonts/JetBrainsMono-Medium.woff2',
+                'fonts/Roboto-Italic-400.woff2',
+                'fonts/Roboto-Normal-400.woff2',
+                'fonts/Roboto-Normal-500.woff2',
+                'fonts/Roboto-Normal-700.woff2',
                 'mstile-150x150.png',
                 'safari-pinned-tab.svg',
                 'site.webmanifest',

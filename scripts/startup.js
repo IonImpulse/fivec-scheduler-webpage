@@ -299,6 +299,42 @@ function updateStarredCourses() {
     }
 }
 
+async function intakeCourseData(data) {
+    let course_list = {
+        code: data.code,
+        courses: data.courses.local_courses,
+    };
+
+    let custom_courses = data.courses.custom_courses;
+
+    const course_list_result = await addToCourseLists(course_list);
+    const custom_list_result = await addToCustomCourseList(custom_courses);
+
+    if (course_list_result) {
+        Toast.fire({
+            title: 'Loaded course list',
+            icon: 'success'
+        });
+    } else {
+        Toast.fire({
+            title: 'Course list already loaded',
+            icon: 'error'
+        });
+    }
+
+    if (custom_list_result == 0) {
+        Toast.fire({
+            title: 'Loaded custom courses',
+            icon: 'success'
+        });
+    } else {
+        Toast.fire({
+            title: `Custom courses loaded with ${custom_list_result} conflicts`,
+            icon: 'warn'
+        });
+    }
+}
+
 async function loadPossibleCourseList() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
@@ -321,29 +357,7 @@ async function loadPossibleCourseList() {
             }).then(async data => {
                 window.location.href = window.location.href.split("?")[0];
                 if (data != null) {
-                    let tuple = result.value;
-
-                    let course_list = {
-                        code: tuple.code,
-                        courses: tuple.courses.local_courses,
-                    };
-
-                    let custom_courses = tuple.courses.custom_courses;
-
-                    const course_list_result = await addToCourseLists(course_list);
-                    const custom_list_result = await addToCustomCourseList(custom_courses);
-
-                    if (course_list_result == true) {
-                        Toast.fire({
-                            title: 'Loaded course list',
-                            icon: 'success'
-                        });
-                    } else {
-                        Toast.fire({
-                            title: 'Course list already loaded',
-                            icon: 'error'
-                        });
-                    }
+                    await intakeCourseData(data.value);
                 }
             });
     }

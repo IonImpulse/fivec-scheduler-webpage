@@ -31,41 +31,7 @@ function buttonLoad() {
 				icon: 'error'
 			});
 		} else if (result.value != undefined) {
-			let tuple = result.value;
-
-			let course_list = {
-				code: tuple.code,
-				courses: tuple.courses.local_courses,
-			};
-
-			let custom_courses = tuple.courses.custom_courses;
-
-			const course_list_result = await addToCourseLists(course_list);
-			const custom_list_result = await addToCustomCourseList(custom_courses);
-
-			if (course_list_result) {
-				Toast.fire({
-					title: 'Loaded course list',
-					icon: 'success'
-				});
-			} else {
-				Toast.fire({
-					title: 'Course list already loaded',
-					icon: 'error'
-				});
-			}
-
-			if (custom_list_result == 0) {
-				Toast.fire({
-					title: 'Loaded custom courses',
-					icon: 'success'
-				});
-			} else {
-				Toast.fire({
-					title: `Custom courses loaded with ${custom_list_result} conflicts`,
-					icon: 'warn'
-				});
-			}
+			await intakeCourseData(result.value);
 
 			updateSchedule();
 		}

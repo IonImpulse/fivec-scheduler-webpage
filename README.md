@@ -11,6 +11,7 @@ Live at [www.5scheduler.io](https://www.5scheduler.io/)
 - 🔍 **SUPERFAST** typo-resistant search engine for all courses at the [Claremont Colleges](https://www.claremont.edu/)
 - 🌗 Light & **Dark** Mode
 - 📧 **Share and load** schedules as a code, link, or QR code
+- ⚙ Add **Custom** courses
 - 📸 **Export** schedule as image
 - 🖨 **Print schedule** directly 
 - 📱 **Mobile**-optimized mode

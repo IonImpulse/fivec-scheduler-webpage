@@ -24,7 +24,7 @@ var loaded_course_lists = [];
 var loaded_custom_courses = [];
 var vertical_layout = false;
 
-var debounce_timer = 100;
+var debounce_timer = 200;
 
 // Web workers:
 var searcher_worker;

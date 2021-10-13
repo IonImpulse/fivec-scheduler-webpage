@@ -386,24 +386,19 @@ function buttonSearch() {
 			}
 		});
 
-		document.addEventListener("keydown", focusAndInput);
-
+		document.getElementsByClassName("swal-wide")[0].onkeydown = focusAndInput;
 		backgroundCourseSearch();
 	}
 }
 
 function focusAndInput(event) {
-	if (event.code.startsWith("Key")) {
-		let input = document.getElementById("course-input");
-		input.focus();
-
-		let key = event.code.substring(3).toLowerCase();
-
-		input.value += key;
-	} else if (event.code === "Backspace") {
+	if (event.code.startsWith("Key") || event.code === "Backspace") {
 		let input = document.getElementById("course-input");
 
-		input.value = input.value.slice(0, -1);
+		if (input != document.activeElement) {
+			input.value = "";
+			input.focus();
+		}
 	}
 }
 

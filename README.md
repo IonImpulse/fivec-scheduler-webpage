@@ -28,7 +28,7 @@ Live at [www.5scheduler.io](https://www.5scheduler.io/)
 ## Stats for Nerds
 - Built using plain JS, CSS, & HMTL5
 - API repo at [fivec-scheduler-server](https://github.com/IonImpulse/fivec-scheduler-server), built using Rust
-- Website first run size is ~758 KB, subsequent runs are <1 KB. C ompressed using GZip
+- Website first run size is ~758 KB, subsequent runs are <1 KB. Compressed using GZip
    - Course data: 423 KB
    - Fonts: 127 KB
    - Images: 115 KB

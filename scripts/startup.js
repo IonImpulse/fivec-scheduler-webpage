@@ -373,10 +373,12 @@ async function loadPossibleCourseList() {
                     `Invalid Code! ${error}`
                 )
             }).then(async data => {
-                window.location.href = window.location.href.split("?")[0];
                 if (data != null) {
-                    await intakeCourseData(data.value);
+                    await intakeCourseData(data);
                 }
+
+                window.location.href = window.location.href.split("?")[0];
+
             });
     }
 }

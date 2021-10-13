@@ -3,23 +3,17 @@ importScripts("../libs/fuzzysort.js");
 onmessage = function(e) {
     console.info("Course searching worker started!")
 
-    let course_divs = expensiveCourseSearch(e.data[0], e.data[1], e.data[2], e.data[3]);
+    let course_divs = expensiveCourseSearch(e.data[0], e.data[1], e.data[2]);
 
 	console.info("Course searching worker finished!")
     postMessage(course_divs);
 }
 
-function createResultDiv(course, color, index, selected=false) {
+function createResultDiv(course, color, index) {
 	let identifier = course.identifier;
 
 	let course_div = "<div";
-	course_div += " class=\"course-search-result unselectable";
-
-    if (selected) {
-        course_div += " selected";
-    } else {
-        course_div += "\"";
-    }
+	course_div += " class=\"course-search-result unselectable\"";
 
 	course_div += ` id="${identifier}"`;
     course_div += " tabindex=\"0\"";
@@ -127,7 +121,7 @@ function join_results(arr1, arr2) {
     return arr1.concat(arr2.filter((t, i) => !arr1.map(t => t.obj.identifier).includes(t.obj.identifier)))
 }
 
-function expensiveCourseSearch(input, all_courses_global, colors, selected_courses) {
+function expensiveCourseSearch(input, all_courses_global, colors) {
     let results = [];
 
     if (input == "") {
@@ -142,8 +136,7 @@ function expensiveCourseSearch(input, all_courses_global, colors, selected_cours
 
     for (let i = 0; i < results.length; i++) {
         let course = results[i].obj ?? results[i];
-        let is_selected = selected_courses.includes(course.identifier);
-        let course_div = createResultDiv(course, colors[i % colors.length], course.descIndex, is_selected);
+        let course_div = createResultDiv(course, colors[i % colors.length], course.descIndex);
 
         output += course_div;
     }

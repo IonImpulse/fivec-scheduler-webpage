@@ -37,14 +37,16 @@ async function startup() {
     let fader = document.getElementById("fader")
     fader.classList.add('fade-out');
 
+    // Create reusable web worker threads
+    desc_worker = new Worker('scripts/workers/descriptions.js');
+    searcher_worker = new Worker('scripts/workers/searcher.js');
+	searching_worker = new Worker("scripts/workers/courseSearch.js");
+
     // Start worker threads to generate descriptions + searcher
     updateDescAndSearcher(false);
 }
 
 async function updateDescAndSearcher(full=true) {
-    var desc_worker = new Worker('scripts/workers/descriptions.js');
-    var searcher_worker = new Worker('scripts/workers/searcher.js');
-
     desc_worker.onmessage = function(e) {
         all_desc_global = e.data;
     }

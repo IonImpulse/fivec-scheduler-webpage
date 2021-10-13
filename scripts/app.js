@@ -565,25 +565,46 @@ function backgroundCourseSearch() {
 		return;
 	}
 
-	var searching_worker = new Worker("scripts/workers/courseSearch.js");
+	if (input.value == "" && all_course_results_html != "") {
+		output.innerHTML = all_course_results_html;
+		postProcessSearch(input.value, all_course_results_html);
+		return;
+	}
 
 	searching_worker.onmessage = function(e) {
 		removeAllChildren(document.getElementById("course-search-results"));
 
         const html_courses = e.data;
-		
-		output.innerHTML = html_courses;
-
-		if (document.getElementById("course-input").value == "") {
-			setCourseDescription(0);
-		}
-
-		output.scroll({ top: 0, behavior: 'smooth' });
+				
+		postProcessSearch(document.getElementById("course-input").value, html_courses);
     }
 
-    searching_worker.postMessage([input.value, all_courses_global, colors, selected_courses]);
+    searching_worker.postMessage([input.value, all_courses_global, colors]);
 }
 
+function postProcessSearch(input, html) {
+	let output = document.getElementById("course-search-results");
+
+	output.innerHTML = html;
+
+	for (let s of selected_courses) {
+		let course = document.getElementById(s);
+		
+		if (course != null) {
+			course.classList.add("selected");
+		}
+	}
+
+	if (input == "") {
+		setCourseDescription(0);
+
+		if (all_course_results_html == "") {
+			all_course_results_html = html;
+		}
+	}
+
+	output.scroll({ top: 0, behavior: 'smooth' });
+}
 
 function toggleCourseSelection(identifier) {
 	let el = document.getElementById(identifier);

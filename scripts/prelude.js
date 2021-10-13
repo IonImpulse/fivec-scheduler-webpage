@@ -26,6 +26,13 @@ var vertical_layout = false;
 
 var debounce_timer = 100;
 
+// Web workers:
+var searcher_worker;
+var desc_worker;
+var searching_worker;
+
+var all_course_results_html = "";
+
 const colors = [
     "#2c5b8e",
     "#396F34",

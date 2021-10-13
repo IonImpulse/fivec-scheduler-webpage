@@ -65,6 +65,7 @@ async function update_database(full=true) {
 
     if (json != "No update needed") {
         console.debug("New data found...");
+        all_course_results_html = "";
         await save_json_data("course_data", json);
         all_courses_global = json.courses;
     

@@ -32,7 +32,7 @@
 --cal-icon:url(../img/cal-light.png);
 --dl-icon:url(../img/dl-light.png);
 --custom-course-icon:url(../img/custom-course-light.png);
---hover-effect: .9;
+--hover-effect: .95;
 }
 
 [data-theme="dark"] {

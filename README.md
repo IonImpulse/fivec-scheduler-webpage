@@ -25,6 +25,18 @@ Live at [www.5scheduler.io](https://www.5scheduler.io/)
 ![Screenshot Mobile](https://raw.githubusercontent.com/IonImpulse/fivec-scheduler-webpage/main/img/mobile_screenshot.png)
 
 
+
+## Contributing/Modifying
+Unfortunately, due to security policies in browsers, you cannot just open the index.html to view a working version of the website. However, it's quite simple to get up and running.
+
+1. Clone this repo using Git.
+2. Make sure you have Python 3 installed. 
+3. Then, run the included **debug.bat** or **debug.bash** (.bat for Windows, .bash for Linux/Mac) file to start a local webserver.
+4. Navigate to **localhost:8000** on your web browser of choice and you should see a working version of the website.
+5. After you make a change, be sure to refresh the page using `Ctrl + Shift + R` or `Ctrl + F5`. This clears the browser's cache for localhost:8000 and forces the content to update.
+
+
+
 ## Stats for Nerds
 - Built using plain JS, CSS, & HMTL5
 - API repo at [fivec-scheduler-server](https://github.com/IonImpulse/fivec-scheduler-server), built using Rust

@@ -380,13 +380,11 @@ function buttonSearch() {
 				// Cancel the default action, if needed
 				event.preventDefault();
 				// Trigger the button element with a click
-				expensiveCourseSearch();
+				backgroundCourseSearch();
 			}
 		});
 
-		setTimeout(() => {
-			expensiveCourseSearch()
-		}, 100);
+		backgroundCourseSearch();
 	}
 }
 
@@ -549,7 +547,7 @@ function buttonAbout() {
 	});
 }
 
-const processChange = debounce(() => expensiveCourseSearch());
+const processChange = debounce(() => backgroundCourseSearch());
 
 function debounce(func) {
 	let timer;
@@ -559,52 +557,31 @@ function debounce(func) {
 	};
 }
 
-function expensiveCourseSearch() {
+function backgroundCourseSearch() {
 	let input = document.getElementById("course-input");
 	let output = document.getElementById("course-search-results");
 
 	if (output == null) {
-		return
-	}
-	removeAllChildren(output);
-
-	if (input.value == "") {
-
-		for (let i = 0; i < all_courses_global.length; i++) {
-			let course = all_courses_global[i];
-
-			let course_div = createResultDiv(course, colors[i % colors.length], i);
-
-			if (selected_courses.includes(course.identifier)) {
-				course_div.classList.add("selected");
-			}
-
-			output.appendChild(course_div)
-
-		}
-
-		setCourseDescription(0);
-
-	} else {
-		const search_term = tweakSearch(input.value);
-
-		const results = search_courses(search_term);
-
-		for (let i = 0; i < results.length; i++) {
-			let course = results[i].obj;
-
-			let course_div = createResultDiv(course, colors[i % colors.length], course.descIndex);
-
-			if (selected_courses.includes(course.identifier)) {
-				course_div.classList.add("selected");
-			}
-
-			output.appendChild(course_div)
-		}
+		return;
 	}
 
-	output.scroll({ top: 0, behavior: 'smooth' });
+	var searching_worker = new Worker("scripts/workers/courseSearch.js");
 
+	searching_worker.onmessage = function(e) {
+		removeAllChildren(document.getElementById("course-search-results"));
+
+        const html_courses = e.data;
+		
+		output.innerHTML = html_courses;
+
+		if (document.getElementById("course-input").value == "") {
+			setCourseDescription(0);
+		}
+
+		output.scroll({ top: 0, behavior: 'smooth' });
+    }
+
+    searching_worker.postMessage([input.value, all_courses_global, colors, selected_courses]);
 }
 
 
@@ -675,50 +652,6 @@ async function addCourses() {
 	updateSchedule();
 
 	return num_courses;
-}
-
-function tweakSearch(string) {
-	let return_string = string.toLowerCase();
-
-	// Common replacements
-	// Type can be "full" or "any"
-	// Full only matches full tokens/words separated by spaces
-	const replacements = [
-		{ type: "full", search: "cs", replace: "csci" },
-		{ type: "full", search: "hmc", replace: "HarveyMudd" },
-		{ type: "full", search: "cmc", replace: "ClaremontMckenna" },
-		{ type: "full", search: "harvey mudd", replace: "HarveyMudd" },
-		{ type: "full", search: "claremont mckenna", replace: "ClaremontMckenna" },
-	];
-
-	for (replacement of replacements) {
-		if (replacement.type == "full") {
-			return_string = return_string.replace(new RegExp(`\\b${replacement.search}\\b`, 'g'), replacement.replace);
-		} else if (replacement.type == "any") {
-			return_string = return_string.replace(replacement.search, replacement.replace);
-		}
-	}
-
-	// Add a 0 to the course number
-	let num_corrected_string = "";
-
-	for (part of return_string.split(" ")) {
-		// JS is horrible, to see if a string is a number or not
-		// I have to parse it then take the output and convert
-		// that back to a string.
-		//
-		// Then I can compare it to the string value of "NaN" to see
-		// if it's a number or not.
-		if (part.length == 2 && `${parseInt(part)}` != "NaN") {
-			num_corrected_string += ` 0${part}`;
-		} else {
-			num_corrected_string += ` ${part}`;
-		}
-	}
-
-	return_string = num_corrected_string;
-
-	return return_string.trim().toLowerCase();
 }
 
 async function addToCourseLists(course_list) {

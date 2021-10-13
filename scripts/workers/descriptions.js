@@ -77,11 +77,8 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 }
 
 onmessage = function(e) {
-    console.info("Description worker started!")
-
     let all_desc_global = generateAllDescriptions(e.data[0], e.data[1], e.data[2], e.data[3]);
 
-	console.info("Description worker finished!")
     postMessage(all_desc_global);
 }
   

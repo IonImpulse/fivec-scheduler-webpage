@@ -8,13 +8,10 @@ function create_searcher(all_courses_global) {
 }
 
 onmessage = function(e) {
-    console.info("Searcher worker started");
     const all_courses_global = e.data[0];
     const fuzzysort = e.data[1];
     
     let searcher = create_searcher(all_courses_global, fuzzysort);
-
-	console.info("Searcher worker finished!")
 
     postMessage(searcher);
 }

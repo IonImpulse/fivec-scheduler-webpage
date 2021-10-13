@@ -351,6 +351,8 @@ function buttonSearch() {
 				'Cancel',
 			customClass: 'swal-wide',
 		}).then(async (result) => {
+			document.removeEventListener("keydown", focusAndInput);
+
 			if (result.isConfirmed) {
 				let num_courses = await addCourses();
 
@@ -384,7 +386,24 @@ function buttonSearch() {
 			}
 		});
 
+		document.addEventListener("keydown", focusAndInput);
+
 		backgroundCourseSearch();
+	}
+}
+
+function focusAndInput(event) {
+	if (event.code.startsWith("Key")) {
+		let input = document.getElementById("course-input");
+		input.focus();
+
+		let key = event.code.substring(3).toLowerCase();
+
+		input.value += key;
+	} else if (event.code === "Backspace") {
+		let input = document.getElementById("course-input");
+
+		input.value = input.value.slice(0, -1);
 	}
 }
 
@@ -589,7 +608,7 @@ function postProcessSearch(input, html) {
 
 	for (let s of selected_courses) {
 		let course = document.getElementById(s);
-		
+
 		if (course != null) {
 			course.classList.add("selected");
 		}

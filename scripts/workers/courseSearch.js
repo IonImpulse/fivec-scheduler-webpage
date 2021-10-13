@@ -1,11 +1,8 @@
 importScripts("../libs/fuzzysort.js");
 
 onmessage = function(e) {
-    console.info("Course searching worker started!")
-
     let course_divs = expensiveCourseSearch(e.data[0], e.data[1], e.data[2]);
 
-	console.info("Course searching worker finished!")
     postMessage(course_divs);
 }
 

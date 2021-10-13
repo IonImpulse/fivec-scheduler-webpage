@@ -36,4 +36,4 @@ Live at [www.5scheduler.io](https://www.5scheduler.io/)
    - CSS: 8 KB
    - HTML: 3 KB
 - Scored 100/100 for all tests in Google Lighthouse
-- Speed index of 2.7s for first run, 1.7s for repeat runs on WebPageTest
+- Speed index of 2.6s for first run, 1.2s for repeat runs on WebPageTest

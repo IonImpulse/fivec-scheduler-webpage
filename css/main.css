@@ -7,9 +7,9 @@
 --course-closed:#b93838;
 --course-open:#39a32b;
 --course-reopened:#bb7c33;
---logo-primary:#1A61D9;
---logo-secondary:#98afcd;
---padding:.7vmax;
+--logo-primary:#4572E4;
+--logo-secondary:#9EB9FE;
+--padding:16px;
 --padding-medium:7px;
 --padding-small:5px;
 --roundedness:4px;
@@ -367,7 +367,7 @@ padding:var(--padding)
 }
 
 #course-search-results {
-height:60vh;
+height:55vh;
 margin-top:40px;
 overflow-x:hidden;
 overflow-y:auto;
@@ -921,7 +921,7 @@ justify-content:center
 font-size:.7vh!important
 }
 
-.swal-wide {
+.swal-wide, .swal-medium-wide {
 width:100vw!important
 }
 
@@ -991,6 +991,23 @@ width:92vw
 
 #course-info-table,#course-list-table {
 width:91vw
+}
+
+.custom-course-manager {
+flex-direction: column;
+}
+
+.course-box {
+width: 74vw;
+}
+
+.right-panel {
+flex-direction: row !important;
+}
+
+.course-button {
+width: 20% !important;
+margin-bottom: 0 !important;
 }
 }
 

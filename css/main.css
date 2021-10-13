@@ -815,8 +815,8 @@ position: relative;
 }
 
 .day-checkbox {
-width: 1vw;
-height: 1vw;
+width: 30px;
+height: 30px;
 margin: 0 auto;
 margin: var(--padding);
 }
@@ -825,7 +825,6 @@ margin: var(--padding);
 position: absolute;
 font: 12px Roboto;
 font-weight: 700;
-margin: 0 auto;
 transform: translateY(-15px);
 margin: var(--padding);
 top: 0px;
@@ -959,12 +958,12 @@ line-height:30px
 }
 
 .table-title {
-width:89vw
+width:80vw
 }
 
 #course-table {
 max-height:60vh;
-width:91vw
+width:88vw
 }
 
 .course-schedule-block .identifier {
@@ -986,11 +985,11 @@ height:4vw;
 }
 
 #course-info-box,#course-box,#extra-buttons {
-width:92vw
+width:87vw
 }
 
 #course-info-table,#course-list-table {
-width:91vw
+width:88vw
 }
 
 .custom-course-manager {
@@ -999,6 +998,7 @@ flex-direction: column;
 
 .course-box {
 width: 74vw;
+margin-bottom: 20px;
 }
 
 .right-panel {
@@ -1006,9 +1006,25 @@ flex-direction: row !important;
 }
 
 .course-button {
-width: 20% !important;
+width: 40% !important;
 margin-bottom: 0 !important;
+margin-left: 0 auto !important;
+margin-right: 0 auto !important;
 }
+
+.create-course-form {
+width: 74vw;
+}
+.day-checkboxes {
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+}
+
+.small-label {
+position: relative;
+}
+
 }
 
 

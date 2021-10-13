@@ -173,28 +173,3 @@ function createLoadedCourseDiv(identifier, title, color) {
 
     return div;
 }
-
-function createResultDiv(course, color, index) {
-	let identifier = course.identifier;
-
-	let course_div = document.createElement("div");
-	course_div.className = "course-search-result unselectable";
-	course_div.id = identifier;
-    course_div.tabIndex = 0;
-	course_div.onclick = function () {
-		toggleCourseSelection(identifier)
-	};
-	course_div.onmouseenter = function () {
-		setCourseDescription(index)
-	};
-	
-	course_div.style.backgroundColor = color;
-	let course_code = `<b>${course.identifier}</b>`;
-	let status = `<span class="status-highlight ${course.status}">${course.status}</span>`;
-	// Put the course code and status in a div on the right
-	let num_students = `<span class="align-right" ><b>${course.seats_taken}/${course.max_seats} ${status}</b></span>`;
-
-	course_div.innerHTML = `${course_code}: ${course.title} ${num_students}`;
-
-	return course_div;
-}

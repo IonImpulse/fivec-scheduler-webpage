@@ -949,8 +949,8 @@ display:none!important
 }
 
 .align-right {
-margin-bottom:.2vh;
-margin-top:1vh
+margin-bottom:5px;
+margin-top:10px
 }
 
 .day {
@@ -1026,6 +1026,9 @@ flex-wrap: wrap;
 position: relative;
 }
 
+.course-search-result {
+height: 50px;
+}
 }
 
 

@@ -1,132 +1,139 @@
 <!DOCTYPE html>
-
 <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>5scheduler - Course Scheduler for the 5Cs</title>
+    <meta name="author" content="Ethan Vazquez">
+    <meta name="description" content="5scheduler.io is a fast, responsive, and modern course scheduler for the five Claremont Colleges (the 5Cs).">
+    <meta name="keywords" content="scheduler, scheduling, course search, courses, claremont, claremont colleges, harvey mudd, hmc, claremont mckenna college, cmc, scripps, pitzer, pomona">
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="📚 5scheduler - Course Scheduler for the 5Cs">
+    <meta name="twitter:description" content="5scheduler.io is a fast, responsive, and modern course scheduler for the five Claremont Colleges (the 5Cs).">
+    <meta name="twitter:site" content="@">
+    <meta name="twitter:creator" content="@">
+    <meta name="twitter:image" content="https://www.5scheduler.io/img/favicons/android-chrome-192x192.png">
 
-  <title>5scheduler - Course Scheduler for the 5Cs</title>
-  <meta name="author" content="Ethan Vazquez">
-  <meta name="description" content="5scheduler.io is a fast, responsive, and modern course scheduler for the five Claremont Colleges (the 5Cs).">
-  <meta name="keywords" content="scheduler, scheduling, course search, courses, claremont, claremont colleges, harvey mudd, hmc, claremont mckenna college, cmc, scripps, pitzer, pomona">
+    <!-- Open Graph general (Facebook, Pinterest)-->
+    <meta property="og:title" content="📚 5scheduler - Course Scheduler for the 5Cs">
+    <meta property="og:description" content="5scheduler.io is a fast, responsive, and modern course scheduler for the five Claremont Colleges (the 5Cs).">
+    <meta property="og:url" content="https://www.5scheduler.io/">
+    <meta property="og:site_name" content="www.5scheduler.io">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://www.5scheduler.io/img/favicons/android-chrome-192x192.png">
 
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="📚 5scheduler - Course Scheduler for the 5Cs">
-  <meta name="twitter:description" content="5scheduler.io is a fast, responsive, and modern course scheduler for the five Claremont Colleges (the 5Cs).">
-  <meta name="twitter:site" content="@">
-  <meta name="twitter:creator" content="@">
-  <meta name="twitter:image" content="https://www.5scheduler.io/img/favicon-large.png">
+    <!-- CSS -->
+    <link href="css/main.css" rel="stylesheet" type="text/css">
+    <link href="css/sweetalert2.min.css" rel="stylesheet" type="text/css">
 
-  <!-- Open Graph general (Facebook, Pinterest)-->
-  <meta property="og:title" content="📚 5scheduler - Course Scheduler for the 5Cs">
-  <meta property="og:description" content="5scheduler.io is a fast, responsive, and modern course scheduler for the five Claremont Colleges (the 5Cs).">
-  <meta property="og:url" content="https://www.5scheduler.io/">
-  <meta property="og:site_name" content="www.5scheduler.io">
-  <meta property="og:type" content="website">
-  <meta property="og:image" content="https://www.5scheduler.io/img/favicon-large.png">
+    <!-- Favicon Images -->
+    <script src="scripts/prelude.js"></script>
+    <link rel="icon" type="image/png" sizes="196x196" href="img/favicons/favicon-196.png">
+    <meta name="msapplication-square70x70logo" content="img/favicons/mstile-icon-128.png">
+    <meta name="msapplication-square150x150logo" content="img/favicons/mstile-icon-270.png">
+    <meta name="msapplication-square310x310logo" content="img/favicons/mstile-icon-558.png">
+    <meta name="msapplication-wide310x150logo" content="img/favicons/mstile-icon-558-270.png">
+    <link rel="apple-touch-icon" href="img/favicons/apple-icon-180.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="apple-touch-startup-image" href="img/favicons/apple-splash-2048-2732.jpg" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="img/favicons/apple-splash-2732-2048.jpg" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image" href="img/favicons/apple-splash-1668-2388.jpg" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="img/favicons/apple-splash-2388-1668.jpg" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image" href="img/favicons/apple-splash-1536-2048.jpg" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="img/favicons/apple-splash-2048-1536.jpg" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image" href="img/favicons/apple-splash-1668-2224.jpg" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="img/favicons/apple-splash-2224-1668.jpg" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image" href="img/favicons/apple-splash-1620-2160.jpg" media="(device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="img/favicons/apple-splash-2160-1620.jpg" media="(device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image" href="img/favicons/apple-splash-1284-2778.jpg" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="img/favicons/apple-splash-2778-1284.jpg" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image" href="img/favicons/apple-splash-1170-2532.jpg" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="img/favicons/apple-splash-2532-1170.jpg" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image" href="img/favicons/apple-splash-1125-2436.jpg" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="img/favicons/apple-splash-2436-1125.jpg" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image" href="img/favicons/apple-splash-1242-2688.jpg" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="img/favicons/apple-splash-2688-1242.jpg" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image" href="img/favicons/apple-splash-828-1792.jpg" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="img/favicons/apple-splash-1792-828.jpg" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image" href="img/favicons/apple-splash-1242-2208.jpg" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="img/favicons/apple-splash-2208-1242.jpg" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image" href="img/favicons/apple-splash-750-1334.jpg" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="img/favicons/apple-splash-1334-750.jpg" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image" href="img/favicons/apple-splash-640-1136.jpg" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="img/favicons/apple-splash-1136-640.jpg" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
+  </head>
 
-  <!-- CSS -->
-  <link href="css/main.css" rel="stylesheet" type="text/css" />
-  <link href="css/sweetalert2.min.css" rel="stylesheet" type="text/css" />
-  
-  <!-- Images -->
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=1.2">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=1.2">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=1.2">
-  <link rel="manifest" href="/site.webmanifest?v=1.2">
-  <link rel="mask-icon" href="/safari-pinned-tab.svg?v=1.2" color="#1a61d9">
-  <link rel="shortcut icon" href="/favicon.ico?v=1.2">
-  <meta name="msapplication-TileColor" content="#2d89ef">
-  <meta name="theme-color" content="#1a61d9"> 
-</head>
-
-<!--- Prelude sets global variables and theming before CSS is shown -->
-<script src="scripts/prelude.js"></script>
-
-<body>
-  <noscript class="noscript">
-    <a href="https://duckduckgo.com/?t=ffab&q=how+do+i+enable+javascript&ia=web">Sorry, but this site requires JavaScript to function properly.</a> 
-  </noscript>
-  <svg id="fader"></svg>
-
-  <div id="main-section">
-    <div class="title-bar shadow">
-      <a href="https://www.5scheduler.io" class="logo"><img src="favicon-32x32.png?v=1.2" alt="5scheduler.io" class="logo"></a>
-      
-      <div title="Share" tabindex="0" class="title-bar-button share wide noselect" onclick="buttonShare()">
+  <!--- Prelude sets global variables and theming before CSS is shown -->
+  <body>
+    <noscript class="noscript">
+      <a href="https://duckduckgo.com/?t=ffab&q=how+do+i+enable+javascript&ia=web">Sorry, but this site requires JavaScript to function properly.</a>
+    </noscript>
+    <svg id="fader"></svg>
+    <div id="main-section">
+      <div class="title-bar shadow">
+        <a href="https://www.5scheduler.io" class="logo"><img src="favicon-32x32.png?v=1.2" alt="5scheduler.io" class="logo"></a>
+        <div title="Share" tabindex="0" class="title-bar-button share wide noselect" onclick="buttonShare()">
+        </div>
+        <div title="Search" tabindex="0" class="title-bar-button search-button noselect" onclick="buttonSearch()">
+          Search
+        </div>
+        <div title="Load" tabindex="0" class="title-bar-button load wide noselect" onclick="buttonLoad()">
+        </div>
       </div>
-
-      <div title="Search" tabindex="0" class="title-bar-button search-button noselect" onclick="buttonSearch()">
-        Search
-      </div>
-
-      <div title="Load" tabindex="0" class="title-bar-button load wide noselect" onclick="buttonLoad()">
-      </div>
-    </div>
-
-    <div id="schedule-box" class="shadow">
-      <div id="schedule-table" class=""></div>
-    </div>
-
-
-  </div>
-
-  <div id="right-section">
-    <div id="extra-buttons" class="course-desc shadow">
-      <div title="Custom Course Manager" tabindex="0" class="title-bar-button noselect custom-course" onclick="buttonCustomCourse()">
-      </div>
-
-      <div title="Save As Image" tabindex="0" class="title-bar-button noselect export" onclick="buttonExport()">
-      </div>
-
-      <div title="Print" tabindex="0" class="title-bar-button noselect print" onclick="buttonPrint()">
-      </div>
-
-      <div title="iCalendar" tabindex="0" class="title-bar-button noselect cal" onclick="buttonCal()">
-      </div>
-
-      <div title="Theme" tabindex="0" class="title-bar-button noselect theme" onclick="buttonTheme()">
-      </div>
-
-      <div title="About" tabindex="0" class="title-bar-button noselect about" onclick="buttonAbout()">
+      <div id="schedule-box" class="shadow">
+        <div id="schedule-table" class=""></div>
       </div>
     </div>
-    <div id="course-info-box" class="course-desc shadow">
-      <div class="table-title">Course Info</div>
-      <div id="course-info-table" class="">
-
+    <div id="right-section">
+      <div id="extra-buttons" class="course-desc shadow">
+        <div title="Custom Course Manager" tabindex="0" class="title-bar-button noselect custom-course" onclick="buttonCustomCourse()">
+        </div>
+        <div title="Save As Image" tabindex="0" class="title-bar-button noselect export" onclick="buttonExport()">
+        </div>
+        <div title="Print" tabindex="0" class="title-bar-button noselect print" onclick="buttonPrint()">
+        </div>
+        <div title="iCalendar" tabindex="0" class="title-bar-button noselect cal" onclick="buttonCal()">
+        </div>
+        <div title="Theme" tabindex="0" class="title-bar-button noselect theme" onclick="buttonTheme()">
+        </div>
+        <div title="About" tabindex="0" class="title-bar-button noselect about" onclick="buttonAbout()">
+        </div>
+      </div>
+      <div id="course-info-box" class="course-desc shadow">
+        <div class="table-title">Course Info</div>
+        <div id="course-info-table" class="">
+        </div>
+      </div>
+      <div id="course-box" class="shadow">
+        <div class="table-title">Courses Loaded</div>
+        <div id="course-table" class="">
+        </div>
+      </div>
+      <div id="course-list-box" class="shadow">
+        <div class="table-title">Course Lists Loaded</div>
+        <div id="course-list-table" class="">
+        </div>
       </div>
     </div>
+    <script src="scripts/libs/fuzzysort.js"></script>
+    <script src="scripts/libs/sweetalert2.min.js"></script>
+    <script src="scripts/libs/qrcodegen-v1.7.0-es6.js"></script>
+    <script src="scripts/libs/rasterizeHTML.allinone.js"></script>
+    <script src="scripts/libs/localforage.min.js"></script>
+    <script src="scripts/libs/ics.deps.min.js"></script>
 
-    <div id="course-box" class="shadow">
-      <div class="table-title">Courses Loaded</div>
-      <div id="course-table" class="">
-        
-      </div>
-    </div>
+    <!--- Then load scripts -->
+    <script src="scripts/constructors.js"></script>
+    <script src="scripts/app.js"></script>
+    <script src="scripts/data.js"></script>
+    <script src="scripts/startup.js"></script>
 
-    <div id="course-list-box" class="shadow">
-      <div class="table-title">Course Lists Loaded</div>
-      <div id="course-list-table" class="">
-      </div>
-    </div>
-  </div>    
-</body>
+    <!--- Polyfill for accessability uses-->
+    <script src="https://cdn.polyfill.io/v2/polyfill.js?features=Element.prototype.classList"></script>
+    <script src="https://unpkg.com/focus-visible"></script>
+  </body>
+
   <!--- Load libraries first -->
-  <script src="scripts/libs/fuzzysort.js"></script>
-  <script src="scripts/libs/sweetalert2.min.js"></script>
-  <script src="scripts/libs/qrcodegen-v1.7.0-es6.js"></script>
-  <script src="scripts/libs/rasterizeHTML.allinone.js"></script>
-  <script src="scripts/libs/localforage.min.js"></script>
-  <script src="scripts/libs/ics.deps.min.js"></script>
-  <!--- Then load scripts -->
-  <script src="scripts/constructors.js"></script>
-  <script src="scripts/app.js"></script>
-  <script src="scripts/data.js"></script>
-  <script src="scripts/startup.js"></script>
-  <!--- Polyfill for accessability uses-->
-  <script src="https://cdn.polyfill.io/v2/polyfill.js?features=Element.prototype.classList"></script>
-  <script src="https://unpkg.com/focus-visible"></script>
 </html>

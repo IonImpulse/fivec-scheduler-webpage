@@ -1,28 +1,24 @@
 {
-    "name": "5scheduler - Course Scheduler for the 5Cs",
-    "short_name": "5scheduler",
-    "icons": [
-        {
-            "src": "/android-chrome-192x192.png?v=2",
-            "sizes": "192x192",
-            "type": "image/png"
-        },
-        {
-            "src": "/android-chrome-512x512.png?v=2",
-            "sizes": "512x512",
-            "type": "image/png"
-        },
-        {
-            "src": "/img/favicon-large.png",
-            "sizes": "512x512",
-            "type": "image/png",
-            "purpose": "maskable"
-        }
-    ],
-    "theme_color": "#4572E4",
-    "background_color": "#1F1F1F",
-    "orientation": "portrait",
-    "display": "standalone",
-    "scope": "/",
-    "start_url": "/"
+  "name": "5scheduler",
+  "short_name": "5scheduler",
+  "icons": [
+    {
+      "src": "img/favicons/manifest-icon-192.maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "img/favicons/manifest-icon-512.maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "theme_color": "#131313",
+  "background_color": "#131313",
+  "orientation": "portrait",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/"
 }

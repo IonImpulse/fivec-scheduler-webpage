@@ -655,7 +655,7 @@ justify-content:space-evenly;
 filter:brightness(var(--hover-effect)) opacity(1)
 }
 
-#course-search-desc .timing,#course-search-desc .instructors {
+#course-search-desc .timing,#course-search-desc .instructors, #course-search-desc .credits {
 color:var(--text-main);
 font:14px Roboto,monospace
 }
@@ -672,7 +672,7 @@ overflow:auto
 filter:brightness(1.6)
 }
 
-#course-info-table .timing,#course-info-table .instructors,#course-info-table .notes {
+#course-info-table .timing,#course-info-table .instructors,#course-info-table .notes, #course-info-table .credits {
 color:var(--text-main);
 font:12px Roboto
 }

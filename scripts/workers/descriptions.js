@@ -54,6 +54,10 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 			course_desc_node += timing_node;
 		}
 
+		let credit_node = "<div";
+		credit_node += " class=\"credits\">";
+		credit_node += `<br><b>Credits:</b> ${(course.credits/100).toFixed(2)}</div>`;
+
 		let instructor_node = "<div";
 		instructor_node += " class=\"instructors\">";
 		instructor_node += `<br><b>Instructors:</b> <i>${course.instructors.join(' & ')}</i></div>`;
@@ -66,6 +70,7 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 		notes_node += " class=\"notes\">";
 		notes_node += `<b>Notes:</b> <i>${course.notes}</i></div>`;
 
+		course_desc_node += credit_node;
 		course_desc_node += instructor_node;
 		course_desc_node += desc_node;
         course_desc_node += notes_node;

@@ -1,4 +1,4 @@
-const current_version = '1.5.4';
+const current_version = '1.5.5';
 // On install, cache everything
 self.addEventListener('install', (event) => {
     event.waitUntil(
@@ -42,21 +42,20 @@ self.addEventListener('install', (event) => {
                 'img/dl-light.png',
                 'img/custom-course-dark.png',
                 'img/custom-course-light.png',
-                'android-chrome-192x192.png',
-                'android-chrome-512x512.png',
-                'apple-touch-icon.png',
+                'img/favicons/android-chrome-192x192.png',
+                'img/favicons/android-chrome-512x512.png',
+                'img/favicons/apple-touch-icon.png',
                 'browserconfig.xml',
-                'favicon-16x16.png',
-                'favicon-32x32.png',
-                'img/favicon-large.png',
-                'favicon.ico',
+                'img/favicons/favicon-16x16.png',
+                'img/favicons/favicon-32x32.png',
+                'img/favicons/favicon.ico',
                 'fonts/JetBrainsMono-Medium.woff2',
                 'fonts/Roboto-Italic-400.woff2',
                 'fonts/Roboto-Normal-400.woff2',
                 'fonts/Roboto-Normal-500.woff2',
                 'fonts/Roboto-Normal-700.woff2',
-                'mstile-150x150.png',
-                'safari-pinned-tab.svg',
+                'img/favicons/mstile-150x150.png',
+                'img/favicons/safari-pinned-tab.svg',
                 'site.webmanifest',
                 'sw.js',
                 'robots.txt',

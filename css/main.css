@@ -164,6 +164,7 @@ width:32px;
 position: absolute;
 float:left;
 clear:left;
+border-radius: var(--roundedness);
 }
 
 .noselect {

@@ -1,4 +1,4 @@
-const current_version = '1.5.5';
+const current_version = '1.5.6';
 // On install, cache everything
 self.addEventListener('install', (event) => {
     event.waitUntil(

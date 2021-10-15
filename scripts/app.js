@@ -735,6 +735,10 @@ async function deleteCourse(identifier) {
 
 		if (course.identifier == identifier) {
 			found = true;
+
+			if (course.identifier == overlay.identifier) {
+				toggleCourseOverlay(identifier);
+			}
 			loaded_local_courses.splice(i, 1);
 			break;
 		}

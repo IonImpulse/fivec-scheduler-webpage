@@ -342,7 +342,7 @@ function buttonSearch() {
 			title: 'Search Courses',
 			icon: '',
 			html: `<div><input class="input" id="course-input" onKeyUp="processChange()"></div>` +
-				`<div id="course-search-box"><div id="course-search-results"></div><div id="course-search-desc" class="course-desc"></div></div><br>`,
+				`<div id="course-search-box"><div id="course-search-results"><b>Loading...</b></div><div id="course-search-desc" class="course-desc"></div></div><br>`,
 			showCloseButton: true,
 			showCancelButton: true,
 			confirmButtonText:
@@ -389,7 +389,7 @@ function buttonSearch() {
 		document.getElementsByClassName("swal-wide")[0].onkeydown = focusAndInput;
 		
 		setTimeout(function () {
-			backgroundCourseSearch(true);
+			backgroundCourseSearch();
 		}, 350);
 	}
 }
@@ -574,17 +574,11 @@ function debounce(func, time=debounce_timer) {
 	};
 }
 
-function backgroundCourseSearch(has_debounced_no_input=false) {
+function backgroundCourseSearch() {
 	let input = document.getElementById("course-input");
 	let output = document.getElementById("course-search-results");
 
 	if (output == null) {
-		return;
-	}
-
-	if (input.value == "" && has_debounced_no_input == false) {
-		const showDelayedResults = debounce(() => backgroundCourseSearch(has_debounced_no_input=true), 600);
-		showDelayedResults();
 		return;
 	}
 
@@ -615,8 +609,8 @@ function backgroundCourseSearch(has_debounced_no_input=false) {
 
 		return;
 	} else {
-		output.innerHTML = "";
-		output.innerHTML = courses.join("\n");
+		// Superfast html updater
+		replaceHtml(output, courses.join("\n"));
 		for (let s of selected_courses) {
 			let course = document.getElementById(s);
 
@@ -626,6 +620,20 @@ function backgroundCourseSearch(has_debounced_no_input=false) {
 		}
 	}
 }
+
+function replaceHtml(el, html) {
+	var oldEl = typeof el === "string" ? document.getElementById(el) : el;
+	/*@cc_on // Pure innerHTML is slightly faster in IE
+		oldEl.innerHTML = html;
+		return oldEl;
+	@*/
+	var newEl = oldEl.cloneNode(false);
+	newEl.innerHTML = html;
+	oldEl.parentNode.replaceChild(newEl, oldEl);
+	/* Since we just removed the old element from the DOM, return a reference
+	to the new element, which can be used to restore variable references. */
+	return newEl;
+};
 
 async function postProcessSearch(input, html) {
 	let output = document.getElementById("course-search-results");

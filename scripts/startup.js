@@ -128,12 +128,6 @@ function updateScheduleSizing() {
     if (current_layout != isVerticalLayout()) {
         generateDays();
     }
-
-    if (vertical_layout) {
-        debounce_timer = 500;
-    } else {
-        debounce_timer = 100;
-    }
 }
 function generateLines() {
     element = document.getElementById("schedule-table");

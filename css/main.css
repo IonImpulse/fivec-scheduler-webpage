@@ -357,7 +357,7 @@ border-radius:var(--roundedness);
 color:var(--text-main);
 font:700 larger Roboto,sans-serif;
 margin-bottom:1vh;
-padding:var(--padding)
+padding:var(--padding-medium)
 }
 
 .course-table-row {

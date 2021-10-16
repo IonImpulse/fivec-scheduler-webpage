@@ -24,7 +24,7 @@ var loaded_course_lists = [];
 var loaded_custom_courses = [];
 var vertical_layout = false;
 
-var debounce_timer = 200;
+var debounce_timer = 10;
 
 // Web workers:
 var searcher_worker;
@@ -70,6 +70,8 @@ function getTheme() {
 
 function isVerticalLayout() {
     vertical_layout = window.matchMedia("only screen and (max-width: 760px)").matches;
+    debounce_timer = vertical_layout ? 300 : 10;
+    return vertical_layout;
 }
 
 function getVersion() {

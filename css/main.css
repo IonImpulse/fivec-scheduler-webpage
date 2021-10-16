@@ -1,4 +1,5 @@
 :root {
+--main-font: 'Inter';
 --page-background:#eeeef7;
 --background-alt:#f0f1f3;
 --background-main:#ffffff;
@@ -308,7 +309,7 @@ transform:translate(0,-7px)
 }
 
 .day {
-font:700 18px Roboto,monospace;
+font:700 18px var(--main-font),monospace;
 letter-spacing:1px;
 padding:4% 0;
 text-align:center
@@ -355,7 +356,7 @@ width:100%
 background-color:var(--background-alt);
 border-radius:var(--roundedness);
 color:var(--text-main);
-font:700 larger Roboto,sans-serif;
+font:700 larger var(--main-font),sans-serif;
 margin-bottom:1vh;
 padding:var(--padding-medium);
 padding-left:var(--padding);
@@ -364,13 +365,16 @@ padding-left:var(--padding);
 .course-table-row {
 border-radius:var(--roundedness);
 color:var(--text-main);
-font:20px Roboto,sans-serif;
+font:20px var(--main-font),sans-serif;
 padding:var(--padding)
 }
 
 #course-search-results {
+background-color:var(--background-alt);
+border-radius:var(--roundedness);
+padding: var(--padding);
 height:55vh;
-margin-top:40px;
+margin-top:20px;
 overflow-x:hidden;
 overflow-y:auto;
 width:60vw
@@ -380,7 +384,7 @@ width:60vw
 border-radius:var(--roundedness);
 color:var(--text-course-schedule);
 cursor:pointer;
-font:16px Roboto,sans-serif;
+font:16px var(--main-font),sans-serif;
 margin:10px;
 outline:0 solid var(--select-main);
 outline-offset:-2px;
@@ -431,7 +435,7 @@ text-align:right
 
 .course-desc .title {
 color:var(--text-main);
-font:700 26px Roboto,sans-serif;
+font:700 26px var(--main-font),sans-serif;
 margin-bottom:.5vh
 }
 
@@ -446,7 +450,6 @@ color:var(--text-main);
 font-family:"JetBrains Mono",monospace;
 margin-bottom:1vh
 }
-
 .Closed {
 color:var(--course-closed)!important
 }
@@ -476,7 +479,7 @@ padding:var(--padding-medium)
 }
 
 .code-explain {
-font:25px Roboto,sans-serif
+font:25px var(--main-font),sans-serif
 }
 
 .code-share {
@@ -543,7 +546,7 @@ z-index:1050;
 filter:opacity(1)
 }
 .course-schedule-block .name {
-font:700 .7vmax Roboto,sans-serif
+font:700 .7vmax var(--main-font),sans-serif
 }
 
 .course-schedule-block .identifier {
@@ -551,7 +554,7 @@ font:.6vmax "JetBrains Mono",monospace
 }
 
 .course-schedule-block .room {
-font:400 italic .7vmax Roboto,sans-serif
+font:400 .7vmax var(--main-font),sans-serif
 }
 
 .course-info {
@@ -618,18 +621,18 @@ font-size:18px
 
 #about-desc {
 color:var(--text-main);
-font:16px Roboto,sans-serif;
+font:16px var(--main-font),sans-serif;
 text-align: center;
 line-height: 20px;
 }
 
 .swal2-title,#course-add-num {
-font-family:"Roboto",sans-serif;
+font-family:"var(--main-font)",sans-serif;
 font-weight: 600;
 }
 
 .swal2-textarea,.swal2-html-container,.swal2-validation-message,.swal2-actions * {
-font-family:"Roboto",sans-serif
+font-family:"var(--main-font)",sans-serif
 }
 
 a:link,a:visited {
@@ -657,12 +660,12 @@ filter:brightness(var(--hover-effect)) opacity(1)
 
 #course-search-desc .timing,#course-search-desc .instructors, #course-search-desc .credits {
 color:var(--text-main);
-font:14px Roboto,monospace
+font:14px var(--main-font),monospace
 }
 
 #course-search-desc .description,#course-search-desc .notes {
 color:var(--text-main);
-font:14px Roboto,monospace;
+font:14px var(--main-font),monospace;
 margin-top:1vh;
 max-height: 15vh;
 overflow:auto
@@ -674,7 +677,7 @@ filter:brightness(1.6)
 
 #course-info-table .timing,#course-info-table .instructors,#course-info-table .notes, #course-info-table .credits {
 color:var(--text-main);
-font:12px Roboto
+font:12px var(--main-font)
 }
 
 .ical-box {
@@ -715,7 +718,7 @@ background-color: var(--background-alt);
 color: var(--text-main);
 border-radius: var(--roundedness);    
 padding: var(--padding);
-font: 700 larger Roboto,sans-serif;
+font: 700 larger var(--main-font),sans-serif;
 margin-bottom: var(--padding);
 text-align: left;
 }
@@ -800,7 +803,7 @@ margin-bottom: var(--padding);
 }
 
 label {
-font: 18px Roboto;
+font: 18px var(--main-font);
 font-weight: 700;
 -moz-user-select:none;
 -ms-user-select:none;
@@ -824,7 +827,7 @@ margin: var(--padding);
 
 .small-label {
 position: absolute;
-font: 12px Roboto;
+font: 12px var(--main-font);
 font-weight: 700;
 transform: translateY(-15px);
 margin: var(--padding);
@@ -855,7 +858,7 @@ border: none;
 margin-top: 1px;
 box-shadow: 0 0 0 1px var(--button-outline);
 padding: var(--padding);
-font: 16px Roboto,sans-serif;
+font: 16px var(--main-font),sans-serif;
 font-weight: 500;
 transition: outline 0.2s ease-in-out;
 }
@@ -1029,49 +1032,4 @@ position: relative;
 .course-search-result {
 height: 50px;
 }
-}
-
-
-@font-face {
-font-display:swap;
-font-family:"JetBrains Mono";
-font-style:normal;
-font-weight:400;
-src:url(../fonts/JetBrainsMono-Medium.woff2) format("woff2");
-}
-
-@font-face {
-font-family: 'Roboto';
-font-style: italic;
-font-weight: 400;
-font-display: swap;
-src: url(../fonts/Roboto-Italic-400.woff2) format('woff2');
-unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-@font-face {
-font-family: 'Roboto';
-font-style: normal;
-font-weight: 400;
-font-display: swap;
-src: url(../fonts/Roboto-Normal-400.woff2) format('woff2');
-unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-@font-face {
-font-family: 'Roboto';
-font-style: normal;
-font-weight: 500;
-font-display: swap;
-src: url(../fonts/Roboto-Normal-500.woff2) format('woff2');
-unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-@font-face {
-font-family: 'Roboto';
-font-style: normal;
-font-weight: 700;
-font-display: swap;
-src: url(../fonts/Roboto-Normal-700.woff2) format('woff2');
-unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }

@@ -387,7 +387,10 @@ function buttonSearch() {
 		});
 
 		document.getElementsByClassName("swal-wide")[0].onkeydown = focusAndInput;
-		backgroundCourseSearch();
+		
+		setTimeout(function () {
+			backgroundCourseSearch(true);
+		}, 350);
 	}
 }
 
@@ -563,15 +566,15 @@ function buttonAbout() {
 
 const processChange = debounce(() => backgroundCourseSearch());
 
-function debounce(func) {
+function debounce(func, time=debounce_timer) {
 	let timer;
 	return (...args) => {
 		clearTimeout(timer);
-		timer = setTimeout(() => { func.apply(this, args); }, debounce_timer);
+		timer = setTimeout(() => { func.apply(this, args); }, time);
 	};
 }
 
-function backgroundCourseSearch() {
+function backgroundCourseSearch(has_debounced_no_input=false) {
 	let input = document.getElementById("course-input");
 	let output = document.getElementById("course-search-results");
 
@@ -579,16 +582,24 @@ function backgroundCourseSearch() {
 		return;
 	}
 
-	if (input.value == "" && all_course_results_html != "") {
-		output.innerHTML = all_course_results_html;
+	if (input.value == "" && has_debounced_no_input == false) {
+		const showDelayedResults = debounce(() => backgroundCourseSearch(has_debounced_no_input=true), 600);
+		showDelayedResults();
+		return;
+	}
+
+	if (input.value == "" && all_course_results_html.length > 0) {
+		appendCourseHTML(all_course_results_html);
+
 		postProcessSearch(input.value, all_course_results_html);
+
 		return;
 	}
 
 	searching_worker.onmessage = function(e) {
-		removeAllChildren(document.getElementById("course-search-results"));
-
         const html_courses = e.data;
+
+		appendCourseHTML(html_courses);
 				
 		postProcessSearch(document.getElementById("course-input").value, html_courses);
     }
@@ -596,23 +607,33 @@ function backgroundCourseSearch() {
     searching_worker.postMessage([input.value, all_courses_global, colors]);
 }
 
-function postProcessSearch(input, html) {
+ function appendCourseHTML(courses) {
 	let output = document.getElementById("course-search-results");
 
-	output.innerHTML = html;
+	if (courses.length == 0) {
+		output.innerHTML = "<b>No results found</b>";
 
-	for (let s of selected_courses) {
-		let course = document.getElementById(s);
+		return;
+	} else {
+		output.innerHTML = "";
+		output.innerHTML = courses.join("\n");
+		for (let s of selected_courses) {
+			let course = document.getElementById(s);
 
-		if (course != null) {
-			course.classList.add("selected");
+			if (course != null) {
+				course.classList.add("selected");
+			}
 		}
 	}
+}
+
+async function postProcessSearch(input, html) {
+	let output = document.getElementById("course-search-results");
 
 	if (input == "") {
 		setCourseDescription(0);
 
-		if (all_course_results_html == "") {
+		if (all_course_results_html == []) {
 			all_course_results_html = html;
 		}
 	}

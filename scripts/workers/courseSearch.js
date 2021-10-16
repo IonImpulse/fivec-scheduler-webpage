@@ -129,13 +129,13 @@ function expensiveCourseSearch(input, all_courses_global, colors) {
 		results = search_courses(search_term, all_courses_global);
 	}
 
-    let output = "";
+    let output = [];
 
     for (let i = 0; i < results.length; i++) {
         let course = results[i].obj ?? results[i];
         let course_div = createResultDiv(course, colors[i % colors.length], course.descIndex);
 
-        output += course_div;
+        output.push(course_div);
     }
 
     return output;

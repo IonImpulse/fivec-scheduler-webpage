@@ -31,7 +31,7 @@ var searcher_worker;
 var desc_worker;
 var searching_worker;
 
-var all_course_results_html = "";
+var all_course_results_html = [];
 
 const colors = [
     "#2c5b8e",

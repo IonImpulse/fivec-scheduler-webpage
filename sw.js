@@ -1,4 +1,4 @@
-const current_version = '1.5.14';
+const current_version = '1.5.15';
 // On install, cache everything
 self.addEventListener('install', (event) => {
     event.waitUntil(
@@ -49,7 +49,6 @@ self.addEventListener('install', (event) => {
                 'img/favicons/favicon-16x16.png',
                 'img/favicons/favicon-32x32.png',
                 'img/favicons/favicon.ico',
-                'fonts/JetBrainsMono-Medium.woff2',
                 'img/favicons/mstile-150x150.png',
                 'img/favicons/safari-pinned-tab.svg',
                 'site.webmanifest',

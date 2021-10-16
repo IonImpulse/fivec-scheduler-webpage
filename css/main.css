@@ -1033,12 +1033,3 @@ position: relative;
 height: 50px;
 }
 }
-
-
-@font-face {
-font-display:swap;
-font-family:"JetBrains Mono";
-font-style:normal;
-font-weight:400;
-src:url(../fonts/JetBrainsMono-Medium.woff2) format("woff2");
-}

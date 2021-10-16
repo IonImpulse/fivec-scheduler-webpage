@@ -39,8 +39,8 @@
 --page-background:#1b1b1b;
 --background-alt:#1b1b1b;
 --background-main:#333;
---button-main:#1b1b1b;
---button-outline:#1d1d1d33;
+--button-main:#222222;
+--button-outline:#83838333;
 --course-closed:#e27878;
 --course-open:#7ee271;
 --course-reopened:#e0c06a;
@@ -357,7 +357,8 @@ border-radius:var(--roundedness);
 color:var(--text-main);
 font:700 larger Roboto,sans-serif;
 margin-bottom:1vh;
-padding:var(--padding-medium)
+padding:var(--padding-medium);
+padding-left:var(--padding);
 }
 
 .course-table-row {
@@ -605,8 +606,7 @@ background-color:var(--background-alt);
 border-radius:var(--roundedness);
 box-sizing:border-box;
 display:inline-block;
-height:22vh;
-max-height:50vh;
+height:25vh;
 overflow:auto;
 padding:var(--padding);
 width:100%

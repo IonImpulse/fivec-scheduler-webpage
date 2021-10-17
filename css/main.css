@@ -936,6 +936,8 @@ width:100%
 #course-search-results {
 width:100%;
 height:300px;
+background-color: #00000000;
+padding: 0;
 }
 
 #course-search-desc {

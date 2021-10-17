@@ -341,8 +341,7 @@ function buttonSearch() {
 		Swal.fire({
 			title: 'Search Courses',
 			icon: '',
-			html: `<div><input class="input" id="course-input" onKeyUp="processChange()" placeholder="Search by course code, title, or instructor..."></div>` +
-				`<div id="course-search-box"><div id="course-search-results"><b>Loading...</b></div><div id="course-search-desc" class="course-desc"></div></div><br>`,
+			html: search_popup,
 			showCloseButton: true,
 			showCancelButton: true,
 			confirmButtonText:

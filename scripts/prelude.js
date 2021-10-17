@@ -183,3 +183,17 @@ const custom_course_popup = `
     </div>
 </div>
 `.replace("\n",'');
+
+
+const search_popup = `
+<div>
+    <input class="input" id="course-input" onKeyUp="processChange()" placeholder="Search by course code, title, or instructor...">
+</div>
+<div id="course-search-box">
+    <div id="course-search-results">
+        <b>Loading...</b>
+    </div>
+    <div id="course-search-desc" class="course-desc">
+    </div>
+</div>
+<br>`

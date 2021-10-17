@@ -861,7 +861,6 @@ box-shadow: 0 0 0 1px var(--button-outline);
 padding: var(--padding);
 font: 16px var(--main-font),sans-serif;
 font-weight: 500;
-transition: outline 0.2s ease-in-out;
 }
 
 .custom-course-input:not(:placeholder-shown).custom-course-input:valid {

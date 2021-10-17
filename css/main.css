@@ -294,7 +294,8 @@ transform:scale(0.95)
 .search-button {
 padding-left:var(--padding-medium);
 padding-right:var(--padding-medium);
-font:1em/1.9em "JetBrains Mono",sans-serif;
+font:1em/1.9em "Inter",sans-serif;
+font-weight: 500;
 filter:none;
 background-color:var(--search-button-background);
 color:var(--text-alt);

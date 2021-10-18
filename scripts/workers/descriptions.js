@@ -49,7 +49,9 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 			let end_time = convertTime(time.end_time);
 			let local = time.location;
 
-			timing_node += `<b>${start_time} - ${end_time}:</b> ${day_str}<br>@ ${local.school}, ${local.building}, Room ${local.room}</div>`;
+			timing_node += `<b>${start_time} - ${end_time}:</b> ${day_str}<br>@ `;
+			timing_node += `<span class="clickable-text" onclick="addSearchFilter(\'at:${local.school}'\)">${local.school}</span>`;
+			timing_node += `, ${local.building}, Room ${local.room}</div>`;
 
 			course_desc_node += timing_node;
 		}

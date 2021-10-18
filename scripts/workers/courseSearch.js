@@ -30,6 +30,21 @@ function createResultDiv(course, color, index) {
 	return course_div;
 }
 
+function toApiSchool(school) {
+	let l_school = school.toLowerCase();
+	if (["hmc", "hm", "harvey", "mudd", "harveymudd", "harvey-mudd"].includes(l_school)) {
+		return "HarveyMudd";
+	} else if (["cmc", "cm", "claremont", "mckenna", "claremontmckenna", "claremont-mckenna"].includes(l_school)) {
+		return "ClaremontMckenna";
+	} else if (["scripps", "scripp", "scrps", "scrip", "scrips"].includes(l_school)) {
+		return "Scripps";
+	} else if (["pm", "po", "pomona", "pomna", "pom"].includes(l_school)) {
+		return "Pomona"
+	} else if (["pz", "pitz", "pitzer", "pitze", "ptz"].includes(l_school)) {
+		return "Pitzer"
+	}
+}
+
 function tweakSearch(string) {
 	let return_string = string.toLowerCase();
 
@@ -44,7 +59,7 @@ function tweakSearch(string) {
 		{ type: "full", search: "claremont mckenna", replace: "ClaremontMckenna" },
 	];
 
-	for (replacement of replacements) {
+	for (let replacement of replacements) {
 		if (replacement.type == "full") {
 			return_string = return_string.replace(new RegExp(`\\b${replacement.search}\\b`, 'g'), replacement.replace);
 		} else if (replacement.type == "any") {
@@ -126,6 +141,8 @@ function search_courses(query, all_courses_global, filters) {
 			results = results.filter(t => (t.obj || t).credits/100 == filter.value);
 		} else if (filter.key == "section") {
 			results = results.filter(t => parseInt((t.obj || t).section) == filter.value);
+		} else if (filter.key == "at") {
+			results = results.filter(t => (t.obj || t).timing.map(e => e.location.school).flat().includes(toApiSchool(filter.value)));
 		}
 	}
 

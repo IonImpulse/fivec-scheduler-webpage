@@ -198,51 +198,59 @@ const search_popup = `
                 classes relevent to math with 1 credit that are currently open.
                 <br><br>
                 <div>
+                    <b>By school: "at:[school]"</b>
+                    <br>
+                    Example: at:pomona
+                    <br><br>
+                    All initialisms (cmc, hmc, po, etc.), partial names (mudd), and full names (HarveyMudd) supported
+                    <br><br>
+                </div>
+                <div>
                     <b>By instructor: "with:[name]"</b>
                     <br>
-                    e.g. with:James-Smith
+                    Example: with:James-Smith
                 </div>
                 <br>
                 <div>
                     <b>By credits: "credits:[number]"</b>
                     <br>
-                    e.g. credits:3
+                    Example: credits:3
                 </div>
                 <br>
                 <div>
                     <b>By day: "on:[weekday]"</b>
                     <br>
-                    e.g. on:tuesday
+                    Example: on:tuesday
                 </div>
                 <br>
                 <div>
                     <b>By status: "status:[open, reopened, closed]"</b>
                     <br>
-                    e.g. status:open
+                    Example: status:open
                 </div>
                 <br>
                 <div>
                     <b>By code: "code:[code-id]"</b>
                     <br>
-                    e.g. dept:afri
+                    Example: dept:afri
                 </div>
                 <br>
                 <div>
                     <b>By ID: "id:[id]"</b>
                     <br>
-                    e.g. id:010A
+                    Example: id:010A
                 </div>
                 <br>
                 <div>
                     <b>By department: "dept:[dept-id]"</b>
                     <br>
-                    e.g. dept:af
+                    Example: dept:af
                 </div>
                 <br>
                 <div>
                     <b>By section: "section:[number]"</b>
                     <br>
-                    e.g. section:3
+                    Example: section:3
                 </div>
             </div>
         </span

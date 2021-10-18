@@ -573,7 +573,7 @@ function debounce(func, time=debounce_timer) {
 	};
 }
 
-function backgroundCourseSearch() {
+async function backgroundCourseSearch() {
 	let input = document.getElementById("course-input");
 	let output = document.getElementById("course-search-results");
 
@@ -603,7 +603,7 @@ function backgroundCourseSearch() {
  function appendCourseHTML(courses) {
 	let output = document.getElementById("course-search-results");
 
-	if (courses.length == 0) {
+	if (courses.length == 1) {
 		output.innerHTML = "<b>No results found</b>";
 
 		return;
@@ -980,4 +980,32 @@ function toSvgString(qr, border, lightColor, darkColor) {
 <path d="${parts.join(" ")}" fill="${darkColor}"/>
 </svg>
 `
+}
+
+function addSearchFilter(filter) {
+	// Stop bubbling onclick event
+	if (!e) var e = window.event;
+	e.cancelBubble = true;
+	if (e.stopPropagation) e.stopPropagation();
+
+	let el = document.getElementById("course-input");
+
+	if (el == null) {
+		buttonSearch();
+		el = document.getElementById("course-input");
+	}
+	if (el.value.includes(filter.split(":")[0])) {
+		let input = el.value.split(" ");
+		input.forEach((el, index) => {
+			if (el.includes(filter.split(":")[0])) {
+				input[index] = filter;
+			}
+		});
+
+		el.value = input.join(" ");
+	} else {
+		el.value += ` ${filter}`;
+	}
+	el.focus();
+	backgroundCourseSearch();
 }

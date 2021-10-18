@@ -20,7 +20,7 @@ function createResultDiv(course, color, index) {
 	course_div += ` style="background-color: ${color};">`;
 
 	let course_code = `<b>${course.identifier}</b>`;
-	let status = `<span class="status-highlight ${course.status}">${course.status}</span>`;
+	let status = `<span class="status-highlight ${course.status}" onclick="addSearchFilter(\'status:${course.status}\')">${course.status}</span>`;
 	// Put the course code and status in a div on the right
 	let num_students = `<span class="align-right" ><b>${course.seats_taken}/${course.max_seats} ${status}</b></span>`;
 
@@ -74,7 +74,7 @@ function tweakSearch(string) {
 	return return_string.trim().toLowerCase();
 }
 
-function search_courses(query, all_courses_global) {
+function search_courses(query, all_courses_global, filters) {
     const options = {
         limit: 100, // don't return more results than you need!
         allowTypo: true, // if you don't care about allowing typos
@@ -84,32 +84,48 @@ function search_courses(query, all_courses_global) {
 
     let results = [];
 
-    if (query.includes(" ")) {
-        const terms = query.split(" ");
-        for (let search_term of terms) {
-            let temp_results = fuzzysort.go(search_term.trim(), all_courses_global, options);
-            
-            if (results.length > 0) {
-                results = results.filter(t => temp_results.map(t => t.obj.identifier).includes(t.obj.identifier));
-            } else {
-                results = temp_results;
-            }
-        }
-
-        if (results.length < 10) {
-            const results_dash = fuzzysort.go(terms.join("-"), all_courses_global, options);
-            const results_norm = fuzzysort.go(query, all_courses_global, options);
-            // Join results for all unique results
-            const results_combined = join_results(results_dash, results_norm);
-            results = join_results(results_combined, results);
-        }
-        
-        results = results.sort((a, b) => b.score - a.score);
-        
-    } else {
-        results = fuzzysort.go(query, all_courses_global, options);
-    }
-
+	if (query.trim() == "") {
+		results = all_courses_global;
+	} else {
+		if (query.includes(" ")) {
+			const terms = query.split(" ");
+			for (let search_term of terms) {
+				let temp_results = fuzzysort.go(search_term.trim(), all_courses_global, options);
+				
+				if (results.length > 0) {
+					results = results.filter(t => temp_results.map(t => t.obj.identifier).includes(t.obj.identifier));
+				} else {
+					results = temp_results;
+				}
+			}
+	
+			if (results.length < 10) {
+				const results_dash = fuzzysort.go(terms.join("-"), all_courses_global, options);
+				const results_norm = fuzzysort.go(query, all_courses_global, options);
+				// Join results for all unique results
+				const results_combined = join_results(results_dash, results_norm);
+				results = join_results(results_combined, results);
+			}
+			
+			results = results.sort((a, b) => b.score - a.score);
+			
+		} else {
+			results = fuzzysort.go(query, all_courses_global, options);
+		}
+	}
+    
+	// Apply filters
+	for (let filter of filters) {
+		if (["status", "dept", "id", "section", "code"].includes(filter.key)) {
+			results = results.filter(t => (t.obj || t)[filter.key].toLowerCase() == filter.value.toLowerCase());
+		} else if (filter.key == "with") {
+			results = results.filter(t => (t.obj || t).instructorString.toLowerCase().includes(filter.value.split("-").join(" ").toLowerCase()));
+		} else if (filter.key == "on") {
+			results = results.filter(t => (t.obj || t).timing.map(e => e.days).flat().includes(capitalize(filter.value)));
+		} else if (filter.key == "credits") {
+			results = results.filter(t => (t.obj || t).credits/100 == filter.value);
+		}
+	}
 
     return results;
 }
@@ -118,15 +134,46 @@ function join_results(arr1, arr2) {
     return arr1.concat(arr2.filter((t, i) => !arr1.map(t => t.obj.identifier).includes(t.obj.identifier)))
 }
 
+function capitalize(s) {
+    return s && s[0].toUpperCase() + s.slice(1);
+}
+
+// Gets any pair of "key:value" pairs from the query string
+// and returns both as an object
+function getFilters(input) {
+	let split = input.split(" ");
+
+	let filters = [];
+	let wanted_search_term = "";
+
+	for (let part of split) {
+		if (part.includes(":")) {
+			let split_part = part.split(":");
+			filters.push({
+				key: split_part[0],
+				value: split_part[1],
+			});
+		} else {
+			wanted_search_term += part + " ";
+		}
+	}
+
+	wanted_search_term = wanted_search_term.trim();
+
+	return {filters: filters, input: wanted_search_term};
+}
+
 function expensiveCourseSearch(input, all_courses_global, colors) {
     let results = [];
 
     if (input == "") {
         results = all_courses_global;
 	} else {
-		const search_term = tweakSearch(input);
+		const filters_object = getFilters(input);
 
-		results = search_courses(search_term, all_courses_global);
+		const search_term = tweakSearch(filters_object.input, all_courses_global);
+
+		results = search_courses(search_term, all_courses_global, filters_object.filters);
 	}
 
     let output = [];

@@ -183,3 +183,76 @@ const custom_course_popup = `
     </div>
 </div>
 `.replace("\n",'');
+
+
+const search_popup = `
+<div>
+    <input class="input" id="course-input" onKeyUp="processChange()" placeholder="Search by course code, title, or instructor...">
+    <span class="filter-help unselectable" onmouseenter="showFilterHelp()" onmouseleave="hideFilterHelp()">
+        ?
+        <span>
+            <div class="filter-help-text">
+                <div class="filter-help-title">Filter Options</div>
+                Combine filters with searches to narrow your results.<br><br>
+                For example, searching <b>"math status:open credits:1"</b> would only return
+                classes relevent to math with 1 credit that are currently open.
+                <br><br>
+                <div>
+                    <b>By instructor: "with:[name]"</b>
+                    <br>
+                    e.g. with:James-Smith
+                </div>
+                <br>
+                <div>
+                    <b>By credits: "credits:[number]"</b>
+                    <br>
+                    e.g. credits:3
+                </div>
+                <br>
+                <div>
+                    <b>By day: "on:[weekday]"</b>
+                    <br>
+                    e.g. on:tuesday
+                </div>
+                <br>
+                <div>
+                    <b>By status: "status:[open, reopened, closed]"</b>
+                    <br>
+                    e.g. status:open
+                </div>
+                <br>
+                <div>
+                    <b>By code: "code:[code-id]"</b>
+                    <br>
+                    e.g. dept:afri
+                </div>
+                <br>
+                <div>
+                    <b>By ID: "id:[id]"</b>
+                    <br>
+                    e.g. id:010A
+                </div>
+                <br>
+                <div>
+                    <b>By department: "dept:[dept-id]"</b>
+                    <br>
+                    e.g. dept:af
+                </div>
+                <br>
+                <div>
+                    <b>By section: "section:[number]"</b>
+                    <br>
+                    e.g. section:3
+                </div>
+            </div>
+        </span
+    </span>
+</div>
+<div id="course-search-box">
+    <div id="course-search-results">
+        <b>Loading...</b>
+    </div>
+    <div id="course-search-desc" class="course-desc">
+    </div>
+</div>
+<br>`

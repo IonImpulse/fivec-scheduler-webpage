@@ -56,11 +56,20 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 
 		let credit_node = "<div";
 		credit_node += " class=\"credits\">";
-		credit_node += `<br><b>Credits:</b> ${(course.credits/100).toFixed(2)}</div>`;
+		credit_node += `<br><b>Credits:</b> <span class="clickable-text" onclick="addSearchFilter(\'credits:${(course.credits/100)}\')">${(course.credits/100).toFixed(2)}</span></div>`;
 
 		let instructor_node = "<div";
 		instructor_node += " class=\"instructors\">";
-		instructor_node += `<br><b>Instructors:</b> <i>${course.instructors.join(' & ')}</i></div>`;
+		instructor_node += `<br><b>Instructors:</b> <i>`;
+
+		for (let instructor of course.instructors) {
+			instructor_node += `<span class="clickable-text" onclick="addSearchFilter(\'with:${instructor.trim().replace(/\s/g, "-")}\')">${instructor}</span>`;
+			if (instructor != course.instructors.at(-1) && course.instructors.length > 1) {
+				instructor_node += `, `;
+			}
+		}
+		
+		instructor_node += `</i></div>`;
 
 		let desc_node = "<div";
 		desc_node += " class=\"description\">";

@@ -56,7 +56,7 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 
 		let credit_node = "<div";
 		credit_node += " class=\"credits\">";
-		credit_node += `<br><b>Credits:</b> ${(course.credits/100).toFixed(2)}</div>`;
+		credit_node += `<br><b>Credits:</b> <span class="clickable-text" onclick="addSearchFilter(\'credits:${(course.credits/100)}\')">${(course.credits/100).toFixed(2)}</span></div>`;
 
 		let instructor_node = "<div";
 		instructor_node += " class=\"instructors\">";

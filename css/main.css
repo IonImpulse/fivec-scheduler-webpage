@@ -467,6 +467,44 @@ color:var(--course-reopened)!important
 width:20vw
 }
 
+.filter-help {
+font:20px var(--main-font),sans-serif;
+font-weight: 700;
+padding: var(--padding-small);
+border-radius: var(--roundedness);
+position: relative;
+cursor: pointer;
+}
+
+.filter-help-text {
+text-align: left;
+font:14px var(--main-font),sans-serif;
+background-color: var(--background-main);
+color: var(--text-main);
+border-radius: var(--roundedness);
+padding: var(--padding);
+opacity: 0;
+visibility: hidden;
+z-index: 100000;
+position: absolute;
+margin-left: 0;
+top: 0%;
+left: 100%;
+width: 400px;
+transition: opacity 0.2s ease-in-out;
+box-shadow: 0 0 1px 1px var(--button-outline);
+}
+
+.filter-help-title {
+font-size: 20px;
+font-weight: 700;
+}
+
+.show {
+opacity: 1;
+visibility: visible;
+}
+
 .status-highlight {
 background-color:var(--background-alt);
 border-radius:var(--roundedness);

@@ -116,7 +116,7 @@ function search_courses(query, all_courses_global, filters) {
     
 	// Apply filters
 	for (let filter of filters) {
-		if (["status", "dept", "id", "section", "code"].includes(filter.key)) {
+		if (["status", "dept", "id", "code"].includes(filter.key)) {
 			results = results.filter(t => (t.obj || t)[filter.key].toLowerCase() == filter.value.toLowerCase());
 		} else if (filter.key == "with") {
 			results = results.filter(t => (t.obj || t).instructorString.toLowerCase().includes(filter.value.split("-").join(" ").toLowerCase()));
@@ -124,6 +124,8 @@ function search_courses(query, all_courses_global, filters) {
 			results = results.filter(t => (t.obj || t).timing.map(e => e.days).flat().includes(capitalize(filter.value)));
 		} else if (filter.key == "credits") {
 			results = results.filter(t => (t.obj || t).credits/100 == filter.value);
+		} else if (filter.key == "section") {
+			results = results.filter(t => parseInt((t.obj || t).section) == filter.value);
 		}
 	}
 

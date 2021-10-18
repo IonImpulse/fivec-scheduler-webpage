@@ -1009,3 +1009,13 @@ function addSearchFilter(filter) {
 	el.focus();
 	backgroundCourseSearch();
 }
+
+function showFilterHelp() {
+	let el = document.querySelector(".filter-help-text");
+	el.classList.add("show");
+}
+
+function hideFilterHelp() {
+	let el = document.querySelector(".filter-help-text");
+	el.classList.remove("show");
+}

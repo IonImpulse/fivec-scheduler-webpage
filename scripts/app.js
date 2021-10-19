@@ -1014,12 +1014,12 @@ function addSearchFilter(filter) {
 	backgroundCourseSearch();
 }
 
-function showFilterHelp() {
-	let el = document.querySelector(".filter-help-text");
+function showPopup(query) {
+	let el = document.querySelector(query);
 	el.classList.add("show");
 }
 
-function hideFilterHelp() {
-	let el = document.querySelector(".filter-help-text");
+function hidePopup(query) {
+	let el = document.querySelector(query);
 	el.classList.remove("show");
 }

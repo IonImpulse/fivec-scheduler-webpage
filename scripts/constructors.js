@@ -84,6 +84,8 @@ function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_i
             course_div.style.gridColumnStart = layout.start_column;
             course_div.style.gridColumnEnd = layout.end_column;
 
+            course_div.id = `${course.identifier}|${layout.start_column - 2}`;
+            
             // Add the div to the grid
             let cloned_div = course_div.cloneNode(true);
             // Set course behavior

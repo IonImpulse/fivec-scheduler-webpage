@@ -341,7 +341,8 @@ function updateDistanceLines() {
             for (let day of days) {
                 line_list[day].push({
                     course: course,
-                    timing: timing
+                    timing: timing,
+                    index: day,
                 });
             }
         }
@@ -370,12 +371,75 @@ function updateDistanceLines() {
             if (course_a_loc[0] != "" && course_b_loc[0] != "") {
                 let distance = distanceLatLon(course_a_loc[0], course_a_loc[1], course_b_loc[0], course_b_loc[1], "F");
                 console.log(`The distance between ${course_a_key} and ${course_b_key} is ${distance} feet`);
+                generateTimeLine(course_a, course_b, distance);
             } else {
                 console.log(`Could not find location for ${course_a_key} or ${course_b_key}`);
             }
         }
         day_num += 1;
     }
+}
+
+function generateTimeLine(course_a, course_b, distance) {
+    let schedule = document.getElementById("schedule-table");
+    let el_a = document.getElementById(`${course_a.course.identifier}|${course_a.index}`);
+    let el_b = document.getElementById(`${course_b.course.identifier}|${course_b.index}`);
+
+    let grid_column = el_a.style.gridColumnStart;
+    let grid_row_start = el_a.style.gridRowEnd;
+    let grid_row_end = el_b.style.gridRowStart;
+
+    let line_div = document.createElement("div");
+    line_div.classList.add("line-v");
+    line_div.classList.add("popup-holder");
+
+    let id = `distance-info-${grid_column}-${grid_row_start}-${grid_row_end}`;
+    line_div.style.gridColumnStart = grid_column;
+    line_div.style.gridColumnEnd = grid_column;
+    line_div.style.gridRowStart = grid_row_start;
+    line_div.style.gridRowEnd = grid_row_end;
+
+    // Create info popup
+    let displayed_distance = Math.ceil(Math.round(distance * 15)/10);
+
+    if (displayed_distance < 100) {
+        displayed_distance = "less then 100";
+    } else {
+        displayed_distance = `about ${displayed_distance}`;
+    }
+
+    let info_div_text = document.createElement("span");
+    info_div_text.id = id;
+    info_div_text.classList.add("popup-text");
+    if (grid_column > 4) {
+        info_div_text.classList.add("other-side");
+    }
+    let info_div_title = document.createElement("div");
+    info_div_title.classList.add("popup-title");
+    info_div_title.innerText = `Distance: ${displayed_distance} feet`
+    info_div_text.appendChild(info_div_title);
+    info_div_text.innerHTML += `Approximate distance between ${course_a.course.title} to ${course_b.course.title}<br>`;
+
+    let walking_time = Math.ceil((distance * 1.5)/walking_feet_per_minute);
+    let skateboarding_time = Math.ceil((distance * 1.5)/skateboarding_feet_per_minute);
+    let biking_time = Math.ceil((distance * 1.5)/biking_feet_per_minute);
+
+    info_div_text.innerHTML += `Walking: ~<b>${walking_time}</b> minutes<br>`;
+    info_div_text.innerHTML += `Skateboarding: ~<b>${skateboarding_time}</b> minutes<br>`;
+    info_div_text.innerHTML += `Biking: ~<b>${biking_time}</b> minutes<br>`;
+
+    
+
+    line_div.insertBefore(info_div_text, line_div.firstChild);
+
+    line_div.onmouseenter = function () {
+        showPopup(`#${id}`)
+    };
+    line_div.onmouseleave = function () {
+        hidePopup(`#${id}`)
+    };
+
+    schedule.appendChild(line_div);
 }
 
 async function intakeCourseData(data) {

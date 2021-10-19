@@ -323,6 +323,17 @@ height:2px;
 opacity:.5
 }
 
+.line-v {
+background-color:var(--text-light);
+opacity:.5;
+width:5px;
+margin:0 auto;
+}
+
+.line-v:hover {
+opacity: 1;
+}
+
 .highlight {
 background-color:var(--text-light);
 opacity:.1
@@ -468,7 +479,7 @@ width:20vw;
 text-overflow: ellipsis; 
 }
 
-.filter-help {
+.popup-holder {
 font:20px var(--main-font),sans-serif;
 font-weight: 700;
 padding: var(--padding-small);
@@ -477,7 +488,7 @@ position: relative;
 cursor: pointer;
 }
 
-.filter-help-text {
+.popup-text {
 text-align: left;
 font:12px var(--main-font),sans-serif;
 background-color: var(--background-main);
@@ -496,7 +507,13 @@ transition: opacity 0.2s ease-in-out;
 box-shadow: 0 0 1px 1px var(--button-outline);
 }
 
-.filter-help-title {
+.popup-text.other-side {
+margin-right: 0;
+right: 80%;
+left:unset;
+}
+
+.popup-title {
 font-size: 20px;
 font-weight: 700;
 }

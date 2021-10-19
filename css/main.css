@@ -478,7 +478,7 @@ cursor: pointer;
 
 .filter-help-text {
 text-align: left;
-font:14px var(--main-font),sans-serif;
+font:12px var(--main-font),sans-serif;
 background-color: var(--background-main);
 color: var(--text-main);
 border-radius: var(--roundedness);
@@ -488,9 +488,9 @@ visibility: hidden;
 z-index: 100000;
 position: absolute;
 margin-left: 0;
-top: 0%;
-left: 100%;
-width: 400px;
+top: -20%;
+left: 80%;
+width: 350px;
 transition: opacity 0.2s ease-in-out;
 box-shadow: 0 0 1px 1px var(--button-outline);
 }

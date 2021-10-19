@@ -17,6 +17,7 @@ var all_courses_global = [];
 var all_desc_global = [];
 var selected_courses = [];
 var starred_courses = [];
+var locations = {};
 
 var overlay = { identifier: null, time_index: -1, locked: false };
 var loaded_local_courses = [];

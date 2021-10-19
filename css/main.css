@@ -464,7 +464,8 @@ color:var(--course-reopened)!important
 }
 
 #course-input {
-width:20vw
+width:20vw;
+text-overflow: ellipsis; 
 }
 
 .filter-help {

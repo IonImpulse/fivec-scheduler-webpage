@@ -504,8 +504,12 @@ function downloadICal(ical) {
 	ical.download("courses");
 }
 
+function dayToIndex(day_name) {
+	return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].indexOf(day_name);
+}
+
 function nextDate(day_name) {
-	let day_index = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].indexOf(day_name);
+	let day_index = dayToIndex(day_name);
 
 	var today = new Date();
 	today.setDate(today.getDate() + (day_index - 1 - today.getDay() + 7) % 7 + 1);

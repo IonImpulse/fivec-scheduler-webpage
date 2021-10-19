@@ -165,6 +165,7 @@ function updateSchedule() {
     updateLoadedCustomCourses();
     updateLoadedCourseLists();
     updateStarredCourses();
+    updateDistanceLines();
 
     if (max_grid_rows == 0) {
         max_grid_rows = 350;
@@ -308,6 +309,72 @@ function updateLoadedCourseLists() {
 function updateStarredCourses() {
     for (let identifier of starred_courses) {
         showStarCourse(identifier);
+    }
+}
+
+function distanceLatLon(lat1, lon1, lat2, lon2, unit) {
+	var radlat1 = Math.PI * lat1/180
+	var radlat2 = Math.PI * lat2/180
+	var theta = lon1-lon2
+	var radtheta = Math.PI * theta/180
+	var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+	dist = Math.acos(dist)
+	dist = dist * 180/Math.PI
+	dist = dist * 60 * 1.1515
+	if (unit=="K") { dist = dist * 1.609344 }
+	if (unit=="N") { dist = dist * 0.8684 }
+    if (unit=="F") { dist = dist * 5280}
+	return dist
+}
+
+function updateDistanceLines() {
+    // First, create a nested array of all locations using displayed times
+    let line_list = [[], [], [], [], []];
+    for (let course of loaded_local_courses) {
+        for (let timing of course.displayed_timing) {
+            let days = [];
+            
+            for (let day of timing.days) {
+                days.push(dayToIndex(day) - 1)
+            }
+
+            for (let day of days) {
+                line_list[day].push({
+                    course: course,
+                    timing: timing
+                });
+            }
+        }
+    }
+
+    // Now, sort each day's list by start time
+    for (let day_list of line_list) {
+        day_list.sort((a, b) => {
+            return parseInt(a.timing.start_time.replace(":", "")) - parseInt(b.timing.start_time.replace(":", ""));
+        });
+    }
+
+    // Create a line for each course that has a course after it
+    let day_num = 0;
+    for (let day of line_list) {
+        console.log(`======== DAY: ${day_num} ========`);
+        for (let i = 0; i < day.length - 1; i++) {
+            let course_a = day[i];
+            let course_a_key = `${course_a.timing.locations[0].school}-${course_a.timing.locations[0].building}`;
+            let course_a_loc = locations[course_a_key];
+
+            let course_b = day[i + 1];
+            let course_b_key = `${course_b.timing.locations[0].school}-${course_b.timing.locations[0].building}`;
+            let course_b_loc = locations[course_b_key];
+        
+            if (course_a_loc[0] != "" && course_b_loc[0] != "") {
+                let distance = distanceLatLon(course_a_loc[0], course_a_loc[1], course_b_loc[0], course_b_loc[1], "F");
+                console.log(`The distance between ${course_a_key} and ${course_b_key} is ${distance} feet`);
+            } else {
+                console.log(`Could not find location for ${course_a_key} or ${course_b_key}`);
+            }
+        }
+        day_num += 1;
     }
 }
 

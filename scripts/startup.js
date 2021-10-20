@@ -185,6 +185,11 @@ function clearSchedule() {
     while (course_divs[0]) {
         course_divs[0].parentNode.removeChild(course_divs[0]);
     }
+
+    let timing_lines = course_schedule_grid.getElementsByClassName("popup-holder");
+    while (timing_lines[0]) {
+        timing_lines[0].parentNode.removeChild(timing_lines[0]);
+    }
 }
 
 function removeAllChildren(element) {
@@ -330,7 +335,8 @@ function distanceLatLon(lat1, lon1, lat2, lon2, unit) {
 function updateDistanceLines() {
     // First, create a nested array of all locations using displayed times
     let line_list = [[], [], [], [], []];
-    for (let course of loaded_local_courses) {
+    let courses_with_timing = loaded_local_courses.filter((course) => course.displayed_timing != undefined);
+    for (let course of courses_with_timing) {
         for (let timing of course.displayed_timing) {
             let days = [];
             
@@ -356,9 +362,7 @@ function updateDistanceLines() {
     }
 
     // Create a line for each course that has a course after it
-    let day_num = 0;
     for (let day of line_list) {
-        console.log(`======== DAY: ${day_num} ========`);
         for (let i = 0; i < day.length - 1; i++) {
             let course_a = day[i];
             let course_a_key = `${course_a.timing.locations[0].school}-${course_a.timing.locations[0].building}`;
@@ -370,13 +374,10 @@ function updateDistanceLines() {
         
             if (course_a_loc[0] != "" && course_b_loc[0] != "") {
                 let distance = distanceLatLon(course_a_loc[0], course_a_loc[1], course_b_loc[0], course_b_loc[1], "F");
-                console.log(`The distance between ${course_a_key} and ${course_b_key} is ${distance} feet`);
                 generateTimeLine(course_a, course_b, distance);
             } else {
-                console.log(`Could not find location for ${course_a_key} or ${course_b_key}`);
             }
         }
-        day_num += 1;
     }
 }
 
@@ -418,7 +419,7 @@ function generateTimeLine(course_a, course_b, distance) {
     info_div_title.classList.add("popup-title");
     info_div_title.innerText = `Distance: ${displayed_distance} feet`
     info_div_text.appendChild(info_div_title);
-    info_div_text.innerHTML += `Approximate distance between ${course_a.course.title} to ${course_b.course.title}<br>`;
+    info_div_text.innerHTML += `<i>Approximate timings if...</i><br>`;
 
     let walking_time = Math.ceil((distance * 1.5)/walking_feet_per_minute);
     let skateboarding_time = Math.ceil((distance * 1.5)/skateboarding_feet_per_minute);

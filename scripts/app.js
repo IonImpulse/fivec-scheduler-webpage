@@ -335,7 +335,7 @@ function buttonPrint() {
 	});
 }
 
-function buttonSearch() {
+async function buttonSearch() {
 	selected_courses = [];
 
 	if (all_courses_global == null) {
@@ -393,9 +393,17 @@ function buttonSearch() {
 
 		document.getElementsByClassName("swal-wide")[0].onkeydown = focusAndInput;
 		
+
+
 		setTimeout(function () {
 			backgroundCourseSearch();
 		}, 350);
+
+		// Create stats
+		let course_data = await load_json_data("course_data");
+
+		let term_div = document.getElementById("term-container");
+		term_div.innerHTML = `<b>Term:</b> ${course_data.term}`;
 	}
 }
 
@@ -645,6 +653,7 @@ function replaceHtml(el, html) {
 };
 
 async function postProcessSearch(input, html) {
+	let course_data = load_json_data("course_data");
 	let output = document.getElementById("course-search-results");
 
 	if (input == "") {

@@ -386,7 +386,7 @@ padding:var(--padding)
 background-color:var(--background-alt);
 border-radius:var(--roundedness);
 padding: var(--padding);
-height:55vh;
+height:50vh;
 margin-top:20px;
 overflow-x:hidden;
 overflow-y:auto;
@@ -475,6 +475,7 @@ color:var(--course-reopened)!important
 }
 
 #course-input {
+margin-left:9vw;
 width:20vw;
 text-overflow: ellipsis; 
 }
@@ -942,6 +943,14 @@ outline: 2px solid var(--course-closed);
 
 .input:focus {
 outline: 2px solid var(--link-color);
+}
+
+#term-container {
+background-color: var(--background-main);
+box-shadow: 0 0 1px 1px var(--button-outline);
+padding: var(--padding-medium);
+border-radius: var(--roundedness);
+margin-left: 10px;
 }
 
 @media only screen and (max-width: 760px) {

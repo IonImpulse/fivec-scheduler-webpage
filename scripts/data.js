@@ -54,7 +54,6 @@ async function update_database(full=true) {
         } else {
             console.debug("Found data, requesting update if stale...");
             response = fetch(`${API_URL}${UPDATE_IF_STALE(current_data.timestamp)}`);
-    
         }
     
         let data = await response;

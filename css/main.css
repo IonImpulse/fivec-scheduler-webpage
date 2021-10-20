@@ -483,7 +483,6 @@ text-overflow: ellipsis;
 font:20px var(--main-font),sans-serif;
 font-weight: 700;
 padding: var(--padding-small);
-border-radius: var(--roundedness);
 position: relative;
 cursor: pointer;
 }

@@ -403,7 +403,7 @@ function generateTimeLine(course_a, course_b, distance) {
     let displayed_distance = Math.ceil(Math.round(distance * 15)/10);
 
     if (displayed_distance < 100) {
-        displayed_distance = "less then 100";
+        displayed_distance = "less than 100";
     } else {
         displayed_distance = `about ${displayed_distance}`;
     }

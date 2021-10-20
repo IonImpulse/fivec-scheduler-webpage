@@ -165,6 +165,7 @@ function updateSchedule() {
     updateLoadedCustomCourses();
     updateLoadedCourseLists();
     updateStarredCourses();
+    updateDistanceLines();
 
     if (max_grid_rows == 0) {
         max_grid_rows = 350;
@@ -183,6 +184,11 @@ function clearSchedule() {
 
     while (course_divs[0]) {
         course_divs[0].parentNode.removeChild(course_divs[0]);
+    }
+
+    let timing_lines = course_schedule_grid.getElementsByClassName("popup-holder");
+    while (timing_lines[0]) {
+        timing_lines[0].parentNode.removeChild(timing_lines[0]);
     }
 }
 
@@ -309,6 +315,132 @@ function updateStarredCourses() {
     for (let identifier of starred_courses) {
         showStarCourse(identifier);
     }
+}
+
+function distanceLatLon(lat1, lon1, lat2, lon2, unit) {
+	var radlat1 = Math.PI * lat1/180
+	var radlat2 = Math.PI * lat2/180
+	var theta = lon1-lon2
+	var radtheta = Math.PI * theta/180
+	var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+	dist = Math.acos(dist)
+	dist = dist * 180/Math.PI
+	dist = dist * 60 * 1.1515
+	if (unit=="K") { dist = dist * 1.609344 }
+	if (unit=="N") { dist = dist * 0.8684 }
+    if (unit=="F") { dist = dist * 5280}
+	return dist
+}
+
+function updateDistanceLines() {
+    // First, create a nested array of all locations using displayed times
+    let line_list = [[], [], [], [], []];
+    let courses_with_timing = loaded_local_courses.filter((course) => course.displayed_timing != undefined);
+    for (let course of courses_with_timing) {
+        for (let timing of course.displayed_timing) {
+            let days = [];
+            
+            for (let day of timing.days) {
+                days.push(dayToIndex(day) - 1)
+            }
+
+            for (let day of days) {
+                line_list[day].push({
+                    course: course,
+                    timing: timing,
+                    index: day,
+                });
+            }
+        }
+    }
+
+    // Now, sort each day's list by start time
+    for (let day_list of line_list) {
+        day_list.sort((a, b) => {
+            return parseInt(a.timing.start_time.replace(":", "")) - parseInt(b.timing.start_time.replace(":", ""));
+        });
+    }
+
+    // Create a line for each course that has a course after it
+    for (let day of line_list) {
+        for (let i = 0; i < day.length - 1; i++) {
+            let course_a = day[i];
+            let course_a_key = `${course_a.timing.locations[0].school}-${course_a.timing.locations[0].building}`;
+            let course_a_loc = locations[course_a_key];
+
+            let course_b = day[i + 1];
+            let course_b_key = `${course_b.timing.locations[0].school}-${course_b.timing.locations[0].building}`;
+            let course_b_loc = locations[course_b_key];
+        
+            if (course_a_loc[0] != "" && course_b_loc[0] != "") {
+                let distance = distanceLatLon(course_a_loc[0], course_a_loc[1], course_b_loc[0], course_b_loc[1], "F");
+                generateTimeLine(course_a, course_b, distance);
+            } else {
+            }
+        }
+    }
+}
+
+function generateTimeLine(course_a, course_b, distance) {
+    let schedule = document.getElementById("schedule-table");
+    let el_a = document.getElementById(`${course_a.course.identifier}|${course_a.index}`);
+    let el_b = document.getElementById(`${course_b.course.identifier}|${course_b.index}`);
+
+    let grid_column = el_a.style.gridColumnStart;
+    let grid_row_start = el_a.style.gridRowEnd;
+    let grid_row_end = el_b.style.gridRowStart;
+
+    let line_div = document.createElement("div");
+    line_div.classList.add("line-v");
+    line_div.classList.add("popup-holder");
+
+    let id = `distance-info-${grid_column}-${grid_row_start}-${grid_row_end}`;
+    line_div.style.gridColumnStart = grid_column;
+    line_div.style.gridColumnEnd = grid_column;
+    line_div.style.gridRowStart = grid_row_start;
+    line_div.style.gridRowEnd = grid_row_end;
+
+    // Create info popup
+    let displayed_distance = Math.ceil(Math.round(distance * 15)/10);
+
+    if (displayed_distance < 100) {
+        displayed_distance = "less than 100";
+    } else {
+        displayed_distance = `about ${displayed_distance}`;
+    }
+
+    let info_div_text = document.createElement("span");
+    info_div_text.id = id;
+    info_div_text.classList.add("popup-text");
+    if (grid_column > 4) {
+        info_div_text.classList.add("other-side");
+    }
+    let info_div_title = document.createElement("div");
+    info_div_title.classList.add("popup-title");
+    info_div_title.innerText = `Distance: ${displayed_distance} feet`
+    info_div_text.appendChild(info_div_title);
+    info_div_text.innerHTML += `<i>Approximate timings if...</i><br>`;
+
+    let walking_time = Math.ceil((distance * 1.5)/walking_feet_per_minute);
+    let skateboarding_time = Math.ceil((distance * 1.5)/skateboarding_feet_per_minute);
+    let biking_time = Math.ceil((distance * 1.5)/biking_feet_per_minute);
+
+    info_div_text.innerHTML += `Walking: ~<b>${walking_time}</b> minutes<br>`;
+    info_div_text.innerHTML += `Skateboarding: ~<b>${skateboarding_time}</b> minutes<br>`;
+    info_div_text.innerHTML += `Biking: ~<b>${biking_time}</b> minutes<br>`;
+
+    
+
+    line_div.insertBefore(info_div_text, line_div.firstChild);
+
+    line_div.onmouseenter = function () {
+        showPopup(`#${id}`)
+    };
+    line_div.onmouseleave = function () {
+        hidePopup(`#${id}`)
+    };
+
+    schedule.appendChild(line_div);
 }
 
 async function intakeCourseData(data) {

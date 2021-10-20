@@ -8,6 +8,7 @@ const FULL_UPDATE = "fullUpdate";
 const UPDATE_IF_STALE = function (timestamp) { return "updateIfStale/" + timestamp; }
 const GET_UNIQUE_CODE = "getUniqueCode";
 const GET_COURSE_LIST_BY_CODE = function (code) { return "getCourseListByCode/" + code; }
+const GET_LOCATIONS = "getLocations"
 
 async function load_json_data(name) {
     return localforage.getItem(name);
@@ -25,6 +26,7 @@ async function update_database(full=true) {
     loaded_course_lists = await load_json_data("loaded_course_lists");
     loaded_custom_courses = await load_json_data("loaded_custom_courses");
     starred_courses = await load_json_data("starred_courses");
+    let location_update = update_locations();
 
     if (loaded_local_courses == null) {
         loaded_local_courses = [];
@@ -41,7 +43,7 @@ async function update_database(full=true) {
     if (starred_courses == null) {
         starred_courses = [];
     }
-    
+
     let response;
     let json;
 
@@ -84,10 +86,27 @@ async function update_database(full=true) {
     if (full || json != "No update needed") {
         updateDescAndSearcher();
     }
+    
+    await location_update;
+
+    locations = await load_json_data("locations");
+    
+    if (locations == null) {
+        locations = {};
+    }
 
     console.log(
-        `Total Courses Loaded: ${all_courses_global.length}\nTotal Local Courses Loaded: ${loaded_local_courses.length}\nTotal Course Lists Loaded: ${loaded_course_lists.length}\nTotal Custom Courses Loaded: ${loaded_custom_courses.length}`
+        `Total Courses Loaded: ${all_courses_global.length}\nTotal Local Courses Loaded: ${loaded_local_courses.length}\nTotal Course Lists Loaded: ${loaded_course_lists.length}\nTotal Custom Courses Loaded: ${loaded_custom_courses.length}\nLocations Loaded: ${Object.keys(locations).length}`
     );
+}
+
+async function update_locations() {
+    response = fetch(`${API_URL}${GET_LOCATIONS}`);
+    let data = await response;
+    if (response != "Offline") {
+        let json = await data.json();
+        await save_json_data("locations", json);        
+    }
 }
 
 function update_courses(source, target) {

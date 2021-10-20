@@ -9,6 +9,11 @@ Contains ALL global variables used.
 // Will delete localStorage variables when updating
 const current_version = 1.2;
 
+// Average paces for distance calcs
+const walking_feet_per_minute = 328;
+const skateboarding_feet_per_minute = 616;
+const biking_feet_per_minute = 880;
+
 // *****
 // Global Variables
 // *****
@@ -17,6 +22,7 @@ var all_courses_global = [];
 var all_desc_global = [];
 var selected_courses = [];
 var starred_courses = [];
+var locations = {};
 
 var overlay = { identifier: null, time_index: -1, locked: false };
 var loaded_local_courses = [];
@@ -188,11 +194,11 @@ const custom_course_popup = `
 const search_popup = `
 <div>
     <input class="input" id="course-input" onKeyUp="processChange()" placeholder="Search by course code, title, or instructor...">
-    <span class="filter-help unselectable" onmouseenter="showFilterHelp()" onmouseleave="hideFilterHelp()">
+    <span class="popup-holder unselectable" onmouseenter="showPopup(\'#filter-help-text\')" onmouseleave="hidePopup(\'#filter-help-text\')">
         ?
         <span>
-            <div class="filter-help-text">
-                <div class="filter-help-title">Filter Options</div>
+            <div id="filter-help-text" class="popup-text" >
+                <div class="popup-title">Filter Options</div>
                 Combine filters with searches to narrow your results.<br><br>
                 For Ex, searching <b>"math status:open credits:1"</b> would only return
                 classes relevent to math with 1 credit that are currently open.

@@ -85,6 +85,13 @@ self.addEventListener('fetch', (event) => {
                     }).catch((error) => {
                         return {json: {timestamp: 0, courses: []}};
                     }));
+            } else {
+                event.respondWith(
+                    fetch(event.request).then((response) => {
+                        return response;
+                    }).catch((error) => {
+                        return {json: "Offline"};
+                    }));
             }
         }
     } else {

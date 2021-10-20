@@ -504,8 +504,12 @@ function downloadICal(ical) {
 	ical.download("courses");
 }
 
+function dayToIndex(day_name) {
+	return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].indexOf(day_name);
+}
+
 function nextDate(day_name) {
-	let day_index = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].indexOf(day_name);
+	let day_index = dayToIndex(day_name);
 
 	var today = new Date();
 	today.setDate(today.getDate() + (day_index - 1 - today.getDay() + 7) % 7 + 1);
@@ -1010,12 +1014,12 @@ function addSearchFilter(filter) {
 	backgroundCourseSearch();
 }
 
-function showFilterHelp() {
-	let el = document.querySelector(".filter-help-text");
+function showPopup(query) {
+	let el = document.querySelector(query);
 	el.classList.add("show");
 }
 
-function hideFilterHelp() {
-	let el = document.querySelector(".filter-help-text");
+function hidePopup(query) {
+	let el = document.querySelector(query);
 	el.classList.remove("show");
 }

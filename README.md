@@ -14,6 +14,7 @@ Live at [www.5scheduler.io](https://www.5scheduler.io/)
 - ⚙ Add **Custom** courses
 - 📸 **Export** schedule as image
 - 🖨 **Print schedule** directly 
+- 📐 Automatic **distance** calculation - see how long it'll take to walk/skate/bike to class!
 - 📱 **Mobile**-optimized mode
 - 🔰 Works as a ***Progressive Web App*** (PWA)
    - 📲 Installs as an app on your phone/desktop

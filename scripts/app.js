@@ -276,6 +276,12 @@ function screenshotToCanvas(canvas, source) {
 
 	copyStyle(target, source);
 
+	let line_v = target.getElementsByClassName("line-v");
+
+	for (let line of line_v) {
+		line.style.display = "none";
+	}
+
 	rasterizeHTML.drawHTML(target.innerHTML, canvas, {
 		width: `${x}`,
 		height: `${y}`,

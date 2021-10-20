@@ -371,12 +371,16 @@ function updateDistanceLines() {
             let course_b = day[i + 1];
             let course_b_key = `${course_b.timing.locations[0].school}-${course_b.timing.locations[0].building}`;
             let course_b_loc = locations[course_b_key];
-        
-            if (course_a_loc[0] != "" && course_b_loc[0] != "") {
-                let distance = distanceLatLon(course_a_loc[0], course_a_loc[1], course_b_loc[0], course_b_loc[1], "F");
-                generateTimeLine(course_a, course_b, distance);
+            
+            if (course_a_loc[0] != undefined && course_b_loc[0] != undefined) {
+                if (course_a_loc[0] != "" && course_b_loc[0] != "") {
+                    let distance = distanceLatLon(course_a_loc[0], course_a_loc[1], course_b_loc[0], course_b_loc[1], "F");
+                    generateTimeLine(course_a, course_b, distance);
+                }
             } else {
+                console.warn(`Location key ${course_a_key} is ${course_a_loc}\nLocation key ${course_b_key} is ${course_b_loc}\n`);
             }
+            
         }
     }
 }

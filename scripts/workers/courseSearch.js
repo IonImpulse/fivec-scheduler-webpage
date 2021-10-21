@@ -134,7 +134,9 @@ function search_courses(query, all_courses_global, filters) {
 		if (["status", "dept", "id", "code"].includes(filter.key)) {
 			results = results.filter(t => (t.obj || t)[filter.key].toLowerCase() == filter.value.toLowerCase());
 		} else if (filter.key == "with") {
-			results = results.filter(t => (t.obj || t).instructorString.toLowerCase().includes(filter.value.split("-").join(" ").toLowerCase()));
+			console.log(filter.value);
+			console.log(results[0](t.obj || t).instructorString.toLowerCase());
+			results = results.filter(t => (t.obj || t).instructorString.toLowerCase().includes(filter.value.replace("-", " ").toLowerCase()));
 		} else if (filter.key == "on") {
 			results = results.filter(t => (t.obj || t).timing.map(e => e.days).flat().includes(capitalize(filter.value)));
 		} else if (filter.key == "credits") {
@@ -191,6 +193,9 @@ function expensiveCourseSearch(input, all_courses_global, colors) {
 		const filters_object = getFilters(input);
 
 		const search_term = tweakSearch(filters_object.input, all_courses_global);
+
+		console.log("Filters:", filters_object);
+		console.log("Search term:", search_term);
 
 		results = search_courses(search_term, all_courses_global, filters_object.filters);
 	}

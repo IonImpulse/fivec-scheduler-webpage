@@ -38,9 +38,9 @@ async function startup() {
     fader.classList.add('fade-out');
 
     // Create reusable web worker threads
-    desc_worker = new Worker('scripts/workers/descriptions.js' + '?' + Math.random());
-    searcher_worker = new Worker('scripts/workers/searcher.js' + '?' + Math.random());
-	searching_worker = new Worker('scripts/workers/courseSearch.js' + '?' + Math.random());
+    desc_worker = new Worker('scripts/workers/descriptions.js');
+    searcher_worker = new Worker('scripts/workers/searcher.js');
+	searching_worker = new Worker('scripts/workers/courseSearch.js');
 
     // Start worker threads to generate descriptions + searcher
     updateDescAndSearcher(false);

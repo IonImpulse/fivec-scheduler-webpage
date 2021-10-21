@@ -57,7 +57,13 @@ async function update_database(full=true) {
         }
     
         let data = await response;
-        json = await data.json();
+
+        if (data.status != 408) {
+            json = await data.json();
+        } else {
+            json = "No update needed";
+        }
+
     } catch (error) {
         console.warn(`${error}\nError occurred while fetching data, falling back on local cache...`);
         json = "No update needed";
@@ -102,7 +108,7 @@ async function update_database(full=true) {
 async function update_locations() {
     response = fetch(`${API_URL}${GET_LOCATIONS}`);
     let data = await response;
-    if (response != "Offline") {
+    if (data.status != 408) {
         let json = await data.json();
         await save_json_data("locations", json);        
     }

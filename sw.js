@@ -1,4 +1,4 @@
-const current_version = '1.5.17';
+const current_version = '1.5.20';
 // On install, cache everything
 self.addEventListener('install', (event) => {
     event.waitUntil(
@@ -12,14 +12,17 @@ self.addEventListener('install', (event) => {
                 'scripts/data.js',
                 'scripts/prelude.js',
                 'scripts/startup.js',
+                'scripts/libs/focus-visible.js',
                 'scripts/libs/fuzzysort.js',
+                'scripts/libs/ics.deps.min.js',
                 'scripts/libs/localforage.min.js',
+                'scripts/libs/polyfill.js',
                 'scripts/libs/qrcodegen-v1.7.0-es6.js',
                 'scripts/libs/rasterizeHTML.allinone.js',
                 'scripts/libs/sweetalert2.min.js',
-                'scripts/libs/ics.deps.min.js',
                 'scripts/workers/descriptions.js',
                 'scripts/workers/searcher.js',
+                'scripts/workers/courseSearch.js',
                 'img/delete.png',
                 'img/merge.png',
                 'img/about-dark.png',
@@ -55,45 +58,25 @@ self.addEventListener('install', (event) => {
                 'sw.js',
                 'robots.txt',
             ]);
-        })
+        }).catch((e) => {
+            console.warn(e);
+        }) 
     );
 });
+
+let init = { "status" : 408 , "statusText" : "offline" };
+const offline_response = new Response(null, init)
 
 // Catch and intercept all fetch requests
 // and service them with the SW
 self.addEventListener('fetch', (event) => {
     if (event.request.url.startsWith("https://api.5scheduler.io/")) {
-        if (event.request.method === 'POST') {
-            event.respondWith(
-                fetch(event.request).then((response) => {
-                    return response;
-                }).catch((error) => {
-                    return "offline";
-                }));
-        } else {
-            if (event.request.url.includes("updateIfStale")) {
-                event.respondWith(
-                    fetch(event.request).then((response) => {
-                        return response;
-                    }).catch((error) => {
-                        return {json: "No update needed"};
-                    }));
-            } else if (event.request.url.includes("fullUpdate")) {
-                event.respondWith(
-                    fetch(event.request).then((response) => {
-                        return response;
-                    }).catch((error) => {
-                        return {json: {timestamp: 0, courses: []}};
-                    }));
-            } else {
-                event.respondWith(
-                    fetch(event.request).then((response) => {
-                        return response;
-                    }).catch((error) => {
-                        return {json: "Offline"};
-                    }));
-            }
-        }
+        event.respondWith(
+            fetch(event.request).then((response) => {
+                return response;
+            }).catch((error) => {
+                return offline_response;
+        }));
     } else {
         event.respondWith(
             caches.match(event.request).then((resp) => {
@@ -105,6 +88,7 @@ self.addEventListener('fetch', (event) => {
     
                     return response;
                 }).catch(() => {
+                    console.warn("Failed to fetch " + event.request.url);
                     return caches.match('favicon-32x32.png');
                 })
             })

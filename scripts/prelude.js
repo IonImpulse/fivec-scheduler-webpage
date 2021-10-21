@@ -192,12 +192,13 @@ const custom_course_popup = `
 
 
 const search_popup = `
-<div>
+<div id="search-container">
     <input class="input" id="course-input" onKeyUp="processChange()" placeholder="Search by course code, title, or instructor...">
-    <span class="popup-holder unselectable" onmouseenter="showPopup(\'#filter-help-text\')" onmouseleave="hidePopup(\'#filter-help-text\')">
+    <span id="term-container"></span>
+    <span id="filter-help" class="popup-holder unselectable" onmouseenter="showPopup(\'#filter-help-text\')" onmouseleave="hidePopup(\'#filter-help-text\')">
         ?
         <span>
-            <div id="filter-help-text" class="popup-text" >
+            <div id="filter-help-text" class="popup-text other-side" >
                 <div class="popup-title">Filter Options</div>
                 Combine filters with searches to narrow your results.<br><br>
                 For Ex, searching <b>"math status:open credits:1"</b> would only return

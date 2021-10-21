@@ -621,7 +621,7 @@ async function backgroundCourseSearch() {
  function appendCourseHTML(courses) {
 	let output = document.getElementById("course-search-results");
 
-	if (courses.length == 1) {
+	if (courses.length == 0) {
 		output.innerHTML = "<b>No results found</b>";
 
 		return;

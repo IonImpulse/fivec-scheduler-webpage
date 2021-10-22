@@ -23,17 +23,17 @@
 --text-light:#616161;
 --text-main:#252525;
 --link-color:#106497;
---theme-icon:url(../img/theme-light.png);
---export-icon:url(../img/export-light.png);
---print-icon:url(../img/print-light.png);
---about-icon:url(../img/about-light.png);
---star-course-empty:url(../img/star-empty-light.png);
---star-course-filled:url(../img/star-filled-light.png);
---load-icon:url(../img/load-light.png);
---share-icon:url(../img/share-light.png);
---cal-icon:url(../img/cal-light.png);
---dl-icon:url(../img/dl-light.png);
---custom-course-icon:url(../img/custom-course-light.png);
+--theme-icon:url(../img/theme-light.svg);
+--export-icon:url(../img/export-light.svg);
+--print-icon:url(../img/print-light.svg);
+--about-icon:url(../img/about-light.svg);
+--star-course-empty:url(../img/star-empty.svg);
+--star-course-filled:url(../img/star-filled.svg);
+--load-icon:url(../img/load-light.svg);
+--share-icon:url(../img/share-light.svg);
+--cal-icon:url(../img/cal-light.svg);
+--dl-icon:url(../img/dl-light.svg);
+--custom-course-icon:url(../img/custom-course-light.svg);
 --hover-effect: .95;
 }
 
@@ -52,15 +52,15 @@
 --text-light:#bdbdbd;
 --text-main:#dbdbdb;
 --link-color:#83c3eb;
---theme-icon:url(../img/theme-dark.png);
---export-icon:url(../img/export-dark.png);
---print-icon:url(../img/print-dark.png);
---about-icon:url(../img/about-dark.png);
---load-icon:url(../img/load-dark.png);
---share-icon:url(../img/share-dark.png);
---cal-icon:url(../img/cal-dark.png);
---dl-icon:url(../img/dl-dark.png);
---custom-course-icon:url(../img/custom-course-dark.png);
+--theme-icon:url(../img/theme-dark.svg);
+--export-icon:url(../img/export-dark.svg);
+--print-icon:url(../img/print-dark.svg);
+--about-icon:url(../img/about-dark.svg);
+--load-icon:url(../img/load-dark.svg);
+--share-icon:url(../img/share-dark.svg);
+--cal-icon:url(../img/cal-dark.svg);
+--dl-icon:url(../img/dl-dark.svg);
+--custom-course-icon:url(../img/custom-course-dark.svg);
 --hover-effect: 1.1;
 }
 
@@ -658,7 +658,7 @@ background-image:var(--star-course-filled);
 }
 
 .delete-course {
-background-image:url(../img/delete.png);
+background-image:url(../img/delete.svg);
 background-size:cover;
 clear:right;
 float:right;
@@ -667,7 +667,7 @@ width:1vmax
 }
 
 .merge-course {
-background-image:url(../img/merge.png);
+background-image:url(../img/merge.svg);
 background-size:cover;
 float:right;
 height:1vmax;

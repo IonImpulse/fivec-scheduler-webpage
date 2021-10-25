@@ -489,27 +489,22 @@ async function loadPossibleCourseList() {
 
     const code = urlParams.get('load');
 
-    // TODO: rewrite as async await
     if (code != null) {
-        fetch(`${API_URL}${GET_COURSE_LIST_BY_CODE(code.toUpperCase())}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(response.statusText)
-                }
-                return response.json()
-            })
-            .catch(error => {
-                Swal.showValidationMessage(
-                    `Invalid Code! ${error}`
-                )
-            }).then(async data => {
-                if (data != null) {
-                    await intakeCourseData(data);
-                }
+        let response = await fetch(`${API_URL}${GET_COURSE_LIST_BY_CODE(code.toUpperCase())}`)
 
-                window.location.href = window.location.href.split("?")[0];
+        if (response.ok) {
+            let data = await response.json();
 
-            });
+            if (data != null) {
+                await intakeCourseData(data);
+            }
+
+            window.location.href = window.location.href.split("?")[0];
+        } else {
+            Swal.showValidationMessage(
+                `Invalid Code! ${error}`
+            )
+        }
     }
 }
 

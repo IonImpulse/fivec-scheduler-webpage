@@ -32,6 +32,11 @@ var vertical_layout = false;
 
 var debounce_timer = 10;
 
+// Constants
+const days_full = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const weekdays_full = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+const weekdays_short = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+
 // Web workers:
 var searcher_worker;
 var desc_worker;

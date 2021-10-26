@@ -130,20 +130,20 @@ function populateField(element_name, value) {
 async function submitNewCourse() {
 	const form = document.getElementsByClassName("form-group")[0];
 
-	const title = document.getElementById("course-title").value ?? " ";
-	let identifier = document.getElementById("course-identifier").value ?? " ";
-	const instructors = document.getElementById("course-instructors").value ?? " ";
-	const description = document.getElementById("course-description").value ?? " ";
-	const notes = document.getElementById("course-notes").value ?? " ";
-	const start_time = document.getElementById("course-start-time").value ?? " ";
-	const end_time = document.getElementById("course-end-time").value ?? " ";
-	const location = document.getElementById("course-location").value ?? " ";
+	let re = new RegExp(/[<>'"]/ig);
+	const title = document.getElementById("course-title").value.replaceAll(re, "") ?? " ";
+	let identifier = document.getElementById("course-identifier").value.replaceAll(re, "") ?? " ";
+	const instructors = document.getElementById("course-instructors").value.replaceAll(re, "") ?? " ";
+	const description = document.getElementById("course-description").value.replaceAll(re, "") ?? " ";
+	const notes = document.getElementById("course-notes").value.replaceAll(re, "") ?? " ";
+	const start_time = document.getElementById("course-start-time").value.replaceAll(re, "") ?? " ";
+	const end_time = document.getElementById("course-end-time").value.replaceAll(re, "") ?? " ";
+	const location = document.getElementById("course-location").value.replaceAll(re, "") ?? " ";
 
 	let days = [];
-	let day_names = ["monday", "tuesday", "wednesday", "thursday", "friday",];
-	for (let day_name of day_names) {
-		if (document.getElementById(`${day_name}-check`).checked) {
-			days.push(day_name.replace(/^\w/, (c) => c.toUpperCase()));
+	for (let day_name of weekdays_full) {
+		if (document.getElementById(`${day_name.toLowerCase()}-check`).checked) {
+			days.push(day_name);
 		}
 	}
 
@@ -231,10 +231,9 @@ async function editCourse() {
 		populateField("course-end-time", course.timing[0].end_time.substring(0,5));
 		populateField("course-location", course.timing[0].location.room);
 
-		let day_names = ["monday", "tuesday", "wednesday", "thursday", "friday",];
-		for (let day_name of day_names) {
-			if (course.timing[0].days.includes(day_name.replace(/^\w/, (c) => c.toUpperCase()))) {
-				document.getElementById(`${day_name}-check`).checked = true;
+		for (let day_name of weekdays_full) {
+			if (course.timing[0].days.includes(day_name)) {
+				document.getElementById(`${day_name.toLowerCase()}-check`).checked = true;
 			}
 		}
 	}
@@ -519,7 +518,7 @@ function downloadICal(ical) {
 }
 
 function dayToIndex(day_name) {
-	return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].indexOf(day_name);
+	return days_full.indexOf(day_name);
 }
 
 function nextDate(day_name) {
@@ -783,8 +782,12 @@ async function deleteCourse(identifier) {
 		if (course.identifier == identifier) {
 			found = true;
 
-			if (course.identifier == overlay.identifier) {
-				toggleCourseOverlay(identifier);
+			if (course.identifier == overlay.identifier && overlay.status) {
+				overlay.locked = false;
+				overlay.identifier = "";
+
+				// Remove the highlight
+				removeHighlightCourses(identifier);
 			}
 			loaded_local_courses.splice(i, 1);
 			break;
@@ -936,9 +939,12 @@ function showCourseOverlay(identifier, override = false) {
 		let node_to_append = document.createElement("div")
 		node_to_append.innerHTML = course_info;
 
-		node_to_append.childNodes[node_to_append.childNodes.length - 2].remove();
-
-		course_info_table.appendChild(node_to_append);
+		try {
+			node_to_append.childNodes[node_to_append.childNodes.length - 2].remove();
+			course_info_table.appendChild(node_to_append);
+		} catch (e) {
+			// Do nothing
+		}
 	}
 }
 
@@ -976,6 +982,7 @@ function showStarCourse(identifier) {
 function toggle_theme() {
 	if (document.documentElement.getAttribute("data-theme") != "dark") {
 		document.documentElement.setAttribute('data-theme', 'dark');
+
 		localStorage.setItem("theme", "dark");
 	}
 	else {

@@ -1,6 +1,6 @@
 function sanitizeCourseList(courses) {
     let sanitized = [];
-    for (let course of courses.filter(course => course.timing[0].start_time != "00:00:00" && !course.timing.some(d => d.days.some(x => ["Saturday", "Sunday"].includes(x))))) {
+    for (let course of courses.filter(course => course.timing[0].start_time != "00:00:00" && !course.timing.some(d => d.days.some(x => ["Saturday", "Sunday"].includes(x))) && course.timing[0].days[0] != "NA")) {
         let displayed_timing = [];
 
         for (let time of course.timing) {

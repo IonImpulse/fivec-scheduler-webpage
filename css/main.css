@@ -109,8 +109,21 @@ height: 100%;
 z-index: 99999;
 pointer-events: none;
 background: var(--background-alt);
-animation-duration: 200ms;
+animation-duration: 300ms;
 animation-timing-function: ease-in-out;
+display: flex;
+align-items: center;
+flex-direction: column;
+}
+
+#loading-image {
+display: block;
+margin: auto;
+height: 30%;
+border-radius: 50px;
+outline: #000 solid 10px;
+outline-offset: -5px;
+background-color:#fff;
 }
 
 .shadow {
@@ -500,7 +513,7 @@ visibility: hidden;
 z-index: 100000;
 position: absolute;
 margin-left: 0;
-top: -20%;
+top: 25%;
 left: 80%;
 width: 350px;
 transition: opacity 0.2s ease-in-out;
@@ -1111,5 +1124,13 @@ position: relative;
 
 .course-search-result {
 height: 50px;
+}
+
+#fader {
+animation-duration: 200ms;
+}
+
+#loading-image {
+display: none;
 }
 }

@@ -66,8 +66,11 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 
 		for (let instructor of course.instructors) {
 			instructor_node += `<span class="clickable-text" onclick="addSearchFilter(\'with:${instructor.trim().replace(/\s/g, "-")}\')">${instructor}</span>`;
-			if (instructor != course.instructors[course.instructors.length - 1] && course.instructors.length > 1) {
-				instructor_node += `, `;
+			
+			if (course.instructors.length == 2) {
+				instructor_node += " & ";
+			} else if (instructor != course.instructors[course.instructors.length - 1] && course.instructors.length > 1) {
+				instructor_node += ", ";
 			}
 		}
 		

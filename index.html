@@ -3,6 +3,7 @@
   <noscript class="noscript">
     <a href="https://duckduckgo.com/?t=ffab&q=how+do+i+enable+javascript&ia=web">Sorry, but this site requires JavaScript to function properly.</a>
   </noscript>
+  <!--- Prelude sets global variables and theming before CSS is shown -->
   <script src="scripts/prelude.js"></script>
   <head>
     <meta charset="UTF-8">
@@ -74,14 +75,25 @@
     <link rel="apple-touch-startup-image" href="img/favicons/apple-splash-1136-640.jpg" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
   </head>
 
-  <!--- Prelude sets global variables and theming before CSS is shown -->
   <body>
     <div id="fader">
       <img id="loading-image" src="img/favicons/favicon.svg"/>
     </div>
     <div id="main-section">
+      <div id="pwa-prompt-box">
+        <div title="Install" tabindex="0" class="title-bar-button install noselect"  >
+          <div style="margin-right:10px;">Install As App</div>
+          <img src="img/dl-dark.svg" height="30px">
+        </div>
+
+        <div id="hide-install" class="title-bar-button install noselect">
+          <img src="img/delete.svg" height="30px">
+        </div>
+      </div>
+
       <div class="title-bar shadow">
         <a href="https://www.5scheduler.io" class="logo"><img src="/img/favicons/favicon-32x32.png" alt="5scheduler.io" class="logo"></a>
+
         <div title="Share" tabindex="0" class="title-bar-button share wide noselect" onclick="buttonShare()">
         </div>
         <div title="Search" tabindex="0" class="title-bar-button search-button noselect" onclick="buttonSearch()">

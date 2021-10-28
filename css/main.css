@@ -86,7 +86,7 @@ transition:color .05s ease-in-out,background-color .2s ease-in-out, transform .0
 }
 
 *:focus{
-outline: 3px solid #33b4f0;
+outline: 3px solid var(--selected);
 outline-offset: 3px;
 }
 
@@ -245,6 +245,30 @@ background-position: center;
 box-shadow: 0 0 0 1px var(--button-outline);
 }
 
+#pwa-prompt-box {
+display:none;
+flex-direction:row;
+}
+
+.title-bar-button.install {
+background-color: #428cee;
+color: var(--text-alt);
+font: 1.2rem "Inter", monospace;
+font-weight: 700;
+display: flex;
+margin: 0 auto;
+margin-bottom: 10px;
+width: 90%;
+height: 40px;
+flex-direction: row;
+align-items: center;
+justify-content: center;
+}
+
+#hide-install {
+width: 40px;
+}
+
 .title-bar-button.custom-course {
 background-image:var(--custom-course-icon);
 }
@@ -282,7 +306,6 @@ background-image:var(--dl-icon);
 margin-right:var(--padding);
 width: 80px;
 }
-
 
 .title-bar-button.wide {
 width:140px;
@@ -748,7 +771,7 @@ max-height: 15vh;
 overflow:auto
 }
 
-.delete-course:hover,.merge-course:hover {
+.delete-course:hover,.merge-course:hover, #hide-install *:hover {
 filter:brightness(1.6)
 }
 
@@ -1143,4 +1166,5 @@ display:flex;
 flex-direction:column;
 align-items:center;
 }
+
 }

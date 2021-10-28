@@ -119,8 +119,9 @@ flex-direction: column;
 #loading-image {
 display: block;
 margin: auto;
-height: 30%;
-border-radius: 50px;
+height: 30vmin;
+width: 30vmin;
+border-radius:25%;
 outline: #000 solid 10px;
 outline-offset: -5px;
 background-color:#fff;

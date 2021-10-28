@@ -47,17 +47,13 @@ async function startup() {
 
     // Start worker threads to generate descriptions + searcher
     updateDescAndSearcher(false);
-    
-    document.addEventListener("keydown", function (event) {
-        if (event.code === "Enter") {
-            document.activeElement.click();
-        }
-    });
 }
 
 var installEvent;
+const install_holder = document.querySelector("#pwa-prompt-box");
 const install_button = document.querySelector(".install");
-
+const close_button = document.querySelector("#hide-install");
+const schedule_element = document.getElementById("schedule-table");
 
 function getVisited() {
     return localStorage.getItem('install-prompt');
@@ -68,7 +64,6 @@ function setVisited() {
 }
 
 function pwaInstallPrompt() {
-    
     // this event will only fire if the user does not have the pwa installed
     window.addEventListener('beforeinstallprompt', (event) => {
         event.preventDefault();
@@ -76,17 +71,16 @@ function pwaInstallPrompt() {
         // if no localStorage is set, first time visitor
         if (!getVisited()) {
             // show the prompt banner
-            install_button.style.display = 'block';
+            install_holder.style.display = 'flex';
     
             // store the event for later use
             installEvent = event;
         }
     });
     
-    
     install_button.addEventListener('click', () => {
         // hide the prompt banner
-        install_button.style.display = 'none';
+        install_holder.style.display = 'none';
     
         // trigger the prompt to show to the user
         installEvent.prompt();
@@ -101,6 +95,16 @@ function pwaInstallPrompt() {
     
             installEvent = null;
         });
+    });
+
+    close_button.addEventListener('click', () => {
+        // set localStorage to true
+        setVisited();
+      
+        // hide the prompt banner
+        install_holder.style.display = 'none';  
+      
+        installEvent = null;
     });
 }
 
@@ -120,8 +124,6 @@ async function updateDescAndSearcher(full=true) {
 
 // Generates and sets divs for timeslots
 function generateGridTimes() {
-    element = document.getElementById("schedule-table");
-
     for (let i = 7; i <= 12; i++) {
         let time = document.createElement("div");
         time.className = "time";
@@ -135,7 +137,7 @@ function generateGridTimes() {
         time.style.gridColumnEnd = 2;
         time.style.gridRowStart = 2 + ((i - 7) * 20);
         time.style.gridRowEnd = 2 + ((i - 6) * 20);
-        element.appendChild(time);
+        schedule_element.appendChild(time);
     }
 
     for (let i = 13; i <= 22; i++) {
@@ -147,15 +149,13 @@ function generateGridTimes() {
         time.style.gridColumnEnd = 2;
         time.style.gridRowStart = 2 + ((i - 7) * 20);
         time.style.gridRowEnd = 2 + ((i - 6) * 20);
-        element.appendChild(time);
+        schedule_element.appendChild(time);
     }
 }
 
 // Generates days of the week
-function generateDays() {
-    element = document.getElementById("schedule-table");
-    
-    let divs = element.getElementsByClassName("day");
+function generateDays() {    
+    let divs = schedule_element.getElementsByClassName("day");
     while (divs.length > 0) {
         divs[0].remove()
     }
@@ -175,7 +175,7 @@ function generateDays() {
         day.style.gridColumnEnd = i + 3;
         day.style.gridRowStart = 1;
         day.style.gridRowEnd = 2;
-        element.appendChild(day);
+        schedule_element.appendChild(day);
     }
 }
 function updateScheduleSizing() {
@@ -186,8 +186,6 @@ function updateScheduleSizing() {
     }
 }
 function generateLines() {
-    element = document.getElementById("schedule-table");
-
     for (let i = 0; i < 16; i++) {
         let line = document.createElement("div");
         line.className = "line";
@@ -196,7 +194,7 @@ function generateLines() {
         line.style.gridColumnEnd = 7;
         line.style.gridRowStart = 2 + (i * 20);
         line.style.gridRowEnd = 2 + (i * 20);
-        element.appendChild(line);
+        schedule_element.appendChild(line);
     }
 
     for (let i = 0; i < 5; i++) {
@@ -207,9 +205,7 @@ function generateLines() {
         line.style.gridColumnEnd = i + 2;
         line.style.gridRowStart = 2;
         line.style.gridRowEnd = 2 + (16 * 20);
-
-
-        element.appendChild(line);
+        schedule_element.appendChild(line);
     }
 }
 
@@ -229,20 +225,17 @@ function updateSchedule() {
         max_grid_rows = Math.min(350, max_grid_rows + 20);
     }
 
-    document.getElementById("schedule-table").style.gridTemplateRows = `35px repeat(${max_grid_rows}, 1fr)`;
-
+    schedule_element.style.gridTemplateRows = `35px repeat(${max_grid_rows}, 1fr)`;
 }
 
 function clearSchedule() {
-    let course_schedule_grid = document.getElementById("schedule-table");
-
-    let course_divs = course_schedule_grid.getElementsByClassName("course-schedule-block");
+    let course_divs = schedule_element.getElementsByClassName("course-schedule-block");
 
     while (course_divs[0]) {
         course_divs[0].parentNode.removeChild(course_divs[0]);
     }
 
-    let timing_lines = course_schedule_grid.getElementsByClassName("popup-holder");
+    let timing_lines = schedule_element.getElementsByClassName("popup-holder");
     while (timing_lines[0]) {
         timing_lines[0].parentNode.removeChild(timing_lines[0]);
     }
@@ -255,8 +248,6 @@ function removeAllChildren(element) {
 }
 
 function createScheduleGridDivs(courses, loaded) {
-    let course_schedule_grid = document.getElementById("schedule-table");
-
     // Add new course divs
     let sanitized_courses = sanitizeCourseList(courses);
     let slow_index = 0;
@@ -271,7 +262,7 @@ function createScheduleGridDivs(courses, loaded) {
             let course_div_list = createScheduleGridDiv(sanitized_courses[slow_index], color, set_max_grid_rows = true);
 
             for (let course_div of course_div_list) {
-                course_schedule_grid.appendChild(course_div);
+                schedule_element.appendChild(course_div);
             }
 
             slow_index++;
@@ -422,7 +413,6 @@ function updateDistanceLines() {
 }
 
 function generateTimeLine(course_a, course_b, distance) {
-    let schedule = document.getElementById("schedule-table");
     let el_a = document.getElementById(`${course_a.course.identifier}|${course_a.index}`);
     let el_b = document.getElementById(`${course_b.course.identifier}|${course_b.index}`);
 
@@ -480,7 +470,7 @@ function generateTimeLine(course_a, course_b, distance) {
         hidePopup(`#${id}`)
     };
 
-    schedule.appendChild(line_div);
+    schedule_element.appendChild(line_div);
 }
 
 async function intakeCourseData(data) {

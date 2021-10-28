@@ -245,12 +245,28 @@ background-position: center;
 box-shadow: 0 0 0 1px var(--button-outline);
 }
 
+#pwa-prompt-box {
+display:none;
+flex-direction:row;
+}
+
 .title-bar-button.install {
-background-color: var(--course-open);
+background-color: #428cee;
 color: var(--text-alt);
-font: 1rem/2rem "Inter", monospace;
+font: 1.2rem "Inter", monospace;
 font-weight: 700;
-display: none;
+display: flex;
+margin: 0 auto;
+margin-bottom: 10px;
+width: 90%;
+height: 40px;
+flex-direction: row;
+align-items: center;
+justify-content: center;
+}
+
+#hide-install {
+width: 40px;
 }
 
 .title-bar-button.custom-course {
@@ -755,7 +771,7 @@ max-height: 15vh;
 overflow:auto
 }
 
-.delete-course:hover,.merge-course:hover {
+.delete-course:hover,.merge-course:hover, #hide-install *:hover {
 filter:brightness(1.6)
 }
 

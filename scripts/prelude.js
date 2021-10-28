@@ -97,6 +97,12 @@ function getVersion() {
     }
 }
 
+document.addEventListener("keydown", function (event) {
+    if (event.code === "Enter") {
+        document.activeElement.click();
+    }
+});
+
 
 getVersion();
 getTheme();

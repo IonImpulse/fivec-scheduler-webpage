@@ -19,6 +19,9 @@ async function startup() {
     }
     // Then, call an update request
     let update = update_database(full=false);
+    // Add PWA install prompt
+    pwaInstallPrompt();
+
     // Website generation
     generateGridTimes();
     generateDays();
@@ -44,7 +47,63 @@ async function startup() {
 
     // Start worker threads to generate descriptions + searcher
     updateDescAndSearcher(false);
+    
+    document.addEventListener("keydown", function (event) {
+        if (event.code === "Enter") {
+            document.activeElement.click();
+        }
+    });
 }
+
+var installEvent;
+const install_button = document.querySelector(".install");
+
+
+function getVisited() {
+    return localStorage.getItem('install-prompt');
+}
+
+function setVisited() {
+    localStorage.setItem('install-prompt', true);
+}
+
+function pwaInstallPrompt() {
+    
+    // this event will only fire if the user does not have the pwa installed
+    window.addEventListener('beforeinstallprompt', (event) => {
+        event.preventDefault();
+    
+        // if no localStorage is set, first time visitor
+        if (!getVisited()) {
+            // show the prompt banner
+            install_button.style.display = 'block';
+    
+            // store the event for later use
+            installEvent = event;
+        }
+    });
+    
+    
+    install_button.addEventListener('click', () => {
+        // hide the prompt banner
+        install_button.style.display = 'none';
+    
+        // trigger the prompt to show to the user
+        installEvent.prompt();
+    
+        // check what choice the user made
+        installEvent.userChoice.then((choice) => {
+            // if the user declined, we don't want to show the button again
+            // set localStorage to true
+            if (choice.outcome !== 'accepted') {
+                setVisited();
+            }
+    
+            installEvent = null;
+        });
+    });
+}
+
 
 async function updateDescAndSearcher(full=true) {
     desc_worker.onmessage = function(e) {

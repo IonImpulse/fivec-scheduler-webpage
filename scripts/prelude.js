@@ -47,8 +47,8 @@ var all_course_results_html = [];
 const colors = [
     "#2c5b8e",
     "#396F34",
-    "#b86c25", 
-    "#ac4f4f", 
+    "#b86c25",
+    "#ac4f4f",
     "#86378d",
     "#ac4f8d",
     "#933535",
@@ -96,12 +96,6 @@ function getVersion() {
         localStorage.setItem("version", `${current_version}`)
     }
 }
-
-document.addEventListener("keydown", function(event) {
-    if (event.code === "Enter") {
-        document.activeElement.click();
-    }
-});
 
 
 getVersion();

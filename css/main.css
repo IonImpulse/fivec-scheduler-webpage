@@ -86,7 +86,7 @@ transition:color .05s ease-in-out,background-color .2s ease-in-out, transform .0
 }
 
 *:focus{
-outline: 3px solid #33b4f0;
+outline: 3px solid var(--selected);
 outline-offset: 3px;
 }
 
@@ -245,6 +245,14 @@ background-position: center;
 box-shadow: 0 0 0 1px var(--button-outline);
 }
 
+.title-bar-button.install {
+background-color: var(--course-open);
+color: var(--text-alt);
+font: 1rem/2rem "Inter", monospace;
+font-weight: 700;
+display: none;
+}
+
 .title-bar-button.custom-course {
 background-image:var(--custom-course-icon);
 }
@@ -282,7 +290,6 @@ background-image:var(--dl-icon);
 margin-right:var(--padding);
 width: 80px;
 }
-
 
 .title-bar-button.wide {
 width:140px;
@@ -1143,4 +1150,5 @@ display:flex;
 flex-direction:column;
 align-items:center;
 }
+
 }

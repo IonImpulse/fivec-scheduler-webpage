@@ -109,8 +109,23 @@ height: 100%;
 z-index: 99999;
 pointer-events: none;
 background: var(--background-alt);
-animation-duration: 200ms;
+animation-duration: 300ms;
 animation-timing-function: ease-in-out;
+display: flex;
+align-items: center;
+flex-direction: column;
+opacity: 1;
+}
+
+#loading-image {
+display: block;
+margin: auto;
+height: 30vmin;
+width: 30vmin;
+border-radius:25%;
+outline: rgb(19,19,19) solid 10px;
+outline-offset: -5px;
+background-color:#fff;
 }
 
 .shadow {
@@ -122,20 +137,11 @@ box-shadow: 0 0 2px 1px rgba(0,0,0,.2);
       to { opacity: 0 }
 }
 
-@keyframes fade-in {
-    from { opacity: 0 }
-      to { opacity: 1 }
-}
-
 #fader.fade-out {
     opacity: 0;
     animation-name: fade-out;
 }
 
-#fader.fade-in {
-    opacity: 1;
-    animation-name: fade-in;
-}
 
 #share-image {
 height:200px;
@@ -387,7 +393,7 @@ background-color:var(--background-alt);
 border-radius:var(--roundedness);
 padding: var(--padding);
 height:50vh;
-margin-top:20px;
+margin-top:10px;
 overflow-x:hidden;
 overflow-y:auto;
 width:60vw
@@ -500,7 +506,7 @@ visibility: hidden;
 z-index: 100000;
 position: absolute;
 margin-left: 0;
-top: -20%;
+top: 25%;
 left: 80%;
 width: 350px;
 transition: opacity 0.2s ease-in-out;
@@ -1024,7 +1030,14 @@ width:100%
 }
 
 #course-input {
-width:50vw
+width:60vw;
+margin: 0 auto;
+margin-top: 10px;
+margin-bottom: 10px;
+}
+
+#term-container {
+margin: 0 auto;
 }
 
 .swal2-info {
@@ -1111,5 +1124,23 @@ position: relative;
 
 .course-search-result {
 height: 50px;
+}
+
+#fader {
+animation-duration: 200ms;
+}
+
+#loading-image {
+display: none;
+}
+
+#filter-help {
+display: none;
+}
+
+#search-container {
+display:flex;
+flex-direction:column;
+align-items:center;
 }
 }

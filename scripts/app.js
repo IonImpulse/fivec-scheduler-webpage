@@ -130,20 +130,20 @@ function populateField(element_name, value) {
 async function submitNewCourse() {
 	const form = document.getElementsByClassName("form-group")[0];
 
-	const title = document.getElementById("course-title").value ?? " ";
-	let identifier = document.getElementById("course-identifier").value ?? " ";
-	const instructors = document.getElementById("course-instructors").value ?? " ";
-	const description = document.getElementById("course-description").value ?? " ";
-	const notes = document.getElementById("course-notes").value ?? " ";
-	const start_time = document.getElementById("course-start-time").value ?? " ";
-	const end_time = document.getElementById("course-end-time").value ?? " ";
-	const location = document.getElementById("course-location").value ?? " ";
+	let re = new RegExp(/[<>'"]/ig);
+	const title = document.getElementById("course-title").value.replaceAll(re, "") ?? " ";
+	let identifier = document.getElementById("course-identifier").value.replaceAll(re, "") ?? " ";
+	const instructors = document.getElementById("course-instructors").value.replaceAll(re, "") ?? " ";
+	const description = document.getElementById("course-description").value.replaceAll(re, "") ?? " ";
+	const notes = document.getElementById("course-notes").value.replaceAll(re, "") ?? " ";
+	const start_time = document.getElementById("course-start-time").value.replaceAll(re, "") ?? " ";
+	const end_time = document.getElementById("course-end-time").value.replaceAll(re, "") ?? " ";
+	const location = document.getElementById("course-location").value.replaceAll(re, "") ?? " ";
 
 	let days = [];
-	let day_names = ["monday", "tuesday", "wednesday", "thursday", "friday",];
-	for (let day_name of day_names) {
-		if (document.getElementById(`${day_name}-check`).checked) {
-			days.push(day_name.replace(/^\w/, (c) => c.toUpperCase()));
+	for (let day_name of weekdays_full) {
+		if (document.getElementById(`${day_name.toLowerCase()}-check`).checked) {
+			days.push(day_name);
 		}
 	}
 
@@ -231,10 +231,9 @@ async function editCourse() {
 		populateField("course-end-time", course.timing[0].end_time.substring(0,5));
 		populateField("course-location", course.timing[0].location.room);
 
-		let day_names = ["monday", "tuesday", "wednesday", "thursday", "friday",];
-		for (let day_name of day_names) {
-			if (course.timing[0].days.includes(day_name.replace(/^\w/, (c) => c.toUpperCase()))) {
-				document.getElementById(`${day_name}-check`).checked = true;
+		for (let day_name of weekdays_full) {
+			if (course.timing[0].days.includes(day_name)) {
+				document.getElementById(`${day_name.toLowerCase()}-check`).checked = true;
 			}
 		}
 	}
@@ -519,7 +518,7 @@ function downloadICal(ical) {
 }
 
 function dayToIndex(day_name) {
-	return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].indexOf(day_name);
+	return days_full.indexOf(day_name);
 }
 
 function nextDate(day_name) {
@@ -783,8 +782,12 @@ async function deleteCourse(identifier) {
 		if (course.identifier == identifier) {
 			found = true;
 
-			if (course.identifier == overlay.identifier) {
-				toggleCourseOverlay(identifier);
+			if (course.identifier == overlay.identifier && overlay.status) {
+				overlay.locked = false;
+				overlay.identifier = "";
+
+				// Remove the highlight
+				removeHighlightCourses(identifier);
 			}
 			loaded_local_courses.splice(i, 1);
 			break;
@@ -936,9 +939,12 @@ function showCourseOverlay(identifier, override = false) {
 		let node_to_append = document.createElement("div")
 		node_to_append.innerHTML = course_info;
 
-		node_to_append.childNodes[node_to_append.childNodes.length - 2].remove();
-
-		course_info_table.appendChild(node_to_append);
+		try {
+			node_to_append.childNodes[node_to_append.childNodes.length - 2].remove();
+			course_info_table.appendChild(node_to_append);
+		} catch (e) {
+			// Do nothing
+		}
 	}
 }
 
@@ -976,6 +982,7 @@ function showStarCourse(identifier) {
 function toggle_theme() {
 	if (document.documentElement.getAttribute("data-theme") != "dark") {
 		document.documentElement.setAttribute('data-theme', 'dark');
+
 		localStorage.setItem("theme", "dark");
 	}
 	else {
@@ -1038,3 +1045,163 @@ function hidePopup(query) {
 	let el = document.querySelector(query);
 	el.classList.remove("show");
 }
+
+
+// *****
+// HTML Popups
+// *****
+
+const custom_course_popup = `
+<div class="custom-course-manager">
+    <div class="course-box">
+        <div class="header">Custom Courses</div>
+        <div id="custom-course-list" class="list">
+            No custom courses have been created yet! <br>
+            Click the "Create New" button to start. <br>
+            Custom courses will be automatically added to your schedule.
+        </div>
+    </div>
+    <div class="create-course-form">
+        <div class="header">Create New Course</div>
+        <div class="form-group">
+            <div>
+                <label for="course-title">Title*</label>
+                <input type="text" id="course-title" class="input custom-course-input" placeholder="Title" required>
+            </div>
+            
+            <div>
+                <label for="course-days">Days*</label>
+                <div class="day-checkboxes">
+                    <label class="small-label" for="monday-check">Mon</label>
+                    <input id="monday-check" type="checkbox" class="day-checkbox">
+                    <label class="small-label" for="tuesday-check">Tue</label>
+                    <input id="tuesday-check" type="checkbox" class="day-checkbox">
+                    <label class="small-label" for="wednesday-check">Wed</label>
+                    <input id="wednesday-check" type="checkbox" class="day-checkbox">
+                    <label class="small-label" for="thursday-check">Thu</label>
+                    <input id="thursday-check" type="checkbox" class="day-checkbox">
+                    <label class="small-label" for="friday-check">Fri</label>
+                    <input id="friday-check" type="checkbox" class="day-checkbox">
+                </div>
+            </div>
+
+            <div>
+                <label for="course-start-time">Start Time > 7:00AM*</label>
+                <input type="time" min="07:00" max="22:00" id="course-start-time" class="input custom-course-input placeholder="7:00" required>
+            </div>
+
+            <div>
+                <label for="course-end-time">End Time < 10:00PM*</label>
+                <input type="time" min="07:00" max="22:00" id="course-end-time" class="input custom-course-input" placeholder="22:00" required>
+            </div>
+
+            <div>
+                <label for="course-location">Location*</label>
+                <input type="text" id="course-location" class="input custom-course-input" placeholder="Location" required>
+            </div>
+
+            <div>
+                <label for="course-identifier">Identifier</label>
+                <input type="text" id="course-identifier" class="input custom-course-input" placeholder="Identifier">
+            </div>
+
+            <div>
+                <label for="course-instructors">Instructors</label>
+                <input type="text" id="course-instructors" class="input custom-course-input" placeholder="Instructor">
+            </div>
+
+            <div>
+                <label for="course-description">Description</label>
+                <input type="text" id="course-description" class="input custom-course-input" placeholder="Description">
+            </div>
+
+            <div>
+                <label for="course-notes">Notes</label>
+                <input type="text" id="course-notes" class="input custom-course-input" placeholder="Notes">
+            </div>
+        </div>
+
+        <div class="button-group">
+            <div tabindex="0" id="add-new-course" class="title-bar-button unselectable course-button" onclick="submitNewCourse()">Add</div>
+            <div tabindex="0" id="cancel-new-course" class="title-bar-button unselectable course-button" onclick="cancelNewCourse()">Cancel</div>
+        </div>
+    </div>
+    <div class="right-panel">
+        <div id="create-course" class="title-bar-button unselectable course-button" onclick="createNewCourse()">Create New</div>
+        <div id="edit-course" class="title-bar-button unselectable course-button" onclick="editCourse()">Edit</div>
+    </div>
+</div>
+`.replace("\n",'');
+
+
+const search_popup = `
+<div id="search-container">
+    <input class="input" id="course-input" onKeyUp="processChange()" placeholder="Search by course code, title, or instructor...">
+    <span id="term-container"></span>
+    <span id="filter-help" class="popup-holder unselectable" onmouseenter="showPopup(\'#filter-help-text\')" onmouseleave="hidePopup(\'#filter-help-text\')">
+        ?
+        <span>
+            <div id="filter-help-text" class="popup-text other-side" >
+                <div class="popup-title">Filter Options</div>
+                Combine filters with searches to narrow your results.<br><br>
+                For Ex, searching <b>"math status:open credits:1"</b> would only return
+                classes relevent to math with 1 credit that are currently open.
+                <br><br>
+                <div>
+                    <b>By school: "at:[school]"</b>
+                    Ex: at:pomona
+                    <br><br>
+                    All initialisms (cmc, hmc, po, etc.), partial names (mudd), and full names (HarveyMudd) are supported
+                    <br><br>
+                </div>
+                <div>
+                    <b>By instructor: "with:[name]"</b>
+                    Ex: with:James-Smith
+                </div>
+                <br>
+                <div>
+                    <b>By credits: "credits:[number]"</b>
+                    Ex: credits:3
+                </div>
+                <br>
+                <div>
+                    <b>By day: "on:[weekday]"</b>
+                    Ex: on:tuesday
+                </div>
+                <br>
+                <div>
+                    <b>By status: "status:[open, reopened, closed]"</b>
+                    Ex: status:open
+                </div>
+                <br>
+                <div>
+                    <b>By code: "code:[code-id]"</b>
+                    Ex: dept:afri
+                </div>
+                <br>
+                <div>
+                    <b>By ID: "id:[id]"</b>
+                    Ex: id:010A
+                </div>
+                <br>
+                <div>
+                    <b>By department: "dept:[dept-id]"</b>
+                    Ex: dept:af
+                </div>
+                <br>
+                <div>
+                    <b>By section: "section:[number]"</b>
+                    Ex: section:3
+                </div>
+            </div>
+        </span
+    </span>
+</div>
+<div id="course-search-box">
+    <div id="course-search-results">
+        <b>Loading...</b>
+    </div>
+    <div id="course-search-desc" class="course-desc">
+    </div>
+</div>
+<br>`

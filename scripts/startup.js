@@ -100,14 +100,11 @@ function generateDays() {
     while (divs.length > 0) {
         divs[0].remove()
     }
-    
-    let days_short = ["Mon", "Tue", "Wed", "Thu", "Fri"];
-    let days_full = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
     if (vertical_layout) {
-        days = days_short;
+        days = weekdays_short;
     } else {
-        days = days_full;
+        days = weekdays_full;
     }
 
     for (let i = 0; i < days.length; i++) {
@@ -198,6 +195,31 @@ function removeAllChildren(element) {
     }
 }
 
+function createScheduleGridDivs(courses, loaded) {
+    let course_schedule_grid = document.getElementById("schedule-table");
+
+    // Add new course divs
+    let sanitized_courses = sanitizeCourseList(courses);
+    let slow_index = 0;
+    for (let i = 0; i < courses.length && slow_index < sanitized_courses.length; i++) {
+        if (courses[i].identifier == sanitized_courses[slow_index].identifier) {
+            let color = colors[i % colors.length];
+
+            if (loaded) {
+                color += "AA";
+            }
+
+            let course_div_list = createScheduleGridDiv(sanitized_courses[slow_index], color, set_max_grid_rows = true);
+
+            for (let course_div of course_div_list) {
+                course_schedule_grid.appendChild(course_div);
+            }
+
+            slow_index++;
+        }
+    }
+}
+
 function updateLoadedCourses() {
     let course_list_table = document.getElementById("course-table");
 
@@ -210,53 +232,20 @@ function updateLoadedCourses() {
         }
     }
 
-    let course_schedule_grid = document.getElementById("schedule-table");
-
-    // Add new course divs
-    let i = 0;
-
-    let sanitized_courses = sanitizeCourseList(loaded_local_courses);
-
-    for (let course of sanitized_courses) {
-        if (course.timing[0].days[0] != "NA") {
-            let course_div_list = createScheduleGridDiv(course, colors[i % colors.length], set_max_grid_rows = true);
-
-            for (let course_div of course_div_list) {
-                course_schedule_grid.appendChild(course_div);
-            }
-
-            i++;
-        }
-    }
+    createScheduleGridDivs(loaded_local_courses);
+    
 }
 
 function updateLoadedCustomCourses() {
-    let course_schedule_grid = document.getElementById("schedule-table");
-    let i = 0;
-
-    let sanitized_courses = sanitizeCourseList(loaded_custom_courses);
-
-    for (let course of sanitized_courses) {
-        if (course.timing[0].days[0] != "NA") {
-            let course_div_list = createScheduleGridDiv(course, colors[i % colors.length], set_max_grid_rows = true);
-
-            for (let course_div of course_div_list) {
-                course_schedule_grid.appendChild(course_div);
-            }
-
-            i++;
-        }
-    }
+    createScheduleGridDivs(loaded_custom_courses);
 }
 
 function timeToGrid(time) {
-    const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-
     let return_list = [];
 
     for (let day of time.days) {
         // Get the day
-        let day_index = days.indexOf(day);
+        let day_index = weekdays_full.indexOf(day);
         let start_column = day_index + 2;
         let end_column = day_index + 3;
 
@@ -294,20 +283,8 @@ function updateLoadedCourseLists() {
         }
     }
 
-    let course_schedule_grid = document.getElementById("schedule-table");
-
     for (let course_list of loaded_course_lists) {
-        let i = 0;
-        let sanitized_courses = sanitizeCourseList(course_list.courses);
-        for (let course of sanitized_courses) {
-            let course_div_list = createScheduleGridDiv(course, colors[i % colors.length], set_max_grid_rows = true, low_z_index = true);
-
-            for (let course_div of course_div_list) {
-                course_schedule_grid.appendChild(course_div);
-            }
-
-            i++;
-        }
+        createScheduleGridDivs(course_list.courses, true);
     }
 }
 
@@ -489,27 +466,22 @@ async function loadPossibleCourseList() {
 
     const code = urlParams.get('load');
 
-    // TODO: rewrite as async await
     if (code != null) {
-        fetch(`${API_URL}${GET_COURSE_LIST_BY_CODE(code.toUpperCase())}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(response.statusText)
-                }
-                return response.json()
-            })
-            .catch(error => {
-                Swal.showValidationMessage(
-                    `Invalid Code! ${error}`
-                )
-            }).then(async data => {
-                if (data != null) {
-                    await intakeCourseData(data);
-                }
+        let response = await fetch(`${API_URL}${GET_COURSE_LIST_BY_CODE(code.toUpperCase())}`)
 
-                window.location.href = window.location.href.split("?")[0];
+        if (response.ok) {
+            let data = await response.json();
 
-            });
+            if (data != null) {
+                await intakeCourseData(data);
+            }
+
+            window.location.href = window.location.href.split("?")[0];
+        } else {
+            Swal.showValidationMessage(
+                `Invalid Code! ${error}`
+            )
+        }
     }
 }
 

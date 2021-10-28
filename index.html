@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+  <noscript class="noscript">
+    <a href="https://duckduckgo.com/?t=ffab&q=how+do+i+enable+javascript&ia=web">Sorry, but this site requires JavaScript to function properly.</a>
+  </noscript>
+  <script src="scripts/prelude.js"></script>
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -33,7 +37,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet"> 
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap" rel="stylesheet"> 
     <!-- Favicon Images -->
-    <script src="scripts/prelude.js"></script>
     <link rel="icon" type="image/png" sizes="196x196" href="img/favicons/favicon-196.png">
     <meta name="msapplication-square70x70logo" content="img/favicons/mstile-icon-128.png">
     <meta name="msapplication-square150x150logo" content="img/favicons/mstile-icon-270.png">
@@ -73,10 +76,9 @@
 
   <!--- Prelude sets global variables and theming before CSS is shown -->
   <body>
-    <noscript class="noscript">
-      <a href="https://duckduckgo.com/?t=ffab&q=how+do+i+enable+javascript&ia=web">Sorry, but this site requires JavaScript to function properly.</a>
-    </noscript>
-    <svg id="fader"></svg>
+    <div id="fader">
+      <img id="loading-image" src="img/favicons/favicon.svg"/>
+    </div>
     <div id="main-section">
       <div class="title-bar shadow">
         <a href="https://www.5scheduler.io" class="logo"><img src="/img/favicons/favicon-32x32.png" alt="5scheduler.io" class="logo"></a>

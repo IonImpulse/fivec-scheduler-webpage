@@ -252,7 +252,7 @@ flex-direction:row;
 
 .title-bar-button.install {
 background-color: #428cee;
-color: var(--text-alt);
+color: var(--text-course-schedule);
 font: 1.2rem "Inter", monospace;
 font-weight: 700;
 display: flex;

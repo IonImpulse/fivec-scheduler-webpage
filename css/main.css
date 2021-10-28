@@ -114,6 +114,7 @@ animation-timing-function: ease-in-out;
 display: flex;
 align-items: center;
 flex-direction: column;
+opacity: 1;
 }
 
 #loading-image {
@@ -122,7 +123,7 @@ margin: auto;
 height: 30vmin;
 width: 30vmin;
 border-radius:25%;
-outline: #000 solid 10px;
+outline: rgb(19,19,19) solid 10px;
 outline-offset: -5px;
 background-color:#fff;
 }
@@ -136,20 +137,11 @@ box-shadow: 0 0 2px 1px rgba(0,0,0,.2);
       to { opacity: 0 }
 }
 
-@keyframes fade-in {
-    from { opacity: 0 }
-      to { opacity: 1 }
-}
-
 #fader.fade-out {
     opacity: 0;
     animation-name: fade-out;
 }
 
-#fader.fade-in {
-    opacity: 1;
-    animation-name: fade-in;
-}
 
 #share-image {
 height:200px;
@@ -401,7 +393,7 @@ background-color:var(--background-alt);
 border-radius:var(--roundedness);
 padding: var(--padding);
 height:50vh;
-margin-top:20px;
+margin-top:10px;
 overflow-x:hidden;
 overflow-y:auto;
 width:60vw
@@ -1038,7 +1030,14 @@ width:100%
 }
 
 #course-input {
-width:50vw
+width:60vw;
+margin: 0 auto;
+margin-top: 10px;
+margin-bottom: 10px;
+}
+
+#term-container {
+margin: 0 auto;
 }
 
 .swal2-info {
@@ -1133,5 +1132,15 @@ animation-duration: 200ms;
 
 #loading-image {
 display: none;
+}
+
+#filter-help {
+display: none;
+}
+
+#search-container {
+display:flex;
+flex-direction:column;
+align-items:center;
 }
 }

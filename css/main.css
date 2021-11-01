@@ -11,7 +11,7 @@
 --logo-primary:#4572E4;
 --logo-secondary:#9EB9FE;
 --selected:#33b4f0;
---padding:16px;
+--padding:12px;
 --padding-medium:7px;
 --padding-small:5px;
 --roundedness:8px;
@@ -317,10 +317,6 @@ margin-right: 8vw;
 filter:brightness(var(--hover-effect));
 }
 
-.title-bar-button:active {
-transform:scale(0.95)
-}
-
 .search-button {
 padding-left:var(--padding-medium);
 padding-right:var(--padding-medium);
@@ -608,9 +604,6 @@ width: 70%;
 
 #code-link:hover {
 filter:brightness(var(--hover-effect));
-}
-#code-link:active {
-transform:scale(0.95)
 }
 
 .code-copied {

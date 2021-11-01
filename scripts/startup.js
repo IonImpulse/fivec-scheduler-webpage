@@ -218,6 +218,7 @@ function updateSchedule() {
     updateLoadedCourseLists();
     updateStarredCourses();
     updateDistanceLines();
+    updateCredits();
 
     if (max_grid_rows == 0) {
         max_grid_rows = 350;
@@ -471,6 +472,41 @@ function generateTimeLine(course_a, course_b, distance) {
     };
 
     schedule_element.appendChild(line_div);
+}
+
+function updateCredits() {
+    const loaded_title = document.getElementById("loaded-courses-title");
+    const lists_title = document.getElementById("loaded-course-lists-title");
+
+    let local_credits = sumCredits(loaded_local_courses);
+    
+    if (local_credits > 0) {
+        loaded_title.innerText = `Courses Loaded - ${local_credits} Credits`;
+    } else {
+        loaded_title.innerText = `Courses Loaded`;
+    }
+
+    let list_credits = sumCredits(loaded_course_lists.map(x => x.courses).flat(1));
+
+    if (list_credits > 0) {
+        lists_title.innerText = `Course Lists Loaded - ${list_credits} Credits`;
+    } else {
+        lists_title.innerText = `Course Lists Loaded`;
+    }
+}
+
+function sumCredits(courses) {
+    let credits = 0;
+
+    for (let course of courses) {
+        credits += course.credits ?? 0;
+    }
+
+    if (credits > 0) {
+        credits = (credits/100).toFixed(2);
+    }
+
+    return credits;
 }
 
 async function intakeCourseData(data) {

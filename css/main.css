@@ -499,12 +499,6 @@ color:var(--course-open)!important
 color:var(--course-reopened)!important
 }
 
-#course-input {
-margin-left:9vw;
-width:20vw;
-text-overflow: ellipsis; 
-}
-
 .popup-holder {
 font:20px var(--main-font),sans-serif;
 font-weight: 700;
@@ -967,13 +961,53 @@ outline: 2px solid var(--course-closed);
 outline: 2px solid var(--link-color);
 }
 
+
+#search-container {
+display: grid;
+grid-template-columns: 19fr 1fr 30fr 10fr 10fr;
+justify-content: center;
+justify-items: center;
+align-items: center;
+height: 50px;
+margin-top: 10px;
+margin-bottom: 10px;
+}
+
+#filter-help {
+grid-column-start: 2;
+grid-column-end: 3;
+background-color: var(--background-main);
+border-radius: var(--roundedness);
+width: 15px;
+}
+
 #term-container {
+grid-column-start: 4;
+grid-column-end: 5;
 background-color: var(--background-main);
 box-shadow: 0 0 1px 1px var(--button-outline);
 padding: var(--padding-medium);
 border-radius: var(--roundedness);
-margin-left: 10px;
+text-align: center;
+justify-content: center;
+width: 85%;
 }
+
+#course-input {
+grid-column-start: 3;
+grid-column-end: 4;
+text-overflow: ellipsis; 
+margin: 0 auto;
+width: 90%;
+height: 60%;
+}
+
+/* =============================
+
+    MOBILE STYLES
+    LOTS OF FUN
+
+===============================*/
 
 @media only screen and (max-width: 760px) {
 body {
@@ -1048,8 +1082,8 @@ width:100%
 #course-input {
 width:60vw;
 margin: 0 auto;
-margin-top: 10px;
 margin-bottom: 10px;
+height:60px;
 }
 
 #term-container {
@@ -1155,6 +1189,8 @@ display: none;
 }
 
 #search-container {
+margin-top:20px;
+margin-bottom:20px;
 display:flex;
 flex-direction:column;
 align-items:center;

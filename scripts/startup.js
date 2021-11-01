@@ -481,7 +481,13 @@ function updateCredits() {
     let local_credits = sumCredits(loaded_local_courses);
     
     if (local_credits > 0) {
-        loaded_title.innerText = `Courses Loaded - ${local_credits} Credits`;
+        let ending = "Credits";
+
+        if (local_credits == 1) {
+            ending = "Credit";
+        }
+
+        loaded_title.innerText = `Courses Loaded - ${local_credits} ${ending}`;
     } else {
         loaded_title.innerText = `Courses Loaded`;
     }
@@ -489,7 +495,13 @@ function updateCredits() {
     let list_credits = sumCredits(loaded_course_lists.map(x => x.courses).flat(1));
 
     if (list_credits > 0) {
-        lists_title.innerText = `Course Lists Loaded - ${list_credits} Credits`;
+        let ending = "Credits";
+
+        if (list_credits == 1) {
+            ending = "Credit";
+        }
+
+        lists_title.innerText = `Course Lists Loaded - ${list_credits} ${ending}`;
     } else {
         lists_title.innerText = `Course Lists Loaded`;
     }

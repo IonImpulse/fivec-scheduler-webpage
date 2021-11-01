@@ -1082,8 +1082,8 @@ width:100%
 #course-input {
 width:60vw;
 margin: 0 auto;
-margin-top: 10px;
 margin-bottom: 10px;
+height:60px;
 }
 
 #term-container {
@@ -1189,6 +1189,8 @@ display: none;
 }
 
 #search-container {
+margin-top:20px;
+margin-bottom:20px;
 display:flex;
 flex-direction:column;
 align-items:center;

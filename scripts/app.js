@@ -1136,8 +1136,6 @@ const custom_course_popup = `
 
 const search_popup = `
 <div id="search-container">
-    <input class="input" id="course-input" onKeyUp="processChange()" placeholder="Search by course code, title, or instructor...">
-    <span id="term-container"></span>
     <span id="filter-help" class="popup-holder unselectable" onmouseenter="showPopup(\'#filter-help-text\')" onmouseleave="hidePopup(\'#filter-help-text\')">
         ?
         <span>
@@ -1194,8 +1192,12 @@ const search_popup = `
                     Ex: section:3
                 </div>
             </div>
-        </span
+        </span>
     </span>
+
+    <input class="input" id="course-input" onKeyUp="processChange()" placeholder="Search by course code, title, or instructor...">
+    <span id="term-container"></span>
+	
 </div>
 <div id="course-search-box">
     <div id="course-search-results">

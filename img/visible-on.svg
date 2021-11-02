@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg width="100%" height="100%" viewBox="0 0 128 128" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+<svg width="100%" height="100%" viewBox="0 0 128 128" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
     <rect id="Artboard1" x="0" y="0" width="128" height="128" style="fill:none;"/>
     <g id="Artboard11" serif:id="Artboard1">
-        <g transform="matrix(0.918034,0,0,0.918034,5.80575,6.1417)">
-            <path d="M63.39,33.908C63.749,33.883 64.109,33.87 64.472,33.87C83.53,33.87 128,63.024 128,63.024C128,63.024 83.53,92.178 64.472,92.178C64.109,92.178 63.749,92.165 63.39,92.14C63.031,92.165 62.671,92.178 62.309,92.178C43.25,92.178 -1.22,63.024 -1.22,63.024C-1.22,63.024 43.25,33.87 62.309,33.87C62.671,33.87 63.031,33.883 63.39,33.908ZM63.39,40.061C76.064,40.061 86.353,50.35 86.353,63.024C86.353,75.698 76.064,85.988 63.39,85.988C50.716,85.988 40.427,75.698 40.427,63.024C40.427,50.35 50.716,40.061 63.39,40.061ZM63.39,54.068C68.333,54.068 72.346,58.081 72.346,63.024C72.346,67.967 68.333,71.98 63.39,71.98C58.447,71.98 54.434,67.967 54.434,63.024C54.434,58.081 58.447,54.068 63.39,54.068Z" style="fill:rgb(233,233,233);stroke:rgb(233,233,233);stroke-width:6.33px;"/>
+        <g transform="matrix(1.01877,0,0,1.01877,0,0)">
+            <path d="M125.642,31.41C125.642,14.075 111.567,0 94.231,0L31.41,0C14.075,0 0,14.075 0,31.41L0,94.231C0,111.567 14.075,125.642 31.41,125.642L94.231,125.642C111.567,125.642 125.642,111.567 125.642,94.231L125.642,31.41Z" style="fill:rgb(233,233,233);"/>
         </g>
     </g>
 </svg>

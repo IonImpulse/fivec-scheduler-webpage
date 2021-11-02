@@ -130,9 +130,12 @@ function createLoadedCourseListDiv(code, color) {
     
     div.classList.add("course-list");
     div.id = `course-list-${code}`;
-    
+
     let visibility_button = document.createElement("div");
-    visibility_button.className = "visibility-button visible";
+    visibility_button.className = "visibility-button";
+    if (!hidden_course_lists.includes(code)) {
+        visibility_button.classList.add("visible");
+    }
     visibility_button.onclick = function () {
         toggleCourseListVisibility(code);
     };

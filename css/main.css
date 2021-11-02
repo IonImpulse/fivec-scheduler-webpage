@@ -387,7 +387,7 @@ width:100%
 background-color:var(--background-alt);
 border-radius:var(--roundedness);
 display:inline-block;
-max-height:11vh;
+max-height:20vh;
 overflow:auto;
 width:100%
 }
@@ -570,11 +570,11 @@ font-size:16px;
 padding:var(--padding-medium);
 align-items:center;
 display:grid;
-grid-template-columns:1fr 10fr 1fr;
+grid-template-columns:1fr 1fr 10fr 1fr;
 }
 
 .course-loaded.course-list {
-grid-template-columns:1fr 10fr 1fr 1fr 1fr;
+grid-template-columns:1fr .1fr 10fr 1fr .5fr 1fr;
 }
 
 .code-explain {
@@ -659,8 +659,8 @@ margin-left: 10px;
 overflow:hidden;
 text-overflow:ellipsis;
 white-space:nowrap;
-grid-column-start: 2;
-grid-column-end: 3;
+grid-column-start: 3;
+grid-column-end: 4;
 }
 
 .star-course {
@@ -672,8 +672,8 @@ height:1vmax;
 width:1vmax;
 margin-right: var(--padding-medium);
 z-index: 100000;
-grid-column-start: 1;
-grid-column-end: 2;
+grid-column-start: 2;
+grid-column-end: 3;
 }
 
 .star-course.top-right{
@@ -704,13 +704,13 @@ background-image:url(../img/delete.svg);
 background-size:cover;
 height:1vmax;
 width:1vmax;
-grid-column-start: 3;
-grid-column-end: 4;
+grid-column-start: 4;
+grid-column-end: 5;
 }
 
 .delete-course.course-list {
-grid-column-start: 5;
-grid-column-end: 6;
+grid-column-start: 6;
+grid-column-end: 7;
 }
 
 .merge-course {
@@ -718,8 +718,8 @@ background-image:url(../img/merge.svg);
 background-size:cover;
 height:1vmax;
 width:1vmax;
-grid-column-start: 3;
-grid-column-end: 4;
+grid-column-start: 4;
+grid-column-end: 5;
 }
 
 #course-info-table {
@@ -761,7 +761,7 @@ color:var(--link-color)
 background-color:var(--background-main);
 border-radius:var(--roundedness);
 display:inline-block;
-margin-bottom:1vh;
+margin-bottom:10px;
 padding:var(--padding);
 width:100%
 }

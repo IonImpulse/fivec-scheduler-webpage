@@ -248,16 +248,19 @@ function removeAllChildren(element) {
     }
 }
 
-function createScheduleGridDivs(courses, loaded) {
+function createScheduleGridDivs(courses, loaded, filter_hidden=false) {
     // Add new course divs
     let sanitized_courses = sanitizeCourseList(courses);
+    if (filter_hidden) { 
+        sanitized_courses = sanitized_courses.filter(course => !hidden_courses.includes(course.identifier)); 
+    }
     let slow_index = 0;
     for (let i = 0; i < courses.length && slow_index < sanitized_courses.length; i++) {
         if (courses[i].identifier == sanitized_courses[slow_index].identifier) {
             let color = colors[i % colors.length];
 
             if (loaded) {
-                color += "AA";
+                color += "CC";
             }
 
             let course_div_list = createScheduleGridDiv(sanitized_courses[slow_index], color, set_max_grid_rows = true);
@@ -283,7 +286,7 @@ function updateLoadedCourses() {
         }
     }
 
-    createScheduleGridDivs(loaded_local_courses);
+    createScheduleGridDivs(loaded_local_courses, false, true);
     
 }
 
@@ -365,7 +368,7 @@ function distanceLatLon(lat1, lon1, lat2, lon2, unit) {
 function updateDistanceLines() {
     // First, create a nested array of all locations using displayed times
     let line_list = [[], [], [], [], []];
-    let courses_with_timing = loaded_local_courses.filter((course) => course.displayed_timing != undefined);
+    let courses_with_timing = loaded_local_courses.filter((course) => course.displayed_timing != undefined && !hidden_courses.includes(course.identifier));
     for (let course of courses_with_timing) {
         for (let timing of course.displayed_timing) {
             let days = [];

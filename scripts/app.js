@@ -128,8 +128,6 @@ function populateField(element_name, value) {
 }
 
 async function submitNewCourse() {
-	const form = document.getElementsByClassName("form-group")[0];
-
 	let re = new RegExp(/[<>'"]/ig);
 	const title = document.getElementById("course-title").value.replaceAll(re, "") ?? " ";
 	let identifier = document.getElementById("course-identifier").value.replaceAll(re, "") ?? " ";
@@ -820,7 +818,32 @@ async function deleteCourse(identifier) {
 	}
 }
 
+async function toggleCourseVisibility(identifier) {
+	// Stop bubbling onclick event
+	if (!e) var e = window.event;
+	e.cancelBubble = true;
+	if (e.stopPropagation) e.stopPropagation();
+
+	let el = document.querySelector(`.course-loaded.${identifier}-loaded`);
+	
+	el.firstElementChild.classList.toggle("visible");
+
+	if (hidden_courses.includes(identifier)) {
+		hidden_courses.splice(hidden_courses.indexOf(identifier), 1);
+	} else {
+		hidden_courses.push(identifier);
+	}
+
+	updateSchedule();
+
+	await save_json_data("hidden_courses", hidden_courses);
+}
 async function toggleCourseListVisibility(code) {
+	// Stop bubbling onclick event
+	if (!e) var e = window.event;
+	e.cancelBubble = true;
+	if (e.stopPropagation) e.stopPropagation();
+	
     let el = document.getElementById(`course-list-${code}`);
 	
 	el.firstElementChild.classList.toggle("visible");
@@ -832,6 +855,8 @@ async function toggleCourseListVisibility(code) {
 	}
 
 	updateSchedule();
+
+	await save_json_data("hidden_course_lists", hidden_course_lists);
 }
 
 async function deleteCourseList(code) {

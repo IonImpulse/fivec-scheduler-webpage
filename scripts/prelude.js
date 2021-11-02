@@ -22,6 +22,7 @@ var all_courses_global = [];
 var all_desc_global = [];
 var selected_courses = [];
 var starred_courses = [];
+var hidden_courses = [];
 var hidden_course_lists = [];
 var locations = {};
 

@@ -171,6 +171,15 @@ function createLoadedCourseDiv(identifier, title, color) {
         showCourseOverlay(identifier)
     };
 
+    let visibility_button = document.createElement("div");
+    visibility_button.className = "visibility-button";
+    if (!hidden_courses.includes(identifier)) {
+        visibility_button.classList.add("visible");
+    }
+    visibility_button.onclick = function () {
+        toggleCourseVisibility(identifier);
+    };
+
     let delete_button = document.createElement("div");
     delete_button.className = "delete-course";
     delete_button.onclick = function () {
@@ -185,6 +194,7 @@ function createLoadedCourseDiv(identifier, title, color) {
     
     div.appendChild(delete_button);
     div.insertBefore(star_button,div.firstChild);
+    div.insertBefore(visibility_button,div.firstChild);
 
     return div;
 }

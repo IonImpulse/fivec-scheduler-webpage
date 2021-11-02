@@ -128,8 +128,16 @@ function createLoadedDiv(text, color) {
 function createLoadedCourseListDiv(code, color) {
     let div = createLoadedDiv(`<b>${code}</b>`, color);
     
+    div.classList.add("course-list");
+
+    let visibility_button = document.createElement("div");
+    visibility_button.className = "visibility-button visible";
+    visibility_button.onclick = function () {
+        toggleCourseListVisibility(code);
+    };
+
     let delete_button = document.createElement("div");
-    delete_button.className = "delete-course";
+    delete_button.className = "delete-course course-list";
     delete_button.onclick = function () {
         deleteCourseList(code);
     };
@@ -140,8 +148,9 @@ function createLoadedCourseListDiv(code, color) {
         mergeCourseList(code);
     };
 
-    div.appendChild(delete_button);
+    div.insertBefore(visibility_button, div.firstChild);
     div.appendChild(merge_button);
+    div.appendChild(delete_button);
 
     return div;
 }

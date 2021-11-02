@@ -573,6 +573,10 @@ display:grid;
 grid-template-columns:1fr 10fr 1fr;
 }
 
+.course-loaded.course-list {
+grid-template-columns:1fr 10fr 1fr 1fr 1fr;
+}
+
 .code-explain {
 font:25px var(--main-font),sans-serif
 }
@@ -651,6 +655,7 @@ font:400 .7vmax var(--main-font),sans-serif
 
 .course-info {
 max-width:90%;
+margin-left: 10px;
 overflow:hidden;
 text-overflow:ellipsis;
 white-space:nowrap;
@@ -681,6 +686,19 @@ right:0
 background-image:var(--star-course-filled);
 }
 
+.visibility-button {
+background-image:var(--visible-off);
+height: 1vmax;
+width: 1vmax;
+grid-column-start: 1;
+grid-column-end: 2;
+background-size: cover;
+}
+
+.visibility-button.visible {
+background-image:var(--visible-on);
+}
+
 .delete-course {
 background-image:url(../img/delete.svg);
 background-size:cover;
@@ -690,13 +708,18 @@ grid-column-start: 3;
 grid-column-end: 4;
 }
 
+.delete-course.course-list {
+grid-column-start: 5;
+grid-column-end: 6;
+}
+
 .merge-course {
 background-image:url(../img/merge.svg);
 background-size:cover;
-float:right;
 height:1vmax;
-margin-right:.5vmax;
-width:1vmax
+width:1vmax;
+grid-column-start: 3;
+grid-column-end: 4;
 }
 
 #course-info-table {
@@ -766,7 +789,7 @@ max-height: 15vh;
 overflow:auto
 }
 
-.delete-course:hover,.merge-course:hover, #hide-install *:hover {
+.delete-course:hover,.merge-course:hover,.visibility-button:hover, #hide-install *:hover {
 filter:brightness(1.6)
 }
 
@@ -1129,7 +1152,7 @@ font-size:1vmax!important
 display:none
 }
 
-.delete-course,.merge-course,.star-course {
+.delete-course,.merge-course,.star-course,.visibility-button {
 height:6vw;
 width:6vw;
 }
@@ -1144,7 +1167,8 @@ width:87vw
 }
 
 #course-info-table,#course-list-table {
-width:88vw
+width:88vw;
+max-height: 500px;
 }
 
 .custom-course-manager {

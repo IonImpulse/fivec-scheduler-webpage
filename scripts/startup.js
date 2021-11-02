@@ -335,7 +335,9 @@ function updateLoadedCourseLists() {
     }
 
     for (let course_list of loaded_course_lists) {
-        createScheduleGridDivs(course_list.courses, true);
+        if (!hidden_course_lists.includes(course_list.code)) {
+            createScheduleGridDivs(course_list.courses, true);
+        }
     }
 }
 

@@ -22,9 +22,10 @@ var all_courses_global = [];
 var all_desc_global = [];
 var selected_courses = [];
 var starred_courses = [];
+var hidden_course_lists = [];
 var locations = {};
 
-var overlay = { identifier: null, time_index: -1, locked: false };
+var overlay = { identifier: null, locked: false };
 var loaded_local_courses = [];
 var loaded_course_lists = [];
 var loaded_custom_courses = [];
@@ -32,7 +33,7 @@ var vertical_layout = false;
 
 var debounce_timer = 10;
 
-// Constants
+// Day names for various sets
 const days_full = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const weekdays_full = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 const weekdays_short = ["Mon", "Tue", "Wed", "Thu", "Fri"];

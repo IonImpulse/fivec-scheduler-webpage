@@ -820,6 +820,20 @@ async function deleteCourse(identifier) {
 	}
 }
 
+async function toggleCourseListVisibility(code) {
+    let el = document.getElementById(`course-list-${code}`);
+	
+	el.firstElementChild.classList.toggle("visible");
+
+	if (hidden_course_lists.includes(code)) {
+		hidden_course_lists.splice(hidden_course_lists.indexOf(code), 1);
+	} else {
+		hidden_course_lists.push(code);
+	}
+
+	updateSchedule();
+}
+
 async function deleteCourseList(code) {
 	let found = false;
 

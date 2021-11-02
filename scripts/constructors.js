@@ -129,7 +129,8 @@ function createLoadedCourseListDiv(code, color) {
     let div = createLoadedDiv(`<b>${code}</b>`, color);
     
     div.classList.add("course-list");
-
+    div.id = `course-list-${code}`;
+    
     let visibility_button = document.createElement("div");
     visibility_button.className = "visibility-button visible";
     visibility_button.onclick = function () {

@@ -430,7 +430,8 @@ overflow:hidden;
 padding:var(--padding);
 text-align:left;
 text-overflow:ellipsis;
-white-space:nowrap
+white-space:nowrap;
+display:block;
 }
 
 .selected {
@@ -565,9 +566,11 @@ outline: 4px var(--selected) solid;
 }
 
 .course-loaded {
-display:block;
 font-size:16px;
-padding:var(--padding-medium)
+padding:var(--padding-medium);
+align-items:center;
+display:grid;
+grid-template-columns:1fr 10fr 1fr;
 }
 
 .code-explain {
@@ -647,11 +650,12 @@ font:400 .7vmax var(--main-font),sans-serif
 }
 
 .course-info {
-float:left;
-max-width:80%;
+max-width:90%;
 overflow:hidden;
 text-overflow:ellipsis;
-white-space:nowrap
+white-space:nowrap;
+grid-column-start: 2;
+grid-column-end: 3;
 }
 
 .star-course {
@@ -663,6 +667,8 @@ height:1vmax;
 width:1vmax;
 margin-right: var(--padding-medium);
 z-index: 100000;
+grid-column-start: 1;
+grid-column-end: 2;
 }
 
 .star-course.top-right{
@@ -678,10 +684,10 @@ background-image:var(--star-course-filled);
 .delete-course {
 background-image:url(../img/delete.svg);
 background-size:cover;
-clear:right;
-float:right;
 height:1vmax;
-width:1vmax
+width:1vmax;
+grid-column-start: 3;
+grid-column-end: 4;
 }
 
 .merge-course {

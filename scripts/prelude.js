@@ -7,7 +7,7 @@ Contains ALL global variables used.
 
 // Version number
 // Will delete localStorage variables when updating
-const current_version = 1.2;
+const current_version = '1.6.2';
 
 // Average paces for distance calcs
 const walking_feet_per_minute = 328;
@@ -31,6 +31,7 @@ var loaded_local_courses = [];
 var loaded_course_lists = [];
 var loaded_custom_courses = [];
 var vertical_layout = false;
+var show_changelog = true;
 
 var debounce_timer = 10;
 
@@ -93,9 +94,12 @@ function getVersion() {
     if (old_version == null) {
         old_version = 0;
     }
+    
     if (old_version != current_version) {
-        localStorage.clear();
-        localStorage.setItem("version", `${current_version}`)
+        localStorage.setItem("version", current_version);
+        show_changelog = true;
+    } else {
+        show_changelog = false;
     }
 }
 

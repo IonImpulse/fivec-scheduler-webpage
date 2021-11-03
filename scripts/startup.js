@@ -40,6 +40,11 @@ async function startup() {
     let fader = document.getElementById("fader")
     fader.classList.add('fade-out');
 
+    // New version? Show changelog
+    if (show_changelog) {
+        showChangelog();
+    }
+
     // Create reusable web worker threads
     desc_worker = new Worker('scripts/workers/descriptions.js');
     searcher_worker = new Worker('scripts/workers/searcher.js');
@@ -329,7 +334,9 @@ function updateLoadedCourseLists() {
     let el = document.getElementById("course-list-table");
     removeAllChildren(el);
 
-    el.appendChild(createLoadedDiv("<b>Local Courses</b>", colors[0]));
+    let local_courses = createLoadedDiv("<b>Local Courses</b>", colors[0]);
+    local_courses.classList.add("course-list");
+    el.appendChild(local_courses);
 
     if (loaded_course_lists.length > 0) {
         for (let i = 0; i < loaded_course_lists.length; i++) {
@@ -585,6 +592,20 @@ async function loadPossibleCourseList() {
             )
         }
     }
+}
+
+function showChangelog() {
+    Swal.fire({
+        title: 'Changelog',
+        html: changelog_popup,
+        showCloseButton: true,
+        showConfirmButton: false,
+        showCancelButton: false,
+        focusConfirm: false,
+        focusCancel: false,
+        cancelButtonText: 'Close',
+        icon: 'info',
+    });
 }
 
 startup();

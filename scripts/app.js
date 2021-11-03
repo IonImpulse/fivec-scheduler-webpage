@@ -1245,4 +1245,18 @@ const search_popup = `
     <div id="course-search-desc" class="course-desc">
     </div>
 </div>
-<br>`
+<br>`;
+
+const changelog_popup = `
+<div id="changelog-container>
+	<b>v1.3 Beta</b>
+	<ul>
+		<li>Added a changelog</li>
+		<li>Fixed various alignment issues</li>
+		<li>Added ability to toggle visibility of courses and course lists</li>
+		<li>Total credits taken now displayed</li>
+		<li>Can now search by multiple days, ex: "english on:monday,tuesday"</li>
+	</ul>
+</div>
+
+`

@@ -136,7 +136,8 @@ function search_courses(query, all_courses_global, filters) {
 		} else if (filter.key == "with") {
 			results = results.filter(t => (t.obj || t).instructorString.toLowerCase().includes(filter.value.replace("-", " ").toLowerCase()));
 		} else if (filter.key == "on") {
-			results = results.filter(t => (t.obj || t).timing.map(e => e.days).some(x => x.includes(capitalize(filter.value))));
+			let days_to_search = filter.value.split(",").map(day => capitalize(day));
+			results = results.filter(t => (t.obj || t).timing.map(e => e.days).some(k => k.some(l => days_to_search.includes(l))));
 		} else if (filter.key == "credits") {
 			results = results.filter(t => (t.obj || t).credits/100 == filter.value);
 		} else if (filter.key == "section") {

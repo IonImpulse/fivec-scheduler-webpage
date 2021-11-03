@@ -1102,7 +1102,7 @@ justify-content:center
 font-size:.7vh!important
 }
 
-.swal-wide, .swal-medium-wide {
+.swal-wide, .swal-medium-wide, .swal-small-wide {
 width:100vw!important
 }
 

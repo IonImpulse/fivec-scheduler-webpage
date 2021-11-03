@@ -29,6 +29,8 @@
 --about-icon:url(../img/about-light.svg);
 --star-course-empty:url(../img/star-empty.svg);
 --star-course-filled:url(../img/star-filled.svg);
+--visible-on:url(../img/visible-on.svg);
+--visible-off:url(../img/visible-off.svg);
 --load-icon:url(../img/load-light.svg);
 --share-icon:url(../img/share-light.svg);
 --cal-icon:url(../img/cal-light.svg);
@@ -385,7 +387,7 @@ width:100%
 background-color:var(--background-alt);
 border-radius:var(--roundedness);
 display:inline-block;
-max-height:11vh;
+max-height:20vh;
 overflow:auto;
 width:100%
 }
@@ -428,7 +430,8 @@ overflow:hidden;
 padding:var(--padding);
 text-align:left;
 text-overflow:ellipsis;
-white-space:nowrap
+white-space:nowrap;
+display:block;
 }
 
 .selected {
@@ -453,6 +456,10 @@ width:80vw!important
 width:60vw!important
 }
 
+.swal-small-wide {
+width:40vw!important
+}
+
 #course-search-box {
 display:flex;
 flex-direction:row
@@ -461,7 +468,9 @@ flex-direction:row
 #course-search-desc {
 padding:2vw;
 text-align:left;
-width:30vw
+width:30vw;
+max-height:45vh;
+overflow-y: auto;
 }
 
 .align-right {
@@ -563,9 +572,15 @@ outline: 4px var(--selected) solid;
 }
 
 .course-loaded {
-display:block;
 font-size:16px;
-padding:var(--padding-medium)
+padding:var(--padding-medium);
+align-items:center;
+display:grid;
+grid-template-columns:1fr 1fr 10fr 1fr;
+}
+
+.course-loaded.course-list {
+grid-template-columns:1fr .1fr 10fr 1fr .5fr 1fr;
 }
 
 .code-explain {
@@ -645,50 +660,69 @@ font:400 .7vmax var(--main-font),sans-serif
 }
 
 .course-info {
-float:left;
-max-width:80%;
+max-width:90%;
+margin-left: 10px;
 overflow:hidden;
 text-overflow:ellipsis;
-white-space:nowrap
+white-space:nowrap;
+grid-column-start: 3;
+grid-column-end: 4;
 }
 
 .star-course {
 background-image:var(--star-course-empty);
 background-size:cover;
-clear:left;
-float:left;
 height:1vmax;
 width:1vmax;
-margin-right: var(--padding-medium);
-z-index: 100000;
+z-index: 500;
+grid-column-start: 2;
+grid-column-end: 3;
 }
 
 .star-course.top-right{
 position:absolute;
 top:6px;
-right:0
+right:6px;
 }
 
 .star-course.filled{
 background-image:var(--star-course-filled);
 }
 
+.visibility-button {
+background-image:var(--visible-off);
+height: 1vmax;
+width: 1vmax;
+grid-column-start: 1;
+grid-column-end: 2;
+background-size: cover;
+}
+
+.visibility-button.visible {
+background-image:var(--visible-on);
+}
+
 .delete-course {
 background-image:url(../img/delete.svg);
 background-size:cover;
-clear:right;
-float:right;
 height:1vmax;
-width:1vmax
+width:1vmax;
+grid-column-start: 4;
+grid-column-end: 5;
+}
+
+.delete-course.course-list {
+grid-column-start: 6;
+grid-column-end: 7;
 }
 
 .merge-course {
 background-image:url(../img/merge.svg);
 background-size:cover;
-float:right;
 height:1vmax;
-margin-right:.5vmax;
-width:1vmax
+width:1vmax;
+grid-column-start: 4;
+grid-column-end: 5;
 }
 
 #course-info-table {
@@ -722,6 +756,10 @@ font-weight: 600;
 font-family:"var(--main-font)",sans-serif
 }
 
+.swal2-html-container {
+overflow-y: hidden !important;
+}
+
 a:link,a:visited {
 color:var(--link-color)
 }
@@ -730,7 +768,7 @@ color:var(--link-color)
 background-color:var(--background-main);
 border-radius:var(--roundedness);
 display:inline-block;
-margin-bottom:1vh;
+margin-bottom:10px;
 padding:var(--padding);
 width:100%
 }
@@ -758,7 +796,7 @@ max-height: 15vh;
 overflow:auto
 }
 
-.delete-course:hover,.merge-course:hover, #hide-install *:hover {
+.delete-course:hover,.merge-course:hover,.visibility-button:hover, #hide-install *:hover {
 filter:brightness(1.6)
 }
 
@@ -1002,6 +1040,12 @@ width: 90%;
 height: 60%;
 }
 
+#changelog-container {
+text-align: left;
+width: 90%;
+margin: 0 auto;
+}
+
 /* =============================
 
     MOBILE STYLES
@@ -1121,9 +1165,13 @@ font-size:1vmax!important
 display:none
 }
 
-.delete-course,.merge-course,.star-course {
+.delete-course,.merge-course,.star-course,.visibility-button {
 height:6vw;
 width:6vw;
+}
+
+.star-course {
+margin-left: var(--padding-medium);
 }
 
 .star-course.on-grid{
@@ -1136,7 +1184,8 @@ width:87vw
 }
 
 #course-info-table,#course-list-table {
-width:88vw
+width:88vw;
+max-height: 500px;
 }
 
 .custom-course-manager {

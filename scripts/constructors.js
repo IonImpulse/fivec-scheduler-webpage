@@ -128,8 +128,20 @@ function createLoadedDiv(text, color) {
 function createLoadedCourseListDiv(code, color) {
     let div = createLoadedDiv(`<b>${code}</b>`, color);
     
+    div.classList.add("course-list");
+    div.id = `course-list-${code}`;
+
+    let visibility_button = document.createElement("div");
+    visibility_button.className = "visibility-button";
+    if (!hidden_course_lists.includes(code)) {
+        visibility_button.classList.add("visible");
+    }
+    visibility_button.onclick = function () {
+        toggleCourseListVisibility(code);
+    };
+
     let delete_button = document.createElement("div");
-    delete_button.className = "delete-course";
+    delete_button.className = "delete-course course-list";
     delete_button.onclick = function () {
         deleteCourseList(code);
     };
@@ -140,8 +152,9 @@ function createLoadedCourseListDiv(code, color) {
         mergeCourseList(code);
     };
 
-    div.appendChild(delete_button);
+    div.insertBefore(visibility_button, div.firstChild);
     div.appendChild(merge_button);
+    div.appendChild(delete_button);
 
     return div;
 }
@@ -158,6 +171,15 @@ function createLoadedCourseDiv(identifier, title, color) {
         showCourseOverlay(identifier)
     };
 
+    let visibility_button = document.createElement("div");
+    visibility_button.className = "visibility-button";
+    if (!hidden_courses.includes(identifier)) {
+        visibility_button.classList.add("visible");
+    }
+    visibility_button.onclick = function () {
+        toggleCourseVisibility(identifier);
+    };
+
     let delete_button = document.createElement("div");
     delete_button.className = "delete-course";
     delete_button.onclick = function () {
@@ -172,6 +194,7 @@ function createLoadedCourseDiv(identifier, title, color) {
     
     div.appendChild(delete_button);
     div.insertBefore(star_button,div.firstChild);
+    div.insertBefore(visibility_button,div.firstChild);
 
     return div;
 }

@@ -128,8 +128,6 @@ function populateField(element_name, value) {
 }
 
 async function submitNewCourse() {
-	const form = document.getElementsByClassName("form-group")[0];
-
 	let re = new RegExp(/[<>'"]/ig);
 	const title = document.getElementById("course-title").value.replaceAll(re, "") ?? " ";
 	let identifier = document.getElementById("course-identifier").value.replaceAll(re, "") ?? " ";
@@ -820,6 +818,47 @@ async function deleteCourse(identifier) {
 	}
 }
 
+async function toggleCourseVisibility(identifier) {
+	// Stop bubbling onclick event
+	if (!e) var e = window.event;
+	e.cancelBubble = true;
+	if (e.stopPropagation) e.stopPropagation();
+
+	let el = document.querySelector(`.course-loaded.${identifier}-loaded`);
+	
+	el.firstElementChild.classList.toggle("visible");
+
+	if (hidden_courses.includes(identifier)) {
+		hidden_courses.splice(hidden_courses.indexOf(identifier), 1);
+	} else {
+		hidden_courses.push(identifier);
+	}
+
+	updateSchedule();
+
+	await save_json_data("hidden_courses", hidden_courses);
+}
+async function toggleCourseListVisibility(code) {
+	// Stop bubbling onclick event
+	if (!e) var e = window.event;
+	e.cancelBubble = true;
+	if (e.stopPropagation) e.stopPropagation();
+	
+    let el = document.getElementById(`course-list-${code}`);
+	
+	el.firstElementChild.classList.toggle("visible");
+
+	if (hidden_course_lists.includes(code)) {
+		hidden_course_lists.splice(hidden_course_lists.indexOf(code), 1);
+	} else {
+		hidden_course_lists.push(code);
+	}
+
+	updateSchedule();
+
+	await save_json_data("hidden_course_lists", hidden_course_lists);
+}
+
 async function deleteCourseList(code) {
 	let found = false;
 
@@ -1142,7 +1181,7 @@ const search_popup = `
             <div id="filter-help-text" class="popup-text other-side" >
                 <div class="popup-title">Filter Options</div>
                 Combine filters with searches to narrow your results.<br><br>
-                For Ex, searching <b>"math status:open credits:1"</b> would only return
+                For example, searching <b>"math status:open credits:1"</b> would only return
                 classes relevent to math with 1 credit that are currently open.
                 <br><br>
                 <div>
@@ -1163,8 +1202,8 @@ const search_popup = `
                 </div>
                 <br>
                 <div>
-                    <b>By day: "on:[weekday]"</b>
-                    Ex: on:tuesday
+                    <b>By day: "on:[weekday(s)]"</b>
+                    Ex: on:tuesday,friday
                 </div>
                 <br>
                 <div>
@@ -1174,7 +1213,7 @@ const search_popup = `
                 <br>
                 <div>
                     <b>By code: "code:[code-id]"</b>
-                    Ex: dept:afri
+                    Ex: code:afri
                 </div>
                 <br>
                 <div>
@@ -1206,4 +1245,18 @@ const search_popup = `
     <div id="course-search-desc" class="course-desc">
     </div>
 </div>
-<br>`
+<br>`;
+
+const changelog_popup = `
+<div id="changelog-container">
+	<b>v1.3 Beta</b>
+	<ul>
+		<li>Added a changelog</li>
+		<li>Fixed various alignment issues</li>
+		<li>Added ability to toggle visibility of courses and course lists</li>
+		<li>Total credits taken now displayed</li>
+		<li>Can now search by multiple days, ex: "english on:monday,tuesday"</li>
+	</ul>
+</div>
+
+`

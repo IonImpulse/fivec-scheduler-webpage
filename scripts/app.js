@@ -1248,7 +1248,7 @@ const search_popup = `
 <br>`;
 
 const changelog_popup = `
-<div id="changelog-container>
+<div id="changelog-container">
 	<b>v1.3 Beta</b>
 	<ul>
 		<li>Added a changelog</li>

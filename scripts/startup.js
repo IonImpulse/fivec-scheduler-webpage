@@ -605,6 +605,7 @@ function showChangelog() {
         focusCancel: false,
         cancelButtonText: 'Close',
         icon: 'info',
+        customClass: 'swal-small-wide',
     });
 }
 

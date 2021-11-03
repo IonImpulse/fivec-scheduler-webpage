@@ -456,6 +456,10 @@ width:80vw!important
 width:60vw!important
 }
 
+.swal-small-wide {
+width:40vw!important
+}
+
 #course-search-box {
 display:flex;
 flex-direction:row
@@ -1034,6 +1038,12 @@ text-overflow: ellipsis;
 margin: 0 auto;
 width: 90%;
 height: 60%;
+}
+
+#changelog-container {
+text-align: left;
+width: 90%;
+margin: 0 auto;
 }
 
 /* =============================

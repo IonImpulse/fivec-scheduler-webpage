@@ -53,6 +53,7 @@ function tweakSearch(string) {
 	// Full only matches full tokens/words separated by spaces
 	const replacements = [
 		{ type: "full", search: "cs", replace: "csci" },
+		{ type: "full", search: "e", replace: "engr"},
 		{ type: "full", search: "hmc", replace: "HarveyMudd" },
 		{ type: "full", search: "cmc", replace: "ClaremontMckenna" },
 		{ type: "full", search: "harvey mudd", replace: "HarveyMudd" },
@@ -77,8 +78,12 @@ function tweakSearch(string) {
 		//
 		// Then I can compare it to the string value of "NaN" to see
 		// if it's a number or not.
-		if (part.length == 2 && `${parseInt(part)}` != "NaN") {
-			num_corrected_string += ` 0${part}`;
+		if (`${parseInt(part)}` != "NaN") {
+			if (part.length == 2) {
+				num_corrected_string += ` 0${part}`;
+			} else if (part.length == 1) {
+				num_corrected_string += ` 00${part}`;
+			}
 		} else {
 			num_corrected_string += ` ${part}`;
 		}
@@ -193,6 +198,8 @@ function expensiveCourseSearch(input, all_courses_global, colors) {
 
 		const search_term = tweakSearch(filters_object.input, all_courses_global);
 
+		console.log(`${filters_object.input} => ${search_term}`);
+		
 		results = search_courses(search_term, all_courses_global, filters_object.filters);
 	}
 

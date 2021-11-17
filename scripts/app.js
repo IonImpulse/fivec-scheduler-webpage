@@ -1088,60 +1088,6 @@ function hidePopup(query) {
 
 
 // *****
-// AutoSchedule Functions
-// *****
-function autoSchedule(all_sections, constraints = []) {
-	// First, get the courses
-	let courses_to_schedule = sanitizeCourseList(loaded_local_courses);
-
-	// Add other sections for the same course
-	// if option was selected
-	for (let sectionless_id of all_sections) {
-		// Remove the course
-		courses_to_schedule = courses_to_schedule.filter((course) => getSectionlessIdentifier(course) != sectionless_id)
-		// Find all matching courses
-		let other_sections = all_courses_global.filter((el) => getSectionlessIdentifier(el) == sectionless_id);
-		// Add them to the list
-		courses_to_schedule = courses_to_schedule.concat(other_sections);
-	}
-
-	// Apply constraints
-	// Constraints are in the form of:
-	// {
-	// 	"days": ["Monday", Tuesday", etc]
-	// 	"after_time": "12:00" or ""
-	// 	"before_time": "18:00" or ""
-	// }
-	// Use displayed timing for filtering
-	for (let constraint of constraints) {
-		courses_to_schedule = courses_to_schedule.filter((course) => {
-			let time = timeToNumber(course.displayed_timing);
-			if (constraint.after_time != "") {
-				if (time < constraint.after_time) {
-					return false;
-				}
-			}
-			if (constraint.before_time != "") {
-				if (time > constraint.before_time) {
-					return false;
-				}
-			}
-			return true;
-		});
-	}
-	
-}
-
-function getSectionlessIdentifier(course) {
-	return `${course.code}-${course.id}-${course.dept}`;
-}
-
-function timeToNumber(time) {
-	let [hour, min] = time.split(":");
-	return parseInt(hour) + parseInt(min) / 60;
-}
-
-// *****
 // HTML Popups
 // *****
 
@@ -1314,4 +1260,4 @@ const changelog_popup = `
 	</ul>
 </div>
 
-`
+`;

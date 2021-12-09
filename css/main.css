@@ -81,6 +81,8 @@ body {
 background-color:var(--page-background);
 display:flex;
 flex-direction:row;
+justify-content:center;
+align-items:center;
 }
 
 body * {
@@ -100,6 +102,23 @@ box-shadow: none;
 canvas {
 max-height:100%;
 max-width:100%
+}
+
+#main-grid {
+margin: 0 auto;
+display:grid;
+gap: 10px;
+grid-template-columns: 4fr 1fr;
+grid-template-areas: "header right-header"
+                     "schedule course-info"
+                     "schedule course-info"
+                     "schedule course-info"
+                     "schedule courses-list"
+                     "schedule courses-list"
+                     "schedule courses-list"
+                     "schedule course-lists-list"
+                     "schedule course-lists-list"
+                     "schedule course-lists-list";
 }
 
 #fader {
@@ -204,17 +223,18 @@ width:21%
 }
 
 .title-bar {
+grid-area: header;
 align-items:center;
 background-color:var(--background-main);
 border-radius:var(--roundedness);
 display:flex;
 flex-direction:row;
 justify-content:space-between;
-margin-bottom:10px;
 padding:var(--padding)
 }
 
 #schedule-box {
+grid-area: schedule;
 background-color:var(--background-main);
 border-radius:var(--roundedness);
 padding:var(--padding)
@@ -372,7 +392,6 @@ border-radius:var(--roundedness);
 display:inline-block;
 max-height:30vh;
 overflow:auto;
-width:100%
 }
 
 #course-list-box {
@@ -380,7 +399,6 @@ background-color:var(--background-main);
 border-radius:var(--roundedness);
 display:inline-block;
 padding:var(--padding);
-width:100%
 }
 
 #course-list-table {
@@ -768,13 +786,23 @@ color:var(--link-color)
 background-color:var(--background-main);
 border-radius:var(--roundedness);
 display:inline-block;
-margin-bottom:10px;
 padding:var(--padding);
-width:100%
 }
 
+#course-info-box {
+grid-area: course-info; 
+}
+
+#course-box {
+grid-area: courses-list; 
+}
+
+#course-list-box {
+grid-area: course-lists-list; 
+}
 
 #extra-buttons {
+grid-area: right-header;
 display:flex;
 flex-direction:row;
 justify-content:space-evenly;

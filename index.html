@@ -79,64 +79,66 @@
     <div id="fader">
       <img id="loading-image" src="img/favicons/favicon.svg"/>
     </div>
-    <div id="main-section">
-      <div id="pwa-prompt-box">
-        <div title="Install" tabindex="0" class="title-bar-button install noselect"  >
-          <div style="margin-right:10px;">Install As App</div>
-          <img src="img/dl-dark.svg" height="30px">
-        </div>
 
-        <div id="hide-install" class="title-bar-button install noselect">
-          <img src="img/delete.svg" height="30px">
+    <div id="main-grid">
+        <div id="pwa-prompt-box">
+          <div title="Install" tabindex="0" class="title-bar-button install noselect"  >
+            <div style="margin-right:10px;">Install As App</div>
+            <img src="img/dl-dark.svg" height="30px">
+          </div>
+  
+          <div id="hide-install" class="title-bar-button install noselect">
+            <img src="img/delete.svg" height="30px">
+          </div>
         </div>
-      </div>
-
-      <div class="title-bar shadow">
-        <a href="https://www.5scheduler.io" class="logo"><img src="/img/favicons/favicon-32x32.png" alt="5scheduler.io" class="logo"></a>
-
-        <div title="Share" tabindex="0" class="title-bar-button share wide noselect" onclick="buttonShare()">
+  
+        <div class="title-bar shadow">
+          <a href="https://www.5scheduler.io" class="logo"><img src="/img/favicons/favicon-32x32.png" alt="5scheduler.io" class="logo"></a>
+  
+          <div title="Share" tabindex="0" class="title-bar-button share wide noselect" onclick="buttonShare()">
+          </div>
+          <div title="Search" tabindex="0" class="title-bar-button search-button noselect" onclick="buttonSearch()">
+            Search
+          </div>
+          <div title="Load" tabindex="0" class="title-bar-button load wide noselect" onclick="buttonLoad()">
+          </div>
         </div>
-        <div title="Search" tabindex="0" class="title-bar-button search-button noselect" onclick="buttonSearch()">
-          Search
+        
+        <div id="schedule-box" class="shadow">
+          <div id="schedule-table" class=""></div>
         </div>
-        <div title="Load" tabindex="0" class="title-bar-button load wide noselect" onclick="buttonLoad()">
+  
+        <div id="extra-buttons" class="course-desc shadow">
+          <div title="Custom Course Manager" tabindex="0" class="title-bar-button noselect custom-course" onclick="buttonCustomCourse()">
+          </div>
+          <div title="Save As Image" tabindex="0" class="title-bar-button noselect export" onclick="buttonExport()">
+          </div>
+          <div title="Print" tabindex="0" class="title-bar-button noselect print" onclick="buttonPrint()">
+          </div>
+          <div title="iCalendar" tabindex="0" class="title-bar-button noselect cal" onclick="buttonCal()">
+          </div>
+          <div title="Theme" tabindex="0" class="title-bar-button noselect theme" onclick="buttonTheme()">
+          </div>
+          <div title="About" tabindex="0" class="title-bar-button noselect about" onclick="buttonAbout()">
+          </div>
         </div>
-      </div>
-      <div id="schedule-box" class="shadow">
-        <div id="schedule-table" class=""></div>
-      </div>
+        <div id="course-info-box" class="course-desc shadow">
+          <div class="table-title">Course Info</div>
+          <div id="course-info-table" class="">
+          </div>
+        </div>
+        <div id="course-box" class="shadow">
+          <div id="loaded-courses-title" class="table-title">Courses Loaded</div>
+          <div id="course-table" class="">
+          </div>
+        </div>
+        <div id="course-list-box" class="shadow">
+          <div id="loaded-course-lists-title" class="table-title">Course Lists Loaded</div>
+          <div id="course-list-table" class="">
+          </div>
+        </div>
     </div>
-    <div id="right-section">
-      <div id="extra-buttons" class="course-desc shadow">
-        <div title="Custom Course Manager" tabindex="0" class="title-bar-button noselect custom-course" onclick="buttonCustomCourse()">
-        </div>
-        <div title="Save As Image" tabindex="0" class="title-bar-button noselect export" onclick="buttonExport()">
-        </div>
-        <div title="Print" tabindex="0" class="title-bar-button noselect print" onclick="buttonPrint()">
-        </div>
-        <div title="iCalendar" tabindex="0" class="title-bar-button noselect cal" onclick="buttonCal()">
-        </div>
-        <div title="Theme" tabindex="0" class="title-bar-button noselect theme" onclick="buttonTheme()">
-        </div>
-        <div title="About" tabindex="0" class="title-bar-button noselect about" onclick="buttonAbout()">
-        </div>
-      </div>
-      <div id="course-info-box" class="course-desc shadow">
-        <div class="table-title">Course Info</div>
-        <div id="course-info-table" class="">
-        </div>
-      </div>
-      <div id="course-box" class="shadow">
-        <div id="loaded-courses-title" class="table-title">Courses Loaded</div>
-        <div id="course-table" class="">
-        </div>
-      </div>
-      <div id="course-list-box" class="shadow">
-        <div id="loaded-course-lists-title" class="table-title">Course Lists Loaded</div>
-        <div id="course-list-table" class="">
-        </div>
-      </div>
-    </div>
+    
     <script src="scripts/libs/fuzzysort.js"></script>
     <script src="scripts/libs/sweetalert2.min.js"></script>
     <script src="scripts/libs/qrcodegen-v1.7.0-es6.js"></script>

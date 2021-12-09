@@ -490,7 +490,7 @@ function updateCredits() {
     const loaded_title = document.getElementById("loaded-courses-title");
     const lists_title = document.getElementById("loaded-course-lists-title");
 
-    let local_credits = sumCredits(loaded_local_courses);
+    let local_credits = sumCredits(loaded_local_courses.filter(course => !hidden_courses.includes(course.identifier)));
     
     if (local_credits > 0) {
         let ending = "Credits";

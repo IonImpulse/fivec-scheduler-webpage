@@ -84,7 +84,7 @@ flex-direction:row;
 }
 
 body * {
-transition:color .05s ease-in-out,background-color .2s ease-in-out, transform .05s ease-in-out, outline .05s ease-in-out;
+transition:color .05s ease-in-out,background-color .2s ease-in-out, transform .05s ease-in-out, outline .01s ease-in-out;
 }
 
 *:focus{

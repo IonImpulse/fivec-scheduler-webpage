@@ -838,6 +838,7 @@ async function toggleCourseVisibility(identifier) {
 
 	await save_json_data("hidden_courses", hidden_courses);
 }
+
 async function toggleCourseListVisibility(code) {
 	// Stop bubbling onclick event
 	if (!e) var e = window.event;
@@ -1259,4 +1260,4 @@ const changelog_popup = `
 	</ul>
 </div>
 
-`
+`;

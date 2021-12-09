@@ -62,7 +62,7 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 
 		let instructor_node = "<div";
 		instructor_node += " class=\"instructors\">";
-		instructor_node += `<br><b>Instructors:</b> <i>`;
+		instructor_node += `<b>Instructors:</b> <i>`;
 
 		for (let instructor of course.instructors) {
 			instructor_node += `<span class="clickable-text" onclick="addSearchFilter(\'with:${instructor.trim().replace(/\s/g, "-")}\')">${instructor}</span>`;

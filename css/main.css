@@ -3,7 +3,7 @@
 --page-background:#eeeef7;
 --background-alt:#f0f1f3;
 --background-main:#ffffff;
---button-main:#ecf0f5;
+--button-main:#ffffff;
 --button-outline:#00000033;
 --course-closed:#b93838;
 --course-open:#39a32b;
@@ -88,16 +88,6 @@ align-items:center;
 body * {
 transition:color .05s ease-in-out,background-color .2s ease-in-out, transform .05s ease-in-out, outline .01s ease-in-out;
 }
-
-*:focus{
-outline: 3px solid var(--selected);
-outline-offset: 3px;
-}
-
-*:focus:not(.focus-visible) {
-outline: 0;
-box-shadow: none;
-}
     
 canvas {
 max-height:100%;
@@ -150,7 +140,7 @@ background-color:#fff;
 }
 
 .shadow {
-box-shadow: 0 0 2px 1px rgba(0,0,0,.2);
+box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
 }
 
 @keyframes fade-out {
@@ -264,7 +254,16 @@ background-size:30px 30px;
 text-align:center;
 background-repeat: no-repeat;
 background-position: center;
-box-shadow: 0 0 0 1px var(--button-outline);
+outline: var(--button-outline) solid 1px;
+}
+
+.title-bar-button:hover {
+filter:brightness(var(--hover-effect));
+transform: translate(0, -1px);
+}
+
+.title-bar-button:active {
+transform: translate(0px,1px);
 }
 
 #pwa-prompt-box {
@@ -333,10 +332,6 @@ width: 80px;
 width:140px;
 margin-left: 8vw;
 margin-right: 8vw;
-}
-
-.title-bar-button:hover {
-filter:brightness(var(--hover-effect));
 }
 
 .search-button {

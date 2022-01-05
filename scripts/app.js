@@ -495,15 +495,15 @@ function buttonCal() {
 			3. Select which calendars to add the events to<br> 
 			</div>
 				<div class="ical-dl-holder">
-					<div onclick="downloadICal(ical_all)" class="title-bar-button dl"></div>
+					<div onclick="downloadICal(ical_all)" class="default-button dl"></div>
 					Download all courses
 				</div>
 				<div class="ical-dl-holder">
-					<div onclick="downloadICal(ical_starred)" class="title-bar-button dl"></div>
+					<div onclick="downloadICal(ical_starred)" class="default-button dl"></div>
 					Download starred courses
 				</div>
 				<div class="ical-dl-holder">
-					<div onclick="downloadICal(ical_nstarred)" class="title-bar-button dl"></div>
+					<div onclick="downloadICal(ical_nstarred)" class="default-button dl"></div>
 					Download unstarred courses
 				</div>
 			</div>`,
@@ -1162,13 +1162,13 @@ const custom_course_popup = `
         </div>
 
         <div class="button-group">
-            <div tabindex="0" id="add-new-course" class="title-bar-button unselectable course-button" onclick="submitNewCourse()">Add</div>
-            <div tabindex="0" id="cancel-new-course" class="title-bar-button unselectable course-button" onclick="cancelNewCourse()">Cancel</div>
+            <div tabindex="0" id="add-new-course" class="default-button unselectable course-button" onclick="submitNewCourse()">Add</div>
+            <div tabindex="0" id="cancel-new-course" class="default-button unselectable course-button" onclick="cancelNewCourse()">Cancel</div>
         </div>
     </div>
     <div class="right-panel">
-        <div id="create-course" class="title-bar-button unselectable course-button" onclick="createNewCourse()">Create New</div>
-        <div id="edit-course" class="title-bar-button unselectable course-button" onclick="editCourse()">Edit</div>
+        <div id="create-course" class="default-button unselectable course-button" onclick="createNewCourse()">Create New</div>
+        <div id="edit-course" class="default-button unselectable course-button" onclick="editCourse()">Edit</div>
     </div>
 </div>
 `.replace("\n",'');

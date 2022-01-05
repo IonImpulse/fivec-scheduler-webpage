@@ -139,7 +139,7 @@ function search_courses(query, all_courses_global, filters) {
 		if (["status", "dept", "id", "code"].includes(filter.key)) {
 			results = results.filter(t => (t.obj || t)[filter.key].toLowerCase() == filter.value.toLowerCase());
 		} else if (filter.key == "with") {
-			results = results.filter(t => (t.obj || t).instructorString.toLowerCase().includes(filter.value.replace("-", " ").toLowerCase()));
+			results = results.filter(t => (t.obj || t).instructorString.toLowerCase().replace(".", "").includes(filter.value.replace("-", " ").replace(".", "").toLowerCase()));
 		} else if (filter.key == "on") {
 			let days_to_search = filter.value.split(",").map(day => capitalize(day));
 			results = results.filter(t => (t.obj || t).timing.map(e => e.days).some(k => k.some(l => days_to_search.includes(l))));

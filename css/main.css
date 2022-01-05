@@ -14,7 +14,7 @@
 --padding:12px;
 --padding-medium:7px;
 --padding-small:5px;
---roundedness:8px;
+--roundedness:10px;
 --search-button-background:rgb(64, 187, 33);
 --shadow-blur:20px;
 --shadow-length:4px;
@@ -36,15 +36,15 @@
 --cal-icon:url(../img/cal-light.svg);
 --dl-icon:url(../img/dl-light.svg);
 --custom-course-icon:url(../img/custom-course-light.svg);
---hover-effect: .95;
+--hover-effect: .92;
 }
 
 [data-theme="dark"] {
---page-background:#1b1b1b;
---background-alt:#1b1b1b;
---background-main:#333;
---button-main:#222222;
---button-outline:#83838333;
+--page-background:#0f0f11;
+--background-alt:#16151a;
+--background-main:#222227;
+--button-main:#222227;
+--button-outline:#757575;
 --course-closed:#e27878;
 --course-open:#7ee271;
 --course-reopened:#e0c06a;
@@ -63,7 +63,7 @@
 --cal-icon:url(../img/cal-dark.svg);
 --dl-icon:url(../img/dl-dark.svg);
 --custom-course-icon:url(../img/custom-course-dark.svg);
---hover-effect: 1.1;
+--hover-effect: 1.2;
 }
 
 .noscript {
@@ -86,7 +86,7 @@ align-items:center;
 }
 
 body * {
-transition:color .05s ease-in-out,background-color .2s ease-in-out, transform .05s ease-in-out, outline .01s ease-in-out;
+transition: all .1s ease-in-out,background-color .2s ease-in-out, outline .01s ease-in-out;
 }
     
 canvas {
@@ -178,8 +178,8 @@ outline:none
 }
 
 .logo {
-height:32px;
-width:32px;
+height:35px;
+width:35px;
 position: absolute;
 float:left;
 clear:left;
@@ -220,7 +220,9 @@ border-radius:var(--roundedness);
 display:flex;
 flex-direction:row;
 justify-content:space-between;
-padding:var(--padding)
+align-items: center;
+align-content: center;
+padding:var(--padding);
 }
 
 #schedule-box {
@@ -243,13 +245,13 @@ min-height:500px;
 overflow:hidden
 }
 
-.title-bar-button {
+.default-button {
 background-color:var(--button-main);
 border-radius:var(--roundedness);
 color:var(--text-main);
 cursor:pointer;
-height:32px;
-width:32px;
+height:35px;
+width:35px;
 background-size:30px 30px;
 text-align:center;
 background-repeat: no-repeat;
@@ -257,12 +259,11 @@ background-position: center;
 outline: var(--button-outline) solid 1px;
 }
 
-.title-bar-button:hover {
-filter:brightness(var(--hover-effect));
-transform: translate(0, -1px);
+.default-button:hover {
+filter: brightness(var(--hover-effect));
 }
 
-.title-bar-button:active {
+.default-button:active {
 transform: translate(0px,1px);
 }
 
@@ -271,7 +272,7 @@ display:none;
 flex-direction:row;
 }
 
-.title-bar-button.install {
+.default-button.install {
 background-color: #428cee;
 color: var(--text-course-schedule);
 font: 1.2rem "Inter", monospace;
@@ -280,64 +281,65 @@ display: flex;
 margin: 0 auto;
 margin-bottom: 10px;
 width: 90%;
-height: 40px;
+height: 35px;
 flex-direction: row;
 align-items: center;
 justify-content: center;
 }
 
 #hide-install {
-width: 40px;
+width: 35px;
 }
 
-.title-bar-button.custom-course {
+.default-button.custom-course {
 background-image:var(--custom-course-icon);
 }
 
-.title-bar-button.export {
+.default-button.export {
 background-image:var(--export-icon);
 }
 
-.title-bar-button.print {
+.default-button.print {
 background-image:var(--print-icon);
 }
 
-.title-bar-button.cal {
+.default-button.cal {
 background-image:var(--cal-icon);
 }
 
-.title-bar-button.theme {
+.default-button.theme {
 background-image:var(--theme-icon);
 }
 
-.title-bar-button.about {
+.default-button.about {
 background-image:var(--about-icon);
 }
 
-.title-bar-button.load {
+.default-button.load {
 background-image:var(--load-icon);
 }
 
-.title-bar-button.share {
+.default-button.share {
 background-image:var(--share-icon);
 }
 
-.title-bar-button.dl {
+.default-button.dl {
 background-image:var(--dl-icon);
 margin-right:var(--padding);
 width: 80px;
 }
 
-.title-bar-button.wide {
-width:140px;
+.default-button.wide {
+width:135px;
 margin-left: 8vw;
 margin-right: 8vw;
 }
 
 .search-button {
+align-content: center;
 padding-left:var(--padding-medium);
 padding-right:var(--padding-medium);
-font:1em/1.9em "Inter",sans-serif;
+font:1.2em/1.7em "Inter",sans-serif;
 font-weight: 500;
 filter:none;
 background-color:var(--search-button-background);

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-  <noscript class="noscript">
-    <a href="https://duckduckgo.com/?t=ffab&q=how+do+i+enable+javascript&ia=web">Sorry, but this site requires JavaScript to function properly.</a>
-  </noscript>
-  <!--- Prelude sets global variables and theming before CSS is shown -->
-  <script src="scripts/prelude.js"></script>
-  <head>
+  <head><noscript class="noscript">
+      <a href="https://duckduckgo.com/?t=ffab&q=how+do+i+enable+javascript&ia=web">Sorry, but this site requires JavaScript to function properly.</a>
+    </noscript>
+
+    <!--- Prelude sets global variables and theming before CSS is shown -->
+    <script src="scripts/prelude.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>5scheduler - Course Scheduler for the 5Cs</title>
@@ -34,18 +34,18 @@
     <link href="css/main.css" rel="stylesheet" type="text/css">
     <link href="css/sweetalert2.min.css" rel="stylesheet" type="text/css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet"> 
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap" rel="stylesheet"> 
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&amp;display=swap" rel="stylesheet">
+
     <!-- Favicon Images -->
+    <meta name="theme-color" content="#131313">
     <link rel="icon" type="image/png" sizes="196x196" href="img/favicons/favicon-196.png">
     <meta name="msapplication-square70x70logo" content="img/favicons/mstile-icon-128.png">
     <meta name="msapplication-square150x150logo" content="img/favicons/mstile-icon-270.png">
     <meta name="msapplication-square310x310logo" content="img/favicons/mstile-icon-558.png">
     <meta name="msapplication-wide310x150logo" content="img/favicons/mstile-icon-558-270.png">
     <link rel="apple-touch-icon" href="img/favicons/apple-icon-180.png">
-    <meta name="msapplication-TileColor" content="#131313">
-    <meta name="theme-color" content="#131313">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <link rel="apple-touch-startup-image" href="img/favicons/apple-splash-2048-2732.jpg" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
     <link rel="apple-touch-startup-image" href="img/favicons/apple-splash-2732-2048.jpg" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
@@ -74,71 +74,63 @@
     <link rel="apple-touch-startup-image" href="img/favicons/apple-splash-640-1136.jpg" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
     <link rel="apple-touch-startup-image" href="img/favicons/apple-splash-1136-640.jpg" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
   </head>
-
   <body>
     <div id="fader">
-      <img id="loading-image" src="img/favicons/favicon.svg"/>
+      <img id="loading-image" src="img/favicons/favicon.svg">
     </div>
-
     <div id="main-grid">
-        <div id="pwa-prompt-box">
-          <div title="Install" tabindex="0" class="title-bar-button install noselect"  >
-            <div style="margin-right:10px;">Install As App</div>
-            <img src="img/dl-dark.svg" height="30px">
-          </div>
-  
-          <div id="hide-install" class="title-bar-button install noselect">
-            <img src="img/delete.svg" height="30px">
-          </div>
+      <div id="pwa-prompt-box">
+        <div title="Install" tabindex="0" class="default-button install noselect">
+          <div style="margin-right:10px;">Install As App</div>
+          <img src="img/dl-dark.svg" height="30px">
         </div>
-  
-        <div class="title-bar shadow">
-          <a href="https://www.5scheduler.io" class="logo"><img src="/img/favicons/favicon-32x32.png" alt="5scheduler.io" class="logo"></a>
-  
-          <div title="Share" tabindex="0" class="title-bar-button share wide noselect" onclick="buttonShare()">
-          </div>
-          <div title="Search" tabindex="0" class="title-bar-button search-button noselect" onclick="buttonSearch()">
-            Search
-          </div>
-          <div title="Load" tabindex="0" class="title-bar-button load wide noselect" onclick="buttonLoad()">
-          </div>
+        <div id="hide-install" class="default-button install noselect">
+          <img src="img/delete.svg" height="30px">
         </div>
-        
-        <div id="schedule-box" class="shadow">
-          <div id="schedule-table" class=""></div>
+      </div>
+      <div class="title-bar shadow">
+        <a href="https://www.5scheduler.io" class="logo"><img src="/img/favicons/favicon.svg" alt="5scheduler.io" class="logo"></a>
+        <div title="Share" tabindex="0" class="default-button share wide noselect" onclick="buttonShare()">
         </div>
-  
-        <div id="extra-buttons" class="course-desc shadow">
-          <div title="Custom Course Manager" tabindex="0" class="title-bar-button noselect custom-course" onclick="buttonCustomCourse()">
-          </div>
-          <div title="Save As Image" tabindex="0" class="title-bar-button noselect export" onclick="buttonExport()">
-          </div>
-          <div title="Print" tabindex="0" class="title-bar-button noselect print" onclick="buttonPrint()">
-          </div>
-          <div title="iCalendar" tabindex="0" class="title-bar-button noselect cal" onclick="buttonCal()">
-          </div>
-          <div title="Theme" tabindex="0" class="title-bar-button noselect theme" onclick="buttonTheme()">
-          </div>
-          <div title="About" tabindex="0" class="title-bar-button noselect about" onclick="buttonAbout()">
-          </div>
+        <div title="Search" tabindex="0" class="default-button search-button noselect" onclick="buttonSearch()">
+          Search
         </div>
-        <div id="course-info-box" class="course-desc shadow">
-          <div class="table-title">Course Info</div>
-          <div id="course-info-table" class="">
-          </div>
+        <div title="Load" tabindex="0" class="default-button load wide noselect" onclick="buttonLoad()">
         </div>
-        <div id="course-box" class="shadow">
-          <div id="loaded-courses-title" class="table-title">Courses Loaded</div>
-          <div id="course-table" class="">
-          </div>
+      </div>
+      <div id="schedule-box" class="shadow">
+        <div id="schedule-table" class=""></div>
+      </div>
+      <div id="extra-buttons" class="course-desc shadow">
+        <div title="Custom Course Manager" tabindex="0" class="default-button noselect custom-course" onclick="buttonCustomCourse()">
         </div>
-        <div id="course-list-box" class="shadow">
-          <div id="loaded-course-lists-title" class="table-title">Course Lists Loaded</div>
-          <div id="course-list-table" class="">
-          </div>
+        <div title="Save As Image" tabindex="0" class="default-button noselect export" onclick="buttonExport()">
         </div>
+        <div title="Print" tabindex="0" class="default-button noselect print" onclick="buttonPrint()">
+        </div>
+        <div title="iCalendar" tabindex="0" class="default-button noselect cal" onclick="buttonCal()">
+        </div>
+        <div title="Theme" tabindex="0" class="default-button noselect theme" onclick="buttonTheme()">
+        </div>
+        <div title="About" tabindex="0" class="default-button noselect about" onclick="buttonAbout()">
+        </div>
+      </div>
+      <div id="course-info-box" class="course-desc shadow">
+        <div class="table-title">Course Info</div>
+        <div id="course-info-table" class="">
+        </div>
+      </div>
+      <div id="course-box" class="shadow">
+        <div id="loaded-courses-title" class="table-title">Courses Loaded</div>
+        <div id="course-table" class="">
+        </div>
+      </div>
+      <div id="course-list-box" class="shadow">
+        <div id="loaded-course-lists-title" class="table-title">Course Lists Loaded</div>
+        <div id="course-list-table" class="">
+        </div>
+      </div>
     </div>
-    
     <script src="scripts/libs/fuzzysort.js"></script>
     <script src="scripts/libs/sweetalert2.min.js"></script>
     <script src="scripts/libs/qrcodegen-v1.7.0-es6.js"></script>

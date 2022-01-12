@@ -370,6 +370,11 @@ async function buttonSearch() {
 				})
 			}
 		});
+		// Set hmc credit mode:
+		let hmc_credit_mode = document.getElementById("hmc-credits");
+
+		hmc_credit_mode.checked = hmc_mode;
+
 		let input = document.getElementById("course-input");
 		document.getElementById("course-search-results").addEventListener("keydown", function (event) {
 			if (event.code === "Enter") {
@@ -389,8 +394,6 @@ async function buttonSearch() {
 		});
 
 		document.getElementsByClassName("swal-wide")[0].onkeydown = focusAndInput;
-		
-
 
 		setTimeout(function () {
 			backgroundCourseSearch();
@@ -688,6 +691,7 @@ function toggleCourseSelection(identifier) {
 }
 
 function setCourseDescription(index) {
+	last_course_desc = index;
 	let course_search_desc = document.getElementById("course-search-desc");
 	let course_info = all_desc_global[index];
 
@@ -1086,6 +1090,20 @@ function hidePopup(query) {
 	el.classList.remove("show");
 }
 
+function toggleCreditMode() {
+	if (hmc_mode) {
+		hmc_mode = false;
+	} else {
+		hmc_mode = true;
+	}
+
+	updateCredits();
+	updateDescAndSearcher(full=true).then(() => {
+		setCourseDescription(last_course_desc);
+	});
+
+	localStorage.setItem("hmc_mode", hmc_mode);
+}
 
 // *****
 // HTML Popups
@@ -1176,6 +1194,10 @@ const custom_course_popup = `
 
 const search_popup = `
 <div id="search-container">
+	<label id="hmc-credits-label" for="hmc-credits">HMC Credits</label>
+	<input id="hmc-credits" type="checkbox" class="day-checkbox" onclick="toggleCreditMode()">
+    <input class="input" id="course-input" onKeyUp="processChange()" placeholder="Search by course code, title, or instructor...">
+
     <span id="filter-help" class="popup-holder unselectable" onmouseenter="showPopup(\'#filter-help-text\')" onmouseleave="hidePopup(\'#filter-help-text\')">
         ?
         <span>
@@ -1235,9 +1257,7 @@ const search_popup = `
         </span>
     </span>
 
-    <input class="input" id="course-input" onKeyUp="processChange()" placeholder="Search by course code, title, or instructor...">
     <span id="term-container"></span>
-	
 </div>
 <div id="course-search-box">
     <div id="course-search-results">

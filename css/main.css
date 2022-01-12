@@ -803,6 +803,7 @@ a:visited {
   border-radius: var(--roundedness);
   display: inline-block;
   padding: var(--padding);
+  min-width: 20vw;
 }
 
 #course-info-box {
@@ -1059,7 +1060,7 @@ label {
 
 #search-container {
   display: grid;
-  grid-template-columns: 19fr 1fr 30fr 10fr 10fr;
+  grid-template-columns: 12fr 6fr 1fr 30fr 1fr 10fr 10fr;
   justify-content: center;
   justify-items: center;
   align-items: center;
@@ -1068,17 +1069,36 @@ label {
   margin-bottom: 10px;
 }
 
-#filter-help {
+#hmc-credits-label {
   grid-column-start: 2;
   grid-column-end: 3;
+}
+
+#hmc-credits {
+  grid-column-start: 3;
+  grid-column-end: 4;
+}
+
+#course-input {
+  grid-column-start: 4;
+  grid-column-end: 5;
+  text-overflow: ellipsis;
+  margin: 0 auto;
+  width: 90%;
+  height: 60%;
+}
+
+#filter-help {
+  grid-column-start: 5;
+  grid-column-end: 6;
   background-color: var(--background-main);
   border-radius: var(--roundedness);
   width: 15px;
 }
 
 #term-container {
-  grid-column-start: 4;
-  grid-column-end: 5;
+  grid-column-start: 6;
+  grid-column-end: 7;
   background-color: var(--background-main);
   box-shadow: 0 0 1px 1px var(--button-outline);
   padding: var(--padding-medium);
@@ -1088,14 +1108,7 @@ label {
   width: 85%;
 }
 
-#course-input {
-  grid-column-start: 3;
-  grid-column-end: 4;
-  text-overflow: ellipsis;
-  margin: 0 auto;
-  width: 90%;
-  height: 60%;
-}
+
 
 #changelog-container {
   text-align: left;
@@ -1204,17 +1217,6 @@ label {
     width: 100%;
   }
 
-  #course-input {
-    width: 60vw;
-    margin: 0 auto;
-    margin-bottom: 10px;
-    height: 60px;
-  }
-
-  #term-container {
-    margin: 0 auto;
-  }
-
   .swal2-info {
     display: none !important;
   }
@@ -1321,10 +1323,37 @@ label {
   }
 
   #search-container {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    display: flex;
-    flex-direction: column;
+    height: 140px;
+    display: grid;
+    grid-template-columns: 3fr 1fr 5fr;
+    grid-template-areas: "hmc-credits-label hmc-credits term"
+                         "search-box search-box search-box"
+                         "search-box search-box search-box";
+    justify-content: center;
+    justify-items: center;
     align-items: center;
   }
+
+  #hmc-credits-label {
+    grid-area: hmc-credits-label;
+  }
+
+  #hmc-credits {
+    grid-area: hmc-credits;
+  }
+
+  #term-container {
+    grid-area: term;
+    margin: 0 auto;
+  }
+
+  #course-input {
+    grid-area: search-box;
+    width: 60vw;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    height: 60px;
+  }
+
+
 }

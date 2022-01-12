@@ -32,6 +32,8 @@ var loaded_course_lists = [];
 var loaded_custom_courses = [];
 var vertical_layout = false;
 var show_changelog = true;
+var hmc_mode = false;
+var last_course_desc = 0;
 
 var debounce_timer = 10;
 
@@ -82,6 +84,14 @@ function getTheme() {
     }
 }
 
+function getSchoolMode() {
+    let mode = localStorage.getItem("hmc_mode");
+
+    if (mode == "true") {
+        hmc_mode = true;
+    }
+}
+
 function isVerticalLayout() {
     vertical_layout = window.matchMedia("only screen and (max-width: 760px)").matches;
     debounce_timer = vertical_layout ? 300 : 10;
@@ -109,7 +119,7 @@ document.addEventListener("keydown", function (event) {
     }
 });
 
-
+getSchoolMode();
 getVersion();
 getTheme();
 isVerticalLayout();

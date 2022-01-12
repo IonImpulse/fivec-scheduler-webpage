@@ -46,9 +46,9 @@ async function startup() {
     }
 
     // Create reusable web worker threads
-    desc_worker = new Worker('scripts/workers/descriptions.js');
-    searcher_worker = new Worker('scripts/workers/searcher.js');
-	searching_worker = new Worker('scripts/workers/courseSearch.js');
+    desc_worker = new Worker('scripts/workers/descriptions.js?v=1.4');
+    searcher_worker = new Worker('scripts/workers/searcher.js?v=1.4');
+	searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.4');
 
     // Start worker threads to generate descriptions + searcher
     updateDescAndSearcher(false);
@@ -123,7 +123,7 @@ async function updateDescAndSearcher(full=true) {
         all_courses_global = e.data;
     }
 
-    desc_worker.postMessage([[], all_courses_global, loaded_custom_courses, full]);
+    desc_worker.postMessage([[], all_courses_global, loaded_custom_courses, hmc_mode, full]);
     searcher_worker.postMessage([all_courses_global]);
 }
 
@@ -523,7 +523,11 @@ function sumCredits(courses) {
     let credits = 0;
 
     for (let course of courses) {
-        credits += course.credits ?? 0;
+        if (hmc_mode) {
+            credits += course.credits_hmc ?? 0;
+        } else {
+            credits += course.credits ?? 0;
+        }
     }
 
     if (credits > 0) {

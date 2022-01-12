@@ -9,7 +9,7 @@ function convertTime(time) {
 	}
 }
 
-function generateAllDescriptions(all_desc_global, all_courses_global, loaded_custom_courses, full=true) {
+function generateAllDescriptions(all_desc_global, all_courses_global, loaded_custom_courses, hmc_mode, full=true) {
     if (full == true) {
         all_desc_global = [];
     }
@@ -58,7 +58,16 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 
 		let credit_node = "<div";
 		credit_node += " class=\"credits\">";
-		credit_node += `<br><b>Credits:</b> <span class="clickable-text" onclick="addSearchFilter(\'credits:${(course.credits/100)}\')">${(course.credits/100).toFixed(2)}</span></div>`;
+
+		let credits;
+
+		if (hmc_mode) {
+			credits = course.credits_hmc/100;
+		} else {
+			credits = course.credits/100;
+		}
+
+		credit_node += `<br><b>Credits:</b> <span class="clickable-text" onclick="addSearchFilter(\'credits:${credits}\')">${credits.toFixed(2)}</span></div>`;
 
 		let instructor_node = "<div";
 		instructor_node += " class=\"instructors\">";
@@ -98,7 +107,7 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 }
 
 onmessage = function(e) {
-    let all_desc_global = generateAllDescriptions(e.data[0], e.data[1], e.data[2], e.data[3]);
+    let all_desc_global = generateAllDescriptions(e.data[0], e.data[1], e.data[2], e.data[3], e.data[4]);
 
     postMessage(all_desc_global);
 }

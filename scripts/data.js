@@ -66,6 +66,7 @@ async function update_database(full=true) {
         } else {
             console.debug("Found data, requesting update if stale...");
             response = fetch(`${API_URL}${UPDATE_IF_STALE(current_data.timestamp)}`);
+            
         }
     
         let data = await response;
@@ -87,17 +88,17 @@ async function update_database(full=true) {
         all_course_results_html = "";
         await save_json_data("course_data", json);
         all_courses_global = json.courses;
-    
-        // Update currently loaded courses
-        loaded_local_courses = update_courses(all_courses_global, loaded_local_courses);
-        for (let i = 0; i < loaded_course_lists.length; i++) {
-            loaded_course_lists[i] = update_courses(all_courses_global, loaded_course_lists[i])
-        }
 
         await save_json_data("loaded_local_courses", loaded_local_courses);
         await save_json_data("loaded_course_lists", loaded_course_lists);
     } else {
         all_courses_global = current_data.courses;
+    }
+
+    // Update courses that might be invalid
+    loaded_local_courses = update_courses(all_courses_global, loaded_local_courses);
+    for (let i = 0; i < loaded_course_lists.length; i++) {
+        loaded_course_lists[i] = update_courses(all_courses_global, loaded_course_lists[i])
     }
 
     if (full || json != "No update needed") {
@@ -126,15 +127,18 @@ async function update_locations() {
     }
 }
 
-function update_courses(source, target) {
-    // Update local courses
-    for (let i = 0; i < target.length; i++) {
-        if (source.includes(target[i].identifier)) {
-            target[i] = source[i];
+function update_courses(source_list, target_list) {
+
+    // Update courses
+    for (let i = 0; i < target_list.length; i++) {
+        let main_course = source_list.find(course => course.identifier == target_list[i].identifier);
+
+        if (main_course != undefined) {
+            target_list[i] = main_course;
         }
     }
 
-    return target
+    return target_list
 }
 function update_loop() {
     setTimeout(function () {

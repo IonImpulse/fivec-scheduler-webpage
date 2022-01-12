@@ -370,6 +370,11 @@ async function buttonSearch() {
 				})
 			}
 		});
+		// Set hmc credit mode:
+		let hmc_credit_mode = document.getElementById("hmc-credits");
+
+		hmc_credit_mode.checked = hmc_mode;
+
 		let input = document.getElementById("course-input");
 		document.getElementById("course-search-results").addEventListener("keydown", function (event) {
 			if (event.code === "Enter") {
@@ -389,8 +394,6 @@ async function buttonSearch() {
 		});
 
 		document.getElementsByClassName("swal-wide")[0].onkeydown = focusAndInput;
-		
-
 
 		setTimeout(function () {
 			backgroundCourseSearch();
@@ -495,15 +498,15 @@ function buttonCal() {
 			3. Select which calendars to add the events to<br> 
 			</div>
 				<div class="ical-dl-holder">
-					<div onclick="downloadICal(ical_all)" class="title-bar-button dl"></div>
+					<div onclick="downloadICal(ical_all)" class="default-button dl"></div>
 					Download all courses
 				</div>
 				<div class="ical-dl-holder">
-					<div onclick="downloadICal(ical_starred)" class="title-bar-button dl"></div>
+					<div onclick="downloadICal(ical_starred)" class="default-button dl"></div>
 					Download starred courses
 				</div>
 				<div class="ical-dl-holder">
-					<div onclick="downloadICal(ical_nstarred)" class="title-bar-button dl"></div>
+					<div onclick="downloadICal(ical_nstarred)" class="default-button dl"></div>
 					Download unstarred courses
 				</div>
 			</div>`,
@@ -688,6 +691,7 @@ function toggleCourseSelection(identifier) {
 }
 
 function setCourseDescription(index) {
+	last_course_desc = index;
 	let course_search_desc = document.getElementById("course-search-desc");
 	let course_info = all_desc_global[index];
 
@@ -1086,6 +1090,20 @@ function hidePopup(query) {
 	el.classList.remove("show");
 }
 
+function toggleCreditMode() {
+	if (hmc_mode) {
+		hmc_mode = false;
+	} else {
+		hmc_mode = true;
+	}
+
+	updateCredits();
+	updateDescAndSearcher(full=true).then(() => {
+		setCourseDescription(last_course_desc);
+	});
+
+	localStorage.setItem("hmc_mode", hmc_mode);
+}
 
 // *****
 // HTML Popups
@@ -1162,13 +1180,13 @@ const custom_course_popup = `
         </div>
 
         <div class="button-group">
-            <div tabindex="0" id="add-new-course" class="title-bar-button unselectable course-button" onclick="submitNewCourse()">Add</div>
-            <div tabindex="0" id="cancel-new-course" class="title-bar-button unselectable course-button" onclick="cancelNewCourse()">Cancel</div>
+            <div tabindex="0" id="add-new-course" class="default-button unselectable course-button" onclick="submitNewCourse()">Add</div>
+            <div tabindex="0" id="cancel-new-course" class="default-button unselectable course-button" onclick="cancelNewCourse()">Cancel</div>
         </div>
     </div>
     <div class="right-panel">
-        <div id="create-course" class="title-bar-button unselectable course-button" onclick="createNewCourse()">Create New</div>
-        <div id="edit-course" class="title-bar-button unselectable course-button" onclick="editCourse()">Edit</div>
+        <div id="create-course" class="default-button unselectable course-button" onclick="createNewCourse()">Create New</div>
+        <div id="edit-course" class="default-button unselectable course-button" onclick="editCourse()">Edit</div>
     </div>
 </div>
 `.replace("\n",'');
@@ -1176,6 +1194,10 @@ const custom_course_popup = `
 
 const search_popup = `
 <div id="search-container">
+	<label id="hmc-credits-label" for="hmc-credits">HMC Credits</label>
+	<input id="hmc-credits" type="checkbox" class="day-checkbox" onclick="toggleCreditMode()">
+    <input class="input" id="course-input" onKeyUp="processChange()" placeholder="Search by course code, title, or instructor...">
+
     <span id="filter-help" class="popup-holder unselectable" onmouseenter="showPopup(\'#filter-help-text\')" onmouseleave="hidePopup(\'#filter-help-text\')">
         ?
         <span>
@@ -1235,9 +1257,7 @@ const search_popup = `
         </span>
     </span>
 
-    <input class="input" id="course-input" onKeyUp="processChange()" placeholder="Search by course code, title, or instructor...">
     <span id="term-container"></span>
-	
 </div>
 <div id="course-search-box">
     <div id="course-search-results">
@@ -1250,13 +1270,12 @@ const search_popup = `
 
 const changelog_popup = `
 <div id="changelog-container">
-	<b>v1.3 Beta</b>
+	<b>v1.4 Beta</b>
 	<ul>
-		<li>Added a changelog</li>
-		<li>Fixed various alignment issues</li>
-		<li>Added ability to toggle visibility of courses and course lists</li>
-		<li>Total credits taken now displayed</li>
-		<li>Can now search by multiple days, ex: "english on:monday,tuesday"</li>
+		<li>Add HMC credits mode</li>
+		<li>Updated CSS & themes</li>
+		<li>Updated logo</li>
+		<li>Fixed bugs</li>
 	</ul>
 </div>
 

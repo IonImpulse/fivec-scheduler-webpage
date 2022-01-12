@@ -1270,13 +1270,12 @@ const search_popup = `
 
 const changelog_popup = `
 <div id="changelog-container">
-	<b>v1.3 Beta</b>
+	<b>v1.4 Beta</b>
 	<ul>
-		<li>Added a changelog</li>
-		<li>Fixed various alignment issues</li>
-		<li>Added ability to toggle visibility of courses and course lists</li>
-		<li>Total credits taken now displayed</li>
-		<li>Can now search by multiple days, ex: "english on:monday,tuesday"</li>
+		<li>Add HMC credits mode</li>
+		<li>Updated CSS & themes</li>
+		<li>Updated logo</li>
+		<li>Fixed bugs</li>
 	</ul>
 </div>
 

@@ -458,21 +458,33 @@ function generateTimeLine(course_a, course_b, distance) {
     if (grid_column > 4) {
         info_div_text.classList.add("other-side");
     }
+    
     let info_div_title = document.createElement("div");
     info_div_title.classList.add("popup-title");
     info_div_title.innerText = `Distance: ${displayed_distance} feet`
-    info_div_text.appendChild(info_div_title);
-    info_div_text.innerHTML += `<i>Approximate timings if...</i><br>`;
 
     let walking_time = Math.ceil((distance * 1.5)/walking_feet_per_minute);
     let skateboarding_time = Math.ceil((distance * 1.5)/skateboarding_feet_per_minute);
     let biking_time = Math.ceil((distance * 1.5)/biking_feet_per_minute);
 
+    // Calculate time between classes
+    let time_end = course_a.timing.end_time;
+    let time_start = course_b.timing.start_time;
+
+    let time_diff = timeDiffMins(time_end, time_start);
+
+    // If it's less then the time between classes, then turn the line red
+    if (time_diff < walking_time + Math.max(2, walking_time/2)) {
+        line_div.classList.add("red-line");
+        info_div_text.innerHTML += `<b><i>Warning! There may not be enough time to walk between these classes!</i></b><br>`;
+    }
+    
+    info_div_text.appendChild(info_div_title);
+
+    info_div_text.innerHTML += `<i>Approximate timings if...</i><br>`;
     info_div_text.innerHTML += `Walking: ~<b>${walking_time}</b> minutes<br>`;
     info_div_text.innerHTML += `Skateboarding: ~<b>${skateboarding_time}</b> minutes<br>`;
     info_div_text.innerHTML += `Biking: ~<b>${biking_time}</b> minutes<br>`;
-
-    
 
     line_div.insertBefore(info_div_text, line_div.firstChild);
 
@@ -482,8 +494,22 @@ function generateTimeLine(course_a, course_b, distance) {
     line_div.onmouseleave = function () {
         hidePopup(`#${id}`)
     };
-
+    
+    
     schedule_element.appendChild(line_div);
+}
+
+function timeDiffMins(time_a, time_b) {
+    let time_a_split = time_a.split(":");
+    let time_b_split = time_b.split(":");
+
+
+    // Calculate time difference in minutes
+    let time_diff = (time_b_split[0] - time_a_split[0]) * 60;
+    time_diff += (time_b_split[1] - time_a_split[1]);
+    time_diff += (time_b_split[2] - time_a_split[2]) / 60;
+
+    return time_diff;
 }
 
 function updateCredits() {

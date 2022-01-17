@@ -86,8 +86,8 @@ body {
 }
 
 body * {
-  transition: all 0.1s ease-in-out, background-color 0.2s ease-in-out,
-    outline 0.01s ease-in-out;
+  transition: background-color 0.2s ease-in-out,
+    outline-width 0.1s ease-in-out, outline-color 0.1s ease-in-out, outline-offset 0.1s ease-in-out, z-index 0.1s ease-in-out;
 }
 
 canvas {
@@ -388,6 +388,10 @@ canvas {
 
 .line-v:hover {
   opacity: 1;
+}
+
+.line-v.red-line {
+  background-color: var(--course-closed);
 }
 
 .highlight {

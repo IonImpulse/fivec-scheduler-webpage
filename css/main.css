@@ -1133,6 +1133,12 @@ label {
     scroll-snap-type: y proximity;
     /* Reserve space for header plus some extra space for sneak peeking. */
     overflow-y: scroll;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+  body::-webkit-scrollbar {
+    display: none;
   }
 
   #main-grid {
@@ -1181,7 +1187,7 @@ label {
   .title-bar-button.wide {
     margin-bottom: 1vh;
     margin-top: 1vh;
-    width: 90vw;
+    width: 80vw;
   }
 
   .title-bar {

@@ -83,6 +83,8 @@ function tweakSearch(string) {
 				num_corrected_string += ` 0${part}`;
 			} else if (part.length == 1) {
 				num_corrected_string += ` 00${part}`;
+			} else {
+				num_corrected_string += ` ${part}`;
 			}
 		} else {
 			num_corrected_string += ` ${part}`;

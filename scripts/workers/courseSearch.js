@@ -62,9 +62,9 @@ function tweakSearch(string) {
 
 	for (let replacement of replacements) {
 		if (replacement.type == "full") {
-			return_string = return_string.replace(new RegExp(`\\b${replacement.search}\\b`, 'g'), replacement.replace);
+			return_string = return_string.replaceAll(new RegExp(`\\b${replacement.search}\\b`, 'g'), replacement.replace);
 		} else if (replacement.type == "any") {
-			return_string = return_string.replace(replacement.search, replacement.replace);
+			return_string = return_string.replaceAll(replacement.search, replacement.replace);
 		}
 	}
 
@@ -141,7 +141,7 @@ function search_courses(query, all_courses_global, filters) {
 		if (["status", "dept", "id", "code"].includes(filter.key)) {
 			results = results.filter(t => (t.obj || t)[filter.key].toLowerCase() == filter.value.toLowerCase());
 		} else if (filter.key == "with") {
-			results = results.filter(t => (t.obj || t).instructorString.toLowerCase().replace(".", "").includes(filter.value.replace("-", " ").replace(".", "").toLowerCase()));
+			results = results.filter(t => (t.obj || t).instructorString.toLowerCase().replaceAll(".", "").includes(filter.value.replaceAll("-", " ").replace(".", "").toLowerCase()));
 		} else if (filter.key == "on") {
 			let days_to_search = filter.value.split(",").map(day => capitalize(day));
 			results = results.filter(t => (t.obj || t).timing.map(e => e.days).some(k => k.some(l => days_to_search.includes(l))));

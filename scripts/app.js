@@ -1270,12 +1270,12 @@ const search_popup = `
 
 const changelog_popup = `
 <div id="changelog-container">
-	<b>v1.4 Beta</b>
+	<b>v1.5 Beta</b>
 	<ul>
-		<li>Add HMC credits mode</li>
-		<li>Updated CSS & themes</li>
-		<li>Updated logo</li>
-		<li>Fixed bugs</li>
+		<li>Added warning if distance between classes is too long</li>
+		<li>Fixed bug when searching for teachers</li>
+		<li>Fixed bug with classes that had long numbers</li>
+		<li>Fixed bug that made mobile view too wide</li>
 	</ul>
 </div>
 

@@ -86,8 +86,8 @@ body {
 }
 
 body * {
-  transition: all 0.1s ease-in-out, background-color 0.2s ease-in-out,
-    outline 0.01s ease-in-out;
+  transition: background-color 0.2s ease-in-out,
+    outline-width 0.1s ease-in-out, outline-color 0.1s ease-in-out, outline-offset 0.1s ease-in-out, z-index 0.1s ease-in-out;
 }
 
 canvas {
@@ -388,6 +388,10 @@ canvas {
 
 .line-v:hover {
   opacity: 1;
+}
+
+.line-v.red-line {
+  background-color: var(--course-closed);
 }
 
 .highlight {
@@ -1133,6 +1137,12 @@ label {
     scroll-snap-type: y proximity;
     /* Reserve space for header plus some extra space for sneak peeking. */
     overflow-y: scroll;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+  body::-webkit-scrollbar {
+    display: none;
   }
 
   #main-grid {
@@ -1181,7 +1191,7 @@ label {
   .title-bar-button.wide {
     margin-bottom: 1vh;
     margin-top: 1vh;
-    width: 90vw;
+    width: 80vw;
   }
 
   .title-bar {

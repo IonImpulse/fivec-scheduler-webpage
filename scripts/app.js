@@ -1287,7 +1287,7 @@ const changelog_popup = `
 	<b>v1.6 Beta</b>
 	<ul>
 		<li>Added ability to filter by time using "after:[hour]" and "before:[hour]"</li>
-		<li>Made buttons more clicky (click)<li>
+		<li>Made buttons more clicky (click)</li>
 		<li>Updated appearance of selected courses with a green tab and checkmark</li>
 		<li>Fixed bug where copying while searching would cause the search to be cleared</li>
 		<li>Fixed bug where searching by credits would not respect the HMC credit mode</li>

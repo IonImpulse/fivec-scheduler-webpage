@@ -619,7 +619,7 @@ async function backgroundCourseSearch() {
 		postProcessSearch(document.getElementById("course-input").value, html_courses);
     }
 
-    searching_worker.postMessage([input.value, all_courses_global, colors]);
+    searching_worker.postMessage([input.value, all_courses_global, colors, hmc_mode]);
 }
 
  function appendCourseHTML(courses) {
@@ -1232,6 +1232,16 @@ const search_popup = `
                     <b>By day: "on:[weekday(s)]"</b>
                     Ex: on:tuesday,friday
                 </div>
+				<br>
+				<div>
+					<b>By time: "after:[hour]", "before:[hour]"</b>
+					<br>
+					Ex: after:8, after:8am, before:22, before:10pm
+					<br>
+					"after" checks start time, "before" checks end time
+					<br>
+					If combined with "on", only checks time for that day
+				</div>
                 <br>
                 <div>
                     <b>By status: "status:[open, reopened, closed]"</b>
@@ -1276,10 +1286,12 @@ const changelog_popup = `
 <div id="changelog-container">
 	<b>v1.6 Beta</b>
 	<ul>
-		<li>Added warning if distance between classes is too long</li>
-		<li>Fixed bug when searching for teachers</li>
-		<li>Fixed bug with classes that had long numbers</li>
-		<li>Fixed bug that made mobile view too wide</li>
+		<li>Added ability to filter by time using "after:[hour]" and "before:[hour]"</li>
+		<li>Made buttons more clicky (click)<li>
+		<li>Updated appearance of selected courses with a green tab and checkmark</li>
+		<li>Fixed bug where copying while searching would cause the search to be cleared</li>
+		<li>Fixed bug where searching by credits would not respect the HMC credit mode</li>
+		<li>Various CSS fixes</li>
 	</ul>
 </div>
 

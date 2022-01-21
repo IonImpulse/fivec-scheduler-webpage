@@ -1,7 +1,7 @@
 importScripts("../libs/fuzzysort.js");
 
 onmessage = function(e) {
-    let course_divs = expensiveCourseSearch(e.data[0], e.data[1], e.data[2]);
+    let course_divs = expensiveCourseSearch(e.data[0], e.data[1], e.data[2], e.data[3]);
 
     postMessage(course_divs);
 }
@@ -18,6 +18,9 @@ function createResultDiv(course, color, index) {
 	course_div += ` onclick="toggleCourseSelection(\'${identifier}\')"`;
     course_div += ` onmouseenter="setCourseDescription(\'${index}\')"`;
 	course_div += ` style="background-color: ${color};">`;
+
+	// Create checkbox
+	course_div += ` <div class="checkbox"></div>`;
 
 	let course_code = `<b>${course.identifier}</b>`;
 	let status = `<span class="status-highlight ${course.status}" onclick="addSearchFilter(\'status:${course.status}\')">${course.status}</span>`;
@@ -96,7 +99,7 @@ function tweakSearch(string) {
 	return return_string.trim().toLowerCase();
 }
 
-function search_courses(query, all_courses_global, filters) {
+function search_courses(query, all_courses_global, filters, hmc_mode) {
     const options = {
         limit: 100, // don't return more results than you need!
         allowTypo: true, // if you don't care about allowing typos
@@ -146,7 +149,11 @@ function search_courses(query, all_courses_global, filters) {
 			let days_to_search = filters[key].split(",").map(day => capitalize(day));
 			results = results.filter(t => (t.obj || t).timing.map(e => e.days).some(k => k.some(l => days_to_search.includes(l))));
 		} else if (key == "credits") {
-			results = results.filter(t => (t.obj || t).credits/100 == filters[key]);
+			if (hmc_mode) {
+				results = results.filter(t => (t.obj || t).credits_hmc/100 == filters[key]);
+			} else {
+				results = results.filter(t => (t.obj || t).credits/100 == filters[key]);
+			}
 		} else if (key == "section") {
 			results = results.filter(t => parseInt((t.obj || t).section) == filters[key]);
 		} else if (key == "at") {
@@ -247,7 +254,7 @@ function getFilters(input) {
 	return {filters: filters, input: wanted_search_term};
 }
 
-function expensiveCourseSearch(input, all_courses_global, colors) {
+function expensiveCourseSearch(input, all_courses_global, colors, hmc_mode) {
     let results = [];
 
     if (input == "") {
@@ -259,7 +266,7 @@ function expensiveCourseSearch(input, all_courses_global, colors) {
 
 		console.log(`${filters_object.input} => ${search_term}`);
 		
-		results = search_courses(search_term, all_courses_global, filters_object.filters);
+		results = search_courses(search_term, all_courses_global, filters_object.filters, hmc_mode);
 	}
 
     let output = [];

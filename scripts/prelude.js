@@ -35,8 +35,6 @@ var show_changelog = true;
 var hmc_mode = false;
 var last_course_desc = 0;
 
-var debounce_timer = 10;
-
 // Day names for various sets
 const days_full = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const weekdays_full = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];

@@ -256,10 +256,8 @@ function buttonExport() {
 function download_link() {
 	var link = document.createElement('a');
 	let date = new Date();
-	console.log(date.toLocaleString('en-US'));
 	let date_string = date.toLocaleString('en-US');
 	date_string = date_string.replace(/,/g, "").replace(/ /g, "_").replace(/:/g, "-").replace(/\//g, "-");
-	console.log(date_string);
 	link.download = `schedule-${date_string}.png`;
 	link.href = document.getElementById('export-holder').toDataURL()
 	link.click();
@@ -381,19 +379,35 @@ async function buttonSearch() {
 				document.activeElement.click();
 			}
 		});
+
 		input.focus();
 
 		// For screenreaders/text browsers, we need to make the content available to the user in a non-visual way.
-		input.addEventListener("keydown", function (event) {
+		input.addEventListener("keyup", function (event) {
 			if (event.code === "Enter") {
 				// Cancel the default action, if needed
 				event.preventDefault();
 				// Trigger the button element with a click
 				backgroundCourseSearch();
 			}
+
+			if (event.getModifierState("Control")
+				|| event.key.includes("Arrow")) {
+				return;
+			}
+
+			backgroundCourseSearch();
+
 		});
 
-		document.getElementsByClassName("swal-wide")[0].onkeydown = focusAndInput;
+		document.getElementsByClassName("swal-wide")[0].addEventListener("keydown", function (event) {			
+			if (event.getModifierState("Control")
+				|| event.key.includes("Arrow")) {
+				return;
+			}
+			
+			focusAndInput(event);
+		});
 
 		setTimeout(function () {
 			backgroundCourseSearch();
@@ -579,16 +593,6 @@ function buttonAbout() {
 			`<b>qrcodegen.js</b><br>Created by Nayuki.<br>Licensed under the MIT License.<br>` +
 			`<b>rasterizeHTML.js</b><br>Created by cburgmer.<br>Licensed under the MIT License.<br></div>`
 	});
-}
-
-const processChange = debounce(() => backgroundCourseSearch());
-
-function debounce(func, time=debounce_timer) {
-	let timer;
-	return (...args) => {
-		clearTimeout(timer);
-		timer = setTimeout(() => { func.apply(this, args); }, time);
-	};
 }
 
 async function backgroundCourseSearch() {
@@ -1196,7 +1200,7 @@ const search_popup = `
 <div id="search-container">
 	<label id="hmc-credits-label" for="hmc-credits">HMC Credits</label>
 	<input id="hmc-credits" type="checkbox" class="day-checkbox" onclick="toggleCreditMode()">
-    <input class="input" id="course-input" onKeyUp="processChange()" placeholder="Search by course code, title, or instructor...">
+    <input class="input" id="course-input" placeholder="Search by course code, title, or instructor...">
 
     <span id="filter-help" class="popup-holder unselectable" onmouseenter="showPopup(\'#filter-help-text\')" onmouseleave="hidePopup(\'#filter-help-text\')">
         ?
@@ -1270,7 +1274,7 @@ const search_popup = `
 
 const changelog_popup = `
 <div id="changelog-container">
-	<b>v1.5 Beta</b>
+	<b>v1.6 Beta</b>
 	<ul>
 		<li>Added warning if distance between classes is too long</li>
 		<li>Fixed bug when searching for teachers</li>

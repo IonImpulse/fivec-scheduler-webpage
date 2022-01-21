@@ -4,7 +4,8 @@
   --background-alt: #f0f1f3;
   --background-main: #ffffff;
   --button-main: #ffffff;
-  --button-outline: #00000033;
+  --button-outline: #999999;
+  --button-outline-active: #000000;
   --course-closed: #b93838;
   --course-open: #39a32b;
   --course-reopened: #bb7c33;
@@ -36,6 +37,7 @@
   --cal-icon: url(../img/cal-light.svg);
   --dl-icon: url(../img/dl-light.svg);
   --custom-course-icon: url(../img/custom-course-light.svg);
+  --checked-icon: url(../img/checked.svg);
   --hover-effect: 0.92;
 }
 
@@ -45,6 +47,7 @@
   --background-main: #222227;
   --button-main: #222227;
   --button-outline: #757575;
+  --button-outline-active: #9e9e9e;
   --course-closed: #e27878;
   --course-open: #7ee271;
   --course-reopened: #e0c06a;
@@ -87,7 +90,8 @@ body {
 
 body * {
   transition: background-color 0.2s ease-in-out,
-    outline-width 0.1s ease-in-out, outline-color 0.1s ease-in-out, outline-offset 0.1s ease-in-out, z-index 0.1s ease-in-out;
+    outline-width 0.05s ease-in-out, outline-color 0.01s ease-in-out, outline-offset 0.01s ease-in-out, z-index 0.1s ease-in-out,
+    transform 0.1s ease-in-out, width .1s ease-in-out, padding .1s ease-in-out;
 }
 
 canvas {
@@ -262,8 +266,8 @@ canvas {
   border-radius: var(--roundedness);
   color: var(--text-main);
   cursor: pointer;
-  height: 35px;
-  width: 35px;
+  height: 40px;
+  width: 40px;
   background-size: 30px 30px;
   text-align: center;
   background-repeat: no-repeat;
@@ -272,11 +276,8 @@ canvas {
 }
 
 .default-button:hover {
-  filter: brightness(var(--hover-effect));
-}
-
-.default-button:active {
-  transform: translate(0px, 1px);
+  transform: translate(2px, 2px);
+  outline: var(--button-outline-active) solid 1px;
 }
 
 #pwa-prompt-box {
@@ -351,12 +352,17 @@ canvas {
   align-content: center;
   padding-left: var(--padding-medium);
   padding-right: var(--padding-medium);
-  font: 1.1em/1.9em "Inter", sans-serif;
+  font: 1.1em/2.1em "Inter", sans-serif;
   font-weight: 500;
   filter: none;
   background-color: var(--search-button-background);
   color: var(--text-alt);
   width: 40%;
+  outline: none;
+}
+
+.search-button:hover {
+  outline: none;
 }
 
 .time {
@@ -462,13 +468,30 @@ canvas {
   text-align: left;
   text-overflow: ellipsis;
   white-space: nowrap;
-  display: block;
+  position: relative;
 }
 
-.selected {
-  outline: 4px solid var(--selected) !important;
-  outline-offset: -4px !important;
-  z-index: 1051 !important;
+.course-search-result.selected {
+  padding-left: 60px;
+}
+
+.checkbox {
+  background-image: var(--checked-icon);
+  background-size: 60%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: var(--search-button-background);
+  width: 0px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-top-right-radius: var(--roundedness);
+  border-bottom-right-radius: var(--roundedness);
+}
+
+.selected .checkbox {
+  width: 50px;
 }
 
 .unselectable {
@@ -607,6 +630,7 @@ canvas {
   padding: var(--padding-medium);
   align-items: center;
   display: grid;
+  position: relative;
   grid-template-columns: 1fr 1fr 10fr 1fr;
 }
 
@@ -662,7 +686,6 @@ canvas {
   flex-direction: column;
   justify-content: center;
   overflow: hidden;
-  padding: var(--padding-small);
   text-align: center;
   z-index: 1000;
   position: relative;
@@ -1109,7 +1132,7 @@ label {
   border-radius: var(--roundedness);
   text-align: center;
   justify-content: center;
-  width: 85%;
+  width: 90%;
 }
 
 

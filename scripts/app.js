@@ -256,10 +256,8 @@ function buttonExport() {
 function download_link() {
 	var link = document.createElement('a');
 	let date = new Date();
-	console.log(date.toLocaleString('en-US'));
 	let date_string = date.toLocaleString('en-US');
 	date_string = date_string.replace(/,/g, "").replace(/ /g, "_").replace(/:/g, "-").replace(/\//g, "-");
-	console.log(date_string);
 	link.download = `schedule-${date_string}.png`;
 	link.href = document.getElementById('export-holder').toDataURL()
 	link.click();
@@ -381,19 +379,35 @@ async function buttonSearch() {
 				document.activeElement.click();
 			}
 		});
+
 		input.focus();
 
 		// For screenreaders/text browsers, we need to make the content available to the user in a non-visual way.
-		input.addEventListener("keydown", function (event) {
+		input.addEventListener("keyup", function (event) {
 			if (event.code === "Enter") {
 				// Cancel the default action, if needed
 				event.preventDefault();
 				// Trigger the button element with a click
 				backgroundCourseSearch();
 			}
+
+			if (event.getModifierState("Control")
+				|| event.key.includes("Arrow")) {
+				return;
+			}
+
+			backgroundCourseSearch();
+
 		});
 
-		document.getElementsByClassName("swal-wide")[0].onkeydown = focusAndInput;
+		document.getElementsByClassName("swal-wide")[0].addEventListener("keydown", function (event) {			
+			if (event.getModifierState("Control")
+				|| event.key.includes("Arrow")) {
+				return;
+			}
+			
+			focusAndInput(event);
+		});
 
 		setTimeout(function () {
 			backgroundCourseSearch();
@@ -581,16 +595,6 @@ function buttonAbout() {
 	});
 }
 
-const processChange = debounce(() => backgroundCourseSearch());
-
-function debounce(func, time=debounce_timer) {
-	let timer;
-	return (...args) => {
-		clearTimeout(timer);
-		timer = setTimeout(() => { func.apply(this, args); }, time);
-	};
-}
-
 async function backgroundCourseSearch() {
 	let input = document.getElementById("course-input");
 	let output = document.getElementById("course-search-results");
@@ -615,7 +619,7 @@ async function backgroundCourseSearch() {
 		postProcessSearch(document.getElementById("course-input").value, html_courses);
     }
 
-    searching_worker.postMessage([input.value, all_courses_global, colors]);
+    searching_worker.postMessage([input.value, all_courses_global, colors, hmc_mode]);
 }
 
  function appendCourseHTML(courses) {
@@ -1196,7 +1200,7 @@ const search_popup = `
 <div id="search-container">
 	<label id="hmc-credits-label" for="hmc-credits">HMC Credits</label>
 	<input id="hmc-credits" type="checkbox" class="day-checkbox" onclick="toggleCreditMode()">
-    <input class="input" id="course-input" onKeyUp="processChange()" placeholder="Search by course code, title, or instructor...">
+    <input class="input" id="course-input" placeholder="Search by course code, title, or instructor...">
 
     <span id="filter-help" class="popup-holder unselectable" onmouseenter="showPopup(\'#filter-help-text\')" onmouseleave="hidePopup(\'#filter-help-text\')">
         ?
@@ -1228,6 +1232,16 @@ const search_popup = `
                     <b>By day: "on:[weekday(s)]"</b>
                     Ex: on:tuesday,friday
                 </div>
+				<br>
+				<div>
+					<b>By time: "after:[hour]", "before:[hour]"</b>
+					<br>
+					Ex: after:8, after:8am, before:22, before:10pm
+					<br>
+					"after" checks start time, "before" checks end time
+					<br>
+					If combined with "on", only checks time for that day
+				</div>
                 <br>
                 <div>
                     <b>By status: "status:[open, reopened, closed]"</b>
@@ -1270,12 +1284,14 @@ const search_popup = `
 
 const changelog_popup = `
 <div id="changelog-container">
-	<b>v1.5 Beta</b>
+	<b>v1.6 Beta</b>
 	<ul>
-		<li>Added warning if distance between classes is too long</li>
-		<li>Fixed bug when searching for teachers</li>
-		<li>Fixed bug with classes that had long numbers</li>
-		<li>Fixed bug that made mobile view too wide</li>
+		<li>Added ability to filter by time using "after:[hour]" and "before:[hour]"</li>
+		<li>Made buttons more clicky (click)</li>
+		<li>Updated appearance of selected courses with a green tab and checkmark</li>
+		<li>Fixed bug where copying while searching would cause the search to be cleared</li>
+		<li>Fixed bug where searching by credits would not respect the HMC credit mode</li>
+		<li>Various CSS fixes</li>
 	</ul>
 </div>
 

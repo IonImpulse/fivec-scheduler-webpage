@@ -43,6 +43,11 @@ function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_i
             course_div.className += " from-course-list";
         }
         
+        // Create and append checkbox element first
+        let checkbox = document.createElement("div");
+        checkbox.className = "checkbox";
+        course_div.appendChild(checkbox);
+
         // Create the course title
         let course_title = document.createElement("div");
         course_title.className = "name";
@@ -115,6 +120,11 @@ function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_i
 
 function createLoadedDiv(text, color) {
     let div = document.createElement("div");
+    // Create and append checkbox element first
+    let checkbox = document.createElement("div");
+    checkbox.className = "checkbox";
+    div.appendChild(checkbox);
+
     div.className = "course-search-result course-loaded unselectable";
     div.style.backgroundColor = color;
     let info = document.createElement("div");
@@ -161,7 +171,7 @@ function createLoadedCourseListDiv(code, color) {
 
 function createLoadedCourseDiv(identifier, title, color) {
     let div = createLoadedDiv(`<b>${identifier}: </b>${title}`, color);
-
+    
     div.classList.add(`${identifier}-loaded`);
 
     div.onclick = function () {

@@ -7,7 +7,7 @@ Contains ALL global variables used.
 
 // Version number
 // Will delete localStorage variables when updating
-const current_version = '1.5.0';
+const current_version = '1.6.0';
 
 // Average paces for distance calcs
 const walking_feet_per_minute = 328;
@@ -34,8 +34,6 @@ var vertical_layout = false;
 var show_changelog = true;
 var hmc_mode = false;
 var last_course_desc = 0;
-
-var debounce_timer = 10;
 
 // Day names for various sets
 const days_full = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];

@@ -1,7 +1,7 @@
 importScripts("../libs/fuzzysort.js");
 
 onmessage = function(e) {
-    let course_divs = expensiveCourseSearch(e.data[0], e.data[1], e.data[2]);
+    let course_divs = expensiveCourseSearch(e.data[0], e.data[1], e.data[2], e.data[3]);
 
     postMessage(course_divs);
 }
@@ -18,6 +18,9 @@ function createResultDiv(course, color, index) {
 	course_div += ` onclick="toggleCourseSelection(\'${identifier}\')"`;
     course_div += ` onmouseenter="setCourseDescription(\'${index}\')"`;
 	course_div += ` style="background-color: ${color};">`;
+
+	// Create checkbox
+	course_div += ` <div class="checkbox"></div>`;
 
 	let course_code = `<b>${course.identifier}</b>`;
 	let status = `<span class="status-highlight ${course.status}" onclick="addSearchFilter(\'status:${course.status}\')">${course.status}</span>`;
@@ -96,7 +99,7 @@ function tweakSearch(string) {
 	return return_string.trim().toLowerCase();
 }
 
-function search_courses(query, all_courses_global, filters) {
+function search_courses(query, all_courses_global, filters, hmc_mode) {
     const options = {
         limit: 100, // don't return more results than you need!
         allowTypo: true, // if you don't care about allowing typos
@@ -137,24 +140,88 @@ function search_courses(query, all_courses_global, filters) {
 	}
     
 	// Apply filters
-	for (let filter of filters) {
-		if (["status", "dept", "id", "code"].includes(filter.key)) {
-			results = results.filter(t => (t.obj || t)[filter.key].toLowerCase() == filter.value.toLowerCase());
-		} else if (filter.key == "with") {
-			results = results.filter(t => (t.obj || t).instructorString.toLowerCase().replaceAll(".", "").includes(filter.value.replaceAll("-", " ").replace(".", "").toLowerCase()));
-		} else if (filter.key == "on") {
-			let days_to_search = filter.value.split(",").map(day => capitalize(day));
+	for (let key of Object.keys(filters)) {
+		if (["status", "dept", "id", "code"].includes(key)) {
+			results = results.filter(t => (t.obj || t)[key].toLowerCase() == filters[key].toLowerCase());
+		} else if (key == "with") {
+			results = results.filter(t => (t.obj || t).instructorString.toLowerCase().replaceAll(".", "").includes(filters[key].replaceAll("-", " ").replace(".", "").toLowerCase()));
+		} else if (key == "on") {
+			let days_to_search = filters[key].split(",").map(day => capitalize(day));
 			results = results.filter(t => (t.obj || t).timing.map(e => e.days).some(k => k.some(l => days_to_search.includes(l))));
-		} else if (filter.key == "credits") {
-			results = results.filter(t => (t.obj || t).credits/100 == filter.value);
-		} else if (filter.key == "section") {
-			results = results.filter(t => parseInt((t.obj || t).section) == filter.value);
-		} else if (filter.key == "at") {
-			results = results.filter(t => (t.obj || t).timing.map(e => e.location.school).flat().includes(toApiSchool(filter.value)));
+		} else if (key == "credits") {
+			if (hmc_mode) {
+				results = results.filter(t => (t.obj || t).credits_hmc/100 == filters[key]);
+			} else {
+				results = results.filter(t => (t.obj || t).credits/100 == filters[key]);
+			}
+		} else if (key == "section") {
+			results = results.filter(t => parseInt((t.obj || t).section) == filters[key]);
+		} else if (key == "at") {
+			results = results.filter(t => (t.obj || t).timing.map(e => e.location.school).flat().includes(toApiSchool(filters[key])));
+		} else if (key == "after" || key == "before") {
+			let time_to_search = [0, 0];
+
+			let time = filters[key].toLowerCase();
+			let offset = 0;
+
+			// Convert to 24 hour time
+			if (time.includes("p")) {
+				time = time.split("p")[0];
+				
+				if (time.substring(0,2) != "12") {
+					offset = 12;				
+				}
+
+			} else if (time.includes("a")) {
+				time.split("a")[0];
+
+				if (time.substring(0,2) == "12") {
+					offset = -12;				
+				}
+			}
+
+			// Parse either just hour
+			let hour = parseInt(time);
+
+			if (hour != NaN) { 
+				time_to_search = [hour + offset, 0];
+			} else {
+				return;
+			}
+
+			results = results.filter(t => (t.obj || t).timing.some(e => {
+				// Return false if day is not included in "on" filter
+				if (filters["on"] != null) {
+					let days_to_search = filters["on"].split(",").map(day => capitalize(day));
+					if (!e.days.some(l => days_to_search.includes(l))) {
+						return false;
+					}	
+				}
+
+				if (key == "after") {
+					let start_time = e.start_time.split(":").map(i => parseInt(i));
+					if (timeDiffMins(time_to_search, start_time) >= 0) {
+						return true;
+					}
+				} else {
+					let end_time = e.end_time.split(":").map(i => parseInt(i));
+					if (timeDiffMins(time_to_search, end_time) <= 0) {
+						return true;
+					}
+				}
+			}));
 		}
 	}
 
     return results;
+}
+
+function timeDiffMins(time_arr_a, time_arr_b) {
+    // Calculate time difference in minutes
+    let time_diff = (time_arr_b[0] - time_arr_a[0]) * 60;
+    time_diff += (time_arr_b[1] - time_arr_a[1]);
+
+    return time_diff;
 }
 
 function join_results(arr1, arr2) {
@@ -170,16 +237,13 @@ function capitalize(s) {
 function getFilters(input) {
 	let split = input.split(" ");
 
-	let filters = [];
+	let filters = {};
 	let wanted_search_term = "";
 
 	for (let part of split) {
 		if (part.includes(":")) {
 			let split_part = part.split(":");
-			filters.push({
-				key: split_part[0],
-				value: split_part[1],
-			});
+			filters[split_part[0]] = split_part[1];
 		} else {
 			wanted_search_term += part + " ";
 		}
@@ -190,7 +254,7 @@ function getFilters(input) {
 	return {filters: filters, input: wanted_search_term};
 }
 
-function expensiveCourseSearch(input, all_courses_global, colors) {
+function expensiveCourseSearch(input, all_courses_global, colors, hmc_mode) {
     let results = [];
 
     if (input == "") {
@@ -202,7 +266,7 @@ function expensiveCourseSearch(input, all_courses_global, colors) {
 
 		console.log(`${filters_object.input} => ${search_term}`);
 		
-		results = search_courses(search_term, all_courses_global, filters_object.filters);
+		results = search_courses(search_term, all_courses_global, filters_object.filters, hmc_mode);
 	}
 
     let output = [];

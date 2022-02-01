@@ -26,6 +26,7 @@ async function startup() {
     generateGridTimes();
     generateDays();
     generateLines();
+    timeLineLoop();
     window.addEventListener('resize', updateScheduleSizing);
     updateScheduleSizing();
 
@@ -59,6 +60,45 @@ const install_holder = document.querySelector("#pwa-prompt-box");
 const install_button = document.querySelector(".install");
 const close_button = document.querySelector("#hide-install");
 const schedule_element = document.getElementById("schedule-table");
+
+function timeLineLoop() {
+    setTimeout(function() {
+        updateTimeLine();
+        timeLineLoop();
+    }, 100);
+}
+
+function updateTimeLine() {
+    let el = document.getElementById("current-time-line");
+
+    if (el != null) {
+        el.remove()
+    }
+
+    let current_time = new Date();
+    let current_day = current_time.getDay();
+
+    if (current_day == 0 || current_day == 6) {
+        return;
+    }
+
+    let current_hour = current_time.getHours();
+    let current_min = current_time.getMinutes();
+
+    let current_time_line = document.createElement("div");
+    current_time_line.id = "current-time-line";
+    current_time_line.className = "line";
+    current_time_line.style.gridColumnStart = current_day + 1;
+    let row = ((current_hour - 7) * 20) + (Math.round(current_min / 3)) + 2;
+    current_time_line.style.gridRowStart = row;
+
+    let current_time_line_circle = document.createElement("div");
+    current_time_line_circle.id = "time-circle";
+
+    current_time_line.appendChild(current_time_line_circle);
+
+    schedule_element.appendChild(current_time_line);
+}
 
 function getVisited() {
     return localStorage.getItem('install-prompt');

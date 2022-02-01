@@ -385,6 +385,24 @@ canvas {
   opacity: 0.5;
 }
 
+#current-time-line {
+  opacity: .9;
+  background-color: var(--text-main);
+  z-index: 2000;
+  width: 105%;
+  height: 3px;
+  transform: translate(-3%, 0%);
+  border-radius: var(--roundedness);
+}
+
+#time-circle {
+  background-color: var(--text-main);
+  border-radius: 50%;
+  height: 12px;
+  width: 12px;
+  transform: translate(-50%, -40%);
+}
+
 .line-v {
   background-color: var(--text-light);
   opacity: 0.5;

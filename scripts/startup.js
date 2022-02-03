@@ -77,13 +77,12 @@ function updateTimeLine() {
 
     let current_time = new Date();
     let current_day = current_time.getDay();
-
-    if (current_day == 0 || current_day == 6) {
-        return;
-    }
-
     let current_hour = current_time.getHours();
     let current_min = current_time.getMinutes();
+
+    if (current_day == 0 || current_day == 6 || current_hour < 7 || current_hour > 22) {
+        return;
+    }
 
     let current_time_line = document.createElement("div");
     current_time_line.id = "current-time-line";

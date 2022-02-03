@@ -388,7 +388,7 @@ canvas {
 #current-time-line {
   opacity: .9;
   background-color: var(--text-main);
-  z-index: 2000;
+  z-index: 1050;
   width: 105%;
   height: 3px;
   transform: translate(-3%, 0%);

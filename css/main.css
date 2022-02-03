@@ -389,9 +389,9 @@ canvas {
   opacity: .9;
   background-color: var(--text-main);
   z-index: 1050;
-  width: 105%;
+  width: 103%;
   height: 3px;
-  transform: translate(-3%, 0%);
+  transform: translate(-1%, 0%);
   border-radius: var(--roundedness);
 }
 

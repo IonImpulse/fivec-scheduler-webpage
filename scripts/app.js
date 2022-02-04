@@ -1030,13 +1030,16 @@ function showStarCourse(identifier) {
 function toggle_theme() {
 	if (document.documentElement.getAttribute("data-theme") != "dark") {
 		document.documentElement.setAttribute('data-theme', 'dark');
-
+		colors = colors_dark
 		localStorage.setItem("theme", "dark");
 	}
 	else {
 		document.documentElement.setAttribute('data-theme', 'light');
+		colors = colors_light
 		localStorage.setItem("theme", "light");
 	}
+
+	updateSchedule();
 }
 
 function toSvgString(qr, border, lightColor, darkColor) {
@@ -1248,6 +1251,11 @@ const search_popup = `
                     Ex: status:open
                 </div>
                 <br>
+				<div>
+					<b>By location: "location:[name]"</b>
+					Ex: location:McGregor
+				</div>
+				<br>
                 <div>
                     <b>By code: "code:[code-id]"</b>
                     Ex: code:afri
@@ -1284,14 +1292,11 @@ const search_popup = `
 
 const changelog_popup = `
 <div id="changelog-container">
-	<b>v1.6 Beta</b>
+	<b>v1.7 Beta</b>
 	<ul>
-		<li>Added ability to filter by time using "after:[hour]" and "before:[hour]"</li>
-		<li>Made buttons more clicky (click)</li>
-		<li>Updated appearance of selected courses with a green tab and checkmark</li>
-		<li>Fixed bug where copying while searching would cause the search to be cleared</li>
-		<li>Fixed bug where searching by credits would not respect the HMC credit mode</li>
-		<li>Various CSS fixes</li>
+		<li>Added line to display current time and day</li>
+		<li>Added ability to filter by location with "location:[name]"</li>
+		<li>Updated colors for light and dark mode!</li>
 	</ul>
 </div>
 

@@ -158,6 +158,8 @@ function search_courses(query, all_courses_global, filters, hmc_mode) {
 			results = results.filter(t => parseInt((t.obj || t).section) == filters[key]);
 		} else if (key == "at") {
 			results = results.filter(t => (t.obj || t).timing.map(e => e.location.school).flat().includes(toApiSchool(filters[key])));
+		} else if (key == "location") {
+			results = results.filter(t => (t.obj || t).timing.map(e => e.location.building).some(x => x.toLowerCase().includes(filters[key].toLowerCase())));
 		} else if (key == "after" || key == "before") {
 			let time_to_search = [0, 0];
 

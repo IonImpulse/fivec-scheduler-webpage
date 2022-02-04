@@ -26,6 +26,7 @@ async function startup() {
     generateGridTimes();
     generateDays();
     generateLines();
+    timeLineLoop();
     window.addEventListener('resize', updateScheduleSizing);
     updateScheduleSizing();
 
@@ -46,9 +47,9 @@ async function startup() {
     }
 
     // Create reusable web worker threads
-    desc_worker = new Worker('scripts/workers/descriptions.js?v=1.6');
-    searcher_worker = new Worker('scripts/workers/searcher.js?v=1.6');
-	searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.6');
+    desc_worker = new Worker('scripts/workers/descriptions.js?v=1.7');
+    searcher_worker = new Worker('scripts/workers/searcher.js?v=1.7');
+	searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.7');
 
     // Start worker threads to generate descriptions + searcher
     updateDescAndSearcher(false);
@@ -59,6 +60,44 @@ const install_holder = document.querySelector("#pwa-prompt-box");
 const install_button = document.querySelector(".install");
 const close_button = document.querySelector("#hide-install");
 const schedule_element = document.getElementById("schedule-table");
+
+function timeLineLoop() {
+    setTimeout(function() {
+        updateTimeLine();
+        timeLineLoop();
+    }, 100);
+}
+
+function updateTimeLine() {
+    let el = document.getElementById("current-time-line");
+
+    if (el != null) {
+        el.remove()
+    }
+
+    let current_time = new Date();
+    let current_day = current_time.getDay();
+    let current_hour = current_time.getHours();
+    let current_min = current_time.getMinutes();
+
+    if (current_day == 0 || current_day == 6 || current_hour < 7 || current_hour > 22) {
+        return;
+    }
+
+    let current_time_line = document.createElement("div");
+    current_time_line.id = "current-time-line";
+    current_time_line.className = "line";
+    current_time_line.style.gridColumnStart = current_day + 1;
+    let row = ((current_hour - 7) * 20) + (Math.round(current_min / 3)) + 2;
+    current_time_line.style.gridRowStart = row;
+
+    let current_time_line_circle = document.createElement("div");
+    current_time_line_circle.id = "time-circle";
+
+    current_time_line.appendChild(current_time_line_circle);
+
+    schedule_element.appendChild(current_time_line);
+}
 
 function getVisited() {
     return localStorage.getItem('install-prompt');

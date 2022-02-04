@@ -7,7 +7,7 @@ Contains ALL global variables used.
 
 // Version number
 // Will delete localStorage variables when updating
-const current_version = '1.6.0';
+const current_version = '1.7.0';
 
 // Average paces for distance calcs
 const walking_feet_per_minute = 328;
@@ -47,16 +47,29 @@ var searching_worker;
 
 var all_course_results_html = [];
 
-const colors = [
+var colors;
+
+const colors_light = [
+    "#2177de",
+    "#63c721",
+    "#e48a2e",
+    "#d6625e",
+    "#c94cce",
+    "#cb439a",
+    "#d84f55",
+    "#3bc44f",
+    "#59b0d1",
+];
+
+const colors_dark = [
     "#2c5b8e",
-    "#396F34",
+    "#499112",
     "#b86c25",
     "#ac4f4f",
     "#86378d",
     "#ac4f8d",
     "#933535",
-    "#B88700",
-    "#499112",
+    "#396F34",
     "#3d7991",
 ];
 
@@ -77,8 +90,10 @@ function getTheme() {
 
     if (theme == "light") {
         document.documentElement.setAttribute('data-theme', 'light');
+        colors = colors_light;
     } else if (theme == "dark") {
         document.documentElement.setAttribute('data-theme', 'dark');
+        colors = colors_dark;
     }
 }
 

@@ -1030,13 +1030,16 @@ function showStarCourse(identifier) {
 function toggle_theme() {
 	if (document.documentElement.getAttribute("data-theme") != "dark") {
 		document.documentElement.setAttribute('data-theme', 'dark');
-
+		colors = colors_dark
 		localStorage.setItem("theme", "dark");
 	}
 	else {
 		document.documentElement.setAttribute('data-theme', 'light');
+		colors = colors_light
 		localStorage.setItem("theme", "light");
 	}
+
+	updateSchedule();
 }
 
 function toSvgString(qr, border, lightColor, darkColor) {
@@ -1293,6 +1296,7 @@ const changelog_popup = `
 	<ul>
 		<li>Added line to display current time and day</li>
 		<li>Added ability to filter by location with "location:[name]"</li>
+		<li>Updated colors for light and dark mode!</li>
 	</ul>
 </div>
 

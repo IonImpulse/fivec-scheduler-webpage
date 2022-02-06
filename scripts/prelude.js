@@ -91,7 +91,7 @@ function getTheme() {
     if (theme == "light") {
         document.documentElement.setAttribute('data-theme', 'light');
         colors = colors_light;
-    } else if (theme == "dark") {
+    } else {
         document.documentElement.setAttribute('data-theme', 'dark');
         colors = colors_dark;
     }

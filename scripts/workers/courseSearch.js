@@ -39,7 +39,7 @@ function toApiSchool(school) {
 		return "HarveyMudd";
 	} else if (["cmc", "cm", "claremont", "mckenna", "claremontmckenna", "claremont-mckenna"].includes(l_school)) {
 		return "ClaremontMckenna";
-	} else if (["scripps", "scripp", "scrps", "scrip", "scrips"].includes(l_school)) {
+	} else if (["scripps", "scripp", "scrps", "scrip", "scrips", "sc"].includes(l_school)) {
 		return "Scripps";
 	} else if (["pm", "po", "pomona", "pomna", "pom"].includes(l_school)) {
 		return "Pomona"
@@ -160,6 +160,22 @@ function search_courses(query, all_courses_global, filters, hmc_mode) {
 			results = results.filter(t => (t.obj || t).timing.map(e => e.location.school).flat().includes(toApiSchool(filters[key])));
 		} else if (key == "location") {
 			results = results.filter(t => (t.obj || t).timing.map(e => e.location.building).some(x => x.toLowerCase().includes(filters[key].toLowerCase())));
+		} else if (key == "prereq") {
+			if (filters[key].toLowerCase() == "none") {
+				results = results.filter(t => (t.obj || t).prerequisites.length == 0);
+			} else if (filters[key].toLowerCase() == "some") {
+				results = results.filter(t => (t.obj || t).prerequisites.length > 0);
+			} else {
+				results = results.filter(t => (t.obj || t).prerequisites == filters[key]);
+			}
+		} else if (key == "coreq") {
+			if (filters[key].toLowerCase() == "none") {
+				results = results.filter(t => (t.obj || t).corequisites.length == 0);
+			} else if (filters[key].toLowerCase() == "some") {
+				results = results.filter(t => (t.obj || t).corequisites.length > 0);
+			} else {
+				results = results.filter(t => (t.obj || t).corequisites == filters[key]);
+			}
 		} else if (key == "after" || key == "before") {
 			let time_to_search = [0, 0];
 

@@ -12,6 +12,8 @@
   --logo-primary: #4572e4;
   --logo-secondary: #9eb9fe;
   --selected: #33b4f0;
+  --prereqs: #4165c9;
+  --coreqs: #2690a3;
   --padding: 13px;
   --padding-medium: 7px;
   --padding-small: 5px;
@@ -52,6 +54,8 @@
   --course-open: #7ee271;
   --course-reopened: #e0c06a;
   --search-button-background: #57ac4f;
+  --prereqs: #7995e0;
+  --coreqs: #52bed1;
   --text-alt: #131313;
   --text-course-schedule: #e9e9e9;
   --text-light: #bdbdbd;
@@ -627,6 +631,8 @@ canvas {
   background-color: var(--background-alt);
   border-radius: var(--roundedness);
   padding: var(--padding-small);
+  margin-left: 10px;
+  text-align: center;
 }
 
 .clickable-text {
@@ -639,7 +645,7 @@ canvas {
   color: var(--selected);
 }
 
-.status-highlight:hover {
+.status-highlight:hover, .prereqs-highlight:hover, .coreqs-highlight:hover {
   outline: 4px var(--selected) solid;
 }
 
@@ -1158,12 +1164,27 @@ label {
   width: 90%;
 }
 
-
-
 #changelog-container {
   text-align: left;
   width: 90%;
   margin: 0 auto;
+}
+
+
+.prereqs-highlight {
+  border-radius: var(--roundedness);
+  background-color: var(--background-alt);
+  color: var(--prereqs);
+  padding: var(--padding-small);
+  margin-left: 10px;
+}
+
+.coreqs-highlight {
+  border-radius: var(--roundedness);
+  background-color: var(--background-alt);
+  padding: var(--padding-small);
+  color: var(--coreqs);
+  margin-left: 10px;
 }
 
 /* =============================

@@ -1293,9 +1293,8 @@ const changelog_popup = `
 <div id="changelog-container">
 	<b>v1.8 Beta</b>
 	<ul>
-		<li>Added Co/Prerequisites for Harvey Mudd and Scripps! Pomona, CMC, and Pitzer typically list co/prerequisites in the description of the course</li>
-		<li>Added ability to filter by co/prerequisites with "coreq:[none, some, "exact match]" and "prereq:[none, some, "exact match]"</li>
-		
+		<li>Added Co/Prerequisites!!! Co/prereqs will now appear when searching, and under the description of each course.</li>
+		<li>Added ability to filter by co/prerequisites with "coreq:[none, some, "exact match]" and "prereq:[none, some, "exact match]"</li>	
 	</ul>
 </div>
 

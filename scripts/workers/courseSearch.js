@@ -24,8 +24,22 @@ function createResultDiv(course, color, index) {
 
 	let course_code = `<b>${course.identifier}</b>`;
 	let status = `<span class="status-highlight ${course.status}" onclick="addSearchFilter(\'status:${course.status}\')">${course.status}</span>`;
+
+	let prereqs = "";
+	let coreqs = "";
+
+	// Create pre and co req boxes
+	if (course.prerequisites.length > 0) {
+		prereqs = `<span class="prereqs-highlight" onclick="addSearchFilter(\'prereq:some\')">Prereq(s)</span>`;
+	}
+
+	if (course.corequisites.length > 0) {
+		coreqs = `<span class="coreqs-highlight" onclick="addSearchFilter(\'coreq:some\')">Coreq(s)</span>`;
+	}
+
+
 	// Put the course code and status in a div on the right
-	let num_students = `<span class="align-right" ><b>${course.seats_taken}/${course.max_seats} ${status}</b></span>`;
+	let num_students = `<span class="align-right"><b>${course.seats_taken}/${course.max_seats}${prereqs}${coreqs}${status}</b></span>`;
 
 	course_div += `${course_code}: ${course.title} ${num_students}`;
     course_div += "</div>";

@@ -95,7 +95,7 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 		prereq_node += `<b>Prerequisites:</b>\n${course.prerequisites}</div>`;
 
 		let coreq_node = "<div class=\"corequisites\">";
-		prereq_node += `<b>Corequisites:</b>\n${course.corequisites}</div>`;
+		coreq_node += `<b>Corequisites:</b>\n${course.corequisites}</div>`;
 
         let notes_node = "<div";
 		notes_node += " class=\"notes\">";

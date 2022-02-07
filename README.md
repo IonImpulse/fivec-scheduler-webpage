@@ -10,6 +10,7 @@ Live at [www.5scheduler.io](https://www.5scheduler.io/)
 - 🚀 **SUPERFAST** everything - tested to be the fastest course scheduler for the 5Cs
 - 🔍 **Fast** & **Smart** typo-resistant search engine for all courses at the [Claremont Colleges](https://www.claremont.edu/)
 - 🌗 Light & **Dark** Mode
+- 🔮 Displays both **Prerequisites** and **Corequisites**
 - 🔀 Switch between HMC's and the other 4C's credit system
 - 📧 **Share and load** schedules as a code, link, or QR code
 - ⚙ Add **Custom** courses

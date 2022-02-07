@@ -12,6 +12,8 @@
   --logo-primary: #4572e4;
   --logo-secondary: #9eb9fe;
   --selected: #33b4f0;
+  --prereqs: #4165c9;
+  --coreqs: #2690a3;
   --padding: 13px;
   --padding-medium: 7px;
   --padding-small: 5px;
@@ -52,6 +54,8 @@
   --course-open: #7ee271;
   --course-reopened: #e0c06a;
   --search-button-background: #57ac4f;
+  --prereqs: #7995e0;
+  --coreqs: #52bed1;
   --text-alt: #131313;
   --text-course-schedule: #e9e9e9;
   --text-light: #bdbdbd;
@@ -552,7 +556,7 @@ canvas {
 
 .course-desc .title {
   color: var(--text-main);
-  font: 700 26px var(--main-font), sans-serif;
+  font: 700 20px var(--main-font), sans-serif;
   margin-bottom: 5px;
 }
 
@@ -627,6 +631,8 @@ canvas {
   background-color: var(--background-alt);
   border-radius: var(--roundedness);
   padding: var(--padding-small);
+  margin-left: 10px;
+  text-align: center;
 }
 
 .clickable-text {
@@ -639,7 +645,7 @@ canvas {
   color: var(--selected);
 }
 
-.status-highlight:hover {
+.status-highlight:hover, .prereqs-highlight:hover, .coreqs-highlight:hover {
   outline: 4px var(--selected) solid;
 }
 
@@ -882,6 +888,8 @@ a:visited {
 }
 
 #course-search-desc .description,
+#course-search-desc .prerequisites,
+#course-search-desc .corequisites,
 #course-search-desc .notes {
   color: var(--text-main);
   font: 14px var(--main-font), monospace;
@@ -900,7 +908,10 @@ a:visited {
 #course-info-table .timing,
 #course-info-table .instructors,
 #course-info-table .notes,
-#course-info-table .credits {
+#course-info-table .credits,
+#course-info-table .description,
+#course-info-table .prerequisites,
+#course-info-table .corequisites {
   color: var(--text-main);
   font: 12px var(--main-font);
 }
@@ -1153,12 +1164,27 @@ label {
   width: 90%;
 }
 
-
-
 #changelog-container {
   text-align: left;
   width: 90%;
   margin: 0 auto;
+}
+
+
+.prereqs-highlight {
+  border-radius: var(--roundedness);
+  background-color: var(--background-alt);
+  color: var(--prereqs);
+  padding: var(--padding-small);
+  margin-left: 10px;
+}
+
+.coreqs-highlight {
+  border-radius: var(--roundedness);
+  background-color: var(--background-alt);
+  padding: var(--padding-small);
+  color: var(--coreqs);
+  margin-left: 10px;
 }
 
 /* =============================

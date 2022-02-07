@@ -91,6 +91,12 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 		desc_node += " class=\"description\">";
 		desc_node += `<b>Description:</b>\n${course.description}</div>`;
 
+		let prereq_node = "<div class=\"prerequisites\">";
+		prereq_node += `<b>Prerequisites:</b>\n${course.prerequisites}</div>`;
+
+		let coreq_node = "<div class=\"corequisites\">";
+		coreq_node += `<b>Corequisites:</b>\n${course.corequisites}</div>`;
+
         let notes_node = "<div";
 		notes_node += " class=\"notes\">";
 		notes_node += `<b>Notes:</b> <i>${course.notes}</i></div>`;
@@ -98,6 +104,8 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 		course_desc_node += credit_node;
 		course_desc_node += instructor_node;
 		course_desc_node += desc_node;
+		course_desc_node += prereq_node;
+		course_desc_node += coreq_node;
         course_desc_node += notes_node;
 
 		all_desc_global.push(course_desc_node);

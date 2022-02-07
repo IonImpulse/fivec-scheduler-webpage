@@ -968,7 +968,6 @@ function showCourseOverlay(identifier, override = false) {
 			updateDescAndSearcher();
 		}
 
-		// get index of course
 		let index = all_courses_global.findIndex((el) => el.identifier == identifier);
 
 		if (index == -1) {
@@ -988,8 +987,8 @@ function showCourseOverlay(identifier, override = false) {
 		node_to_append.innerHTML = course_info;
 
 		try {
-			node_to_append.childNodes[node_to_append.childNodes.length - 2].remove();
 			course_info_table.appendChild(node_to_append);
+			course_info_table.scrollTop = 0;
 		} catch (e) {
 			// Do nothing
 		}
@@ -1292,11 +1291,10 @@ const search_popup = `
 
 const changelog_popup = `
 <div id="changelog-container">
-	<b>v1.7 Beta</b>
+	<b>v1.8 Beta</b>
 	<ul>
-		<li>Added line to display current time and day</li>
-		<li>Added ability to filter by location with "location:[name]"</li>
-		<li>Updated colors for light and dark mode!</li>
+		<li>Added Co/Prerequisites!!! Co/prereqs will now appear when searching, and under the description of each course.</li>
+		<li>Added ability to filter by co/prerequisites with "coreq:[none, some, "exact match]" and "prereq:[none, some, "exact match]"</li>	
 	</ul>
 </div>
 

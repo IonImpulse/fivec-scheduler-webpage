@@ -7,7 +7,7 @@ Contains ALL global variables used.
 
 // Version number
 // Will delete localStorage variables when updating
-const current_version = '1.7.0';
+const current_version = '1.8.0';
 
 // Average paces for distance calcs
 const walking_feet_per_minute = 328;
@@ -91,7 +91,7 @@ function getTheme() {
     if (theme == "light") {
         document.documentElement.setAttribute('data-theme', 'light');
         colors = colors_light;
-    } else if (theme == "dark") {
+    } else {
         document.documentElement.setAttribute('data-theme', 'dark');
         colors = colors_dark;
     }

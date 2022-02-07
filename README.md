@@ -50,4 +50,4 @@ Unfortunately, due to security policies in browsers, you cannot just open the in
    - CSS: 11 KB
    - HTML: 4 KB
 - Scored 99/100 for all tests in Google Lighthouse
-- Speed index of 3.1s for first run, 0.9s for repeat runs with 0s blocking time on WebPageTest
+- Speed index of 2.7s for first run, 0.7s for repeat runs with 0s blocking time on WebPageTest

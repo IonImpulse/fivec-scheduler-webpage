@@ -373,7 +373,15 @@ function updateLoadedCourseLists() {
     let el = document.getElementById("course-list-table");
     removeAllChildren(el);
 
-    let local_courses = createLoadedDiv("<b>Local Courses</b>", colors[0]);
+    let local_courses = createLoadedCourseListDiv("Main", colors[0]);
+
+    local_courses.removeChild(local_courses.lastChild);
+
+    let new_schedule = document.createElement("div");
+    new_schedule.className = "default-button noselect";
+    new_schedule.id = "add-schedule";
+    new_schedule.innerText = "Add new schedule...";
+    
     local_courses.classList.add("course-list");
     el.appendChild(local_courses);
 
@@ -388,6 +396,8 @@ function updateLoadedCourseLists() {
             createScheduleGridDivs(course_list.courses, true);
         }
     }
+
+    el.appendChild(new_schedule);
 }
 
 function updateStarredCourses() {
@@ -567,20 +577,6 @@ function updateCredits() {
         loaded_title.innerText = `Courses Loaded - ${local_credits} ${ending}`;
     } else {
         loaded_title.innerText = `Courses Loaded`;
-    }
-
-    let list_credits = sumCredits(loaded_course_lists.map(x => x.courses).flat(1));
-
-    if (list_credits > 0) {
-        let ending = "Credits";
-
-        if (list_credits == 1) {
-            ending = "Credit";
-        }
-
-        lists_title.innerText = `Course Lists Loaded - ${list_credits} ${ending}`;
-    } else {
-        lists_title.innerText = `Course Lists Loaded`;
     }
 }
 

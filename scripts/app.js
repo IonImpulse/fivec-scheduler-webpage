@@ -847,13 +847,20 @@ async function toggleCourseVisibility(identifier) {
 	await save_json_data("hidden_courses", hidden_courses);
 }
 
-async function toggleCourseListVisibility(code) {
+async function setLoadedSchedule(code) {
 	// Stop bubbling onclick event
 	if (!e) var e = window.event;
 	e.cancelBubble = true;
 	if (e.stopPropagation) e.stopPropagation();
+
 	
-    let el = document.getElementById(`course-list-${code}`);
+	if (code == "Main") {
+
+	}
+} 
+
+async function toggleCourseListVisibility(code) {
+	let el = document.getElementById(`course-list-${code}`);
 	
 	el.firstElementChild.classList.toggle("visible");
 

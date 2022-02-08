@@ -118,6 +118,7 @@ canvas {
     "schedule courses-list"
     "schedule course-lists-list"
     "schedule course-lists-list"
+    "schedule course-lists-list"
     "schedule course-lists-list";
 }
 
@@ -431,7 +432,7 @@ canvas {
   background-color: var(--background-alt);
   border-radius: var(--roundedness);
   display: inline-block;
-  max-height: 30vh;
+  max-height: 20vh;
   overflow: auto;
 }
 
@@ -446,7 +447,7 @@ canvas {
   background-color: var(--background-alt);
   border-radius: var(--roundedness);
   display: inline-block;
-  max-height: 20vh;
+  max-height: 30vh;
   overflow: auto;
   width: 100%;
 }
@@ -651,11 +652,13 @@ canvas {
 
 .course-loaded {
   font-size: 16px;
-  padding: var(--padding-medium);
+  padding: var(--padding-small);
   align-items: center;
   display: grid;
   position: relative;
   grid-template-columns: 1fr 1fr 10fr 1fr;
+  margin-bottom: 8px;
+  margin-top: 8px;
 }
 
 .course-loaded.course-list {
@@ -1185,6 +1188,21 @@ label {
   padding: var(--padding-small);
   color: var(--coreqs);
   margin-left: 10px;
+}
+
+#add-schedule {
+  color: var(--text-alt);
+  width: 70%;
+  height: 10px;
+  text-align: center;
+  padding: var(--padding-medium);
+  margin: 0 auto;
+  margin-bottom: 10px;
+  color: var(--text-main);
+  font-family: var(--main-font);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 10px;
 }
 
 /* =============================

@@ -147,7 +147,7 @@ function createLoadedCourseListDiv(code, color) {
         visibility_button.classList.add("visible");
     }
     visibility_button.onclick = function () {
-        toggleCourseListVisibility(code);
+        setLoadedSchedule(code);
     };
 
     let delete_button = document.createElement("div");
@@ -156,14 +156,7 @@ function createLoadedCourseListDiv(code, color) {
         deleteCourseList(code);
     };
 
-    let merge_button = document.createElement("div");
-    merge_button.className = "merge-course";
-    merge_button.onclick = function () {
-        mergeCourseList(code);
-    };
-
     div.insertBefore(visibility_button, div.firstChild);
-    div.appendChild(merge_button);
     div.appendChild(delete_button);
 
     return div;

@@ -23,6 +23,7 @@ async function update_database(full=true) {
     let current_data = await load_json_data("course_data");
    
     loaded_local_courses = await load_json_data("loaded_local_courses");
+    loaded_schedule = await load_json_data("loaded_schedule");
     loaded_course_lists = await load_json_data("loaded_course_lists");
     loaded_custom_courses = await load_json_data("loaded_custom_courses");
     starred_courses = await load_json_data("starred_courses");
@@ -53,6 +54,10 @@ async function update_database(full=true) {
 
     if (hidden_course_lists == null) {
         hidden_course_lists = [];
+    }
+
+    if (loaded_schedule == null) {
+        loaded_schedule = {code:"Main", index:0, color: undefined};
     }
     
 

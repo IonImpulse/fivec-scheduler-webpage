@@ -34,6 +34,7 @@ var vertical_layout = false;
 var show_changelog = true;
 var hmc_mode = false;
 var last_course_desc = 0;
+var loaded_schedule = {};
 
 // Day names for various sets
 const days_full = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];

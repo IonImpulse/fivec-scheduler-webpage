@@ -146,19 +146,22 @@ function createLoadedCourseListDiv(code, color) {
     if (!hidden_course_lists.includes(code)) {
         visibility_button.classList.add("visible");
     }
-    visibility_button.onclick = function () {
-        setLoadedSchedule(code);
-    };
 
     let delete_button = document.createElement("div");
     delete_button.className = "delete-course course-list";
     delete_button.onclick = function () {
-        deleteCourseList(code);
+        deleteCourseList(event, code);
     };
 
     div.insertBefore(visibility_button, div.firstChild);
-    div.appendChild(delete_button);
 
+    if (code != "Main") {
+        div.appendChild(delete_button);
+    }
+
+    div.onclick = function () {
+        setLoadedSchedule(code);
+    };
     return div;
 }
 

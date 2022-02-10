@@ -20,6 +20,7 @@ self.addEventListener('install', (event) => {
                 'scripts/libs/qrcodegen-v1.7.0-es6.js',
                 'scripts/libs/rasterizeHTML.allinone.js',
                 'scripts/libs/sweetalert2.min.js',
+                'scripts/libs/jscolor.min.js',
                 'scripts/workers/descriptions.js',
                 'scripts/workers/searcher.js',
                 'scripts/workers/courseSearch.js',

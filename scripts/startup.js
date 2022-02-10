@@ -373,28 +373,27 @@ function updateLoadedCourseLists() {
     let el = document.getElementById("course-list-table");
     removeAllChildren(el);
 
-    let local_courses = createLoadedCourseListDiv("Main", colors[0]);
-
-    local_courses.removeChild(local_courses.lastChild);
 
     let new_schedule = document.createElement("div");
     new_schedule.className = "default-button noselect";
     new_schedule.id = "add-schedule";
     new_schedule.innerText = "Add new schedule...";
+    new_schedule.onclick = () => {
+        addNewSchedule();
+    };  
+
     
-    local_courses.classList.add("course-list");
-    el.appendChild(local_courses);
-
-    if (loaded_course_lists.length > 0) {
-        for (let i = 0; i < loaded_course_lists.length; i++) {
-            el.appendChild(createLoadedCourseListDiv(loaded_course_lists[i].code, colors[i + 1 % colors.length]));
+    for (let i = 0; i < loaded_course_lists.length + 1; i++) {
+        if (i == loaded_schedule.index) {
+            el.appendChild(createLoadedCourseListDiv(loaded_schedule.code, loaded_schedule.color ?? colors[i % colors.length]));
+        } else  {
+            let index = i;
+            if (i > loaded_schedule.index) {
+                index = i - 1;
+            }
+            el.appendChild(createLoadedCourseListDiv(loaded_course_lists[index].code, loaded_course_lists[index].color ?? colors[i % colors.length]));
         }
-    }
 
-    for (let course_list of loaded_course_lists) {
-        if (!hidden_course_lists.includes(course_list.code)) {
-            createScheduleGridDivs(course_list.courses, true);
-        }
     }
 
     el.appendChild(new_schedule);

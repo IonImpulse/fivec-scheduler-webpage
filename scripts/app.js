@@ -1,3 +1,16 @@
+// Here we can adjust defaults for all color pickers on page:
+jscolor.presets.default = {
+    position: 'right',
+    palette: [
+        '#000000', '#7d7d7d', '#870014', '#ec1c23', '#ff7e26',
+        '#fef100', '#22b14b', '#00a1e7', '#3f47cc', '#a349a4',
+        '#ffffff', '#c3c3c3', '#b87957', '#feaec9', '#ffc80d',
+        '#eee3af', '#b5e61d', '#99d9ea', '#7092be', '#c8bfe7',
+    ],
+    //paletteCols: 12,
+    //hideOnPaletteClick: true,
+};
+
 // *****
 // Title button functions
 // *****
@@ -848,15 +861,41 @@ async function toggleCourseVisibility(identifier) {
 }
 
 async function setLoadedSchedule(code) {
-	// Stop bubbling onclick event
-	if (!e) var e = window.event;
-	e.cancelBubble = true;
-	if (e.stopPropagation) e.stopPropagation();
+	console.log(`Loading ${code}`);
 
-	
-	if (code == "Main") {
-
+	// If it's the currently loaded schedule, return
+	if (loaded_schedule.code == code) {
+		return;
 	}
+
+	// Unload the current schedule
+	loaded_course_lists.splice(loaded_schedule.index, 0, {
+		courses: loaded_local_courses,
+		code: loaded_schedule.code,
+		color: loaded_schedule.color,
+	});
+
+	// Get from course lists
+	for (let i = 0; i < loaded_course_lists.length; i++) {
+		if (loaded_course_lists[i].code == code) {
+			let found_schedule = loaded_course_lists.splice(i,1)[0];
+			
+			loaded_schedule.code = found_schedule.code;
+			loaded_schedule.index = i;
+			loaded_schedule.color = found_schedule.color;
+			loaded_local_courses = found_schedule.courses;
+			break;
+		}
+	}
+
+	console.log(loaded_course_lists);
+	console.log(loaded_local_courses);
+
+	await save_json_data("loaded_course_lists", loaded_course_lists);
+	await save_json_data("loaded_local_courses", loaded_local_courses);
+	await save_json_data("loaded_schedule", loaded_schedule);
+
+	updateSchedule();
 } 
 
 async function toggleCourseListVisibility(code) {
@@ -875,23 +914,37 @@ async function toggleCourseListVisibility(code) {
 	await save_json_data("hidden_course_lists", hidden_course_lists);
 }
 
-async function deleteCourseList(code) {
-	let found = false;
+async function deleteCourseList(e=false, code) {
+	if(e) {
+		// Stop bubbling onclick event
+		if (!e) var e = window.event;
+		e.cancelBubble = true;
+		if (e.stopPropagation) e.stopPropagation();
+	}
 
+
+	console.log("deleting" + code);
+
+	if (loaded_schedule.code == code) {
+		await setLoadedSchedule(loaded_course_lists[Math.max(0,loaded_schedule.index - 1)].code);
+		await save_json_data("loaded_schedule", loaded_schedule);
+	}
+	
 	for (let i = 0; i < loaded_course_lists.length; i++) {
 		let course_list = loaded_course_lists[i];
 
 		if (course_list.code == code) {
-			found = true;
 			loaded_course_lists.splice(i, 1);
+
+			await save_json_data("loaded_course_lists", loaded_course_lists);
+
+			await setLoadedSchedule("Main");
+
 			break;
 		}
 	}
 
-	if (found) {
-		await save_json_data("loaded_course_lists", loaded_course_lists);
-		updateSchedule();
-	}
+	updateLoadedCourseLists();
 }
 
 async function mergeCourseList(code) {
@@ -1118,6 +1171,56 @@ function toggleCreditMode() {
 	localStorage.setItem("hmc_mode", hmc_mode);
 }
 
+function addNewSchedule() {
+	Swal.fire({
+		title: 'New Schedule',
+		html: new_schedule_popup,
+		showCancelButton: true,
+		confirmButtonText:
+			`Add`,
+		preConfirm: async () => {
+			try {
+				let name = document.getElementById("schedule-name").value;
+				let color = document.getElementById("schedule-color").value;
+
+				if (name == "") {
+					throw new Error("Please enter a name for the schedule.")
+				}
+
+				if (loaded_schedule.code == name || loaded_custom_courses.map((x) => x.code).includes(name)) {
+					throw new Error("Schedule must have unique name");
+				}
+
+				console.log(color);
+
+				return {
+					code: name,
+					color: color == "#FFFFFF" ? undefined : color,
+					courses: [],
+				}
+
+			} catch (error) {
+				Swal.showValidationMessage(
+					`${error}`
+				)
+			}
+		},
+	}).then(async (result) => {
+		if (result.value) {
+			let new_schedule = result.value;
+
+			loaded_course_lists.push(new_schedule);
+			await save_json_data("loaded_course_lists", loaded_course_lists);
+
+			setLoadedSchedule(new_schedule.code);
+
+		}
+	});		
+
+	document.getElementById("schedule-color").setAttribute("data-jscolor", `{preset: '${localStorage.getItem("theme") == 'dark' ? 'dark' : ''}'}`);
+	jscolor.install();
+}
+
 // *****
 // HTML Popups
 // *****
@@ -1296,6 +1399,32 @@ const search_popup = `
 </div>
 <br>`;
 
+
+const new_schedule_popup = `
+<div id="new-schedule-container">
+<div class="custom-course-manager">
+    <div class="create-schedule-form">
+        <div class="header">Name</div>
+        <div class="form-group">
+
+			<div>
+				<label for="schedule-name">Name</label>
+				<input type="text" id="schedule-name" class="input custom-course-input" placeholder="Name">
+			</div>
+
+			<div>
+				<label for="schedule-color">Color (optional)</label>
+				<input data-jscolor="{}" id="schedule-color" class="input custom-course-input">
+			</div>
+
+		</div>
+</div>
+</div>
+
+		
+`;
+
+
 const changelog_popup = `
 <div id="changelog-container">
 	<b>v1.8 Beta</b>
@@ -1304,5 +1433,4 @@ const changelog_popup = `
 		<li>Added ability to filter by co/prerequisites with "coreq:[none, some, "exact match]" and "prereq:[none, some, "exact match]"</li>	
 	</ul>
 </div>
-
 `;

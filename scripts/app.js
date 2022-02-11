@@ -1,12 +1,7 @@
 // Here we can adjust defaults for all color pickers on page:
 jscolor.presets.default = {
     position: 'right',
-    palette: [
-        '#000000', '#7d7d7d', '#870014', '#ec1c23', '#ff7e26',
-        '#fef100', '#22b14b', '#00a1e7', '#3f47cc', '#a349a4',
-        '#ffffff', '#c3c3c3', '#b87957', '#feaec9', '#ffc80d',
-        '#eee3af', '#b5e61d', '#99d9ea', '#7092be', '#c8bfe7',
-    ],
+    palette: colors,
     //paletteCols: 12,
     //hideOnPaletteClick: true,
 };
@@ -888,14 +883,21 @@ async function setLoadedSchedule(code) {
 		}
 	}
 
-	console.log(loaded_course_lists);
-	console.log(loaded_local_courses);
-
 	await save_json_data("loaded_course_lists", loaded_course_lists);
 	await save_json_data("loaded_local_courses", loaded_local_courses);
 	await save_json_data("loaded_schedule", loaded_schedule);
 
 	updateSchedule();
+
+	// Scroll to clicked on schedule
+	let el = document.getElementById("course-list-table");
+
+	el.children[loaded_schedule.index].scrollIntoView({
+		behavior: "instant",
+		block: "center",
+		inline: "center"
+		});
+
 } 
 
 async function toggleCourseListVisibility(code) {
@@ -1188,7 +1190,7 @@ function addNewSchedule() {
 				}
 
 				if (loaded_schedule.code == name || loaded_custom_courses.map((x) => x.code).includes(name)) {
-					throw new Error("Schedule must have unique name");
+					throw new Error("Schedule must have unique name.");
 				}
 
 				console.log(color);

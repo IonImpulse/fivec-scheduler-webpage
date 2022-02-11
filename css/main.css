@@ -108,17 +108,14 @@ canvas {
   display: grid;
   gap: 10px;
   grid-template-columns: 4fr 1fr;
+  grid-template-rows: .3fr 3fr 3fr 2fr;
   grid-template-areas:
     "header right-header"
     "schedule course-info"
-    "schedule course-info"
-    "schedule course-info"
     "schedule courses-list"
-    "schedule courses-list"
-    "schedule courses-list"
-    "schedule course-lists-list"
-    "schedule course-lists-list"
     "schedule course-lists-list";
+
+  height: 98vh;
 }
 
 #fader {
@@ -249,8 +246,7 @@ canvas {
   grid-area: schedule;
   background-color: var(--background-main);
   border-radius: var(--roundedness);
-  padding: var(--padding);
-}
+  padding: var(--padding);}
 
 #schedule-table {
   background-color: var(--background-alt);
@@ -259,8 +255,8 @@ canvas {
   display: grid;
   grid-column-gap: 10px;
   grid-template-columns: 5% repeat(5, 1fr) 2%;
-  grid-template-rows: 1vh repeat(350, 1fr);
-  height: 85vh;
+  grid-template-rows: 35px repeat(350, 1fr);
+  height: 100%;
   min-height: 500px;
   overflow: hidden;
 }
@@ -431,22 +427,23 @@ canvas {
   background-color: var(--background-alt);
   border-radius: var(--roundedness);
   display: inline-block;
-  max-height: 25vh;
   overflow: auto;
 }
 
 #course-list-box {
   background-color: var(--background-main);
   border-radius: var(--roundedness);
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 2;
   padding: var(--padding);
 }
 
 #course-list-table {
   background-color: var(--background-alt);
   border-radius: var(--roundedness);
-  display: inline-block;
-  max-height: 30vh;
+  position: relative;
+  max-height: 20vh;
   overflow: auto;
   width: 100%;
 }
@@ -483,7 +480,7 @@ canvas {
   border-radius: var(--roundedness);
   color: var(--text-course-schedule);
   cursor: pointer;
-  font: 16px/15px var(--main-font), sans-serif;
+  font: 16px/16px var(--main-font), sans-serif;
   margin: 10px;
   overflow: hidden;
   padding: var(--padding);
@@ -651,17 +648,18 @@ canvas {
 
 .course-loaded {
   font-size: 16px;
-  padding: var(--padding-small);
-  align-items: center;
+  padding: var(--padding-medium);
   display: grid;
   position: relative;
   grid-template-columns: 1fr 1fr 10fr 1fr;
   margin-bottom: 8px;
   margin-top: 8px;
+  align-items: center;
 }
 
 .course-loaded.course-list {
-  grid-template-columns: 1fr 0.1fr 10fr 1fr 0.5fr 1fr;
+  grid-template-columns: .1fr 10fr 1fr 0.5fr 0.5fr 1fr;
+  margin-left:20px;
 }
 
 .code-explain {
@@ -715,18 +713,12 @@ canvas {
   text-align: center;
   z-index: 1000;
   position: relative;
-  filter: opacity(0.9);
-}
-
-.from-course-list {
-  z-index: 500;
-  filter: opacity(0.5);
 }
 
 .starred-course {
   z-index: 1050;
-  filter: opacity(1);
 }
+
 .course-schedule-block .name {
   font: 700 0.7vmax var(--main-font), sans-serif;
 }
@@ -747,6 +739,11 @@ canvas {
   white-space: nowrap;
   grid-column-start: 3;
   grid-column-end: 4;
+}
+
+.course-loaded.course-list .course-info {
+  grid-column-start: 2;
+  grid-column-end: 3;
 }
 
 .star-course {
@@ -794,6 +791,10 @@ canvas {
 .delete-course.course-list {
   grid-column-start: 6;
   grid-column-end: 7;
+}
+
+.settings-buttong {
+
 }
 
 .merge-course {
@@ -861,11 +862,28 @@ a:visited {
 
 #course-info-box {
   grid-area: course-info;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+#schedule-indicator {
+  position: absolute;
+  top: 0px;
+  left: 9px;
+  height: 0px;
+  width: 5px;
+  background-color: var(--text-main);
+  border-radius: var(--roundedness);
+  transition: top 0.3s;
 }
 
 #course-box {
   grid-area: courses-list;
-  height: 35vh;
+  height: 30vh;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 2;
 }
 
 #course-list-box {
@@ -1246,17 +1264,8 @@ label {
       "header"
       "right-header"
       "schedule"
-      "schedule"
-      "schedule"
-      "schedule"
-      "course-info"
-      "course-info"
       "course-info"
       "courses-list"
-      "courses-list"
-      "courses-list"
-      "course-lists-list"
-      "course-lists-list"
       "course-lists-list";
   }
 

@@ -184,7 +184,7 @@ function generateGridTimes() {
         schedule_element.appendChild(time);
     }
 
-    for (let i = 13; i <= 22; i++) {
+    for (let i = 13; i <= 23; i++) {
         let time = document.createElement("div");
         time.className = "time";
         time.id = "time-" + i;
@@ -230,7 +230,7 @@ function updateScheduleSizing() {
     }
 }
 function generateLines() {
-    for (let i = 0; i < 16; i++) {
+    for (let i = 0; i < 17; i++) {
         let line = document.createElement("div");
         line.className = "line";
         line.id = "h-line-" + i;
@@ -248,7 +248,7 @@ function generateLines() {
         line.style.gridColumnStart = i + 2;
         line.style.gridColumnEnd = i + 2;
         line.style.gridRowStart = 2;
-        line.style.gridRowEnd = 2 + (16 * 20);
+        line.style.gridRowEnd = 2 + (17 * 20);
         schedule_element.appendChild(line);
     }
 }
@@ -270,7 +270,7 @@ function updateSchedule() {
         max_grid_rows = Math.min(350, max_grid_rows + 20);
     }
 
-    schedule_element.style.gridTemplateRows = `35px repeat(${max_grid_rows}, 1fr)`;
+    schedule_element.style.gridTemplateRows = `35px repeat(${max_grid_rows}, 1fr) repeat(${350 - max_grid_rows}, .1fr)`;
 }
 
 function clearSchedule() {
@@ -371,8 +371,17 @@ function timeToGrid(time) {
 
 function updateLoadedCourseLists() {
     let el = document.getElementById("course-list-table");
-    removeAllChildren(el);
 
+    let elements_to_remove = el.getElementsByClassName("course-loaded");
+
+    while (elements_to_remove[0]) {
+        elements_to_remove[0].parentNode.removeChild(elements_to_remove[0]);
+    }
+
+    let schedule_button = document.getElementById("add-schedule");
+    if (schedule_button) {
+        schedule_button.remove();
+    };
 
     let new_schedule = document.createElement("div");
     new_schedule.className = "default-button noselect";
@@ -386,6 +395,9 @@ function updateLoadedCourseLists() {
     for (let i = 0; i < loaded_course_lists.length + 1; i++) {
         if (i == loaded_schedule.index) {
             el.appendChild(createLoadedCourseListDiv(loaded_schedule.code, loaded_schedule.color ?? colors[i % colors.length]));
+
+            document.getElementById("schedule-indicator").style.top = `${el.lastChild.offsetTop}px`;
+            document.getElementById("schedule-indicator").style.height = `${el.lastChild.offsetHeight}px`;
         } else  {
             let index = i;
             if (i > loaded_schedule.index) {
@@ -393,7 +405,6 @@ function updateLoadedCourseLists() {
             }
             el.appendChild(createLoadedCourseListDiv(loaded_course_lists[index].code, loaded_course_lists[index].color ?? colors[i % colors.length]));
         }
-
     }
 
     el.appendChild(new_schedule);

@@ -141,22 +141,21 @@ function createLoadedCourseListDiv(code, color) {
     div.classList.add("course-list");
     div.id = `course-list-${code}`;
 
-    let visibility_button = document.createElement("div");
-    visibility_button.className = "visibility-button";
-    if (!hidden_course_lists.includes(code)) {
-        visibility_button.classList.add("visible");
-    }
-
     let delete_button = document.createElement("div");
     delete_button.className = "delete-course course-list";
     delete_button.onclick = function () {
         deleteCourseList(event, code);
     };
 
-    div.insertBefore(visibility_button, div.firstChild);
+    let settings_button = document.createElement("div");
+    settings_button.className = "settings-course course-list";
+    settings_button.onclick = function () {
+        showCourseListSettings(event, code);
+    };
 
     if (code != "Main") {
         div.appendChild(delete_button);
+        div.appendChild(settings_button);
     }
 
     div.onclick = function () {

@@ -18,6 +18,11 @@ function buttonLoad() {
 		showCancelButton: true,
 		confirmButtonText: 'Load',
 		showLoaderOnConfirm: true,
+		customClass: {
+			confirmButton: 'default-button swal confirm',
+			cancelButton: 'default-button swal cancel',
+		},
+		buttonsStyling: false,
 		preConfirm: async () => {
 			try {
 				const response = await fetch(`${API_URL}${GET_COURSE_LIST_BY_CODE(document.getElementById("code-input").value.toUpperCase())}`)
@@ -74,7 +79,12 @@ function buttonCustomCourse() {
 		showCancelButton: false,
 		confirmButtonText:
 			`Done`,
-		customClass: 'swal-medium-wide',
+		customClass: {
+			popup: 'swal-medium-wide',
+			confirmButton: 'default-button swal confirm',
+			cancelButton: 'default-button swal cancel',
+		},
+		buttonsStyling: false,
 	}).then(async (result) => {
 		await save_json_data("loaded_custom_courses", loaded_custom_courses);
 
@@ -249,8 +259,13 @@ function buttonExport() {
 	Swal.fire({
 		title: 'Save As Image',
 		icon: 'success',
-		html: '<canvas id="export-holder" alt="schedule"></canvas><br><b>Downloading...</b>',
-		customClass: 'swal-medium-wide',
+		html: '<canvas id="export-holder" alt="schedule"></canvas><br><b>Viewing preview<br>Downloading full resolution image...</b>',
+		customClass: {
+			popup: 'swal-medium-wide',
+			confirmButton: 'default-button swal confirm',
+			cancelButton: 'default-button swal cancel',
+		},
+		buttonsStyling: false,
 	});
 
 	Swal.showLoading();
@@ -274,8 +289,8 @@ function download_link() {
 function screenshotToCanvas(canvas, source) {
 	target = source.cloneNode(true);
 
-	let x = source.offsetWidth;
-	let y = source.offsetHeight;
+	let x = source.offsetWidth * 4;
+	let y = source.offsetHeight * 4;
 
 	copyStyle(target, source);
 
@@ -285,6 +300,10 @@ function screenshotToCanvas(canvas, source) {
 		line.style.display = "none";
 	}
 
+	let current_time = target.getElementsByClassName("line");
+
+	current_time[current_time.length - 1].style.display = "none";
+
 	rasterizeHTML.drawHTML(target.innerHTML, canvas, {
 		width: `${x}`,
 		height: `${y}`,
@@ -292,10 +311,10 @@ function screenshotToCanvas(canvas, source) {
 		.then(function success(renderResult) {
 			canvas.width = x;
 			canvas.height = y;
-			canvas.style.width = `${x / 2}px`;
-			canvas.style.height = `${y / 2}px`;
+			canvas.style.width = `${x / 8}px`;
+			canvas.style.height = `${y / 8}px`;
 			context = canvas.getContext('2d');
-			context.drawImage(renderResult.image, 0, 0, width = x, height = y);
+			context.drawImage(renderResult.image, 0, 0, width = x * 4, height = y * 4);
 			Swal.hideLoading();
 		}, function error(e) {
 			Swal.fire({
@@ -303,6 +322,11 @@ function screenshotToCanvas(canvas, source) {
 				icon: 'error',
 				html:
 					`Error: ${e.message}`,
+					customClass: {
+						confirmButton: 'default-button swal confirm',
+						cancelButton: 'default-button swal cancel',
+					},
+					buttonsStyling: false,
 			})
 		});
 }
@@ -344,7 +368,12 @@ async function buttonSearch() {
 	if (all_courses_global == null) {
 		Swal.fire({
 			title: 'Error fetching courses!',
-			icon: 'error'
+			icon: 'error',
+			customClass: {
+				confirmButton: 'default-button swal confirm',
+				cancelButton: 'default-button swal cancel',
+			},
+			buttonsStyling: false,			
 		});
 	} else {
 		Swal.fire({
@@ -357,7 +386,12 @@ async function buttonSearch() {
 				`<span>Add <span id="course-add-num">0</span> course<span id="multiple-course-s">s</span></span>`,
 			cancelButtonText:
 				'Cancel',
-			customClass: 'swal-wide',
+			customClass: {
+				popup: 'swal-wide',
+				confirmButton: 'default-button swal confirm',
+				cancelButton: 'default-button swal cancel',
+			},
+			buttonsStyling: false,
 		}).then(async (result) => {
 			document.removeEventListener("keydown", focusAndInput);
 
@@ -408,7 +442,7 @@ async function buttonSearch() {
 
 		});
 
-		document.getElementsByClassName("swal-wide")[0].addEventListener("keydown", function (event) {			
+		document.getElementsByClassName("swal2-popup")[0].addEventListener("keydown", function (event) {			
 			if (event.getModifierState("Control")
 				|| event.key.includes("Arrow")) {
 				return;
@@ -442,7 +476,7 @@ function focusAndInput(event) {
 
 const Toast = Swal.mixin({
 	toast: true,
-	position: 'bottom-end',
+	position: 'bottom',
 	showConfirmButton: false,
 	timer: 3000,
 	timerProgressBar: true,
@@ -457,7 +491,12 @@ async function buttonShare() {
 	if (loaded_local_courses.length == 0) {
 		Swal.fire({
 			title: 'No courses have been locally loaded!',
-			icon: 'error'
+			icon: 'error',
+			customClass: {
+				confirmButton: 'default-button swal confirm',
+				cancelButton: 'default-button swal cancel',
+			},
+			buttonsStyling: false,
 		})
 	} else {
 		let response = await fetch(`${API_URL}${GET_UNIQUE_CODE}`, {
@@ -482,6 +521,11 @@ async function buttonShare() {
 			title: 'Share',
 			icon: 'success',
 			html: `<div class="code-share">${code}</div><div class="code-explain">or</div><div id="code-link" class="unselectable">Copy Link</div><div class="qr-code">${svg}</div>`,
+			customClass: {
+				confirmButton: 'default-button swal confirm',
+				cancelButton: 'default-button swal cancel',
+			},
+			buttonsStyling: false,
 		});
 
 		document.getElementById("code-link").addEventListener("click", function () {
@@ -507,6 +551,11 @@ function buttonCal() {
 		Swal.fire({
 			title: 'Save as iCal',
 			icon: 'success',
+			customClass: {
+				confirmButton: 'default-button swal confirm',
+				cancelButton: 'default-button swal cancel',
+			},
+			buttonsStyling: false,
 			html: `<div class="ical-box">
 			<div class="ical-explain">
 			<b>Google Calendar:</b><br>
@@ -589,6 +638,11 @@ function buttonAbout() {
 		imageUrl: '/img/favicons/android-chrome-192x192.png',
 		imageWidth: 100,
 		imageHeight: 100,
+		customClass: {
+			confirmButton: 'default-button swal confirm',
+			cancelButton: 'default-button swal cancel',
+		},
+		buttonsStyling: false,
 		html: `<div id="about-desc"> Created By: <b>Ethan Vazquez</b> HMC '25<BR>` +
 			`Send comments/questions/bug reports to: <b>edv121@outlook.com</b><BR><BR>` +
 			`<b>Webpage Repo:</b> <a href="https://github.com/IonImpulse/fivec-scheduler-webpage">fivec-scheduler-webpage</a><br>` +
@@ -949,6 +1003,34 @@ async function deleteCourseList(e=false, code) {
 	updateLoadedCourseLists();
 }
 
+async function showCourseListSettings(e, code) {
+	if(e) {
+		// Stop bubbling onclick event
+		if (!e) var e = window.event;
+		e.cancelBubble = true;
+		if (e.stopPropagation) e.stopPropagation();
+	}
+
+	Swal.fire({
+		title: "Edit Schedule",
+		html: new_schedule_popup,
+		showCancelButton: true,
+		confirmButtonText: "Save",
+		customClass: {
+			popup: 'swal-short',
+			confirmButton: 'default-button swal confirm',
+			cancelButton: 'default-button swal cancel',
+		},
+		buttonsStyling: false,
+	});
+	document.getElementById("schedule-copy").remove();
+	// Remove the label, it doesn't have an ID so we have to 
+	// find by tag and remove the 3rd (2nd index) element
+	document.getElementsByTagName("label")[2].remove();
+	document.getElementById("schedule-color").setAttribute("data-jscolor", `{preset: '${localStorage.getItem("theme") == 'dark' ? 'dark' : ''}'}`);
+	jscolor.install();
+}
+
 async function mergeCourseList(code) {
 	let found = false;
 
@@ -1178,6 +1260,12 @@ function addNewSchedule() {
 		title: 'New Schedule',
 		html: new_schedule_popup,
 		showCancelButton: true,
+		customClass: {
+			popup: 'swal-short',
+			confirmButton: 'default-button swal confirm',
+			cancelButton: 'default-button swal cancel',
+		},
+		buttonsStyling: false,
 		confirmButtonText:
 			`Add`,
 		preConfirm: async () => {
@@ -1298,13 +1386,13 @@ const custom_course_popup = `
         </div>
 
         <div class="button-group">
-            <div tabindex="0" id="add-new-course" class="default-button unselectable course-button" onclick="submitNewCourse()">Add</div>
-            <div tabindex="0" id="cancel-new-course" class="default-button unselectable course-button" onclick="cancelNewCourse()">Cancel</div>
+            <button tabindex="0" id="add-new-course" class="default-button unselectable" onclick="submitNewCourse()">Add</button>
+            <button tabindex="0" id="cancel-new-course" class="default-button unselectable" onclick="cancelNewCourse()">Cancel</button>
         </div>
     </div>
     <div class="right-panel">
-        <div id="create-course" class="default-button unselectable course-button" onclick="createNewCourse()">Create New</div>
-        <div id="edit-course" class="default-button unselectable course-button" onclick="editCourse()">Edit</div>
+        <button id="create-course" class="default-button unselectable course-button" onclick="createNewCourse()">Create New</button>
+        <button id="edit-course" class="default-button unselectable course-button" onclick="editCourse()">Edit</button>
     </div>
 </div>
 `.replace("\n",'');
@@ -1404,27 +1492,29 @@ const search_popup = `
 
 const new_schedule_popup = `
 <div id="new-schedule-container">
-<div class="custom-course-manager">
-    <div class="create-schedule-form">
-        <div class="header">Name</div>
-        <div class="form-group">
+	<div class="custom-course-manager">
+		<div class="create-schedule-form">
+			<div class="header">Name</div>
+			<div class="form-group">
 
-			<div>
-				<label for="schedule-name">Name</label>
-				<input type="text" id="schedule-name" class="input custom-course-input" placeholder="Name">
+				<div>
+					<label for="schedule-name">Name</label>
+					<input type="text" id="schedule-name" class="input custom-course-input" placeholder="Name">
+				</div>
+
+				<div>
+					<label for="schedule-color">Color (optional)</label>
+					<input data-jscolor="{}" id="schedule-color" class="input custom-course-input">
+				</div>
+
+				<div>
+					<label for="schedule-copy">Copy courses from current schedule (optional)</label>
+					<input type="checkbox" id="schedule-copy" class="day-checkbox">
+				</div>
 			</div>
-
-			<div>
-				<label for="schedule-color">Color (optional)</label>
-				<input data-jscolor="{}" id="schedule-color" class="input custom-course-input">
-			</div>
-
-		</div>
-</div>
-</div>
-
-		
-`;
+	</div>
+</div>		
+`;	
 
 
 const changelog_popup = `

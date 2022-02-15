@@ -108,7 +108,6 @@ function getSchoolMode() {
 
 function isVerticalLayout() {
     vertical_layout = window.matchMedia("only screen and (max-width: 760px)").matches;
-    debounce_timer = vertical_layout ? 300 : 10;
     return vertical_layout;
 }
 

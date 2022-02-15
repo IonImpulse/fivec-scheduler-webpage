@@ -49,6 +49,7 @@ self.addEventListener('install', (event) => {
                 'img/visible-off.svg',
                 'img/visible-on.svg',
                 'img/checked.svg',
+                'img/settings.svg',
                 'img/favicons/android-chrome-192x192.png',
                 'img/favicons/android-chrome-512x512.png',
                 'img/favicons/apple-touch-icon.png',

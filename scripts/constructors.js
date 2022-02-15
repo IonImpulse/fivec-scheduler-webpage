@@ -154,8 +154,8 @@ function createLoadedCourseListDiv(code, color) {
     };
 
     if (code != "Main") {
-        div.appendChild(delete_button);
         div.appendChild(settings_button);
+        div.appendChild(delete_button);
     }
 
     div.onclick = function () {

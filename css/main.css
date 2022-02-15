@@ -43,7 +43,7 @@
   --custom-course-icon: url(../img/custom-course-light.svg);
   --checked-icon: url(../img/checked.svg);
   --settings-icon: url(../img/settings.svg);
-  --hover-effect: 0.92;
+  --hover-effect: 0.96;
 }
 
 [data-theme="dark"] {
@@ -100,7 +100,7 @@ body {
 body * {
   transition: background-color 0.2s ease-in-out,
     outline-width 0.05s ease-in-out, outline-color 0.01s ease-in-out, outline-offset 0.01s ease-in-out, z-index 0.1s ease-in-out,
-    transform 0.1s ease-in-out, width .1s ease-in-out, padding .1s ease-in-out;
+    transform 0.08s ease-in-out, width .1s ease-in-out, padding .1s ease-in-out;
 }
 
 canvas {
@@ -269,7 +269,6 @@ canvas {
 .default-button {
   background-color: var(--button-main);
   border-radius: var(--roundedness);
-  border: none;
   color: var(--text-main);
   cursor: pointer;
   height: 40px;
@@ -278,8 +277,9 @@ canvas {
   text-align: center;
   background-repeat: no-repeat;
   background-position: center;
-  outline: var(--button-outline) solid 1px;
+  border: var(--button-outline) solid 1px;
   font: 1rem/1rem var(--main-font), monospace;
+  box-sizing: border-box;
 }
 
 .default-button.swal {
@@ -310,7 +310,7 @@ canvas {
 
 .default-button:hover {
   transform: translate(2px, 2px);
-  outline: var(--button-outline-active) solid 1px;
+  border: var(--button-outline-active) solid 1px;
 }
 
 #pwa-prompt-box {
@@ -390,12 +390,8 @@ canvas {
   background-color: var(--search-button-background);
   color: var(--text-alt);
   width: 40%;
-  outline: none;
 }
 
-.search-button:hover {
-  outline: none;
-}
 
 .time {
   color: var(--text-light);
@@ -542,7 +538,7 @@ canvas {
 }
 
 .selected .checkbox {
-  width: 50px;
+  width: 40px;
 }
 
 .unselectable {
@@ -1256,7 +1252,10 @@ label {
 #add-schedule {
   color: var(--text-alt);
   width: 70%;
-  height: 10px;
+  height: 25px;
+  display: flex;
+  justify-content: center; /* align horizontal */
+  align-items: center;
   text-align: center;
   padding: var(--padding-medium);
   margin: 0 auto;
@@ -1266,6 +1265,7 @@ label {
   font-size: 16px;
   font-weight: 700;
   line-height: 10px;
+  box-sizing: border-box;
 }
 
 .swal-short {
@@ -1312,6 +1312,13 @@ label {
       "course-lists-list";
   }
 
+  #schedule-box {
+    height: 1000px;
+  }
+
+  #add-schedule {
+    height: 50px;
+  }
   #main-section {
     scroll-snap-align: start;
   }

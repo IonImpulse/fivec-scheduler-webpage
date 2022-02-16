@@ -14,8 +14,8 @@
   --selected: #33b4f0;
   --prereqs: #4165c9;
   --coreqs: #2690a3;
-  --confirm: #84e977;
-  --deny: #e79292;
+  --confirm: #c6ecc0;
+  --deny: #e7bbbb;
   --padding: 13px;
   --padding-medium: 7px;
   --padding-small: 5px;
@@ -143,12 +143,10 @@ canvas {
 #loading-image {
   display: block;
   margin: auto;
-  height: 30vmin;
-  width: 30vmin;
+  width: 15%;
   border-radius: 25%;
-  outline: rgb(19, 19, 19) solid 10px;
-  outline-offset: -5px;
-  background-color: #fff;
+  border: rgb(19, 19, 19) solid 20px;
+  background-color: rgb(19, 19, 19);
 }
 
 .shadow {
@@ -844,7 +842,7 @@ canvas {
   border-radius: var(--roundedness);
   box-sizing: border-box;
   display: inline-block;
-  height: 25vh;
+  max-height: 30vh;
   overflow: auto;
   padding: var(--padding);
   width: 100%;

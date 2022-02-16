@@ -1,3 +1,5 @@
+const course_regex = /([A-Z]+){1} ?([0-9]+[A-Z]*){1} ?([A-Z]{2})?/g;
+
 function convertTime(time) {
 	let return_time = time.substring(0, 5);
 	let first_two = parseInt(time.substring(0, 2));
@@ -89,17 +91,17 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 
 		let desc_node = "<div";
 		desc_node += " class=\"description\">";
-		desc_node += `<b>Description:</b>\n${course.description}</div>`;
+		desc_node += `<b>Description:</b>\n${findCourseLinks(course.description)}</div>`;
 
 		let prereq_node = "<div class=\"prerequisites\">";
-		prereq_node += `<b>Prerequisites:</b>\n${course.prerequisites}</div>`;
+		prereq_node += `<b>Prerequisites:</b>\n${findCourseLinks(course.prerequisites)}</div>`;
 
 		let coreq_node = "<div class=\"corequisites\">";
-		coreq_node += `<b>Corequisites:</b>\n${course.corequisites}</div>`;
+		coreq_node += `<b>Corequisites:</b>\n${findCourseLinks(course.corequisites)}</div>`;
 
         let notes_node = "<div";
 		notes_node += " class=\"notes\">";
-		notes_node += `<b>Notes:</b> <i>${course.notes}</i></div>`;
+		notes_node += `<b>Notes:</b> <i>${findCourseLinks(course.notes)}</i></div>`;
 
 		course_desc_node += credit_node;
 		course_desc_node += instructor_node;
@@ -112,6 +114,20 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 	}
 
     return all_desc_global;
+}
+
+function findCourseLinks(text) {
+	let matches = text.replaceAll(course_regex, function (match, p1, p2, p3) {
+		let p3_str = " ";
+		
+		if (p3 != undefined) {
+			p3_str = `-${p3}`;
+		}
+
+		return `<span class=\"clickable-text\" onclick=\"addSearchFilter(\'${p1}-${p2}${p3_str}\')\">${p1}-${p2}${p3_str}</span>`;		
+	});
+
+	return matches;
 }
 
 onmessage = function(e) {

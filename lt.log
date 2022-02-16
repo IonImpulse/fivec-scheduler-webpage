@@ -1,0 +1,585 @@
+{"level":"info","time":"2022-02-14T20:44:22.966-0800","caller":"cobra/command.go:854","msg":"LambdaTest Tunnel version: 3.1.21"}
+{"level":"debug","time":"2022-02-14T20:44:22.968-0800","caller":"cmd/lt.go:176","msg":"Starting pipeline....."}
+{"level":"debug","time":"2022-02-14T20:44:22.968-0800","caller":"cmd/lt.go:176","msg":"OS: windows, Arch: amd64"}
+{"level":"debug","time":"2022-02-14T20:44:22.968-0800","caller":"cmd/lt.go:176","msg":"Fetching config"}
+{"level":"warn","time":"2022-02-14T20:44:22.968-0800","caller":"core/lifecycle.go:47","msg":"Tunnel Name was not specified, using: 6d8551e2-cbbc-489b-8634-c97d8c475662"}
+{"level":"debug","time":"2022-02-14T20:44:22.968-0800","caller":"runtime/asm_amd64.s:1373","msg":"Starting tunnel With flags: --user ethandv121@gmail.com --key ***** --dir C:\\Users\\ionim\\Documents\\GitHub\\fivec-scheduler-webpage"}
+{"level":"debug","time":"2022-02-14T20:44:23.267-0800","caller":"cmd/lt.go:176","msg":"Remote config fetched"}
+{"level":"debug","time":"2022-02-14T20:44:23.364-0800","caller":"core/lifecycle.go:178","msg":"Starting File server"}
+{"level":"debug","time":"2022-02-14T20:44:23.364-0800","caller":"runtime/asm_amd64.s:1373","msg":"Trying on port 443"}
+{"level":"debug","time":"2022-02-14T20:44:23.364-0800","caller":"fileserver/setup.go:96","msg":"Starting File server for tunnel info on port: 33000"}
+{"level":"debug","time":"2022-02-14T20:44:23.364-0800","caller":"core/lifecycle.go:138","msg":"Starting sink proxy"}
+{"level":"debug","time":"2022-02-14T20:44:23.364-0800","caller":"runtime/asm_amd64.s:1373","msg":"Trying on port 22"}
+{"level":"debug","time":"2022-02-14T20:44:23.364-0800","caller":"runtime/asm_amd64.s:1373","msg":"Trying over ssh over ws"}
+{"level":"error","time":"2022-02-14T20:44:23.415-0800","caller":"custom/setup.go:635","msg":"Error while running proxy server on port 9090, error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:44:23.415-0800","caller":"core/lifecycle.go:138","msg":"Sink proxy start error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"warn","time":"2022-02-14T20:44:23.415-0800","caller":"core/lifecycle.go:138","msg":"Restarting sink proxy"}
+{"level":"debug","time":"2022-02-14T20:44:23.635-0800","caller":"runtime/asm_amd64.s:1373","msg":"WSS connection was successful"}
+{"level":"error","time":"2022-02-14T20:44:23.707-0800","caller":"custom/setup.go:635","msg":"Error while running proxy server on port 9090, error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:44:23.707-0800","caller":"core/lifecycle.go:138","msg":"Sink proxy start error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"warn","time":"2022-02-14T20:44:23.707-0800","caller":"core/lifecycle.go:138","msg":"Restarting sink proxy"}
+{"level":"debug","time":"2022-02-14T20:44:24.110-0800","caller":"runtime/asm_amd64.s:1373","msg":"SSH connection over port 443 successful"}
+{"level":"debug","time":"2022-02-14T20:44:24.241-0800","caller":"runtime/asm_amd64.s:1373","msg":"SSH connection over ws successful"}
+{"level":"debug","time":"2022-02-14T20:44:24.254-0800","caller":"runtime/asm_amd64.s:1373","msg":"SSH connection over port 22 successful"}
+{"level":"info","time":"2022-02-14T20:44:24.254-0800","caller":"core/lifecycle.go:115","msg":"Using ssh(over_22) :: connection mode"}
+{"level":"info","time":"2022-02-14T20:44:24.254-0800","caller":"cmd/lt.go:176","msg":"Launching tunnel"}
+{"level":"debug","time":"2022-02-14T20:44:24.254-0800","caller":"core/lifecycle.go:233","msg":"Starting control ws connection at wss://ts.lambdatest.com/monitor"}
+{"level":"error","time":"2022-02-14T20:44:24.277-0800","caller":"custom/setup.go:635","msg":"Error while running proxy server on port 9090, error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:44:24.277-0800","caller":"core/lifecycle.go:138","msg":"Sink proxy start error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"warn","time":"2022-02-14T20:44:24.277-0800","caller":"core/lifecycle.go:138","msg":"Restarting sink proxy"}
+{"level":"debug","time":"2022-02-14T20:44:24.609-0800","caller":"core/lifecycle.go:233","msg":"Control ws channel opened"}
+{"level":"debug","time":"2022-02-14T20:44:24.609-0800","caller":"runtime/asm_amd64.s:1373","msg":"Starting message listener on control connection"}
+{"level":"debug","time":"2022-02-14T20:44:24.629-0800","caller":"runtime/asm_amd64.s:1373","msg":"Tunnel registered message received on control channel"}
+{"level":"debug","time":"2022-02-14T20:44:24.629-0800","caller":"runtime/asm_amd64.s:1373","msg":"controller bus registered"}
+{"level":"debug","time":"2022-02-14T20:44:24.629-0800","caller":"runtime/asm_amd64.s:1373","msg":"Sending tunnel registered message to channels"}
+{"level":"debug","time":"2022-02-14T20:44:24.629-0800","caller":"core/lifecycle.go:283","msg":"Using 5 ssh connection"}
+{"level":"error","time":"2022-02-14T20:44:25.315-0800","caller":"custom/setup.go:635","msg":"Error while running proxy server on port 9090, error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:44:25.315-0800","caller":"core/lifecycle.go:138","msg":"Sink proxy start error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"warn","time":"2022-02-14T20:44:25.315-0800","caller":"core/lifecycle.go:138","msg":"Restarting sink proxy"}
+{"level":"debug","time":"2022-02-14T20:44:25.594-0800","caller":"runtime/asm_amd64.s:1373","msg":"Successfully started sshd listener on port: 29916"}
+{"level":"debug","time":"2022-02-14T20:44:25.614-0800","caller":"runtime/asm_amd64.s:1373","msg":"Successfully started sshd listener on port: 4270"}
+{"level":"info","time":"2022-02-14T20:44:25.614-0800","caller":"runtime/asm_amd64.s:1373","msg":"You can start testing now"}
+{"level":"info","time":"2022-02-14T20:44:25.615-0800","caller":"runtime/asm_amd64.s:1373","msg":"Tunnel ID: 1038676"}
+{"level":"debug","time":"2022-02-14T20:44:25.615-0800","caller":"runtime/asm_amd64.s:1373","msg":"Remote Listener Started on Port 7402"}
+{"level":"debug","time":"2022-02-14T20:44:25.625-0800","caller":"runtime/asm_amd64.s:1373","msg":"Successfully started sshd listener on port: 22645"}
+{"level":"debug","time":"2022-02-14T20:44:25.658-0800","caller":"runtime/asm_amd64.s:1373","msg":"Successfully started sshd listener on port: 31591"}
+{"level":"debug","time":"2022-02-14T20:44:25.703-0800","caller":"runtime/asm_amd64.s:1373","msg":"Successfully started sshd listener on port: 25742"}
+{"level":"error","time":"2022-02-14T20:44:27.397-0800","caller":"custom/setup.go:635","msg":"Error while running proxy server on port 9090, error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:44:27.397-0800","caller":"core/lifecycle.go:138","msg":"Sink proxy start error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"warn","time":"2022-02-14T20:44:27.397-0800","caller":"core/lifecycle.go:138","msg":"Restarting sink proxy"}
+{"level":"error","time":"2022-02-14T20:44:31.412-0800","caller":"custom/setup.go:635","msg":"Error while running proxy server on port 9090, error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:44:31.412-0800","caller":"core/lifecycle.go:138","msg":"Sink proxy start error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"warn","time":"2022-02-14T20:44:31.412-0800","caller":"core/lifecycle.go:138","msg":"Restarting sink proxy"}
+{"level":"debug","time":"2022-02-14T20:44:32.707-0800","caller":"cobra/command.go:854","msg":"main: received interrupt signal - attempting graceful shutdown ...."}
+{"level":"debug","time":"2022-02-14T20:44:32.707-0800","caller":"cobra/command.go:854","msg":"main: telling goroutines to stop"}
+{"level":"debug","time":"2022-02-14T20:44:32.707-0800","caller":"runtime/asm_amd64.s:1373","msg":"Shutting down the server"}
+{"level":"debug","time":"2022-02-14T20:44:32.708-0800","caller":"cmd/lt.go:176","msg":"Context cancelled"}
+{"level":"info","time":"2022-02-14T20:44:32.708-0800","caller":"cmd/lt.go:176","msg":"Stopping tunnel"}
+{"level":"debug","time":"2022-02-14T20:44:32.709-0800","caller":"runtime/asm_amd64.s:1373","msg":"Unusual close error on control channel..."}
+{"level":"debug","time":"2022-02-14T20:44:32.709-0800","caller":"runtime/asm_amd64.s:1373","msg":"Write loop ended for control channel"}
+{"level":"info","time":"2022-02-14T20:44:32.986-0800","caller":"cmd/lt.go:176","msg":"Tunnel stopped successfully"}
+{"level":"debug","time":"2022-02-14T20:44:32.986-0800","caller":"cmd/lt.go:176","msg":"Quit requested from main goroutine...."}
+{"level":"debug","time":"2022-02-14T20:44:32.986-0800","caller":"cmd/lt.go:176","msg":"Waiting for the goroutines to exit"}
+{"level":"debug","time":"2022-02-14T20:44:33.219-0800","caller":"runtime/asm_amd64.s:1373","msg":"Remote connection on remote port: 29916 closed, reason: EOF"}
+{"level":"debug","time":"2022-02-14T20:44:33.219-0800","caller":"runtime/asm_amd64.s:1373","msg":"closed ssh connection with port 29916"}
+{"level":"debug","time":"2022-02-14T20:44:33.219-0800","caller":"runtime/asm_amd64.s:1373","msg":"Remote connection on remote port: 4270 closed, reason: EOF"}
+{"level":"debug","time":"2022-02-14T20:44:33.219-0800","caller":"runtime/asm_amd64.s:1373","msg":"closed ssh connection with port 4270"}
+{"level":"debug","time":"2022-02-14T20:44:33.221-0800","caller":"runtime/asm_amd64.s:1373","msg":"Remote connection on remote port: 31591 closed, reason: EOF"}
+{"level":"debug","time":"2022-02-14T20:44:33.221-0800","caller":"runtime/asm_amd64.s:1373","msg":"closed ssh connection with port 31591"}
+{"level":"debug","time":"2022-02-14T20:44:33.222-0800","caller":"runtime/asm_amd64.s:1373","msg":"Remote connection on remote port: 25742 closed, reason: EOF"}
+{"level":"debug","time":"2022-02-14T20:44:33.222-0800","caller":"runtime/asm_amd64.s:1373","msg":"closed ssh connection with port 25742"}
+{"level":"debug","time":"2022-02-14T20:44:33.222-0800","caller":"runtime/asm_amd64.s:1373","msg":"Remote connection on remote port: 22645 closed, reason: EOF"}
+{"level":"debug","time":"2022-02-14T20:44:33.222-0800","caller":"runtime/asm_amd64.s:1373","msg":"closed ssh connection with port 22645"}
+{"level":"debug","time":"2022-02-14T20:44:39.807-0800","caller":"core/lifecycle.go:138","msg":"Context cancelled. Stopping sink proxy"}
+{"level":"debug","time":"2022-02-14T20:44:39.808-0800","caller":"cmd/lt.go:176","msg":"All goroutines exited"}
+{"level":"debug","time":"2022-02-14T20:44:39.808-0800","caller":"runtime/asm_amd64.s:1373","msg":"main: all goroutines have finished."}
+{"level":"debug","time":"2022-02-14T20:44:39.808-0800","caller":"cobra/command.go:854","msg":"Go routines exited within timeout"}
+{"level":"info","time":"2022-02-14T20:44:41.941-0800","caller":"cobra/command.go:854","msg":"LambdaTest Tunnel version: 3.1.21"}
+{"level":"debug","time":"2022-02-14T20:44:41.942-0800","caller":"cmd/lt.go:176","msg":"Starting pipeline....."}
+{"level":"debug","time":"2022-02-14T20:44:41.942-0800","caller":"cmd/lt.go:176","msg":"OS: windows, Arch: amd64"}
+{"level":"debug","time":"2022-02-14T20:44:41.942-0800","caller":"cmd/lt.go:176","msg":"Fetching config"}
+{"level":"warn","time":"2022-02-14T20:44:41.942-0800","caller":"core/lifecycle.go:47","msg":"Tunnel Name was not specified, using: 44ae6578-3bfe-4425-ae1f-593d51594f45"}
+{"level":"debug","time":"2022-02-14T20:44:41.942-0800","caller":"runtime/asm_amd64.s:1373","msg":"Starting tunnel With flags: --user ethandv121@gmail.com --key ***** --dir E:\\lambda"}
+{"level":"debug","time":"2022-02-14T20:44:42.227-0800","caller":"cmd/lt.go:176","msg":"Remote config fetched"}
+{"level":"debug","time":"2022-02-14T20:44:42.277-0800","caller":"core/lifecycle.go:178","msg":"Starting File server"}
+{"level":"debug","time":"2022-02-14T20:44:42.277-0800","caller":"runtime/asm_amd64.s:1373","msg":"Trying on port 22"}
+{"level":"debug","time":"2022-02-14T20:44:42.277-0800","caller":"runtime/asm_amd64.s:1373","msg":"Trying over ssh over ws"}
+{"level":"debug","time":"2022-02-14T20:44:42.277-0800","caller":"fileserver/setup.go:96","msg":"Starting File server for tunnel info on port: 33000"}
+{"level":"debug","time":"2022-02-14T20:44:42.277-0800","caller":"core/lifecycle.go:138","msg":"Starting sink proxy"}
+{"level":"debug","time":"2022-02-14T20:44:42.277-0800","caller":"runtime/asm_amd64.s:1373","msg":"Trying on port 443"}
+{"level":"error","time":"2022-02-14T20:44:42.328-0800","caller":"custom/setup.go:635","msg":"Error while running proxy server on port 9090, error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:44:42.328-0800","caller":"core/lifecycle.go:138","msg":"Sink proxy start error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"warn","time":"2022-02-14T20:44:42.328-0800","caller":"core/lifecycle.go:138","msg":"Restarting sink proxy"}
+{"level":"debug","time":"2022-02-14T20:44:42.548-0800","caller":"runtime/asm_amd64.s:1373","msg":"WSS connection was successful"}
+{"level":"error","time":"2022-02-14T20:44:42.631-0800","caller":"custom/setup.go:635","msg":"Error while running proxy server on port 9090, error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:44:42.631-0800","caller":"core/lifecycle.go:138","msg":"Sink proxy start error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"warn","time":"2022-02-14T20:44:42.631-0800","caller":"core/lifecycle.go:138","msg":"Restarting sink proxy"}
+{"level":"debug","time":"2022-02-14T20:44:42.953-0800","caller":"runtime/asm_amd64.s:1373","msg":"SSH connection over port 443 successful"}
+{"level":"debug","time":"2022-02-14T20:44:43.145-0800","caller":"runtime/asm_amd64.s:1373","msg":"SSH connection over port 22 successful"}
+{"level":"error","time":"2022-02-14T20:44:43.159-0800","caller":"custom/setup.go:635","msg":"Error while running proxy server on port 9090, error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:44:43.159-0800","caller":"core/lifecycle.go:138","msg":"Sink proxy start error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"warn","time":"2022-02-14T20:44:43.159-0800","caller":"core/lifecycle.go:138","msg":"Restarting sink proxy"}
+{"level":"debug","time":"2022-02-14T20:44:43.162-0800","caller":"runtime/asm_amd64.s:1373","msg":"SSH connection over ws successful"}
+{"level":"info","time":"2022-02-14T20:44:43.162-0800","caller":"core/lifecycle.go:115","msg":"Using ssh(over_22) :: connection mode"}
+{"level":"debug","time":"2022-02-14T20:44:43.162-0800","caller":"core/lifecycle.go:233","msg":"Starting control ws connection at wss://ts.lambdatest.com/monitor"}
+{"level":"info","time":"2022-02-14T20:44:43.162-0800","caller":"cmd/lt.go:176","msg":"Launching tunnel"}
+{"level":"debug","time":"2022-02-14T20:44:43.505-0800","caller":"core/lifecycle.go:233","msg":"Control ws channel opened"}
+{"level":"debug","time":"2022-02-14T20:44:43.505-0800","caller":"runtime/asm_amd64.s:1373","msg":"Starting message listener on control connection"}
+{"level":"debug","time":"2022-02-14T20:44:43.562-0800","caller":"runtime/asm_amd64.s:1373","msg":"Sending tunnel registered message to channels"}
+{"level":"debug","time":"2022-02-14T20:44:43.562-0800","caller":"core/lifecycle.go:283","msg":"Using 5 ssh connection"}
+{"level":"debug","time":"2022-02-14T20:44:43.562-0800","caller":"runtime/asm_amd64.s:1373","msg":"Tunnel registered message received on control channel"}
+{"level":"debug","time":"2022-02-14T20:44:43.562-0800","caller":"runtime/asm_amd64.s:1373","msg":"controller bus registered"}
+{"level":"debug","time":"2022-02-14T20:44:44.036-0800","caller":"cobra/command.go:854","msg":"main: received interrupt signal - attempting graceful shutdown ...."}
+{"level":"debug","time":"2022-02-14T20:44:44.036-0800","caller":"cobra/command.go:854","msg":"main: telling goroutines to stop"}
+{"level":"debug","time":"2022-02-14T20:44:44.036-0800","caller":"runtime/asm_amd64.s:1373","msg":"Shutting down the server"}
+{"level":"debug","time":"2022-02-14T20:44:44.036-0800","caller":"cmd/lt.go:176","msg":"Context cancelled"}
+{"level":"info","time":"2022-02-14T20:44:44.036-0800","caller":"cmd/lt.go:176","msg":"Stopping tunnel"}
+{"level":"debug","time":"2022-02-14T20:44:44.038-0800","caller":"runtime/asm_amd64.s:1373","msg":"Unusual close error on control channel..."}
+{"level":"debug","time":"2022-02-14T20:44:44.038-0800","caller":"runtime/asm_amd64.s:1373","msg":"Write loop ended for control channel"}
+{"level":"debug","time":"2022-02-14T20:44:44.171-0800","caller":"core/lifecycle.go:138","msg":"Context cancelled. Stopping sink proxy"}
+{"level":"info","time":"2022-02-14T20:44:44.391-0800","caller":"cmd/lt.go:176","msg":"Tunnel stopped successfully"}
+{"level":"debug","time":"2022-02-14T20:44:44.391-0800","caller":"cmd/lt.go:176","msg":"Quit requested from main goroutine...."}
+{"level":"debug","time":"2022-02-14T20:44:44.391-0800","caller":"cmd/lt.go:176","msg":"Waiting for the goroutines to exit"}
+{"level":"debug","time":"2022-02-14T20:44:44.391-0800","caller":"cmd/lt.go:176","msg":"All goroutines exited"}
+{"level":"debug","time":"2022-02-14T20:44:44.391-0800","caller":"runtime/asm_amd64.s:1373","msg":"main: all goroutines have finished."}
+{"level":"debug","time":"2022-02-14T20:44:44.391-0800","caller":"cobra/command.go:854","msg":"Go routines exited within timeout"}
+{"level":"info","time":"2022-02-14T20:44:45.913-0800","caller":"cobra/command.go:854","msg":"LambdaTest Tunnel version: 3.1.21"}
+{"level":"debug","time":"2022-02-14T20:44:45.914-0800","caller":"cmd/lt.go:176","msg":"Starting pipeline....."}
+{"level":"debug","time":"2022-02-14T20:44:45.914-0800","caller":"cmd/lt.go:176","msg":"OS: windows, Arch: amd64"}
+{"level":"debug","time":"2022-02-14T20:44:45.914-0800","caller":"cmd/lt.go:176","msg":"Fetching config"}
+{"level":"warn","time":"2022-02-14T20:44:45.914-0800","caller":"core/lifecycle.go:47","msg":"Tunnel Name was not specified, using: 9ce0ee5e-5020-43ed-8843-74a0e251d1db"}
+{"level":"debug","time":"2022-02-14T20:44:45.914-0800","caller":"runtime/asm_amd64.s:1373","msg":"Starting tunnel With flags: --user ethandv121@gmail.com --key ***** --dir C:\\Users\\ionim\\Documents\\GitHub\\fivec-scheduler-webpage"}
+{"level":"debug","time":"2022-02-14T20:44:46.198-0800","caller":"cmd/lt.go:176","msg":"Remote config fetched"}
+{"level":"debug","time":"2022-02-14T20:44:46.448-0800","caller":"core/lifecycle.go:178","msg":"Starting File server"}
+{"level":"debug","time":"2022-02-14T20:44:46.448-0800","caller":"fileserver/setup.go:96","msg":"Starting File server for tunnel info on port: 33000"}
+{"level":"debug","time":"2022-02-14T20:44:46.448-0800","caller":"runtime/asm_amd64.s:1373","msg":"Trying on port 22"}
+{"level":"debug","time":"2022-02-14T20:44:46.449-0800","caller":"runtime/asm_amd64.s:1373","msg":"Trying on port 443"}
+{"level":"debug","time":"2022-02-14T20:44:46.449-0800","caller":"core/lifecycle.go:138","msg":"Starting sink proxy"}
+{"level":"debug","time":"2022-02-14T20:44:46.449-0800","caller":"runtime/asm_amd64.s:1373","msg":"Trying over ssh over ws"}
+{"level":"error","time":"2022-02-14T20:44:46.499-0800","caller":"custom/setup.go:635","msg":"Error while running proxy server on port 9090, error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:44:46.499-0800","caller":"core/lifecycle.go:138","msg":"Sink proxy start error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"warn","time":"2022-02-14T20:44:46.499-0800","caller":"core/lifecycle.go:138","msg":"Restarting sink proxy"}
+{"level":"debug","time":"2022-02-14T20:44:46.721-0800","caller":"runtime/asm_amd64.s:1373","msg":"WSS connection was successful"}
+{"level":"error","time":"2022-02-14T20:44:46.792-0800","caller":"custom/setup.go:635","msg":"Error while running proxy server on port 9090, error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:44:46.792-0800","caller":"core/lifecycle.go:138","msg":"Sink proxy start error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"warn","time":"2022-02-14T20:44:46.792-0800","caller":"core/lifecycle.go:138","msg":"Restarting sink proxy"}
+{"level":"debug","time":"2022-02-14T20:44:47.143-0800","caller":"runtime/asm_amd64.s:1373","msg":"SSH connection over port 443 successful"}
+{"level":"error","time":"2022-02-14T20:44:47.331-0800","caller":"custom/setup.go:635","msg":"Error while running proxy server on port 9090, error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:44:47.331-0800","caller":"core/lifecycle.go:138","msg":"Sink proxy start error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"warn","time":"2022-02-14T20:44:47.331-0800","caller":"core/lifecycle.go:138","msg":"Restarting sink proxy"}
+{"level":"debug","time":"2022-02-14T20:44:47.351-0800","caller":"runtime/asm_amd64.s:1373","msg":"SSH connection over port 22 successful"}
+{"level":"debug","time":"2022-02-14T20:44:47.351-0800","caller":"runtime/asm_amd64.s:1373","msg":"SSH connection over ws successful"}
+{"level":"info","time":"2022-02-14T20:44:47.351-0800","caller":"core/lifecycle.go:115","msg":"Using ssh(over_22) :: connection mode"}
+{"level":"debug","time":"2022-02-14T20:44:47.351-0800","caller":"core/lifecycle.go:233","msg":"Starting control ws connection at wss://ts.lambdatest.com/monitor"}
+{"level":"info","time":"2022-02-14T20:44:47.351-0800","caller":"cmd/lt.go:176","msg":"Launching tunnel"}
+{"level":"debug","time":"2022-02-14T20:44:47.683-0800","caller":"core/lifecycle.go:233","msg":"Control ws channel opened"}
+{"level":"debug","time":"2022-02-14T20:44:47.683-0800","caller":"runtime/asm_amd64.s:1373","msg":"Starting message listener on control connection"}
+{"level":"debug","time":"2022-02-14T20:44:47.725-0800","caller":"runtime/asm_amd64.s:1373","msg":"Sending tunnel registered message to channels"}
+{"level":"debug","time":"2022-02-14T20:44:47.725-0800","caller":"core/lifecycle.go:283","msg":"Using 5 ssh connection"}
+{"level":"debug","time":"2022-02-14T20:44:47.725-0800","caller":"runtime/asm_amd64.s:1373","msg":"Tunnel registered message received on control channel"}
+{"level":"debug","time":"2022-02-14T20:44:47.725-0800","caller":"runtime/asm_amd64.s:1373","msg":"controller bus registered"}
+{"level":"error","time":"2022-02-14T20:44:48.340-0800","caller":"custom/setup.go:635","msg":"Error while running proxy server on port 9090, error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:44:48.340-0800","caller":"core/lifecycle.go:138","msg":"Sink proxy start error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"warn","time":"2022-02-14T20:44:48.340-0800","caller":"core/lifecycle.go:138","msg":"Restarting sink proxy"}
+{"level":"debug","time":"2022-02-14T20:44:48.749-0800","caller":"runtime/asm_amd64.s:1373","msg":"Successfully started sshd listener on port: 24945"}
+{"level":"debug","time":"2022-02-14T20:44:48.750-0800","caller":"runtime/asm_amd64.s:1373","msg":"Successfully started sshd listener on port: 27986"}
+{"level":"info","time":"2022-02-14T20:44:48.750-0800","caller":"runtime/asm_amd64.s:1373","msg":"You can start testing now"}
+{"level":"info","time":"2022-02-14T20:44:48.750-0800","caller":"runtime/asm_amd64.s:1373","msg":"Tunnel ID: 1038680"}
+{"level":"debug","time":"2022-02-14T20:44:48.750-0800","caller":"runtime/asm_amd64.s:1373","msg":"Remote Listener Started on Port 9517"}
+{"level":"debug","time":"2022-02-14T20:44:48.765-0800","caller":"runtime/asm_amd64.s:1373","msg":"Successfully started sshd listener on port: 4173"}
+{"level":"debug","time":"2022-02-14T20:44:48.799-0800","caller":"runtime/asm_amd64.s:1373","msg":"Successfully started sshd listener on port: 27079"}
+{"level":"debug","time":"2022-02-14T20:44:48.842-0800","caller":"runtime/asm_amd64.s:1373","msg":"Successfully started sshd listener on port: 2970"}
+{"level":"error","time":"2022-02-14T20:44:50.328-0800","caller":"custom/setup.go:635","msg":"Error while running proxy server on port 9090, error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:44:50.328-0800","caller":"core/lifecycle.go:138","msg":"Sink proxy start error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"warn","time":"2022-02-14T20:44:50.328-0800","caller":"core/lifecycle.go:138","msg":"Restarting sink proxy"}
+{"level":"error","time":"2022-02-14T20:44:54.247-0800","caller":"custom/setup.go:635","msg":"Error while running proxy server on port 9090, error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:44:54.247-0800","caller":"core/lifecycle.go:138","msg":"Sink proxy start error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"warn","time":"2022-02-14T20:44:54.248-0800","caller":"core/lifecycle.go:138","msg":"Restarting sink proxy"}
+{"level":"error","time":"2022-02-14T20:45:02.670-0800","caller":"custom/setup.go:635","msg":"Error while running proxy server on port 9090, error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:45:02.670-0800","caller":"core/lifecycle.go:138","msg":"Sink proxy start error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"warn","time":"2022-02-14T20:45:02.670-0800","caller":"core/lifecycle.go:138","msg":"Restarting sink proxy"}
+{"level":"error","time":"2022-02-14T20:45:19.079-0800","caller":"custom/setup.go:635","msg":"Error while running proxy server on port 9090, error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:45:19.079-0800","caller":"core/lifecycle.go:138","msg":"Sink proxy start error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"warn","time":"2022-02-14T20:45:19.079-0800","caller":"core/lifecycle.go:138","msg":"Restarting sink proxy"}
+{"level":"error","time":"2022-02-14T20:45:52.396-0800","caller":"custom/setup.go:635","msg":"Error while running proxy server on port 9090, error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:45:52.396-0800","caller":"core/lifecycle.go:138","msg":"Sink proxy start error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"warn","time":"2022-02-14T20:45:52.396-0800","caller":"core/lifecycle.go:138","msg":"Restarting sink proxy"}
+{"level":"debug","time":"2022-02-14T20:46:02.098-0800","caller":"cobra/command.go:854","msg":"main: received interrupt signal - attempting graceful shutdown ...."}
+{"level":"debug","time":"2022-02-14T20:46:02.098-0800","caller":"cobra/command.go:854","msg":"main: telling goroutines to stop"}
+{"level":"debug","time":"2022-02-14T20:46:02.098-0800","caller":"runtime/asm_amd64.s:1373","msg":"Shutting down the server"}
+{"level":"debug","time":"2022-02-14T20:46:02.098-0800","caller":"cmd/lt.go:176","msg":"Context cancelled"}
+{"level":"info","time":"2022-02-14T20:46:02.098-0800","caller":"cmd/lt.go:176","msg":"Stopping tunnel"}
+{"level":"debug","time":"2022-02-14T20:46:02.099-0800","caller":"runtime/asm_amd64.s:1373","msg":"Unusual close error on control channel..."}
+{"level":"debug","time":"2022-02-14T20:46:02.099-0800","caller":"runtime/asm_amd64.s:1373","msg":"Write loop ended for control channel"}
+{"level":"info","time":"2022-02-14T20:46:02.374-0800","caller":"cmd/lt.go:176","msg":"Tunnel stopped successfully"}
+{"level":"debug","time":"2022-02-14T20:46:02.374-0800","caller":"cmd/lt.go:176","msg":"Quit requested from main goroutine...."}
+{"level":"debug","time":"2022-02-14T20:46:02.374-0800","caller":"cmd/lt.go:176","msg":"Waiting for the goroutines to exit"}
+{"level":"debug","time":"2022-02-14T20:46:02.579-0800","caller":"runtime/asm_amd64.s:1373","msg":"Remote connection on remote port: 27986 closed, reason: EOF"}
+{"level":"debug","time":"2022-02-14T20:46:02.579-0800","caller":"runtime/asm_amd64.s:1373","msg":"Remote connection on remote port: 27079 closed, reason: EOF"}
+{"level":"debug","time":"2022-02-14T20:46:02.579-0800","caller":"runtime/asm_amd64.s:1373","msg":"closed ssh connection with port 27986"}
+{"level":"debug","time":"2022-02-14T20:46:02.579-0800","caller":"runtime/asm_amd64.s:1373","msg":"closed ssh connection with port 27079"}
+{"level":"debug","time":"2022-02-14T20:46:02.581-0800","caller":"runtime/asm_amd64.s:1373","msg":"Remote connection on remote port: 4173 closed, reason: EOF"}
+{"level":"debug","time":"2022-02-14T20:46:02.581-0800","caller":"runtime/asm_amd64.s:1373","msg":"closed ssh connection with port 4173"}
+{"level":"debug","time":"2022-02-14T20:46:02.582-0800","caller":"runtime/asm_amd64.s:1373","msg":"Remote connection on remote port: 2970 closed, reason: EOF"}
+{"level":"debug","time":"2022-02-14T20:46:02.582-0800","caller":"runtime/asm_amd64.s:1373","msg":"closed ssh connection with port 2970"}
+{"level":"debug","time":"2022-02-14T20:46:02.583-0800","caller":"runtime/asm_amd64.s:1373","msg":"Remote connection on remote port: 24945 closed, reason: EOF"}
+{"level":"debug","time":"2022-02-14T20:46:02.583-0800","caller":"runtime/asm_amd64.s:1373","msg":"closed ssh connection with port 24945"}
+{"level":"error","time":"2022-02-14T20:46:12.106-0800","caller":"cobra/command.go:854","msg":"Graceful timeout exceeded. Brutally killing the application"}
+{"level":"info","time":"2022-02-14T20:55:46.525-0800","caller":"cobra/command.go:854","msg":"LambdaTest Tunnel version: 3.1.21"}
+{"level":"debug","time":"2022-02-14T20:55:46.527-0800","caller":"cmd/lt.go:176","msg":"Starting pipeline....."}
+{"level":"debug","time":"2022-02-14T20:55:46.527-0800","caller":"cmd/lt.go:176","msg":"OS: windows, Arch: amd64"}
+{"level":"debug","time":"2022-02-14T20:55:46.527-0800","caller":"cmd/lt.go:176","msg":"Fetching config"}
+{"level":"warn","time":"2022-02-14T20:55:46.527-0800","caller":"core/lifecycle.go:47","msg":"Tunnel Name was not specified, using: 150db368-9a37-4f4d-93f4-577b26f41c86"}
+{"level":"debug","time":"2022-02-14T20:55:46.528-0800","caller":"runtime/asm_amd64.s:1373","msg":"Starting tunnel With flags: --user ethandv121@gmail.com --key ***** --dir C:\\Users\\ionim\\Documents\\GitHub\\fivec-scheduler-webpage --port 8313"}
+{"level":"debug","time":"2022-02-14T20:55:46.879-0800","caller":"cmd/lt.go:176","msg":"Remote config fetched"}
+{"level":"debug","time":"2022-02-14T20:55:47.153-0800","caller":"core/lifecycle.go:178","msg":"Starting File server"}
+{"level":"debug","time":"2022-02-14T20:55:47.153-0800","caller":"fileserver/setup.go:96","msg":"Starting File server for tunnel info on port: 33000"}
+{"level":"debug","time":"2022-02-14T20:55:47.154-0800","caller":"runtime/asm_amd64.s:1373","msg":"Trying on port 22"}
+{"level":"debug","time":"2022-02-14T20:55:47.154-0800","caller":"core/lifecycle.go:138","msg":"Starting sink proxy"}
+{"level":"debug","time":"2022-02-14T20:55:47.154-0800","caller":"runtime/asm_amd64.s:1373","msg":"Trying on port 443"}
+{"level":"debug","time":"2022-02-14T20:55:47.154-0800","caller":"runtime/asm_amd64.s:1373","msg":"Trying over ssh over ws"}
+{"level":"error","time":"2022-02-14T20:55:47.154-0800","caller":"fileserver/setup.go:96","msg":"Failed to start local file server on port 33000, error :listen tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:55:47.154-0800","caller":"core/lifecycle.go:178","msg":"File server start error: ERR::FIL::SRV::STR : Unable to start file server :  \nlisten tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted. "}
+{"level":"warn","time":"2022-02-14T20:55:47.154-0800","caller":"core/lifecycle.go:178","msg":"Restarting file proxy"}
+{"level":"info","time":"2022-02-14T20:55:47.204-0800","caller":"custom/setup.go:635","msg":"Tunnel binary started on port :8313"}
+{"level":"debug","time":"2022-02-14T20:55:47.397-0800","caller":"fileserver/setup.go:96","msg":"Starting File server for tunnel info on port: 33000"}
+{"level":"error","time":"2022-02-14T20:55:47.397-0800","caller":"fileserver/setup.go:96","msg":"Failed to start local file server on port 33000, error :listen tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:55:47.397-0800","caller":"core/lifecycle.go:178","msg":"File server start error: ERR::FIL::SRV::STR : Unable to start file server :  \nlisten tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted. "}
+{"level":"warn","time":"2022-02-14T20:55:47.397-0800","caller":"core/lifecycle.go:178","msg":"Restarting file proxy"}
+{"level":"debug","time":"2022-02-14T20:55:47.423-0800","caller":"runtime/asm_amd64.s:1373","msg":"WSS connection was successful"}
+{"level":"debug","time":"2022-02-14T20:55:47.890-0800","caller":"runtime/asm_amd64.s:1373","msg":"SSH connection over port 443 successful"}
+{"level":"debug","time":"2022-02-14T20:55:47.917-0800","caller":"fileserver/setup.go:96","msg":"Starting File server for tunnel info on port: 33000"}
+{"level":"error","time":"2022-02-14T20:55:47.917-0800","caller":"fileserver/setup.go:96","msg":"Failed to start local file server on port 33000, error :listen tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:55:47.917-0800","caller":"core/lifecycle.go:178","msg":"File server start error: ERR::FIL::SRV::STR : Unable to start file server :  \nlisten tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted. "}
+{"level":"warn","time":"2022-02-14T20:55:47.918-0800","caller":"core/lifecycle.go:178","msg":"Restarting file proxy"}
+{"level":"debug","time":"2022-02-14T20:55:48.021-0800","caller":"runtime/asm_amd64.s:1373","msg":"SSH connection over ws successful"}
+{"level":"debug","time":"2022-02-14T20:55:48.046-0800","caller":"runtime/asm_amd64.s:1373","msg":"SSH connection over port 22 successful"}
+{"level":"info","time":"2022-02-14T20:55:48.046-0800","caller":"core/lifecycle.go:115","msg":"Using ssh(over_22) :: connection mode"}
+{"level":"debug","time":"2022-02-14T20:55:48.046-0800","caller":"core/lifecycle.go:233","msg":"Starting control ws connection at wss://ts.lambdatest.com/monitor"}
+{"level":"info","time":"2022-02-14T20:55:48.046-0800","caller":"cmd/lt.go:176","msg":"Launching tunnel"}
+{"level":"debug","time":"2022-02-14T20:55:48.317-0800","caller":"core/lifecycle.go:233","msg":"Control ws channel opened"}
+{"level":"debug","time":"2022-02-14T20:55:48.317-0800","caller":"runtime/asm_amd64.s:1373","msg":"Starting message listener on control connection"}
+{"level":"debug","time":"2022-02-14T20:55:48.346-0800","caller":"runtime/asm_amd64.s:1373","msg":"Sending tunnel registered message to channels"}
+{"level":"debug","time":"2022-02-14T20:55:48.346-0800","caller":"core/lifecycle.go:283","msg":"Using 5 ssh connection"}
+{"level":"debug","time":"2022-02-14T20:55:48.346-0800","caller":"runtime/asm_amd64.s:1373","msg":"Tunnel registered message received on control channel"}
+{"level":"debug","time":"2022-02-14T20:55:48.346-0800","caller":"runtime/asm_amd64.s:1373","msg":"controller bus registered"}
+{"level":"debug","time":"2022-02-14T20:55:48.869-0800","caller":"fileserver/setup.go:96","msg":"Starting File server for tunnel info on port: 33000"}
+{"level":"error","time":"2022-02-14T20:55:48.869-0800","caller":"fileserver/setup.go:96","msg":"Failed to start local file server on port 33000, error :listen tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:55:48.869-0800","caller":"core/lifecycle.go:178","msg":"File server start error: ERR::FIL::SRV::STR : Unable to start file server :  \nlisten tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted. "}
+{"level":"warn","time":"2022-02-14T20:55:48.869-0800","caller":"core/lifecycle.go:178","msg":"Restarting file proxy"}
+{"level":"debug","time":"2022-02-14T20:55:49.341-0800","caller":"runtime/asm_amd64.s:1373","msg":"Successfully started sshd listener on port: 23810"}
+{"level":"debug","time":"2022-02-14T20:55:49.341-0800","caller":"runtime/asm_amd64.s:1373","msg":"Successfully started sshd listener on port: 24998"}
+{"level":"info","time":"2022-02-14T20:55:49.341-0800","caller":"runtime/asm_amd64.s:1373","msg":"You can start testing now"}
+{"level":"info","time":"2022-02-14T20:55:49.341-0800","caller":"runtime/asm_amd64.s:1373","msg":"Tunnel ID: 1038704"}
+{"level":"debug","time":"2022-02-14T20:55:49.342-0800","caller":"runtime/asm_amd64.s:1373","msg":"Remote Listener Started on Port 12051"}
+{"level":"debug","time":"2022-02-14T20:55:49.356-0800","caller":"runtime/asm_amd64.s:1373","msg":"Successfully started sshd listener on port: 30431"}
+{"level":"debug","time":"2022-02-14T20:55:49.356-0800","caller":"runtime/asm_amd64.s:1373","msg":"Successfully started sshd listener on port: 30662"}
+{"level":"debug","time":"2022-02-14T20:55:49.434-0800","caller":"runtime/asm_amd64.s:1373","msg":"Successfully started sshd listener on port: 19263"}
+{"level":"debug","time":"2022-02-14T20:55:49.763-0800","caller":"cobra/command.go:854","msg":"main: received interrupt signal - attempting graceful shutdown ...."}
+{"level":"debug","time":"2022-02-14T20:55:49.763-0800","caller":"cobra/command.go:854","msg":"main: telling goroutines to stop"}
+{"level":"debug","time":"2022-02-14T20:55:49.763-0800","caller":"runtime/asm_amd64.s:1373","msg":"Shutting down the server"}
+{"level":"debug","time":"2022-02-14T20:55:49.763-0800","caller":"runtime/asm_amd64.s:1373","msg":"Shutting down the server"}
+{"level":"debug","time":"2022-02-14T20:55:49.763-0800","caller":"cmd/lt.go:176","msg":"Context cancelled"}
+{"level":"debug","time":"2022-02-14T20:55:49.763-0800","caller":"runtime/asm_amd64.s:1373","msg":"Shutting down the server"}
+{"level":"debug","time":"2022-02-14T20:55:49.763-0800","caller":"custom/setup.go:635","msg":"Exiting the sink proxy"}
+{"level":"debug","time":"2022-02-14T20:55:49.763-0800","caller":"runtime/asm_amd64.s:1373","msg":"Shutting down the server"}
+{"level":"info","time":"2022-02-14T20:55:49.763-0800","caller":"cmd/lt.go:176","msg":"Stopping tunnel"}
+{"level":"debug","time":"2022-02-14T20:55:49.764-0800","caller":"runtime/asm_amd64.s:1373","msg":"Unusual close error on control channel..."}
+{"level":"debug","time":"2022-02-14T20:55:49.764-0800","caller":"runtime/asm_amd64.s:1373","msg":"Write loop ended for control channel"}
+{"level":"info","time":"2022-02-14T20:55:50.053-0800","caller":"cmd/lt.go:176","msg":"Tunnel stopped successfully"}
+{"level":"debug","time":"2022-02-14T20:55:50.054-0800","caller":"cmd/lt.go:176","msg":"Quit requested from main goroutine...."}
+{"level":"debug","time":"2022-02-14T20:55:50.054-0800","caller":"cmd/lt.go:176","msg":"Waiting for the goroutines to exit"}
+{"level":"debug","time":"2022-02-14T20:55:50.257-0800","caller":"runtime/asm_amd64.s:1373","msg":"Remote connection on remote port: 30431 closed, reason: EOF"}
+{"level":"debug","time":"2022-02-14T20:55:50.257-0800","caller":"runtime/asm_amd64.s:1373","msg":"closed ssh connection with port 30431"}
+{"level":"debug","time":"2022-02-14T20:55:50.258-0800","caller":"runtime/asm_amd64.s:1373","msg":"Remote connection on remote port: 24998 closed, reason: EOF"}
+{"level":"debug","time":"2022-02-14T20:55:50.258-0800","caller":"runtime/asm_amd64.s:1373","msg":"closed ssh connection with port 24998"}
+{"level":"debug","time":"2022-02-14T20:55:50.258-0800","caller":"runtime/asm_amd64.s:1373","msg":"Remote connection on remote port: 23810 closed, reason: EOF"}
+{"level":"debug","time":"2022-02-14T20:55:50.258-0800","caller":"runtime/asm_amd64.s:1373","msg":"closed ssh connection with port 23810"}
+{"level":"debug","time":"2022-02-14T20:55:50.259-0800","caller":"runtime/asm_amd64.s:1373","msg":"Remote connection on remote port: 30662 closed, reason: EOF"}
+{"level":"debug","time":"2022-02-14T20:55:50.259-0800","caller":"runtime/asm_amd64.s:1373","msg":"closed ssh connection with port 30662"}
+{"level":"debug","time":"2022-02-14T20:55:50.259-0800","caller":"runtime/asm_amd64.s:1373","msg":"Remote connection on remote port: 19263 closed, reason: EOF"}
+{"level":"debug","time":"2022-02-14T20:55:50.259-0800","caller":"runtime/asm_amd64.s:1373","msg":"closed ssh connection with port 19263"}
+{"level":"debug","time":"2022-02-14T20:55:50.849-0800","caller":"core/lifecycle.go:178","msg":"Context cancelled. Stopping sink proxy"}
+{"level":"debug","time":"2022-02-14T20:55:50.850-0800","caller":"cmd/lt.go:176","msg":"All goroutines exited"}
+{"level":"debug","time":"2022-02-14T20:55:50.850-0800","caller":"runtime/asm_amd64.s:1373","msg":"main: all goroutines have finished."}
+{"level":"debug","time":"2022-02-14T20:55:50.850-0800","caller":"cobra/command.go:854","msg":"Go routines exited within timeout"}
+{"level":"info","time":"2022-02-14T20:56:00.670-0800","caller":"cobra/command.go:854","msg":"LambdaTest Tunnel version: 3.1.21"}
+{"level":"debug","time":"2022-02-14T20:56:00.671-0800","caller":"cmd/lt.go:176","msg":"Starting pipeline....."}
+{"level":"debug","time":"2022-02-14T20:56:00.671-0800","caller":"cmd/lt.go:176","msg":"OS: windows, Arch: amd64"}
+{"level":"debug","time":"2022-02-14T20:56:00.671-0800","caller":"cmd/lt.go:176","msg":"Fetching config"}
+{"level":"warn","time":"2022-02-14T20:56:00.671-0800","caller":"core/lifecycle.go:47","msg":"Tunnel Name was not specified, using: e75856fb-04a5-4608-9358-2c798a8d6737"}
+{"level":"debug","time":"2022-02-14T20:56:00.671-0800","caller":"runtime/asm_amd64.s:1373","msg":"Starting tunnel With flags: --user ethandv121@gmail.com --key ***** --dir C:\\Users\\ionim\\Documents\\GitHub\\fivec-scheduler-webpage --port 8090"}
+{"level":"debug","time":"2022-02-14T20:56:00.955-0800","caller":"cmd/lt.go:176","msg":"Remote config fetched"}
+{"level":"debug","time":"2022-02-14T20:56:01.033-0800","caller":"core/lifecycle.go:178","msg":"Starting File server"}
+{"level":"debug","time":"2022-02-14T20:56:01.033-0800","caller":"fileserver/setup.go:96","msg":"Starting File server for tunnel info on port: 33000"}
+{"level":"debug","time":"2022-02-14T20:56:01.033-0800","caller":"runtime/asm_amd64.s:1373","msg":"Trying on port 22"}
+{"level":"debug","time":"2022-02-14T20:56:01.033-0800","caller":"core/lifecycle.go:138","msg":"Starting sink proxy"}
+{"level":"debug","time":"2022-02-14T20:56:01.033-0800","caller":"runtime/asm_amd64.s:1373","msg":"Trying on port 443"}
+{"level":"debug","time":"2022-02-14T20:56:01.033-0800","caller":"runtime/asm_amd64.s:1373","msg":"Trying over ssh over ws"}
+{"level":"error","time":"2022-02-14T20:56:01.033-0800","caller":"fileserver/setup.go:96","msg":"Failed to start local file server on port 33000, error :listen tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:56:01.034-0800","caller":"core/lifecycle.go:178","msg":"File server start error: ERR::FIL::SRV::STR : Unable to start file server :  \nlisten tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted. "}
+{"level":"warn","time":"2022-02-14T20:56:01.034-0800","caller":"core/lifecycle.go:178","msg":"Restarting file proxy"}
+{"level":"info","time":"2022-02-14T20:56:01.083-0800","caller":"custom/setup.go:635","msg":"Tunnel binary started on port :8090"}
+{"level":"debug","time":"2022-02-14T20:56:01.293-0800","caller":"fileserver/setup.go:96","msg":"Starting File server for tunnel info on port: 33000"}
+{"level":"error","time":"2022-02-14T20:56:01.293-0800","caller":"fileserver/setup.go:96","msg":"Failed to start local file server on port 33000, error :listen tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:56:01.293-0800","caller":"core/lifecycle.go:178","msg":"File server start error: ERR::FIL::SRV::STR : Unable to start file server :  \nlisten tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted. "}
+{"level":"warn","time":"2022-02-14T20:56:01.293-0800","caller":"core/lifecycle.go:178","msg":"Restarting file proxy"}
+{"level":"debug","time":"2022-02-14T20:56:01.311-0800","caller":"runtime/asm_amd64.s:1373","msg":"WSS connection was successful"}
+{"level":"debug","time":"2022-02-14T20:56:01.724-0800","caller":"runtime/asm_amd64.s:1373","msg":"SSH connection over port 443 successful"}
+{"level":"debug","time":"2022-02-14T20:56:01.786-0800","caller":"fileserver/setup.go:96","msg":"Starting File server for tunnel info on port: 33000"}
+{"level":"error","time":"2022-02-14T20:56:01.786-0800","caller":"fileserver/setup.go:96","msg":"Failed to start local file server on port 33000, error :listen tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:56:01.786-0800","caller":"core/lifecycle.go:178","msg":"File server start error: ERR::FIL::SRV::STR : Unable to start file server :  \nlisten tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted. "}
+{"level":"warn","time":"2022-02-14T20:56:01.786-0800","caller":"core/lifecycle.go:178","msg":"Restarting file proxy"}
+{"level":"debug","time":"2022-02-14T20:56:01.884-0800","caller":"runtime/asm_amd64.s:1373","msg":"SSH connection over port 22 successful"}
+{"level":"debug","time":"2022-02-14T20:56:01.931-0800","caller":"runtime/asm_amd64.s:1373","msg":"SSH connection over ws successful"}
+{"level":"info","time":"2022-02-14T20:56:01.932-0800","caller":"core/lifecycle.go:115","msg":"Using ssh(over_22) :: connection mode"}
+{"level":"debug","time":"2022-02-14T20:56:01.932-0800","caller":"core/lifecycle.go:233","msg":"Starting control ws connection at wss://ts.lambdatest.com/monitor"}
+{"level":"info","time":"2022-02-14T20:56:01.932-0800","caller":"cmd/lt.go:176","msg":"Launching tunnel"}
+{"level":"debug","time":"2022-02-14T20:56:02.286-0800","caller":"core/lifecycle.go:233","msg":"Control ws channel opened"}
+{"level":"debug","time":"2022-02-14T20:56:02.287-0800","caller":"runtime/asm_amd64.s:1373","msg":"Starting message listener on control connection"}
+{"level":"debug","time":"2022-02-14T20:56:02.325-0800","caller":"runtime/asm_amd64.s:1373","msg":"Tunnel registered message received on control channel"}
+{"level":"debug","time":"2022-02-14T20:56:02.325-0800","caller":"runtime/asm_amd64.s:1373","msg":"controller bus registered"}
+{"level":"debug","time":"2022-02-14T20:56:02.325-0800","caller":"runtime/asm_amd64.s:1373","msg":"Sending tunnel registered message to channels"}
+{"level":"debug","time":"2022-02-14T20:56:02.325-0800","caller":"core/lifecycle.go:283","msg":"Using 5 ssh connection"}
+{"level":"debug","time":"2022-02-14T20:56:02.409-0800","caller":"cobra/command.go:854","msg":"main: received interrupt signal - attempting graceful shutdown ...."}
+{"level":"debug","time":"2022-02-14T20:56:02.409-0800","caller":"cobra/command.go:854","msg":"main: telling goroutines to stop"}
+{"level":"debug","time":"2022-02-14T20:56:02.409-0800","caller":"runtime/asm_amd64.s:1373","msg":"Shutting down the server"}
+{"level":"debug","time":"2022-02-14T20:56:02.409-0800","caller":"runtime/asm_amd64.s:1373","msg":"Shutting down the server"}
+{"level":"debug","time":"2022-02-14T20:56:02.409-0800","caller":"cmd/lt.go:176","msg":"Context cancelled"}
+{"level":"debug","time":"2022-02-14T20:56:02.409-0800","caller":"runtime/asm_amd64.s:1373","msg":"Shutting down the server"}
+{"level":"debug","time":"2022-02-14T20:56:02.409-0800","caller":"custom/setup.go:635","msg":"Exiting the sink proxy"}
+{"level":"info","time":"2022-02-14T20:56:02.409-0800","caller":"cmd/lt.go:176","msg":"Stopping tunnel"}
+{"level":"debug","time":"2022-02-14T20:56:02.410-0800","caller":"runtime/asm_amd64.s:1373","msg":"Unusual close error on control channel..."}
+{"level":"debug","time":"2022-02-14T20:56:02.410-0800","caller":"runtime/asm_amd64.s:1373","msg":"Write loop ended for control channel"}
+{"level":"info","time":"2022-02-14T20:56:02.687-0800","caller":"cmd/lt.go:176","msg":"Tunnel stopped successfully"}
+{"level":"debug","time":"2022-02-14T20:56:02.687-0800","caller":"cmd/lt.go:176","msg":"Quit requested from main goroutine...."}
+{"level":"debug","time":"2022-02-14T20:56:02.687-0800","caller":"cmd/lt.go:176","msg":"Waiting for the goroutines to exit"}
+{"level":"debug","time":"2022-02-14T20:56:02.778-0800","caller":"core/lifecycle.go:178","msg":"Context cancelled. Stopping sink proxy"}
+{"level":"debug","time":"2022-02-14T20:56:02.779-0800","caller":"cmd/lt.go:176","msg":"All goroutines exited"}
+{"level":"debug","time":"2022-02-14T20:56:02.779-0800","caller":"runtime/asm_amd64.s:1373","msg":"main: all goroutines have finished."}
+{"level":"debug","time":"2022-02-14T20:56:02.779-0800","caller":"cobra/command.go:854","msg":"Go routines exited within timeout"}
+{"level":"info","time":"2022-02-14T20:56:16.825-0800","caller":"cobra/command.go:854","msg":"LambdaTest Tunnel version: 3.1.21"}
+{"level":"debug","time":"2022-02-14T20:56:16.826-0800","caller":"cmd/lt.go:176","msg":"Starting pipeline....."}
+{"level":"debug","time":"2022-02-14T20:56:16.826-0800","caller":"cmd/lt.go:176","msg":"OS: windows, Arch: amd64"}
+{"level":"debug","time":"2022-02-14T20:56:16.826-0800","caller":"cmd/lt.go:176","msg":"Fetching config"}
+{"level":"warn","time":"2022-02-14T20:56:16.826-0800","caller":"core/lifecycle.go:47","msg":"Tunnel Name was not specified, using: 204f0070-5b7a-4e0e-a53a-f6fb25e2da22"}
+{"level":"debug","time":"2022-02-14T20:56:16.826-0800","caller":"runtime/asm_amd64.s:1373","msg":"Starting tunnel With flags: --user ethandv121@gmail.com --key ***** --dir C:\\Users\\ionim\\Documents\\GitHub\\fivec-scheduler-webpage --port 80"}
+{"level":"debug","time":"2022-02-14T20:56:17.118-0800","caller":"cmd/lt.go:176","msg":"Remote config fetched"}
+{"level":"debug","time":"2022-02-14T20:56:17.299-0800","caller":"core/lifecycle.go:178","msg":"Starting File server"}
+{"level":"debug","time":"2022-02-14T20:56:17.299-0800","caller":"fileserver/setup.go:96","msg":"Starting File server for tunnel info on port: 33000"}
+{"level":"debug","time":"2022-02-14T20:56:17.299-0800","caller":"runtime/asm_amd64.s:1373","msg":"Trying on port 22"}
+{"level":"debug","time":"2022-02-14T20:56:17.299-0800","caller":"runtime/asm_amd64.s:1373","msg":"Trying on port 443"}
+{"level":"debug","time":"2022-02-14T20:56:17.299-0800","caller":"runtime/asm_amd64.s:1373","msg":"Trying over ssh over ws"}
+{"level":"debug","time":"2022-02-14T20:56:17.299-0800","caller":"core/lifecycle.go:138","msg":"Starting sink proxy"}
+{"level":"error","time":"2022-02-14T20:56:17.299-0800","caller":"fileserver/setup.go:96","msg":"Failed to start local file server on port 33000, error :listen tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:56:17.300-0800","caller":"core/lifecycle.go:178","msg":"File server start error: ERR::FIL::SRV::STR : Unable to start file server :  \nlisten tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted. "}
+{"level":"warn","time":"2022-02-14T20:56:17.300-0800","caller":"core/lifecycle.go:178","msg":"Restarting file proxy"}
+{"level":"info","time":"2022-02-14T20:56:17.350-0800","caller":"custom/setup.go:635","msg":"Tunnel binary started on port :80"}
+{"level":"debug","time":"2022-02-14T20:56:17.556-0800","caller":"fileserver/setup.go:96","msg":"Starting File server for tunnel info on port: 33000"}
+{"level":"error","time":"2022-02-14T20:56:17.556-0800","caller":"fileserver/setup.go:96","msg":"Failed to start local file server on port 33000, error :listen tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:56:17.556-0800","caller":"core/lifecycle.go:178","msg":"File server start error: ERR::FIL::SRV::STR : Unable to start file server :  \nlisten tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted. "}
+{"level":"warn","time":"2022-02-14T20:56:17.557-0800","caller":"core/lifecycle.go:178","msg":"Restarting file proxy"}
+{"level":"debug","time":"2022-02-14T20:56:17.569-0800","caller":"runtime/asm_amd64.s:1373","msg":"WSS connection was successful"}
+{"level":"debug","time":"2022-02-14T20:56:18.016-0800","caller":"runtime/asm_amd64.s:1373","msg":"SSH connection over port 443 successful"}
+{"level":"debug","time":"2022-02-14T20:56:18.041-0800","caller":"fileserver/setup.go:96","msg":"Starting File server for tunnel info on port: 33000"}
+{"level":"error","time":"2022-02-14T20:56:18.041-0800","caller":"fileserver/setup.go:96","msg":"Failed to start local file server on port 33000, error :listen tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:56:18.041-0800","caller":"core/lifecycle.go:178","msg":"File server start error: ERR::FIL::SRV::STR : Unable to start file server :  \nlisten tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted. "}
+{"level":"warn","time":"2022-02-14T20:56:18.042-0800","caller":"core/lifecycle.go:178","msg":"Restarting file proxy"}
+{"level":"debug","time":"2022-02-14T20:56:18.161-0800","caller":"runtime/asm_amd64.s:1373","msg":"SSH connection over port 22 successful"}
+{"level":"debug","time":"2022-02-14T20:56:18.187-0800","caller":"runtime/asm_amd64.s:1373","msg":"SSH connection over ws successful"}
+{"level":"info","time":"2022-02-14T20:56:18.187-0800","caller":"core/lifecycle.go:115","msg":"Using ssh(over_22) :: connection mode"}
+{"level":"info","time":"2022-02-14T20:56:18.188-0800","caller":"cmd/lt.go:176","msg":"Launching tunnel"}
+{"level":"debug","time":"2022-02-14T20:56:18.188-0800","caller":"core/lifecycle.go:233","msg":"Starting control ws connection at wss://ts.lambdatest.com/monitor"}
+{"level":"debug","time":"2022-02-14T20:56:18.534-0800","caller":"core/lifecycle.go:233","msg":"Control ws channel opened"}
+{"level":"debug","time":"2022-02-14T20:56:18.534-0800","caller":"runtime/asm_amd64.s:1373","msg":"Starting message listener on control connection"}
+{"level":"debug","time":"2022-02-14T20:56:18.563-0800","caller":"cobra/command.go:854","msg":"main: received interrupt signal - attempting graceful shutdown ...."}
+{"level":"debug","time":"2022-02-14T20:56:18.563-0800","caller":"cobra/command.go:854","msg":"main: telling goroutines to stop"}
+{"level":"debug","time":"2022-02-14T20:56:18.563-0800","caller":"runtime/asm_amd64.s:1373","msg":"Shutting down the server"}
+{"level":"debug","time":"2022-02-14T20:56:18.563-0800","caller":"custom/setup.go:635","msg":"Exiting the sink proxy"}
+{"level":"debug","time":"2022-02-14T20:56:18.563-0800","caller":"runtime/asm_amd64.s:1373","msg":"Shutting down the server"}
+{"level":"debug","time":"2022-02-14T20:56:18.563-0800","caller":"runtime/asm_amd64.s:1373","msg":"Shutting down the server"}
+{"level":"error","time":"2022-02-14T20:56:18.563-0800","caller":"cmd/lt.go:176","msg":"There was an error while starting tunnel: ERR::LUNCH::TUNN : Launch tunnel failed Post \"https://ts.lambdatest.com/v1.0/setup-tunnel\": context canceled "}
+{"level":"info","time":"2022-02-14T20:56:30.711-0800","caller":"cobra/command.go:854","msg":"LambdaTest Tunnel version: 3.1.21"}
+{"level":"debug","time":"2022-02-14T20:56:30.712-0800","caller":"cmd/lt.go:176","msg":"Starting pipeline....."}
+{"level":"debug","time":"2022-02-14T20:56:30.712-0800","caller":"cmd/lt.go:176","msg":"OS: windows, Arch: amd64"}
+{"level":"debug","time":"2022-02-14T20:56:30.712-0800","caller":"cmd/lt.go:176","msg":"Fetching config"}
+{"level":"warn","time":"2022-02-14T20:56:30.712-0800","caller":"core/lifecycle.go:47","msg":"Tunnel Name was not specified, using: 124cdd24-fa9f-4a5d-b7dd-ef019dbfcf16"}
+{"level":"debug","time":"2022-02-14T20:56:30.713-0800","caller":"runtime/asm_amd64.s:1373","msg":"Starting tunnel With flags: --user ethandv121@gmail.com --key ***** --dir C:\\Users\\ionim\\Documents\\GitHub\\fivec-scheduler-webpage --port 1342"}
+{"level":"debug","time":"2022-02-14T20:56:31.000-0800","caller":"cmd/lt.go:176","msg":"Remote config fetched"}
+{"level":"debug","time":"2022-02-14T20:56:31.122-0800","caller":"core/lifecycle.go:178","msg":"Starting File server"}
+{"level":"debug","time":"2022-02-14T20:56:31.122-0800","caller":"fileserver/setup.go:96","msg":"Starting File server for tunnel info on port: 33000"}
+{"level":"debug","time":"2022-02-14T20:56:31.122-0800","caller":"runtime/asm_amd64.s:1373","msg":"Trying on port 22"}
+{"level":"debug","time":"2022-02-14T20:56:31.122-0800","caller":"runtime/asm_amd64.s:1373","msg":"Trying on port 443"}
+{"level":"debug","time":"2022-02-14T20:56:31.122-0800","caller":"runtime/asm_amd64.s:1373","msg":"Trying over ssh over ws"}
+{"level":"debug","time":"2022-02-14T20:56:31.123-0800","caller":"core/lifecycle.go:138","msg":"Starting sink proxy"}
+{"level":"error","time":"2022-02-14T20:56:31.123-0800","caller":"fileserver/setup.go:96","msg":"Failed to start local file server on port 33000, error :listen tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:56:31.123-0800","caller":"core/lifecycle.go:178","msg":"File server start error: ERR::FIL::SRV::STR : Unable to start file server :  \nlisten tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted. "}
+{"level":"warn","time":"2022-02-14T20:56:31.123-0800","caller":"core/lifecycle.go:178","msg":"Restarting file proxy"}
+{"level":"info","time":"2022-02-14T20:56:31.173-0800","caller":"custom/setup.go:635","msg":"Tunnel binary started on port :1342"}
+{"level":"debug","time":"2022-02-14T20:56:31.384-0800","caller":"fileserver/setup.go:96","msg":"Starting File server for tunnel info on port: 33000"}
+{"level":"error","time":"2022-02-14T20:56:31.384-0800","caller":"fileserver/setup.go:96","msg":"Failed to start local file server on port 33000, error :listen tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:56:31.384-0800","caller":"core/lifecycle.go:178","msg":"File server start error: ERR::FIL::SRV::STR : Unable to start file server :  \nlisten tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted. "}
+{"level":"warn","time":"2022-02-14T20:56:31.385-0800","caller":"core/lifecycle.go:178","msg":"Restarting file proxy"}
+{"level":"debug","time":"2022-02-14T20:56:31.396-0800","caller":"runtime/asm_amd64.s:1373","msg":"WSS connection was successful"}
+{"level":"debug","time":"2022-02-14T20:56:31.856-0800","caller":"runtime/asm_amd64.s:1373","msg":"SSH connection over port 443 successful"}
+{"level":"debug","time":"2022-02-14T20:56:31.884-0800","caller":"cobra/command.go:854","msg":"main: received interrupt signal - attempting graceful shutdown ...."}
+{"level":"debug","time":"2022-02-14T20:56:31.884-0800","caller":"cobra/command.go:854","msg":"main: telling goroutines to stop"}
+{"level":"debug","time":"2022-02-14T20:56:31.884-0800","caller":"custom/setup.go:635","msg":"Exiting the sink proxy"}
+{"level":"debug","time":"2022-02-14T20:56:31.884-0800","caller":"runtime/asm_amd64.s:1373","msg":"Shutting down the server"}
+{"level":"debug","time":"2022-02-14T20:56:31.884-0800","caller":"runtime/asm_amd64.s:1373","msg":"Shutting down the server"}
+{"level":"info","time":"2022-02-14T20:56:31.884-0800","caller":"cmd/lt.go:176","msg":"Launching tunnel"}
+{"level":"debug","time":"2022-02-14T20:56:31.884-0800","caller":"core/lifecycle.go:233","msg":"Starting control ws connection at wss://ts.lambdatest.com/monitor"}
+{"level":"error","time":"2022-02-14T20:56:31.884-0800","caller":"cmd/lt.go:176","msg":"There was an error while starting tunnel: ERR::LUNCH::TUNN : Launch tunnel failed Post \"https://ts.lambdatest.com/v1.0/setup-tunnel\": context canceled "}
+{"level":"info","time":"2022-02-14T20:56:40.054-0800","caller":"cobra/command.go:854","msg":"LambdaTest Tunnel version: 3.1.21"}
+{"level":"debug","time":"2022-02-14T20:56:40.055-0800","caller":"cmd/lt.go:176","msg":"Starting pipeline....."}
+{"level":"debug","time":"2022-02-14T20:56:40.055-0800","caller":"cmd/lt.go:176","msg":"OS: windows, Arch: amd64"}
+{"level":"debug","time":"2022-02-14T20:56:40.055-0800","caller":"cmd/lt.go:176","msg":"Fetching config"}
+{"level":"warn","time":"2022-02-14T20:56:40.055-0800","caller":"core/lifecycle.go:47","msg":"Tunnel Name was not specified, using: 478e1671-ab0e-46c9-bae9-fd587967b859"}
+{"level":"debug","time":"2022-02-14T20:56:40.055-0800","caller":"runtime/asm_amd64.s:1373","msg":"Starting tunnel With flags: --user ethandv121@gmail.com --key ***** --dir C:\\Users\\ionim\\Documents\\GitHub\\fivec-scheduler-webpage"}
+{"level":"debug","time":"2022-02-14T20:56:40.397-0800","caller":"cmd/lt.go:176","msg":"Remote config fetched"}
+{"level":"debug","time":"2022-02-14T20:56:40.508-0800","caller":"core/lifecycle.go:178","msg":"Starting File server"}
+{"level":"debug","time":"2022-02-14T20:56:40.508-0800","caller":"fileserver/setup.go:96","msg":"Starting File server for tunnel info on port: 33000"}
+{"level":"debug","time":"2022-02-14T20:56:40.508-0800","caller":"runtime/asm_amd64.s:1373","msg":"Trying on port 22"}
+{"level":"debug","time":"2022-02-14T20:56:40.508-0800","caller":"core/lifecycle.go:138","msg":"Starting sink proxy"}
+{"level":"debug","time":"2022-02-14T20:56:40.509-0800","caller":"runtime/asm_amd64.s:1373","msg":"Trying on port 443"}
+{"level":"debug","time":"2022-02-14T20:56:40.509-0800","caller":"runtime/asm_amd64.s:1373","msg":"Trying over ssh over ws"}
+{"level":"error","time":"2022-02-14T20:56:40.509-0800","caller":"fileserver/setup.go:96","msg":"Failed to start local file server on port 33000, error :listen tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:56:40.509-0800","caller":"core/lifecycle.go:178","msg":"File server start error: ERR::FIL::SRV::STR : Unable to start file server :  \nlisten tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted. "}
+{"level":"warn","time":"2022-02-14T20:56:40.509-0800","caller":"core/lifecycle.go:178","msg":"Restarting file proxy"}
+{"level":"error","time":"2022-02-14T20:56:40.559-0800","caller":"custom/setup.go:635","msg":"Error while running proxy server on port 9090, error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:56:40.559-0800","caller":"core/lifecycle.go:138","msg":"Sink proxy start error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"warn","time":"2022-02-14T20:56:40.560-0800","caller":"core/lifecycle.go:138","msg":"Restarting sink proxy"}
+{"level":"debug","time":"2022-02-14T20:56:40.753-0800","caller":"fileserver/setup.go:96","msg":"Starting File server for tunnel info on port: 33000"}
+{"level":"error","time":"2022-02-14T20:56:40.753-0800","caller":"fileserver/setup.go:96","msg":"Failed to start local file server on port 33000, error :listen tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:56:40.753-0800","caller":"core/lifecycle.go:178","msg":"File server start error: ERR::FIL::SRV::STR : Unable to start file server :  \nlisten tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted. "}
+{"level":"warn","time":"2022-02-14T20:56:40.754-0800","caller":"core/lifecycle.go:178","msg":"Restarting file proxy"}
+{"level":"debug","time":"2022-02-14T20:56:40.779-0800","caller":"runtime/asm_amd64.s:1373","msg":"WSS connection was successful"}
+{"level":"error","time":"2022-02-14T20:56:40.857-0800","caller":"custom/setup.go:635","msg":"Error while running proxy server on port 9090, error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:56:40.857-0800","caller":"core/lifecycle.go:138","msg":"Sink proxy start error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"warn","time":"2022-02-14T20:56:40.857-0800","caller":"core/lifecycle.go:138","msg":"Restarting sink proxy"}
+{"level":"debug","time":"2022-02-14T20:56:41.236-0800","caller":"fileserver/setup.go:96","msg":"Starting File server for tunnel info on port: 33000"}
+{"level":"error","time":"2022-02-14T20:56:41.236-0800","caller":"fileserver/setup.go:96","msg":"Failed to start local file server on port 33000, error :listen tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:56:41.236-0800","caller":"core/lifecycle.go:178","msg":"File server start error: ERR::FIL::SRV::STR : Unable to start file server :  \nlisten tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted. "}
+{"level":"warn","time":"2022-02-14T20:56:41.237-0800","caller":"core/lifecycle.go:178","msg":"Restarting file proxy"}
+{"level":"debug","time":"2022-02-14T20:56:41.245-0800","caller":"runtime/asm_amd64.s:1373","msg":"SSH connection over port 443 successful"}
+{"level":"debug","time":"2022-02-14T20:56:41.284-0800","caller":"cobra/command.go:854","msg":"main: received interrupt signal - attempting graceful shutdown ...."}
+{"level":"debug","time":"2022-02-14T20:56:41.284-0800","caller":"cobra/command.go:854","msg":"main: telling goroutines to stop"}
+{"level":"debug","time":"2022-02-14T20:56:41.284-0800","caller":"runtime/asm_amd64.s:1373","msg":"Shutting down the server"}
+{"level":"debug","time":"2022-02-14T20:56:41.284-0800","caller":"runtime/asm_amd64.s:1373","msg":"Shutting down the server"}
+{"level":"debug","time":"2022-02-14T20:56:41.284-0800","caller":"runtime/asm_amd64.s:1373","msg":"Shutting down the server"}
+{"level":"debug","time":"2022-02-14T20:56:41.285-0800","caller":"core/lifecycle.go:233","msg":"Starting control ws connection at wss://ts.lambdatest.com/monitor"}
+{"level":"info","time":"2022-02-14T20:56:41.284-0800","caller":"cmd/lt.go:176","msg":"Launching tunnel"}
+{"level":"error","time":"2022-02-14T20:56:41.285-0800","caller":"cmd/lt.go:176","msg":"There was an error while starting tunnel: ERR::LUNCH::TUNN : Launch tunnel failed Post \"https://ts.lambdatest.com/v1.0/setup-tunnel\": context canceled "}
+{"level":"info","time":"2022-02-14T20:57:30.788-0800","caller":"cobra/command.go:854","msg":"LambdaTest Tunnel version: 3.1.21"}
+{"level":"debug","time":"2022-02-14T20:57:30.788-0800","caller":"cmd/lt.go:176","msg":"Starting pipeline....."}
+{"level":"debug","time":"2022-02-14T20:57:30.788-0800","caller":"cmd/lt.go:176","msg":"OS: windows, Arch: amd64"}
+{"level":"debug","time":"2022-02-14T20:57:30.788-0800","caller":"cmd/lt.go:176","msg":"Fetching config"}
+{"level":"warn","time":"2022-02-14T20:57:30.788-0800","caller":"core/lifecycle.go:47","msg":"Tunnel Name was not specified, using: 06eb211e-7f99-4627-b434-0ca5ccda415f"}
+{"level":"debug","time":"2022-02-14T20:57:30.789-0800","caller":"runtime/asm_amd64.s:1373","msg":"Starting tunnel With flags: --user ethandv121@gmail.com --key ***** --dir C:\\Users\\ionim\\Documents\\GitHub\\fivec-scheduler-webpage"}
+{"level":"debug","time":"2022-02-14T20:57:31.075-0800","caller":"cmd/lt.go:176","msg":"Remote config fetched"}
+{"level":"debug","time":"2022-02-14T20:57:31.132-0800","caller":"core/lifecycle.go:178","msg":"Starting File server"}
+{"level":"debug","time":"2022-02-14T20:57:31.132-0800","caller":"fileserver/setup.go:96","msg":"Starting File server for tunnel info on port: 33000"}
+{"level":"debug","time":"2022-02-14T20:57:31.132-0800","caller":"runtime/asm_amd64.s:1373","msg":"Trying on port 22"}
+{"level":"debug","time":"2022-02-14T20:57:31.132-0800","caller":"core/lifecycle.go:138","msg":"Starting sink proxy"}
+{"level":"debug","time":"2022-02-14T20:57:31.132-0800","caller":"runtime/asm_amd64.s:1373","msg":"Trying on port 443"}
+{"level":"debug","time":"2022-02-14T20:57:31.132-0800","caller":"runtime/asm_amd64.s:1373","msg":"Trying over ssh over ws"}
+{"level":"error","time":"2022-02-14T20:57:31.132-0800","caller":"fileserver/setup.go:96","msg":"Failed to start local file server on port 33000, error :listen tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:57:31.132-0800","caller":"core/lifecycle.go:178","msg":"File server start error: ERR::FIL::SRV::STR : Unable to start file server :  \nlisten tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted. "}
+{"level":"warn","time":"2022-02-14T20:57:31.132-0800","caller":"core/lifecycle.go:178","msg":"Restarting file proxy"}
+{"level":"error","time":"2022-02-14T20:57:31.183-0800","caller":"custom/setup.go:635","msg":"Error while running proxy server on port 9090, error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:57:31.183-0800","caller":"core/lifecycle.go:138","msg":"Sink proxy start error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"warn","time":"2022-02-14T20:57:31.183-0800","caller":"core/lifecycle.go:138","msg":"Restarting sink proxy"}
+{"level":"debug","time":"2022-02-14T20:57:31.389-0800","caller":"fileserver/setup.go:96","msg":"Starting File server for tunnel info on port: 33000"}
+{"level":"error","time":"2022-02-14T20:57:31.389-0800","caller":"fileserver/setup.go:96","msg":"Failed to start local file server on port 33000, error :listen tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:57:31.389-0800","caller":"core/lifecycle.go:178","msg":"File server start error: ERR::FIL::SRV::STR : Unable to start file server :  \nlisten tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted. "}
+{"level":"warn","time":"2022-02-14T20:57:31.389-0800","caller":"core/lifecycle.go:178","msg":"Restarting file proxy"}
+{"level":"debug","time":"2022-02-14T20:57:31.412-0800","caller":"runtime/asm_amd64.s:1373","msg":"WSS connection was successful"}
+{"level":"error","time":"2022-02-14T20:57:31.490-0800","caller":"custom/setup.go:635","msg":"Error while running proxy server on port 9090, error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:57:31.490-0800","caller":"core/lifecycle.go:138","msg":"Sink proxy start error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"warn","time":"2022-02-14T20:57:31.490-0800","caller":"core/lifecycle.go:138","msg":"Restarting sink proxy"}
+{"level":"debug","time":"2022-02-14T20:57:31.847-0800","caller":"runtime/asm_amd64.s:1373","msg":"SSH connection over port 443 successful"}
+{"level":"debug","time":"2022-02-14T20:57:31.902-0800","caller":"fileserver/setup.go:96","msg":"Starting File server for tunnel info on port: 33000"}
+{"level":"error","time":"2022-02-14T20:57:31.902-0800","caller":"fileserver/setup.go:96","msg":"Failed to start local file server on port 33000, error :listen tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:57:31.902-0800","caller":"core/lifecycle.go:178","msg":"File server start error: ERR::FIL::SRV::STR : Unable to start file server :  \nlisten tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted. "}
+{"level":"warn","time":"2022-02-14T20:57:31.902-0800","caller":"core/lifecycle.go:178","msg":"Restarting file proxy"}
+{"level":"debug","time":"2022-02-14T20:57:31.997-0800","caller":"runtime/asm_amd64.s:1373","msg":"SSH connection over port 22 successful"}
+{"level":"debug","time":"2022-02-14T20:57:32.013-0800","caller":"runtime/asm_amd64.s:1373","msg":"SSH connection over ws successful"}
+{"level":"info","time":"2022-02-14T20:57:32.014-0800","caller":"core/lifecycle.go:115","msg":"Using ssh(over_22) :: connection mode"}
+{"level":"info","time":"2022-02-14T20:57:32.014-0800","caller":"cmd/lt.go:176","msg":"Launching tunnel"}
+{"level":"debug","time":"2022-02-14T20:57:32.014-0800","caller":"core/lifecycle.go:233","msg":"Starting control ws connection at wss://ts.lambdatest.com/monitor"}
+{"level":"error","time":"2022-02-14T20:57:32.052-0800","caller":"custom/setup.go:635","msg":"Error while running proxy server on port 9090, error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:57:32.052-0800","caller":"core/lifecycle.go:138","msg":"Sink proxy start error: listen tcp4 :9090: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"warn","time":"2022-02-14T20:57:32.052-0800","caller":"core/lifecycle.go:138","msg":"Restarting sink proxy"}
+{"level":"debug","time":"2022-02-14T20:57:32.099-0800","caller":"cobra/command.go:854","msg":"main: received interrupt signal - attempting graceful shutdown ...."}
+{"level":"debug","time":"2022-02-14T20:57:32.099-0800","caller":"cobra/command.go:854","msg":"main: telling goroutines to stop"}
+{"level":"debug","time":"2022-02-14T20:57:32.099-0800","caller":"runtime/asm_amd64.s:1373","msg":"Shutting down the server"}
+{"level":"debug","time":"2022-02-14T20:57:32.099-0800","caller":"runtime/asm_amd64.s:1373","msg":"Shutting down the server"}
+{"level":"debug","time":"2022-02-14T20:57:32.099-0800","caller":"runtime/asm_amd64.s:1373","msg":"Shutting down the server"}
+{"level":"error","time":"2022-02-14T20:57:32.099-0800","caller":"cmd/lt.go:176","msg":"There was an error while starting tunnel: ERR::LUNCH::TUNN : Launch tunnel failed Post \"https://ts.lambdatest.com/v1.0/setup-tunnel\": context canceled "}
+{"level":"info","time":"2022-02-14T20:57:50.018-0800","caller":"cobra/command.go:854","msg":"LambdaTest Tunnel version: 3.1.21"}
+{"level":"debug","time":"2022-02-14T20:57:50.019-0800","caller":"cmd/lt.go:176","msg":"Starting pipeline....."}
+{"level":"debug","time":"2022-02-14T20:57:50.019-0800","caller":"cmd/lt.go:176","msg":"OS: windows, Arch: amd64"}
+{"level":"debug","time":"2022-02-14T20:57:50.019-0800","caller":"cmd/lt.go:176","msg":"Fetching config"}
+{"level":"warn","time":"2022-02-14T20:57:50.019-0800","caller":"core/lifecycle.go:47","msg":"Tunnel Name was not specified, using: 31020b3f-8fe7-4158-bc80-08411b90637b"}
+{"level":"debug","time":"2022-02-14T20:57:50.019-0800","caller":"runtime/asm_amd64.s:1373","msg":"Starting tunnel With flags: --user ethandv121@gmail.com --key ***** --port 70221 --dir C:\\Users\\ionim\\Documents\\GitHub\\fivec-scheduler-webpage"}
+{"level":"debug","time":"2022-02-14T20:57:50.356-0800","caller":"cmd/lt.go:176","msg":"Remote config fetched"}
+{"level":"debug","time":"2022-02-14T20:57:50.407-0800","caller":"core/lifecycle.go:178","msg":"Starting File server"}
+{"level":"debug","time":"2022-02-14T20:57:50.407-0800","caller":"fileserver/setup.go:96","msg":"Starting File server for tunnel info on port: 33000"}
+{"level":"debug","time":"2022-02-14T20:57:50.407-0800","caller":"runtime/asm_amd64.s:1373","msg":"Trying on port 22"}
+{"level":"debug","time":"2022-02-14T20:57:50.407-0800","caller":"runtime/asm_amd64.s:1373","msg":"Trying on port 443"}
+{"level":"debug","time":"2022-02-14T20:57:50.407-0800","caller":"runtime/asm_amd64.s:1373","msg":"Trying over ssh over ws"}
+{"level":"debug","time":"2022-02-14T20:57:50.407-0800","caller":"core/lifecycle.go:138","msg":"Starting sink proxy"}
+{"level":"error","time":"2022-02-14T20:57:50.407-0800","caller":"custom/setup.go:635","msg":"Error while running proxy server on port 70221, error: listen tcp4: address 70221: invalid port"}
+{"level":"error","time":"2022-02-14T20:57:50.407-0800","caller":"core/lifecycle.go:138","msg":"Sink proxy start error: listen tcp4: address 70221: invalid port"}
+{"level":"error","time":"2022-02-14T20:57:50.407-0800","caller":"fileserver/setup.go:96","msg":"Failed to start local file server on port 33000, error :listen tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"warn","time":"2022-02-14T20:57:50.407-0800","caller":"core/lifecycle.go:138","msg":"Restarting sink proxy"}
+{"level":"error","time":"2022-02-14T20:57:50.408-0800","caller":"core/lifecycle.go:178","msg":"File server start error: ERR::FIL::SRV::STR : Unable to start file server :  \nlisten tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted. "}
+{"level":"warn","time":"2022-02-14T20:57:50.408-0800","caller":"core/lifecycle.go:178","msg":"Restarting file proxy"}
+{"level":"debug","time":"2022-02-14T20:57:50.669-0800","caller":"fileserver/setup.go:96","msg":"Starting File server for tunnel info on port: 33000"}
+{"level":"error","time":"2022-02-14T20:57:50.669-0800","caller":"custom/setup.go:635","msg":"Error while running proxy server on port 70221, error: listen tcp4: address 70221: invalid port"}
+{"level":"error","time":"2022-02-14T20:57:50.669-0800","caller":"core/lifecycle.go:138","msg":"Sink proxy start error: listen tcp4: address 70221: invalid port"}
+{"level":"warn","time":"2022-02-14T20:57:50.669-0800","caller":"core/lifecycle.go:138","msg":"Restarting sink proxy"}
+{"level":"error","time":"2022-02-14T20:57:50.669-0800","caller":"fileserver/setup.go:96","msg":"Failed to start local file server on port 33000, error :listen tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:57:50.670-0800","caller":"core/lifecycle.go:178","msg":"File server start error: ERR::FIL::SRV::STR : Unable to start file server :  \nlisten tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted. "}
+{"level":"warn","time":"2022-02-14T20:57:50.670-0800","caller":"core/lifecycle.go:178","msg":"Restarting file proxy"}
+{"level":"debug","time":"2022-02-14T20:57:50.684-0800","caller":"runtime/asm_amd64.s:1373","msg":"WSS connection was successful"}
+{"level":"debug","time":"2022-02-14T20:57:51.127-0800","caller":"runtime/asm_amd64.s:1373","msg":"SSH connection over port 443 successful"}
+{"level":"debug","time":"2022-02-14T20:57:51.152-0800","caller":"fileserver/setup.go:96","msg":"Starting File server for tunnel info on port: 33000"}
+{"level":"error","time":"2022-02-14T20:57:51.152-0800","caller":"custom/setup.go:635","msg":"Error while running proxy server on port 70221, error: listen tcp4: address 70221: invalid port"}
+{"level":"error","time":"2022-02-14T20:57:51.152-0800","caller":"fileserver/setup.go:96","msg":"Failed to start local file server on port 33000, error :listen tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:57:51.152-0800","caller":"core/lifecycle.go:138","msg":"Sink proxy start error: listen tcp4: address 70221: invalid port"}
+{"level":"warn","time":"2022-02-14T20:57:51.152-0800","caller":"core/lifecycle.go:138","msg":"Restarting sink proxy"}
+{"level":"error","time":"2022-02-14T20:57:51.152-0800","caller":"core/lifecycle.go:178","msg":"File server start error: ERR::FIL::SRV::STR : Unable to start file server :  \nlisten tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted. "}
+{"level":"warn","time":"2022-02-14T20:57:51.152-0800","caller":"core/lifecycle.go:178","msg":"Restarting file proxy"}
+{"level":"debug","time":"2022-02-14T20:57:51.300-0800","caller":"runtime/asm_amd64.s:1373","msg":"SSH connection over port 22 successful"}
+{"level":"debug","time":"2022-02-14T20:57:51.320-0800","caller":"runtime/asm_amd64.s:1373","msg":"SSH connection over ws successful"}
+{"level":"info","time":"2022-02-14T20:57:51.320-0800","caller":"core/lifecycle.go:115","msg":"Using ssh(over_22) :: connection mode"}
+{"level":"info","time":"2022-02-14T20:57:51.320-0800","caller":"cmd/lt.go:176","msg":"Launching tunnel"}
+{"level":"debug","time":"2022-02-14T20:57:51.320-0800","caller":"core/lifecycle.go:233","msg":"Starting control ws connection at wss://ts.lambdatest.com/monitor"}
+{"level":"debug","time":"2022-02-14T20:57:51.658-0800","caller":"core/lifecycle.go:233","msg":"Control ws channel opened"}
+{"level":"debug","time":"2022-02-14T20:57:51.658-0800","caller":"runtime/asm_amd64.s:1373","msg":"Starting message listener on control connection"}
+{"level":"debug","time":"2022-02-14T20:57:51.696-0800","caller":"runtime/asm_amd64.s:1373","msg":"Sending tunnel registered message to channels"}
+{"level":"debug","time":"2022-02-14T20:57:51.696-0800","caller":"runtime/asm_amd64.s:1373","msg":"Tunnel registered message received on control channel"}
+{"level":"debug","time":"2022-02-14T20:57:51.696-0800","caller":"core/lifecycle.go:283","msg":"Using 5 ssh connection"}
+{"level":"debug","time":"2022-02-14T20:57:51.696-0800","caller":"runtime/asm_amd64.s:1373","msg":"controller bus registered"}
+{"level":"debug","time":"2022-02-14T20:57:52.199-0800","caller":"fileserver/setup.go:96","msg":"Starting File server for tunnel info on port: 33000"}
+{"level":"error","time":"2022-02-14T20:57:52.199-0800","caller":"custom/setup.go:635","msg":"Error while running proxy server on port 70221, error: listen tcp4: address 70221: invalid port"}
+{"level":"error","time":"2022-02-14T20:57:52.199-0800","caller":"fileserver/setup.go:96","msg":"Failed to start local file server on port 33000, error :listen tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:57:52.199-0800","caller":"core/lifecycle.go:138","msg":"Sink proxy start error: listen tcp4: address 70221: invalid port"}
+{"level":"error","time":"2022-02-14T20:57:52.199-0800","caller":"core/lifecycle.go:178","msg":"File server start error: ERR::FIL::SRV::STR : Unable to start file server :  \nlisten tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted. "}
+{"level":"warn","time":"2022-02-14T20:57:52.199-0800","caller":"core/lifecycle.go:138","msg":"Restarting sink proxy"}
+{"level":"warn","time":"2022-02-14T20:57:52.199-0800","caller":"core/lifecycle.go:178","msg":"Restarting file proxy"}
+{"level":"debug","time":"2022-02-14T20:57:52.721-0800","caller":"runtime/asm_amd64.s:1373","msg":"Successfully started sshd listener on port: 15423"}
+{"level":"debug","time":"2022-02-14T20:57:52.722-0800","caller":"runtime/asm_amd64.s:1373","msg":"Successfully started sshd listener on port: 1721"}
+{"level":"info","time":"2022-02-14T20:57:52.722-0800","caller":"runtime/asm_amd64.s:1373","msg":"You can start testing now"}
+{"level":"info","time":"2022-02-14T20:57:52.722-0800","caller":"runtime/asm_amd64.s:1373","msg":"Tunnel ID: 1038713"}
+{"level":"debug","time":"2022-02-14T20:57:52.722-0800","caller":"runtime/asm_amd64.s:1373","msg":"Remote Listener Started on Port 13613"}
+{"level":"debug","time":"2022-02-14T20:57:52.737-0800","caller":"runtime/asm_amd64.s:1373","msg":"Successfully started sshd listener on port: 18521"}
+{"level":"debug","time":"2022-02-14T20:57:52.752-0800","caller":"runtime/asm_amd64.s:1373","msg":"Successfully started sshd listener on port: 9120"}
+{"level":"debug","time":"2022-02-14T20:57:52.752-0800","caller":"runtime/asm_amd64.s:1373","msg":"Successfully started sshd listener on port: 15430"}
+{"level":"debug","time":"2022-02-14T20:57:54.223-0800","caller":"fileserver/setup.go:96","msg":"Starting File server for tunnel info on port: 33000"}
+{"level":"error","time":"2022-02-14T20:57:54.223-0800","caller":"custom/setup.go:635","msg":"Error while running proxy server on port 70221, error: listen tcp4: address 70221: invalid port"}
+{"level":"error","time":"2022-02-14T20:57:54.223-0800","caller":"core/lifecycle.go:138","msg":"Sink proxy start error: listen tcp4: address 70221: invalid port"}
+{"level":"warn","time":"2022-02-14T20:57:54.223-0800","caller":"core/lifecycle.go:138","msg":"Restarting sink proxy"}
+{"level":"error","time":"2022-02-14T20:57:54.223-0800","caller":"fileserver/setup.go:96","msg":"Failed to start local file server on port 33000, error :listen tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:57:54.223-0800","caller":"core/lifecycle.go:178","msg":"File server start error: ERR::FIL::SRV::STR : Unable to start file server :  \nlisten tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted. "}
+{"level":"warn","time":"2022-02-14T20:57:54.223-0800","caller":"core/lifecycle.go:178","msg":"Restarting file proxy"}
+{"level":"debug","time":"2022-02-14T20:57:58.051-0800","caller":"fileserver/setup.go:96","msg":"Starting File server for tunnel info on port: 33000"}
+{"level":"error","time":"2022-02-14T20:57:58.051-0800","caller":"custom/setup.go:635","msg":"Error while running proxy server on port 70221, error: listen tcp4: address 70221: invalid port"}
+{"level":"error","time":"2022-02-14T20:57:58.051-0800","caller":"core/lifecycle.go:138","msg":"Sink proxy start error: listen tcp4: address 70221: invalid port"}
+{"level":"warn","time":"2022-02-14T20:57:58.051-0800","caller":"core/lifecycle.go:138","msg":"Restarting sink proxy"}
+{"level":"error","time":"2022-02-14T20:57:58.051-0800","caller":"fileserver/setup.go:96","msg":"Failed to start local file server on port 33000, error :listen tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"error","time":"2022-02-14T20:57:58.051-0800","caller":"core/lifecycle.go:178","msg":"File server start error: ERR::FIL::SRV::STR : Unable to start file server :  \nlisten tcp4 :33000: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted. "}
+{"level":"warn","time":"2022-02-14T20:57:58.051-0800","caller":"core/lifecycle.go:178","msg":"Restarting file proxy"}
+{"level":"error","time":"2022-02-14T20:57:58.051-0800","caller":"cmd/lt.go:176","msg":"Err occurred: ERR::FS::MAX::ATTEMPT : File server restart max attempt reached "}
+{"level":"error","time":"2022-02-14T20:57:58.051-0800","caller":"cmd/lt.go:176","msg":"Aborting"}
+{"level":"debug","time":"2022-02-14T20:57:58.323-0800","caller":"runtime/asm_amd64.s:1373","msg":"Normal closure occurred..........."}
+{"level":"debug","time":"2022-02-14T20:57:58.323-0800","caller":"runtime/asm_amd64.s:1373","msg":"Write loop ended for control channel"}
+{"level":"info","time":"2022-02-14T20:57:58.329-0800","caller":"cmd/lt.go:176","msg":"Tunnel stopped successfully"}
+{"level":"debug","time":"2022-02-14T20:57:58.330-0800","caller":"runtime/asm_amd64.s:1373","msg":"Shutting down the server"}
+{"level":"debug","time":"2022-02-14T20:57:58.330-0800","caller":"runtime/asm_amd64.s:1373","msg":"Shutting down the server"}
+{"level":"debug","time":"2022-02-14T20:57:58.330-0800","caller":"runtime/asm_amd64.s:1373","msg":"Shutting down the server"}
+{"level":"debug","time":"2022-02-14T20:57:58.330-0800","caller":"runtime/asm_amd64.s:1373","msg":"Shutting down the server"}
+{"level":"debug","time":"2022-02-14T20:57:58.330-0800","caller":"runtime/asm_amd64.s:1373","msg":"Shutting down the server"}
+{"level":"debug","time":"2022-02-14T20:57:58.330-0800","caller":"runtime/asm_amd64.s:1373","msg":"Shutting down the server"}
+{"level":"error","time":"2022-02-14T20:57:58.330-0800","caller":"runtime/asm_amd64.s:1373","msg":"Aborting"}

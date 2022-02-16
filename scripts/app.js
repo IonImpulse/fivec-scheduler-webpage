@@ -1272,6 +1272,7 @@ function addNewSchedule() {
 			try {
 				let name = document.getElementById("schedule-name").value;
 				let color = document.getElementById("schedule-color").value;
+				let copy = document.getElementById("schedule-copy").checked;
 
 				if (name == "") {
 					throw new Error("Please enter a name for the schedule.")
@@ -1284,9 +1285,12 @@ function addNewSchedule() {
 				console.log(color);
 
 				return {
-					code: name,
-					color: color == "#FFFFFF" ? undefined : color,
-					courses: [],
+					schedule: {
+						code: name,
+						color: color == "#FFFFFF" ? undefined : color,
+						courses: [],
+					},
+					copy: copy,
 				}
 
 			} catch (error) {
@@ -1297,13 +1301,16 @@ function addNewSchedule() {
 		},
 	}).then(async (result) => {
 		if (result.value) {
-			let new_schedule = result.value;
+			let new_schedule = result.value.schedule;
+
+			if (result.value.copy) {
+				new_schedule.courses = loaded_local_courses;
+			}
 
 			loaded_course_lists.push(new_schedule);
 			await save_json_data("loaded_course_lists", loaded_course_lists);
 
 			setLoadedSchedule(new_schedule.code);
-
 		}
 	});		
 
@@ -1519,10 +1526,12 @@ const new_schedule_popup = `
 
 const changelog_popup = `
 <div id="changelog-container">
-	<b>v1.8 Beta</b>
+	<b>v1.9 Beta</b>
 	<ul>
-		<li>Added Co/Prerequisites!!! Co/prereqs will now appear when searching, and under the description of each course.</li>
-		<li>Added ability to filter by co/prerequisites with "coreq:[none, some, "exact match]" and "prereq:[none, some, "exact match]"</li>	
+		<li>Added <b>multi-schedule</b> functionality! This allows you to create alternative schedules to plan out your courses. 
+		Additionally, you can name your schedules and change their <b>colors</b>.</li>
+		<li>Added automatic course links in descriptions and reqs!</li>
+		<li>Improved buttons, making them all use a single cohesive design.</li>
 	</ul>
 </div>
 `;

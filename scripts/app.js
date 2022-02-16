@@ -1,9 +1,9 @@
 // Here we can adjust defaults for all color pickers on page:
 jscolor.presets.default = {
-    position: 'right',
-    palette: colors,
-    //paletteCols: 12,
-    //hideOnPaletteClick: true,
+	position: 'right',
+	palette: colors,
+	//paletteCols: 12,
+	//hideOnPaletteClick: true,
 };
 
 // *****
@@ -243,8 +243,8 @@ async function editCourse() {
 		populateField("course-instructors", course.instructors[0]);
 		populateField("course-description", course.description);
 		populateField("course-notes", course.notes);
-		populateField("course-start-time", course.timing[0].start_time.substring(0,5));
-		populateField("course-end-time", course.timing[0].end_time.substring(0,5));
+		populateField("course-start-time", course.timing[0].start_time.substring(0, 5));
+		populateField("course-end-time", course.timing[0].end_time.substring(0, 5));
 		populateField("course-location", course.timing[0].location.room);
 
 		for (let day_name of weekdays_full) {
@@ -322,11 +322,11 @@ function screenshotToCanvas(canvas, source) {
 				icon: 'error',
 				html:
 					`Error: ${e.message}`,
-					customClass: {
-						confirmButton: 'default-button swal confirm',
-						cancelButton: 'default-button swal cancel',
-					},
-					buttonsStyling: false,
+				customClass: {
+					confirmButton: 'default-button swal confirm',
+					cancelButton: 'default-button swal cancel',
+				},
+				buttonsStyling: false,
 			})
 		});
 }
@@ -373,7 +373,7 @@ async function buttonSearch() {
 				confirmButton: 'default-button swal confirm',
 				cancelButton: 'default-button swal cancel',
 			},
-			buttonsStyling: false,			
+			buttonsStyling: false,
 		});
 	} else {
 		Swal.fire({
@@ -442,12 +442,12 @@ async function buttonSearch() {
 
 		});
 
-		document.getElementsByClassName("swal2-popup")[0].addEventListener("keydown", function (event) {			
+		document.getElementsByClassName("swal2-popup")[0].addEventListener("keydown", function (event) {
 			if (event.getModifierState("Control")
 				|| event.key.includes("Arrow")) {
 				return;
 			}
-			
+
 			focusAndInput(event);
 		});
 
@@ -673,18 +673,22 @@ async function backgroundCourseSearch() {
 		return;
 	}
 
-	searching_worker.onmessage = function(e) {
-        const html_courses = e.data;
+	searching_worker.onmessage = function (e) {
+		const html_courses = e.data;
 
 		appendCourseHTML(html_courses);
-				
-		postProcessSearch(document.getElementById("course-input").value, html_courses);
-    }
 
-    searching_worker.postMessage([input.value, all_courses_global, colors, hmc_mode]);
+		postProcessSearch(document.getElementById("course-input").value, html_courses);
+	}
+
+	searching_worker.postMessage([input.value, all_courses_global, colors, hmc_mode]);
 }
 
- function appendCourseHTML(courses) {
+async function sleep(ms) {
+	return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function appendCourseHTML(courses) {
 	let output = document.getElementById("course-search-results");
 
 	if (courses.length == 0) {
@@ -692,8 +696,36 @@ async function backgroundCourseSearch() {
 
 		return;
 	} else {
+		let s = "s";
+
+		if (courses.length == 1) {
+			s = "";
+		}
+
+		courses.unshift(`<b>${courses.length} course${s} found. Click on a course to select</b>`);
 		// Superfast html updater
-		replaceHtml(output, courses.join("\n"));
+		// Append courses in blocks of 50, waiting 100 ms between each block
+		let i = 0;
+		let j = 50;
+		replaceHtml(output, courses.slice(i, j).join("\n"));
+
+		while (i < courses.length) {
+			for (let s of selected_courses) {
+				let course = document.getElementById(s);
+
+				if (course != null) {
+					course.classList.add("selected");
+				}
+			}
+
+			i = j;
+			j += 50;
+
+			await sleep(100);
+
+			output.innerHTML += courses.slice(i, j).join("\n");
+		}
+
 		for (let s of selected_courses) {
 			let course = document.getElementById(s);
 
@@ -864,6 +896,8 @@ async function deleteCourse(identifier) {
 
 	if (found) {
 		await save_json_data("loaded_local_courses", loaded_local_courses);
+		await save_json_data("loaded_schedule", loaded_schedule);
+		await save_json_data("loaded_course_lists", loaded_course_lists);
 		updateSchedule();
 		return;
 	}
@@ -895,7 +929,7 @@ async function toggleCourseVisibility(identifier) {
 	if (e.stopPropagation) e.stopPropagation();
 
 	let el = document.querySelector(`.course-loaded.${identifier}-loaded`);
-	
+
 	el.firstElementChild.classList.toggle("visible");
 
 	if (hidden_courses.includes(identifier)) {
@@ -927,8 +961,8 @@ async function setLoadedSchedule(code) {
 	// Get from course lists
 	for (let i = 0; i < loaded_course_lists.length; i++) {
 		if (loaded_course_lists[i].code == code) {
-			let found_schedule = loaded_course_lists.splice(i,1)[0];
-			
+			let found_schedule = loaded_course_lists.splice(i, 1)[0];
+
 			loaded_schedule.code = found_schedule.code;
 			loaded_schedule.index = i;
 			loaded_schedule.color = found_schedule.color;
@@ -950,13 +984,13 @@ async function setLoadedSchedule(code) {
 		behavior: "instant",
 		block: "center",
 		inline: "center"
-		});
+	});
 
-} 
+}
 
 async function toggleCourseListVisibility(code) {
 	let el = document.getElementById(`course-list-${code}`);
-	
+
 	el.firstElementChild.classList.toggle("visible");
 
 	if (hidden_course_lists.includes(code)) {
@@ -970,8 +1004,8 @@ async function toggleCourseListVisibility(code) {
 	await save_json_data("hidden_course_lists", hidden_course_lists);
 }
 
-async function deleteCourseList(e=false, code) {
-	if(e) {
+async function deleteCourseList(e = false, code) {
+	if (e) {
 		// Stop bubbling onclick event
 		if (!e) var e = window.event;
 		e.cancelBubble = true;
@@ -982,10 +1016,10 @@ async function deleteCourseList(e=false, code) {
 	console.log("deleting" + code);
 
 	if (loaded_schedule.code == code) {
-		await setLoadedSchedule(loaded_course_lists[Math.max(0,loaded_schedule.index - 1)].code);
+		await setLoadedSchedule(loaded_course_lists[Math.max(0, loaded_schedule.index - 1)].code);
 		await save_json_data("loaded_schedule", loaded_schedule);
 	}
-	
+
 	for (let i = 0; i < loaded_course_lists.length; i++) {
 		let course_list = loaded_course_lists[i];
 
@@ -1003,8 +1037,8 @@ async function deleteCourseList(e=false, code) {
 	updateLoadedCourseLists();
 }
 
-async function showCourseListSettings(e, code) {
-	if(e) {
+async function showCourseListSettings(e, code, color) {
+	if (e) {
 		// Stop bubbling onclick event
 		if (!e) var e = window.event;
 		e.cancelBubble = true;
@@ -1022,7 +1056,52 @@ async function showCourseListSettings(e, code) {
 			cancelButton: 'default-button swal cancel',
 		},
 		buttonsStyling: false,
+		preConfirm: async () => {
+			try {
+				let new_code = document.getElementById("schedule-name").value;
+				let color = document.getElementById("schedule-color").value;
+	
+				if (new_code == "") {
+					throw new Error("Please enter a valid name");
+				}
+	
+				return {
+					new_code: new_code,
+					color: color,
+				}
+	
+			} catch (error) {
+				Swal.showValidationMessage(
+					`${error}`
+				)
+			}
+	
+		},
+	}).then(async (result) => {
+
+		if (loaded_schedule.code == code) {
+			loaded_schedule.code = result.value.new_code;
+			loaded_schedule.color = result.value.color;
+			await save_json_data("loaded_schedule", loaded_schedule);
+		} else {
+			// Find in loaded_course_lists
+			for (let i = 0; i < loaded_course_lists.length; i++) {
+				if (loaded_course_lists[i].code == code) {
+					loaded_course_lists[i].code = result.value.new_code;
+					loaded_course_lists[i].color = result.value.color;
+					await save_json_data("loaded_course_lists", loaded_course_lists);
+					break;
+				}
+			}
+		}
+
+		updateSchedule();
+
 	});
+
+	document.getElementById("schedule-name").value = code;
+	document.getElementById("schedule-color").value = color;
+
 	document.getElementById("schedule-copy").remove();
 	// Remove the label, it doesn't have an ID so we have to 
 	// find by tag and remove the 3rd (2nd index) element
@@ -1248,7 +1327,7 @@ function toggleCreditMode() {
 	}
 
 	updateCredits();
-	updateDescAndSearcher(full=true).then(() => {
+	updateDescAndSearcher(full = true).then(() => {
 		setCourseDescription(last_course_desc);
 	});
 
@@ -1304,7 +1383,7 @@ function addNewSchedule() {
 			let new_schedule = result.value.schedule;
 
 			if (result.value.copy) {
-				new_schedule.courses = loaded_local_courses;
+				new_schedule.courses = JSON.parse(JSON.stringify(loaded_local_courses));
 			}
 
 			loaded_course_lists.push(new_schedule);
@@ -1312,7 +1391,7 @@ function addNewSchedule() {
 
 			setLoadedSchedule(new_schedule.code);
 		}
-	});		
+	});
 
 	document.getElementById("schedule-color").setAttribute("data-jscolor", `{preset: '${localStorage.getItem("theme") == 'dark' ? 'dark' : ''}'}`);
 	jscolor.install();
@@ -1402,7 +1481,7 @@ const custom_course_popup = `
         <button id="edit-course" class="default-button unselectable course-button" onclick="editCourse()">Edit</button>
     </div>
 </div>
-`.replace("\n",'');
+`.replace("\n", '');
 
 
 const search_popup = `
@@ -1521,7 +1600,7 @@ const new_schedule_popup = `
 			</div>
 	</div>
 </div>		
-`;	
+`;
 
 
 const changelog_popup = `

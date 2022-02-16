@@ -150,7 +150,7 @@ function createLoadedCourseListDiv(code, color) {
     let settings_button = document.createElement("div");
     settings_button.className = "settings-course course-list";
     settings_button.onclick = function () {
-        showCourseListSettings(event, code);
+        showCourseListSettings(event, code, color);
     };
 
     if (code != "Main") {

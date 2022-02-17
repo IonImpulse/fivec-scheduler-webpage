@@ -18,8 +18,8 @@ async function startup() {
         });
     }
     // Then, call an update request
-    let local_update = update_from_local();
     let update = update_database(full=false);
+    await update_from_local();
     // Add PWA install prompt
     pwaInstallPrompt();
 
@@ -31,8 +31,6 @@ async function startup() {
     window.addEventListener('resize', updateScheduleSizing);
     updateScheduleSizing();
 
-    await local_update;
-    
     updateSchedule();
     // Then, check if site was loaded from
     // from QR code w/ course list code
@@ -54,7 +52,7 @@ async function startup() {
     // Create reusable web worker threads
     desc_worker = new Worker('scripts/workers/descriptions.js?v=1.8.8');
     searcher_worker = new Worker('scripts/workers/searcher.js?v=1.8.1');
-	searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.8.4');
+	searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.8.8');
 
     // Start worker threads to generate descriptions + searcher
     updateDescAndSearcher(false);
@@ -79,6 +77,10 @@ function updateTimeLine() {
 
     if (el != null) {
         el.remove()
+    }
+
+    if (!settings.show_time_line) {
+        return;
     }
 
     let current_time = new Date();

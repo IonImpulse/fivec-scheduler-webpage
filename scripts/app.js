@@ -667,14 +667,14 @@ async function buttonSettings() {
 
 	let time = document.getElementById("show-current-time")
 	time.checked = settings.show_time_line;
-	time.addEventListener("change", () => {
+	time.addEventListener("click", () => {
 		settings.show_time_line = time.checked;
 		saveSettings();
 	});
 
 	let credits = document.getElementById("hmc-credits")
 	credits.checked = settings.hmc_mode;
-	credits.addEventListener("change", () => {
+	credits.addEventListener("click", () => {
 		settings.hmc_mode = credits.checked;
 		saveSettings();
 	});
@@ -731,6 +731,9 @@ async function appendCourseHTML(courses) {
 			s = "";
 		}
 
+		if (courses[0].startsWith("<b>")) {
+			courses[0].remove();
+		}
 		courses.unshift(`<b>${courses.length >= 100 ? "100+" : courses.length} course${s} found. Click on a course to select it.</b>`);
 		// Superfast html updater
 		replaceHtml(output, courses.join("\n"));
@@ -1470,7 +1473,7 @@ async function clearAllData() {
 const settings_popup = 
 `
 <div class="settings-box">
-	<div id="settings-panel">
+	<div id="settings-panel" class="settings-zone">
 		<div class="settings-zone">
 			<h2><u>Status</u></h2>
 			<div class="status"><b>API:</b> Waiting...</div>
@@ -1491,14 +1494,14 @@ const settings_popup =
 
 		<div class="settings-zone">
 			<h2><u>Danger Zone</u></h2>
-			<button class="default-button swal cancel up-down-margin unselectable" onclick="clearCourses()">Delete Loaded Courses</button>
-			<button class="default-button swal cancel up-down-margin unselectable" onclick="clearSchedules()">Delete All Schedules</button>
-			<button class="default-button swal cancel up-down-margin unselectable" onclick="clearAllData()">Delete All Data</button>
+			<button class="default-button swal cancel settings-button unselectable" onclick="clearCourses()">Delete Loaded Courses</button>
+			<button class="default-button swal cancel settings-button unselectable" onclick="clearSchedules()">Delete All Schedules</button>
+			<button class="default-button swal cancel settings-button unselectable" onclick="clearAllData()">Delete All Data</button>
 		</div>
 	</div>
 
 	<div class="settings-zone about-desc"> 
-		<h1><u>About</u></h1>
+		<h2><u>About</u></h2>
 		<p>
 		Created By: <b>Ethan Vazquez</b> HMC '25<BR>
 		Send comments/questions/bug reports to:<BR><b>support@5scheduler.io</b><BR><BR>

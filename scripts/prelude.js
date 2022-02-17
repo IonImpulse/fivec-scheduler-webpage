@@ -104,9 +104,9 @@ function getTheme() {
 }
 
 function getSettings() {
-    let loaded_settings = JSON.parse(localStorage.getItem("settings")) ?? {};
+    let loaded_settings = JSON.parse(localStorage.getItem("settings"));
 
-    if (loaded_settings != {}) {
+    if (loaded_settings != null) {
         settings = loaded_settings;
     }
 }

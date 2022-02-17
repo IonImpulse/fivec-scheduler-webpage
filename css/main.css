@@ -302,13 +302,6 @@ canvas {
   margin-left: 10px;
 }
 
-.up-down-margin {
-  margin-left: 0px;
-  margin-right: 0px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
 .default-button.swal.cancel:hover {
   background-color: var(--deny);
   color: var(--text-main);
@@ -561,6 +554,7 @@ canvas {
 
 .swal-medium-wide {
   width: 60vw !important;
+  height: 80vh !important;
 }
 
 .swal-small-wide {
@@ -1280,13 +1274,29 @@ label {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+  height: 100%;
+  overflow-y: auto;
 }
 
 .settings-zone {
   display: flex;
   flex-direction: column;
   text-align: left;
-  padding: var(--padding);
+  font-size: 16px;
+}
+
+h2,h1 {
+  font-size: 20px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.settings-button {
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 14px !important;
 }
 
 /* =============================

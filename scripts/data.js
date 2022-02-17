@@ -9,6 +9,7 @@ const UPDATE_IF_STALE = function (timestamp) { return "updateIfStale/" + timesta
 const GET_UNIQUE_CODE = "getUniqueCode";
 const GET_COURSE_LIST_BY_CODE = function (code) { return "getCourseListByCode/" + code; }
 const GET_LOCATIONS = "getLocations"
+const STATUS = "status"
 
 async function load_json_data(name) {
     return localforage.getItem(name);
@@ -18,48 +19,26 @@ async function save_json_data(name, data) {
     return localforage.setItem(name, data);
 }
 
+async function update_from_local() {
+    loaded_local_courses = await load_json_data("loaded_local_courses") ?? [];
+    loaded_schedule = await load_json_data("loaded_schedule") ?? {code:"Main", index:0, color: undefined};
+    loaded_course_lists = await load_json_data("loaded_course_lists") ?? [];
+    loaded_custom_courses = await load_json_data("loaded_custom_courses") ?? [];
+    starred_courses = await load_json_data("starred_courses") ?? [];
+    hidden_courses = await load_json_data("hidden_courses") ?? [];
+    hidden_course_lists = await load_json_data("hidden_course_lists") ?? [];
+    locations = await load_json_data("locations") ?? {};
+}
+
 async function update_database(full=true) {
     console.debug("Updating database...");
     let current_data = await load_json_data("course_data");
    
-    loaded_local_courses = await load_json_data("loaded_local_courses");
-    loaded_schedule = await load_json_data("loaded_schedule");
-    loaded_course_lists = await load_json_data("loaded_course_lists");
-    loaded_custom_courses = await load_json_data("loaded_custom_courses");
-    starred_courses = await load_json_data("starred_courses");
-    hidden_courses = await load_json_data("hidden_courses");
-    hidden_course_lists = await load_json_data("hidden_course_lists");
+    if (full) {
+        await update_from_local();
+    }
 
     let location_update = update_locations();
-
-    if (loaded_local_courses == null) {
-        loaded_local_courses = [];
-    }
-
-    if (loaded_course_lists == null) {
-        loaded_course_lists = [];
-    }
-
-    if (loaded_custom_courses == null) {
-        loaded_custom_courses = [];
-    }
-
-    if (starred_courses == null) {
-        starred_courses = [];
-    }
-
-    if (hidden_courses == null) {
-        hidden_courses = [];
-    }
-
-    if (hidden_course_lists == null) {
-        hidden_course_lists = [];
-    }
-
-    if (loaded_schedule == null) {
-        loaded_schedule = {code:"Main", index:0, color: undefined};
-    }
-    
 
     let response;
     let json;

@@ -32,9 +32,14 @@ var loaded_course_lists = [];
 var loaded_custom_courses = [];
 var vertical_layout = false;
 var show_changelog = true;
-var hmc_mode = false;
 var last_course_desc = 0;
 var loaded_schedule = {};
+
+// Default settings
+var settings = {
+    hmc_mode: false,
+    show_time_line: true,
+};
 
 // Day names for various sets
 const days_full = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -98,11 +103,11 @@ function getTheme() {
     }
 }
 
-function getSchoolMode() {
-    let mode = localStorage.getItem("hmc_mode");
+function getSettings() {
+    let loaded_settings = JSON.parse(localStorage.getItem("settings")) ?? {};
 
-    if (mode == "true") {
-        hmc_mode = true;
+    if (loaded_settings != {}) {
+        settings = loaded_settings;
     }
 }
 
@@ -132,7 +137,7 @@ document.addEventListener("keydown", function (event) {
     }
 });
 
-getSchoolMode();
+getSettings();
 getVersion();
 getTheme();
 isVerticalLayout();

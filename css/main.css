@@ -42,7 +42,7 @@
   --dl-icon: url(../img/dl-light.svg);
   --custom-course-icon: url(../img/custom-course-light.svg);
   --checked-icon: url(../img/checked.svg);
-  --settings-icon: url(../img/settings.svg);
+  --settings-icon: url(../img/settings-light.svg);
   --hover-effect: 0.96;
 }
 
@@ -75,6 +75,7 @@
   --cal-icon: url(../img/cal-dark.svg);
   --dl-icon: url(../img/dl-dark.svg);
   --custom-course-icon: url(../img/custom-course-dark.svg);
+  --settings-icon: url(../img/settings-dark.svg);
   --hover-effect: 1.2;
 }
 
@@ -301,6 +302,13 @@ canvas {
   margin-left: 10px;
 }
 
+.up-down-margin {
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
 .default-button.swal.cancel:hover {
   background-color: var(--deny);
   color: var(--text-main);
@@ -355,8 +363,8 @@ canvas {
   background-image: var(--theme-icon);
 }
 
-.default-button.about {
-  background-image: var(--about-icon);
+.default-button.settings {
+  background-image: var(--settings-icon);
 }
 
 .default-button.load {
@@ -820,7 +828,7 @@ canvas {
 }
 
 .settings-course {
-  background-image: url(../img/settings.svg);
+  background-image: url(../img/settings-dark.svg);
   background-size: cover;
   height: 1vmax;
   width: 1vmax;
@@ -852,11 +860,8 @@ canvas {
   font-size: 18px;
 }
 
-#about-desc {
-  color: var(--text-main);
-  font: 16px var(--main-font), sans-serif;
-  text-align: center;
-  line-height: 20px;
+.about-desc {
+  text-align: center !important;
 }
 
 .swal2-title,
@@ -1269,6 +1274,19 @@ label {
 .swal-short {
   width: 30%;
   height: 70%;
+}
+
+.settings-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.settings-zone {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  padding: var(--padding);
 }
 
 /* =============================

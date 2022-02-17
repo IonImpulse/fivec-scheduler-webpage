@@ -18,6 +18,7 @@ async function startup() {
         });
     }
     // Then, call an update request
+    let local_update = update_from_local();
     let update = update_database(full=false);
     // Add PWA install prompt
     pwaInstallPrompt();
@@ -30,8 +31,8 @@ async function startup() {
     window.addEventListener('resize', updateScheduleSizing);
     updateScheduleSizing();
 
-    await update;
-    update_loop();
+    await local_update;
+    
     updateSchedule();
     // Then, check if site was loaded from
     // from QR code w/ course list code
@@ -46,13 +47,18 @@ async function startup() {
         showChangelog();
     }
 
+    
+    await update;
+    update_loop();
+
     // Create reusable web worker threads
     desc_worker = new Worker('scripts/workers/descriptions.js?v=1.8.8');
     searcher_worker = new Worker('scripts/workers/searcher.js?v=1.8.1');
-	searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.8.2');
+	searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.8.4');
 
     // Start worker threads to generate descriptions + searcher
     updateDescAndSearcher(false);
+    updateSchedule();
 }
 
 var installEvent;
@@ -162,7 +168,7 @@ async function updateDescAndSearcher(full=true) {
         all_courses_global = e.data;
     }
 
-    desc_worker.postMessage([[], all_courses_global, loaded_custom_courses, hmc_mode, full]);
+    desc_worker.postMessage([[], all_courses_global, loaded_custom_courses, settings.hmc_mode, full]);
     searcher_worker.postMessage([all_courses_global]);
 }
 
@@ -594,7 +600,7 @@ function sumCredits(courses) {
     let credits = 0;
 
     for (let course of courses) {
-        if (hmc_mode) {
+        if (settings.hmc_mode) {
             credits += course.credits_hmc ?? 0;
         } else {
             credits += course.credits ?? 0;

@@ -413,7 +413,7 @@ async function buttonSearch() {
 		// Set hmc credit mode:
 		let hmc_credit_mode = document.getElementById("hmc-credits");
 
-		hmc_credit_mode.checked = hmc_mode;
+		hmc_credit_mode.checked = settings.hmc_mode;
 
 		let input = document.getElementById("course-input");
 		document.getElementById("course-search-results").addEventListener("keydown", function (event) {
@@ -632,29 +632,33 @@ function buttonTheme() {
 	toggle_theme();
 }
 
-function buttonAbout() {
+async function buttonSettings() {
 	Swal.fire({
-		title: 'About',
-		imageUrl: '/img/favicons/android-chrome-192x192.png',
-		imageWidth: 100,
-		imageHeight: 100,
+		title: 'Settings',
 		customClass: {
 			confirmButton: 'default-button swal confirm',
 			cancelButton: 'default-button swal cancel',
+			popup: 'swal-medium-wide',
 		},
 		buttonsStyling: false,
-		html: `<div id="about-desc"> Created By: <b>Ethan Vazquez</b> HMC '25<BR>` +
-			`Send comments/questions/bug reports to: <b>edv121@outlook.com</b><BR><BR>` +
-			`<b>Webpage Repo:</b> <a href="https://github.com/IonImpulse/fivec-scheduler-webpage">fivec-scheduler-webpage</a><br>` +
-			`Built using <a href="https://www.javatpoint.com/what-is-vanilla-javascript">VanillaJS</a><br>` +
-			`<b>API Repo:</b> <a href="https://github.com/IonImpulse/fivec-scheduler-server">fivec-scheduler-server</a>.<br>` +
-			`Built using <a href="https://www.rust-lang.org/">Rust</a><BR><BR>` +
-			`<b><u>Credits:</b></u><BR>` +
-			`<b>fuzzysort.js</b><br>Created by Stephen Kamenar.<br>Licensed under the MIT License.<br>` +
-			`<b>sweetalert2.js</b><br>Created by Tristan Edwards & Limon Monte.<br>Licensed under the MIT License.<br>` +
-			`<b>qrcodegen.js</b><br>Created by Nayuki.<br>Licensed under the MIT License.<br>` +
-			`<b>rasterizeHTML.js</b><br>Created by cburgmer.<br>Licensed under the MIT License.<br></div>`
+		html: settings_popup
 	});
+
+	let statuses = document.getElementsByClassName("status");
+	
+	let status = await fetch(`${API_URL}${STATUS}`).then(async res => await res.json());
+
+	statuses[0].innerHTML = `<b>API Status:</b> ${status.alive ? "<span class='green'>Online</span>" : "<span class='red'>Offline</span>"}`;
+
+	statuses[1].innerHTML = `<b>Total Courses Loaded:</b> ${all_courses_global.length}`;
+
+	statuses[2].innerHTML = `<b>Loaded Local Courses:</b> ${loaded_local_courses.length}`;
+
+	statuses[3].innerHTML = `<b>Loaded Custom Courses:</b> ${loaded_custom_courses.length}`;
+
+	statuses[4].innerHTML = `<b>Loaded Schedules:</b> ${loaded_course_lists.length}`;
+
+	statuses[5].innerHTML = `<b>Locations:</b> ${Object.keys(locations).length}`;
 }
 
 async function backgroundCourseSearch() {
@@ -681,7 +685,7 @@ async function backgroundCourseSearch() {
 		postProcessSearch(document.getElementById("course-input").value, html_courses);
 	}
 
-	searching_worker.postMessage([input.value, all_courses_global, colors, hmc_mode]);
+	searching_worker.postMessage([input.value, all_courses_global, colors, settings.hmc_mode]);
 }
 
 async function sleep(ms) {
@@ -702,7 +706,7 @@ async function appendCourseHTML(courses) {
 			s = "";
 		}
 
-		courses.unshift(`<b>${courses.length} course${s} found. Click on a course to select</b>`);
+		courses.unshift(`<b>${courses.length} course${s} found. Click on a course to select it.</b>`);
 		// Superfast html updater
 		// Append courses in blocks of 50, waiting 100 ms between each block
 		let i = 0;
@@ -1320,10 +1324,10 @@ function hidePopup(query) {
 }
 
 function toggleCreditMode() {
-	if (hmc_mode) {
-		hmc_mode = false;
+	if (settings.hmc_mode) {
+		settings.hmc_mode = false;
 	} else {
-		hmc_mode = true;
+		settings.hmc_mode = true;
 	}
 
 	updateCredits();
@@ -1331,7 +1335,7 @@ function toggleCreditMode() {
 		setCourseDescription(last_course_desc);
 	});
 
-	localStorage.setItem("hmc_mode", hmc_mode);
+	localStorage.setItem("settings", JSON.stringify(settings));
 }
 
 function addNewSchedule() {
@@ -1400,6 +1404,55 @@ function addNewSchedule() {
 // *****
 // HTML Popups
 // *****
+
+const settings_popup = 
+`
+<div class="settings-box">
+	<div id="settings-panel">
+		<div class="settings-zone">
+			<h2><u>Status</u></h2>
+			<div class="status"><b>API:</b> Waiting...</div>
+			<div class="status"><b>Total Courses Loaded:</b> Waiting...</div>
+			<div class="status"><b>Loaded Local Courses:</b> Waiting...</div>
+			<div class="status"><b>Loaded Custom Courses:</b> Waiting...</div>
+			<div class="status"><b>Loaded Schedules:</b> Waiting...</div>
+			<div class="status"><b>Locations:</b> Waiting...</div>
+		</div>
+
+		<div class="settings-zone">
+			<h2><u>General</u></h2>
+			<label for="show-current-time">Show current time line</label>
+			<input type="checkbox" class="day-checkbox" id="show-current-time"><br>
+			<label for="hmc-credits">HMC Credits</label>
+			<input type="checkbox" class="day-checkbox" id="hmc-credits"><br>
+		</div>
+
+		<div class="settings-zone">
+			<h2><u>Danger Zone</u></h2>
+			<button class="default-button swal cancel up-down-margin unselectable" onclick="clearAllData()">Delete Loaded Courses</button>
+			<button class="default-button swal cancel up-down-margin unselectable" onclick="clearAllData()">Delete All Schedules</button>
+			<button class="default-button swal cancel up-down-margin unselectable" onclick="clearAllData()">Delete All Data</button>
+		</div>
+	</div>
+
+	<div class="settings-zone about-desc"> 
+		<h1><u>About</u></h1>
+		<p>
+		Created By: <b>Ethan Vazquez</b> HMC '25<BR>
+		Send comments/questions/bug reports to:<BR><b>edv121@outlook.com</b><BR><BR>
+		<b>Webpage Repo:</b> <a href="https://github.com/IonImpulse/fivec-scheduler-webpage">fivec-scheduler-webpage</a><br>
+		Built using <a href="https://www.javatpoint.com/what-is-vanilla-javascript">JavaScript</a><br>
+		<b>API Repo:</b> <a href="https://github.com/IonImpulse/fivec-scheduler-server">fivec-scheduler-server</a>.<br>
+		Built using <a href="https://www.rust-lang.org/">Rust</a><BR><BR>
+		<b><u>Credits:</b></u><BR>
+		<b>fuzzysort.js</b><br>Created by Stephen Kamenar.<br>Licensed under the MIT License.<br>
+		<b>sweetalert2.js</b><br>Created by Tristan Edwards & Limon Monte.<br>Licensed under the MIT License.<br>
+		<b>qrcodegen.js</b><br>Created by Nayuki.<br>Licensed under the MIT License.<br>
+		<b>rasterizeHTML.js</b><br>Created by cburgmer.<br>Licensed under the MIT License.<br>
+		</p>
+	</div>
+</div>
+`;
 
 const custom_course_popup = `
 <div class="custom-course-manager">
@@ -1610,6 +1663,8 @@ const changelog_popup = `
 		<li>Added <b>multi-schedule</b> functionality! This allows you to create alternative schedules to plan out your courses. 
 		Additionally, you can name your schedules and change their <b>colors</b>.</li>
 		<li>Added automatic course links in descriptions and reqs!</li>
+		<li>Added settings panel</li>
+		<li>Improved search results with staggered loading.</li>
 		<li>Improved buttons, making them all use a single cohesive design.</li>
 	</ul>
 </div>

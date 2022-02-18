@@ -34,7 +34,8 @@ async function startup() {
     updateSchedule();
     // Then, check if site was loaded from
     // from QR code w/ course list code
-    loadPossibleCourseList();
+    await loadPossibleParams();
+
 
     // Remove fade-in class
     let fader = document.getElementById("fader")
@@ -652,11 +653,17 @@ async function intakeCourseData(data) {
     }
 }
 
-async function loadPossibleCourseList() {
+async function loadPossibleParams() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
 
     const code = urlParams.get('load');
+
+    const search = urlParams.get('search');
+
+    if (search != null) {
+        addSearchFilter(search);
+    }
 
     if (code != null) {
         let response = await fetch(`${API_URL}${GET_COURSE_LIST_BY_CODE(code.toUpperCase())}`)
@@ -667,14 +674,18 @@ async function loadPossibleCourseList() {
             if (data != null) {
                 await intakeCourseData(data);
             }
-
-            window.location.href = window.location.href.split("?")[0];
         } else {
             Swal.showValidationMessage(
                 `Invalid Code! ${error}`
             )
         }
     }
+
+    // Reset url so bookmarks don't get messed up
+
+    let obj = { Title: window.location.title, Url: window.location.href.split("?")[0] ?? window.location.href };  
+
+    history.pushState(obj, obj.Title, obj.Url);  
 }
 
 function showChangelog() {

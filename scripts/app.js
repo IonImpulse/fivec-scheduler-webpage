@@ -1298,9 +1298,11 @@ function toSvgString(qr, border, lightColor, darkColor) {
 
 function addSearchFilter(filter) {
 	// Stop bubbling onclick event
-	if (!e) var e = window.event;
-	e.cancelBubble = true;
-	if (e.stopPropagation) e.stopPropagation();
+	if (!(e??true)) {
+		var e = window.event;
+		e.cancelBubble = true;
+		if (e.stopPropagation) e.stopPropagation();
+	}
 
 	let el = document.getElementById("course-input");
 

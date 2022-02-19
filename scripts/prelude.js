@@ -7,7 +7,7 @@ Contains ALL global variables used.
 
 // Version number
 // Will delete localStorage variables when updating
-const current_version = '1.8.0';
+const current_version = '1.9.0';
 
 // Average paces for distance calcs
 const walking_feet_per_minute = 328;
@@ -32,8 +32,14 @@ var loaded_course_lists = [];
 var loaded_custom_courses = [];
 var vertical_layout = false;
 var show_changelog = true;
-var hmc_mode = false;
 var last_course_desc = 0;
+var loaded_schedule = {};
+
+// Default settings
+var settings = {
+    hmc_mode: false,
+    show_time_line: true,
+};
 
 // Day names for various sets
 const days_full = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -97,17 +103,16 @@ function getTheme() {
     }
 }
 
-function getSchoolMode() {
-    let mode = localStorage.getItem("hmc_mode");
+function getSettings() {
+    let loaded_settings = JSON.parse(localStorage.getItem("settings"));
 
-    if (mode == "true") {
-        hmc_mode = true;
+    if (loaded_settings != null) {
+        settings = loaded_settings;
     }
 }
 
 function isVerticalLayout() {
     vertical_layout = window.matchMedia("only screen and (max-width: 760px)").matches;
-    debounce_timer = vertical_layout ? 300 : 10;
     return vertical_layout;
 }
 
@@ -132,7 +137,7 @@ document.addEventListener("keydown", function (event) {
     }
 });
 
-getSchoolMode();
+getSettings();
 getVersion();
 getTheme();
 isVerticalLayout();

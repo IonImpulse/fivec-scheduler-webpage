@@ -19,6 +19,7 @@ async function startup() {
     }
     // Then, call an update request
     let update = update_database(full=false);
+    await update_from_local();
     // Add PWA install prompt
     pwaInstallPrompt();
 
@@ -30,12 +31,11 @@ async function startup() {
     window.addEventListener('resize', updateScheduleSizing);
     updateScheduleSizing();
 
-    await update;
-    update_loop();
     updateSchedule();
     // Then, check if site was loaded from
     // from QR code w/ course list code
-    loadPossibleCourseList();
+    await loadPossibleParams();
+
 
     // Remove fade-in class
     let fader = document.getElementById("fader")
@@ -46,13 +46,18 @@ async function startup() {
         showChangelog();
     }
 
+    
+    await update;
+    update_loop();
+
     // Create reusable web worker threads
-    desc_worker = new Worker('scripts/workers/descriptions.js?v=1.8');
-    searcher_worker = new Worker('scripts/workers/searcher.js?v=1.8');
-	searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.8');
+    desc_worker = new Worker('scripts/workers/descriptions.js?v=1.9');
+    searcher_worker = new Worker('scripts/workers/searcher.js?v=1.9');
+	searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.9');
 
     // Start worker threads to generate descriptions + searcher
     updateDescAndSearcher(false);
+    updateSchedule();
 }
 
 var installEvent;
@@ -73,6 +78,10 @@ function updateTimeLine() {
 
     if (el != null) {
         el.remove()
+    }
+
+    if (!settings.show_time_line) {
+        return;
     }
 
     let current_time = new Date();
@@ -162,7 +171,7 @@ async function updateDescAndSearcher(full=true) {
         all_courses_global = e.data;
     }
 
-    desc_worker.postMessage([[], all_courses_global, loaded_custom_courses, hmc_mode, full]);
+    desc_worker.postMessage([[], all_courses_global, loaded_custom_courses, settings.hmc_mode, full]);
     searcher_worker.postMessage([all_courses_global]);
 }
 
@@ -184,7 +193,7 @@ function generateGridTimes() {
         schedule_element.appendChild(time);
     }
 
-    for (let i = 13; i <= 22; i++) {
+    for (let i = 13; i <= 23; i++) {
         let time = document.createElement("div");
         time.className = "time";
         time.id = "time-" + i;
@@ -230,7 +239,7 @@ function updateScheduleSizing() {
     }
 }
 function generateLines() {
-    for (let i = 0; i < 16; i++) {
+    for (let i = 0; i < 17; i++) {
         let line = document.createElement("div");
         line.className = "line";
         line.id = "h-line-" + i;
@@ -248,39 +257,60 @@ function generateLines() {
         line.style.gridColumnStart = i + 2;
         line.style.gridColumnEnd = i + 2;
         line.style.gridRowStart = 2;
-        line.style.gridRowEnd = 2 + (16 * 20);
+        line.style.gridRowEnd = 2 + (17 * 20);
         schedule_element.appendChild(line);
     }
 }
 
-function updateSchedule() {
+function updateSchedule(play_animation=false) {
+
     max_grid_rows = 0;
 
-    clearSchedule();
-    updateLoadedCourses();
-    updateLoadedCustomCourses();
-    updateLoadedCourseLists();
-    updateStarredCourses();
-    updateDistanceLines();
-    updateCredits();
+    clearSchedule(play_animation).then(() => {
+        updateLoadedCourses(play_animation);
+        updateDistanceLines(play_animation);
+        updateLoadedCustomCourses(play_animation);
 
-    if (max_grid_rows == 0) {
-        max_grid_rows = 350;
-    } else {
-        max_grid_rows = Math.min(350, max_grid_rows + 20);
-    }
-
-    schedule_element.style.gridTemplateRows = `35px repeat(${max_grid_rows}, 1fr)`;
+        updateLoadedCourseLists();
+        updateStarredCourses();
+        updateCredits();
+    
+        if (max_grid_rows == 0) {
+            max_grid_rows = 350;
+        } else {
+            max_grid_rows = Math.min(350, max_grid_rows + 20);
+        }
+    
+        //max_grid_rows = 350;
+    
+        schedule_element.style.gridTemplateRows = `35px repeat(${max_grid_rows}, 1fr) repeat(${350 - max_grid_rows}, .1fr)`;  
+    });
 }
 
-function clearSchedule() {
+async function clearSchedule(play_animation) {
     let course_divs = schedule_element.getElementsByClassName("course-schedule-block");
+    let timing_lines = schedule_element.getElementsByClassName("popup-holder");
+    
+
+    if (play_animation) {
+        // First add remove animation class
+        for (let i = 0; i < course_divs.length; i++) {
+            course_divs[i].classList.add("remove-animation");
+        }
+
+        for (let i = 0; i < timing_lines.length; i++) {
+            timing_lines[i].classList.add("remove-animation");
+        }
+
+        // Wait for animation to finish
+        await sleep(100)
+    }
+    
 
     while (course_divs[0]) {
         course_divs[0].parentNode.removeChild(course_divs[0]);
     }
 
-    let timing_lines = schedule_element.getElementsByClassName("popup-holder");
     while (timing_lines[0]) {
         timing_lines[0].parentNode.removeChild(timing_lines[0]);
     }
@@ -292,7 +322,7 @@ function removeAllChildren(element) {
     }
 }
 
-function createScheduleGridDivs(courses, loaded, filter_hidden=false) {
+function createScheduleGridDivs(courses, loaded, filter_hidden=false, play_animation) {
     // Add new course divs
     let sanitized_courses = sanitizeCourseList(courses);
     if (filter_hidden) { 
@@ -307,7 +337,7 @@ function createScheduleGridDivs(courses, loaded, filter_hidden=false) {
                 color += "CC";
             }
 
-            let course_div_list = createScheduleGridDiv(sanitized_courses[slow_index], color, set_max_grid_rows = true);
+            let course_div_list = createScheduleGridDiv(sanitized_courses[slow_index], color, set_max_grid_rows = true, low_z_index=false, play_animation);
 
             for (let course_div of course_div_list) {
                 schedule_element.appendChild(course_div);
@@ -318,7 +348,7 @@ function createScheduleGridDivs(courses, loaded, filter_hidden=false) {
     }
 }
 
-function updateLoadedCourses() {
+function updateLoadedCourses(play_animation) {
     let course_list_table = document.getElementById("course-table");
 
     removeAllChildren(course_list_table);
@@ -330,7 +360,7 @@ function updateLoadedCourses() {
         }
     }
 
-    createScheduleGridDivs(loaded_local_courses, false, true);
+    createScheduleGridDivs(loaded_local_courses, false, true, play_animation);
     
 }
 
@@ -371,23 +401,43 @@ function timeToGrid(time) {
 
 function updateLoadedCourseLists() {
     let el = document.getElementById("course-list-table");
-    removeAllChildren(el);
 
-    let local_courses = createLoadedDiv("<b>Local Courses</b>", colors[0]);
-    local_courses.classList.add("course-list");
-    el.appendChild(local_courses);
+    let elements_to_remove = el.getElementsByClassName("course-loaded");
 
-    if (loaded_course_lists.length > 0) {
-        for (let i = 0; i < loaded_course_lists.length; i++) {
-            el.appendChild(createLoadedCourseListDiv(loaded_course_lists[i].code, colors[i + 1 % colors.length]));
+    while (elements_to_remove[0]) {
+        elements_to_remove[0].parentNode.removeChild(elements_to_remove[0]);
+    }
+
+    let schedule_button = document.getElementById("add-schedule");
+    if (schedule_button) {
+        schedule_button.remove();
+    };
+
+    let new_schedule = document.createElement("div");
+    new_schedule.className = "default-button noselect";
+    new_schedule.id = "add-schedule";
+    new_schedule.innerText = "Add new schedule...";
+    new_schedule.onclick = () => {
+        addNewSchedule();
+    };  
+
+    
+    for (let i = 0; i < loaded_course_lists.length + 1; i++) {
+        if (i == loaded_schedule.index) {
+            el.appendChild(createLoadedCourseListDiv(loaded_schedule.code, loaded_schedule.color ?? colors[i % colors.length]));
+
+            document.getElementById("schedule-indicator").style.top = `${el.lastChild.offsetTop}px`;
+            document.getElementById("schedule-indicator").style.height = `${el.lastChild.offsetHeight}px`;
+        } else  {
+            let index = i;
+            if (i > loaded_schedule.index) {
+                index = i - 1;
+            }
+            el.appendChild(createLoadedCourseListDiv(loaded_course_lists[index].code, loaded_course_lists[index].color ?? colors[i % colors.length]));
         }
     }
 
-    for (let course_list of loaded_course_lists) {
-        if (!hidden_course_lists.includes(course_list.code)) {
-            createScheduleGridDivs(course_list.courses, true);
-        }
-    }
+    el.appendChild(new_schedule);
 }
 
 function updateStarredCourses() {
@@ -411,7 +461,7 @@ function distanceLatLon(lat1, lon1, lat2, lon2, unit) {
 	return dist
 }
 
-function updateDistanceLines() {
+function updateDistanceLines(play_animation) {
     // First, create a nested array of all locations using displayed times
     let line_list = [[], [], [], [], []];
     let courses_with_timing = loaded_local_courses.filter((course) => course.displayed_timing != undefined && !hidden_courses.includes(course.identifier));
@@ -454,7 +504,7 @@ function updateDistanceLines() {
             if (course_a_loc[0] != undefined && course_b_loc[0] != undefined) {
                 if (course_a_loc[0] != "" && course_b_loc[0] != "") {
                     let distance = distanceLatLon(course_a_loc[0], course_a_loc[1], course_b_loc[0], course_b_loc[1], "F");
-                    generateTimeLine(course_a, course_b, distance);
+                    generateTimeLine(course_a, course_b, distance, play_animation);
                 }
             } else {
                 console.warn(`Location key ${course_a_key} is ${course_a_loc}\nLocation key ${course_b_key} is ${course_b_loc}\n`);
@@ -464,7 +514,7 @@ function updateDistanceLines() {
     }
 }
 
-function generateTimeLine(course_a, course_b, distance) {
+function generateTimeLine(course_a, course_b, distance, play_animation) {
     let el_a = document.getElementById(`${course_a.course.identifier}|${course_a.index}`);
     let el_b = document.getElementById(`${course_b.course.identifier}|${course_b.index}`);
 
@@ -475,6 +525,10 @@ function generateTimeLine(course_a, course_b, distance) {
     let line_div = document.createElement("div");
     line_div.classList.add("line-v");
     line_div.classList.add("popup-holder");
+
+    if (play_animation) {
+        line_div.classList.add("add-animation");
+    }
 
     let id = `distance-info-${grid_column}-${grid_row_start}-${grid_row_end}`;
     line_div.style.gridColumnStart = grid_column;
@@ -568,27 +622,13 @@ function updateCredits() {
     } else {
         loaded_title.innerText = `Courses Loaded`;
     }
-
-    let list_credits = sumCredits(loaded_course_lists.map(x => x.courses).flat(1));
-
-    if (list_credits > 0) {
-        let ending = "Credits";
-
-        if (list_credits == 1) {
-            ending = "Credit";
-        }
-
-        lists_title.innerText = `Course Lists Loaded - ${list_credits} ${ending}`;
-    } else {
-        lists_title.innerText = `Course Lists Loaded`;
-    }
 }
 
 function sumCredits(courses) {
     let credits = 0;
 
     for (let course of courses) {
-        if (hmc_mode) {
+        if (settings.hmc_mode) {
             credits += course.credits_hmc ?? 0;
         } else {
             credits += course.credits ?? 0;
@@ -638,11 +678,17 @@ async function intakeCourseData(data) {
     }
 }
 
-async function loadPossibleCourseList() {
+async function loadPossibleParams() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
 
     const code = urlParams.get('load');
+
+    const search = urlParams.get('search');
+
+    if (search != null) {
+        addSearchFilter(search);
+    }
 
     if (code != null) {
         let response = await fetch(`${API_URL}${GET_COURSE_LIST_BY_CODE(code.toUpperCase())}`)
@@ -653,14 +699,18 @@ async function loadPossibleCourseList() {
             if (data != null) {
                 await intakeCourseData(data);
             }
-
-            window.location.href = window.location.href.split("?")[0];
         } else {
             Swal.showValidationMessage(
                 `Invalid Code! ${error}`
             )
         }
     }
+
+    // Reset url so bookmarks don't get messed up
+
+    let obj = { Title: window.location.title, Url: window.location.href.split("?")[0] ?? window.location.href };  
+
+    history.pushState(obj, obj.Title, obj.Url);  
 }
 
 function showChangelog() {

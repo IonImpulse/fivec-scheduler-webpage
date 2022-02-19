@@ -1,3 +1,11 @@
+// Here we can adjust defaults for all color pickers on page:
+jscolor.presets.default = {
+	position: 'right',
+	palette: colors,
+	//paletteCols: 12,
+	//hideOnPaletteClick: true,
+};
+
 // *****
 // Title button functions
 // *****
@@ -10,6 +18,11 @@ function buttonLoad() {
 		showCancelButton: true,
 		confirmButtonText: 'Load',
 		showLoaderOnConfirm: true,
+		customClass: {
+			confirmButton: 'default-button swal confirm',
+			cancelButton: 'default-button swal cancel',
+		},
+		buttonsStyling: false,
 		preConfirm: async () => {
 			try {
 				const response = await fetch(`${API_URL}${GET_COURSE_LIST_BY_CODE(document.getElementById("code-input").value.toUpperCase())}`)
@@ -33,7 +46,7 @@ function buttonLoad() {
 		} else if (result.value != undefined) {
 			await intakeCourseData(result.value);
 
-			updateSchedule();
+			updateSchedule(play_animation=true);
 		}
 	})
 }
@@ -66,7 +79,12 @@ function buttonCustomCourse() {
 		showCancelButton: false,
 		confirmButtonText:
 			`Done`,
-		customClass: 'swal-medium-wide',
+		customClass: {
+			popup: 'swal-medium-wide',
+			confirmButton: 'default-button swal confirm',
+			cancelButton: 'default-button swal cancel',
+		},
+		buttonsStyling: false,
 	}).then(async (result) => {
 		await save_json_data("loaded_custom_courses", loaded_custom_courses);
 
@@ -225,8 +243,8 @@ async function editCourse() {
 		populateField("course-instructors", course.instructors[0]);
 		populateField("course-description", course.description);
 		populateField("course-notes", course.notes);
-		populateField("course-start-time", course.timing[0].start_time.substring(0,5));
-		populateField("course-end-time", course.timing[0].end_time.substring(0,5));
+		populateField("course-start-time", course.timing[0].start_time.substring(0, 5));
+		populateField("course-end-time", course.timing[0].end_time.substring(0, 5));
 		populateField("course-location", course.timing[0].location.room);
 
 		for (let day_name of weekdays_full) {
@@ -241,8 +259,13 @@ function buttonExport() {
 	Swal.fire({
 		title: 'Save As Image',
 		icon: 'success',
-		html: '<canvas id="export-holder" alt="schedule"></canvas><br><b>Downloading...</b>',
-		customClass: 'swal-medium-wide',
+		html: '<canvas id="export-holder" alt="schedule"></canvas><br><b>Viewing preview<br>Downloading full resolution image...</b>',
+		customClass: {
+			popup: 'swal-medium-wide',
+			confirmButton: 'default-button swal confirm',
+			cancelButton: 'default-button swal cancel',
+		},
+		buttonsStyling: false,
 	});
 
 	Swal.showLoading();
@@ -266,8 +289,8 @@ function download_link() {
 function screenshotToCanvas(canvas, source) {
 	target = source.cloneNode(true);
 
-	let x = source.offsetWidth;
-	let y = source.offsetHeight;
+	let x = source.offsetWidth * 4;
+	let y = source.offsetHeight * 4;
 
 	copyStyle(target, source);
 
@@ -277,6 +300,10 @@ function screenshotToCanvas(canvas, source) {
 		line.style.display = "none";
 	}
 
+	let current_time = target.getElementsByClassName("line");
+
+	current_time[current_time.length - 1].style.display = "none";
+
 	rasterizeHTML.drawHTML(target.innerHTML, canvas, {
 		width: `${x}`,
 		height: `${y}`,
@@ -284,10 +311,10 @@ function screenshotToCanvas(canvas, source) {
 		.then(function success(renderResult) {
 			canvas.width = x;
 			canvas.height = y;
-			canvas.style.width = `${x / 2}px`;
-			canvas.style.height = `${y / 2}px`;
+			canvas.style.width = `${x / 8}px`;
+			canvas.style.height = `${y / 8}px`;
 			context = canvas.getContext('2d');
-			context.drawImage(renderResult.image, 0, 0, width = x, height = y);
+			context.drawImage(renderResult.image, 0, 0, width = x * 4, height = y * 4);
 			Swal.hideLoading();
 		}, function error(e) {
 			Swal.fire({
@@ -295,6 +322,11 @@ function screenshotToCanvas(canvas, source) {
 				icon: 'error',
 				html:
 					`Error: ${e.message}`,
+				customClass: {
+					confirmButton: 'default-button swal confirm',
+					cancelButton: 'default-button swal cancel',
+				},
+				buttonsStyling: false,
 			})
 		});
 }
@@ -336,7 +368,12 @@ async function buttonSearch() {
 	if (all_courses_global == null) {
 		Swal.fire({
 			title: 'Error fetching courses!',
-			icon: 'error'
+			icon: 'error',
+			customClass: {
+				confirmButton: 'default-button swal confirm',
+				cancelButton: 'default-button swal cancel',
+			},
+			buttonsStyling: false,
 		});
 	} else {
 		Swal.fire({
@@ -349,7 +386,12 @@ async function buttonSearch() {
 				`<span>Add <span id="course-add-num">0</span> course<span id="multiple-course-s">s</span></span>`,
 			cancelButtonText:
 				'Cancel',
-			customClass: 'swal-wide',
+			customClass: {
+				popup: 'swal-wide',
+				confirmButton: 'default-button swal confirm',
+				cancelButton: 'default-button swal cancel',
+			},
+			buttonsStyling: false,
 		}).then(async (result) => {
 			document.removeEventListener("keydown", focusAndInput);
 
@@ -371,7 +413,7 @@ async function buttonSearch() {
 		// Set hmc credit mode:
 		let hmc_credit_mode = document.getElementById("hmc-credits");
 
-		hmc_credit_mode.checked = hmc_mode;
+		hmc_credit_mode.checked = settings.hmc_mode;
 
 		let input = document.getElementById("course-input");
 		document.getElementById("course-search-results").addEventListener("keydown", function (event) {
@@ -400,12 +442,12 @@ async function buttonSearch() {
 
 		});
 
-		document.getElementsByClassName("swal-wide")[0].addEventListener("keydown", function (event) {			
+		document.getElementsByClassName("swal2-popup")[0].addEventListener("keydown", function (event) {
 			if (event.getModifierState("Control")
 				|| event.key.includes("Arrow")) {
 				return;
 			}
-			
+
 			focusAndInput(event);
 		});
 
@@ -434,7 +476,7 @@ function focusAndInput(event) {
 
 const Toast = Swal.mixin({
 	toast: true,
-	position: 'bottom-end',
+	position: 'bottom',
 	showConfirmButton: false,
 	timer: 3000,
 	timerProgressBar: true,
@@ -449,7 +491,12 @@ async function buttonShare() {
 	if (loaded_local_courses.length == 0) {
 		Swal.fire({
 			title: 'No courses have been locally loaded!',
-			icon: 'error'
+			icon: 'error',
+			customClass: {
+				confirmButton: 'default-button swal confirm',
+				cancelButton: 'default-button swal cancel',
+			},
+			buttonsStyling: false,
 		})
 	} else {
 		let response = await fetch(`${API_URL}${GET_UNIQUE_CODE}`, {
@@ -474,6 +521,11 @@ async function buttonShare() {
 			title: 'Share',
 			icon: 'success',
 			html: `<div class="code-share">${code}</div><div class="code-explain">or</div><div id="code-link" class="unselectable">Copy Link</div><div class="qr-code">${svg}</div>`,
+			customClass: {
+				confirmButton: 'default-button swal confirm',
+				cancelButton: 'default-button swal cancel',
+			},
+			buttonsStyling: false,
 		});
 
 		document.getElementById("code-link").addEventListener("click", function () {
@@ -499,6 +551,11 @@ function buttonCal() {
 		Swal.fire({
 			title: 'Save as iCal',
 			icon: 'success',
+			customClass: {
+				confirmButton: 'default-button swal confirm',
+				cancelButton: 'default-button swal cancel',
+			},
+			buttonsStyling: false,
 			html: `<div class="ical-box">
 			<div class="ical-explain">
 			<b>Google Calendar:</b><br>
@@ -575,24 +632,58 @@ function buttonTheme() {
 	toggle_theme();
 }
 
-function buttonAbout() {
+async function buttonSettings() {
 	Swal.fire({
-		title: 'About',
-		imageUrl: '/img/favicons/android-chrome-192x192.png',
-		imageWidth: 100,
-		imageHeight: 100,
-		html: `<div id="about-desc"> Created By: <b>Ethan Vazquez</b> HMC '25<BR>` +
-			`Send comments/questions/bug reports to: <b>edv121@outlook.com</b><BR><BR>` +
-			`<b>Webpage Repo:</b> <a href="https://github.com/IonImpulse/fivec-scheduler-webpage">fivec-scheduler-webpage</a><br>` +
-			`Built using <a href="https://www.javatpoint.com/what-is-vanilla-javascript">VanillaJS</a><br>` +
-			`<b>API Repo:</b> <a href="https://github.com/IonImpulse/fivec-scheduler-server">fivec-scheduler-server</a>.<br>` +
-			`Built using <a href="https://www.rust-lang.org/">Rust</a><BR><BR>` +
-			`<b><u>Credits:</b></u><BR>` +
-			`<b>fuzzysort.js</b><br>Created by Stephen Kamenar.<br>Licensed under the MIT License.<br>` +
-			`<b>sweetalert2.js</b><br>Created by Tristan Edwards & Limon Monte.<br>Licensed under the MIT License.<br>` +
-			`<b>qrcodegen.js</b><br>Created by Nayuki.<br>Licensed under the MIT License.<br>` +
-			`<b>rasterizeHTML.js</b><br>Created by cburgmer.<br>Licensed under the MIT License.<br></div>`
+		title: 'Settings',
+		customClass: {
+			confirmButton: 'default-button swal confirm',
+			cancelButton: 'default-button swal cancel',
+			popup: 'swal-medium-wide',
+		},
+		buttonsStyling: false,
+		html: settings_popup
+	}).then(() => {
+		Toast.fire({
+			title: 'Settings saved!',
+			icon: 'success',
+		})		
 	});
+
+	let statuses = document.getElementsByClassName("status");
+	
+	let status = await fetch(`${API_URL}${STATUS}`).then(async res => await res.json());
+
+	statuses[0].innerHTML = `<b>API Status:</b> ${status.alive ? "<span class='green'>Online</span>" : "<span class='red'>Offline</span>"}`;
+
+	statuses[1].innerHTML = `<b>Total Courses Loaded:</b> ${all_courses_global.length}`;
+
+	statuses[2].innerHTML = `<b>Loaded Local Courses:</b> ${loaded_local_courses.length}`;
+
+	statuses[3].innerHTML = `<b>Loaded Custom Courses:</b> ${loaded_custom_courses.length}`;
+
+	statuses[4].innerHTML = `<b>Loaded Schedules:</b> ${loaded_course_lists.length}`;
+
+	statuses[5].innerHTML = `<b>Locations:</b> ${Object.keys(locations).length}`;
+
+	let time = document.getElementById("show-current-time")
+	time.checked = settings.show_time_line;
+	time.addEventListener("click", () => {
+		settings.show_time_line = time.checked;
+		saveSettings();
+	});
+
+	let credits = document.getElementById("hmc-credits")
+	credits.checked = settings.hmc_mode;
+	credits.addEventListener("click", () => {
+		settings.hmc_mode = credits.checked;
+		saveSettings();
+	});
+	
+}
+
+function saveSettings() {
+	localStorage.setItem("settings", JSON.stringify(settings));
+	updateSchedule();
 }
 
 async function backgroundCourseSearch() {
@@ -611,18 +702,22 @@ async function backgroundCourseSearch() {
 		return;
 	}
 
-	searching_worker.onmessage = function(e) {
-        const html_courses = e.data;
+	searching_worker.onmessage = function (e) {
+		const html_courses = e.data;
 
 		appendCourseHTML(html_courses);
-				
-		postProcessSearch(document.getElementById("course-input").value, html_courses);
-    }
 
-    searching_worker.postMessage([input.value, all_courses_global, colors, hmc_mode]);
+		postProcessSearch(document.getElementById("course-input").value, html_courses);
+	}
+
+	searching_worker.postMessage([input.value, all_courses_global, colors, settings.hmc_mode]);
 }
 
- function appendCourseHTML(courses) {
+async function sleep(ms) {
+	return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function appendCourseHTML(courses) {
 	let output = document.getElementById("course-search-results");
 
 	if (courses.length == 0) {
@@ -630,6 +725,18 @@ async function backgroundCourseSearch() {
 
 		return;
 	} else {
+		let s = "s";
+
+		if (courses.length == 1) {
+			s = "";
+		}
+
+
+		if (courses[0].startsWith("<b>")) {
+			courses.shift();
+		}
+
+		courses.unshift(`<b>${courses.length >= 100 ? "100+" : courses.length} course${s} found. Click on a course to select it.</b>`);
 		// Superfast html updater
 		replaceHtml(output, courses.join("\n"));
 		for (let s of selected_courses) {
@@ -738,6 +845,18 @@ async function addCourses() {
 
 	updateSchedule();
 
+	setTimeout(() => {
+		// Get courses added as html elements
+		for (let course of selected_courses) {
+			let els = document.getElementsByClassName(`${course}-loaded`);
+
+			for (let el of els) {
+				el.classList.add("added-from-search-animation");
+			}
+		}
+	}, 10);
+	
+
 	return num_courses;
 }
 
@@ -802,6 +921,8 @@ async function deleteCourse(identifier) {
 
 	if (found) {
 		await save_json_data("loaded_local_courses", loaded_local_courses);
+		await save_json_data("loaded_schedule", loaded_schedule);
+		await save_json_data("loaded_course_lists", loaded_course_lists);
 		updateSchedule();
 		return;
 	}
@@ -833,7 +954,7 @@ async function toggleCourseVisibility(identifier) {
 	if (e.stopPropagation) e.stopPropagation();
 
 	let el = document.querySelector(`.course-loaded.${identifier}-loaded`);
-	
+
 	el.firstElementChild.classList.toggle("visible");
 
 	if (hidden_courses.includes(identifier)) {
@@ -847,44 +968,154 @@ async function toggleCourseVisibility(identifier) {
 	await save_json_data("hidden_courses", hidden_courses);
 }
 
-async function toggleCourseListVisibility(code) {
-	// Stop bubbling onclick event
-	if (!e) var e = window.event;
-	e.cancelBubble = true;
-	if (e.stopPropagation) e.stopPropagation();
-	
-    let el = document.getElementById(`course-list-${code}`);
-	
-	el.firstElementChild.classList.toggle("visible");
-
-	if (hidden_course_lists.includes(code)) {
-		hidden_course_lists.splice(hidden_course_lists.indexOf(code), 1);
-	} else {
-		hidden_course_lists.push(code);
+async function setLoadedSchedule(code) {
+	// If it's the currently loaded schedule, return
+	if (loaded_schedule.code == code) {
+		return;
 	}
 
-	updateSchedule();
+	// Unload the current schedule
+	loaded_course_lists.splice(loaded_schedule.index, 0, {
+		courses: loaded_local_courses,
+		code: loaded_schedule.code,
+		color: loaded_schedule.color,
+	});
 
-	await save_json_data("hidden_course_lists", hidden_course_lists);
+	// Get from course lists
+	for (let i = 0; i < loaded_course_lists.length; i++) {
+		if (loaded_course_lists[i].code == code) {
+			let found_schedule = loaded_course_lists.splice(i, 1)[0];
+
+			loaded_schedule.code = found_schedule.code;
+			loaded_schedule.index = i;
+			loaded_schedule.color = found_schedule.color;
+			loaded_local_courses = found_schedule.courses;
+			break;
+		}
+	}
+
+	await save_json_data("loaded_course_lists", loaded_course_lists);
+	await save_json_data("loaded_local_courses", loaded_local_courses);
+	await save_json_data("loaded_schedule", loaded_schedule);
+
+	updateSchedule(play_animation=true);
+
+	// Scroll to clicked on schedule
+	let el = document.getElementById("course-list-table");
+
+	el.children[loaded_schedule.index].scrollIntoView({
+		behavior: "instant",
+		block: "center",
+		inline: "center"
+	});
+
 }
 
-async function deleteCourseList(code) {
-	let found = false;
+async function deleteCourseList(e = false, code) {
+	if (e) {
+		// Stop bubbling onclick event
+		if (!e) var e = window.event;
+		e.cancelBubble = true;
+		if (e.stopPropagation) e.stopPropagation();
+	}
+
+	if (loaded_schedule.code == code) {
+		await setLoadedSchedule(loaded_course_lists[Math.max(0, loaded_schedule.index - 1)].code);
+		await save_json_data("loaded_schedule", loaded_schedule);
+	}
 
 	for (let i = 0; i < loaded_course_lists.length; i++) {
 		let course_list = loaded_course_lists[i];
 
 		if (course_list.code == code) {
-			found = true;
 			loaded_course_lists.splice(i, 1);
+
+			await save_json_data("loaded_course_lists", loaded_course_lists);
+
+			await setLoadedSchedule("Main");
+
 			break;
 		}
 	}
 
-	if (found) {
-		await save_json_data("loaded_course_lists", loaded_course_lists);
-		updateSchedule();
+	updateLoadedCourseLists();
+}
+
+async function showCourseListSettings(e, code, color) {
+	if (e) {
+		// Stop bubbling onclick event
+		if (!e) var e = window.event;
+		e.cancelBubble = true;
+		if (e.stopPropagation) e.stopPropagation();
 	}
+
+	Swal.fire({
+		title: "Edit Schedule",
+		html: new_schedule_popup,
+		showCancelButton: true,
+		confirmButtonText: "Save",
+		customClass: {
+			popup: 'swal-short',
+			confirmButton: 'default-button swal confirm',
+			cancelButton: 'default-button swal cancel',
+		},
+		buttonsStyling: false,
+		preConfirm: async () => {
+			try {
+				let new_code = document.getElementById("schedule-name").value;
+				let color = document.getElementById("schedule-color").value;
+	
+				if (new_code == "") {
+					throw new Error("Please enter a valid name");
+				}
+	
+				return {
+					new_code: new_code,
+					color: color,
+				}
+	
+			} catch (error) {
+				Swal.showValidationMessage(
+					`${error}`
+				)
+			}
+	
+		},
+	}).then(async (result) => {
+		if (result != undefined) {
+			if (loaded_schedule.code == code) {
+				loaded_schedule.code = result.value.new_code;
+				loaded_schedule.color = result.value.color;
+				await save_json_data("loaded_schedule", loaded_schedule);
+			} else {
+				// Find in loaded_course_lists
+				for (let i = 0; i < loaded_course_lists.length; i++) {
+					if (loaded_course_lists[i].code == code) {
+						loaded_course_lists[i].code = result.value.new_code;
+						loaded_course_lists[i].color = result.value.color;
+						await save_json_data("loaded_course_lists", loaded_course_lists);
+						break;
+					}
+				}
+			}
+	
+			updateSchedule();
+			Toast.fire({
+				title: `Changes Saved!`,
+				icon: 'success',
+			});
+		}
+	});
+
+	document.getElementById("schedule-name").value = code;
+	document.getElementById("schedule-color").value = color;
+
+	document.getElementById("schedule-copy").remove();
+	// Remove the label, it doesn't have an ID so we have to 
+	// find by tag and remove the 3rd (2nd index) element
+	document.getElementsByTagName("label")[2].remove();
+	document.getElementById("schedule-color").setAttribute("data-jscolor", `{preset: '${localStorage.getItem("theme") == 'dark' ? 'dark' : ''}'}`);
+	jscolor.install();
 }
 
 async function mergeCourseList(code) {
@@ -910,7 +1141,7 @@ async function mergeCourseList(code) {
 	if (found) {
 		await save_json_data("loaded_course_lists", loaded_course_lists);
 		await save_json_data("loaded_local_courses", loaded_local_courses);
-		updateSchedule();
+		updateSchedule(play_animation);
 	}
 }
 
@@ -1060,9 +1291,11 @@ function toSvgString(qr, border, lightColor, darkColor) {
 
 function addSearchFilter(filter) {
 	// Stop bubbling onclick event
-	if (!e) var e = window.event;
-	e.cancelBubble = true;
-	if (e.stopPropagation) e.stopPropagation();
+	if (!(e??true)) {
+		var e = window.event;
+		e.cancelBubble = true;
+		if (e.stopPropagation) e.stopPropagation();
+	}
 
 	let el = document.getElementById("course-input");
 
@@ -1097,23 +1330,187 @@ function hidePopup(query) {
 }
 
 function toggleCreditMode() {
-	if (hmc_mode) {
-		hmc_mode = false;
+	if (settings.hmc_mode) {
+		settings.hmc_mode = false;
 	} else {
-		hmc_mode = true;
+		settings.hmc_mode = true;
 	}
 
 	updateCredits();
-	updateDescAndSearcher(full=true).then(() => {
+	updateDescAndSearcher(full = true).then(() => {
 		setCourseDescription(last_course_desc);
 	});
 
-	localStorage.setItem("hmc_mode", hmc_mode);
+	localStorage.setItem("settings", JSON.stringify(settings));
 }
+
+function addNewSchedule() {
+	Swal.fire({
+		title: 'New Schedule',
+		html: new_schedule_popup,
+		showCancelButton: true,
+		customClass: {
+			popup: 'swal-short',
+			confirmButton: 'default-button swal confirm',
+			cancelButton: 'default-button swal cancel',
+		},
+		buttonsStyling: false,
+		confirmButtonText:
+			`Add`,
+		preConfirm: async () => {
+			try {
+				let name = document.getElementById("schedule-name").value;
+				let color = document.getElementById("schedule-color").value;
+				let copy = document.getElementById("schedule-copy").checked;
+
+				if (name == "") {
+					throw new Error("Please enter a name for the schedule.")
+				}
+
+				if (loaded_schedule.code == name || loaded_custom_courses.map((x) => x.code).includes(name)) {
+					throw new Error("Schedule must have unique name.");
+				}
+
+				return {
+					schedule: {
+						code: name,
+						color: color == "#FFFFFF" ? undefined : color,
+						courses: [],
+					},
+					copy: copy,
+				}
+
+			} catch (error) {
+				Swal.showValidationMessage(
+					`${error}`
+				)
+			}
+		},
+	}).then(async (result) => {
+		if (result.value) {
+			let new_schedule = result.value.schedule;
+
+			if (result.value.copy) {
+				new_schedule.courses = JSON.parse(JSON.stringify(loaded_local_courses));
+			}
+
+			loaded_course_lists.push(new_schedule);
+			await save_json_data("loaded_course_lists", loaded_course_lists);
+
+			setLoadedSchedule(new_schedule.code);
+
+			Toast.fire({
+				title: 'New Schedule Added!',
+				icon: 'success',
+			});
+		}
+	});
+
+	document.getElementById("schedule-color").setAttribute("data-jscolor", `{preset: '${localStorage.getItem("theme") == 'dark' ? 'dark' : ''}'}`);
+	jscolor.install();
+}
+
+async function clearCourses() {
+	loaded_local_courses = [];
+	await save_json_data("loaded_local_courses", loaded_local_courses);
+	updateSchedule(play_animation=true);
+
+	Toast.fire({
+		title: 'Courses Cleared!',
+		icon: 'success',
+	});
+}
+
+async function clearSchedules() {
+	await setLoadedSchedule("Main");
+	loaded_course_lists = [];
+	await save_json_data("loaded_course_lists", loaded_course_lists);
+	updateSchedule(play_animation=true);
+
+	Toast.fire({
+		title: 'Schedules Cleared!',
+		icon: 'success',
+	});
+}
+
+async function clearAllData() {
+	Swal.fire({
+		title: 'Are you sure?',
+		text: "This will permanently clear all data from this site. Shared course codes will not be effected.",
+		icon: 'warning',
+		showCancelButton: true,
+		customClass: {
+			popup: 'swal-short',
+			confirmButton: 'default-button swal confirm',
+			cancelButton: 'default-button swal cancel',
+		},
+		buttonsStyling: false,
+		confirmButtonText:
+			`Delete All Data`,
+		cancelButtonText:
+			`Cancel`
+	}).then((result) => {
+		if (result.value) {
+			indexedDB.deleteDatabase("localforage");
+			localStorage.clear();
+			location.reload();
+		}
+	});
+}
+
 
 // *****
 // HTML Popups
 // *****
+
+const settings_popup = 
+`
+<div class="settings-box">
+	<div id="settings-panel" class="settings-zone">
+		<div class="settings-zone">
+			<h2><u>Status</u></h2>
+			<div class="status"><b>API:</b> Waiting...</div>
+			<div class="status"><b>Total Courses Loaded:</b> Waiting...</div>
+			<div class="status"><b>Loaded Local Courses:</b> Waiting...</div>
+			<div class="status"><b>Loaded Custom Courses:</b> Waiting...</div>
+			<div class="status"><b>Loaded Schedules:</b> Waiting...</div>
+			<div class="status"><b>Locations:</b> Waiting...</div>
+		</div>
+
+		<div class="settings-zone">
+			<h2><u>General</u></h2>
+			<label for="show-current-time">Show current time line</label>
+			<input type="checkbox" class="day-checkbox" id="show-current-time"><br>
+			<label for="hmc-credits">HMC Credits</label>
+			<input type="checkbox" class="day-checkbox" id="hmc-credits"><br>
+		</div>
+
+		<div class="settings-zone">
+			<h2><u>Danger Zone</u></h2>
+			<button class="default-button swal cancel settings-button unselectable" onclick="clearCourses()">Delete Loaded Courses</button>
+			<button class="default-button swal cancel settings-button unselectable" onclick="clearSchedules()">Delete All Schedules</button>
+			<button class="default-button swal cancel settings-button unselectable" onclick="clearAllData()">Delete All Data</button>
+		</div>
+	</div>
+
+	<div class="settings-zone about-desc"> 
+		<h2><u>About</u></h2>
+		<p>
+		Created By: <b>Ethan Vazquez</b> HMC '25<BR>
+		Send comments/questions/bug reports to:<BR><b>support@5scheduler.io</b><BR><BR>
+		<b>Webpage Repo:</b> <a href="https://github.com/IonImpulse/fivec-scheduler-webpage">fivec-scheduler-webpage</a><br>
+		Built using <a href="https://www.javatpoint.com/what-is-vanilla-javascript">JavaScript</a><br>
+		<b>API Repo:</b> <a href="https://github.com/IonImpulse/fivec-scheduler-server">fivec-scheduler-server</a>.<br>
+		Built using <a href="https://www.rust-lang.org/">Rust</a><BR><BR>
+		<b><u>Credits:</b></u><BR>
+		<b>fuzzysort.js</b><br>Created by Stephen Kamenar.<br>Licensed under the MIT License.<br>
+		<b>sweetalert2.js</b><br>Created by Tristan Edwards & Limon Monte.<br>Licensed under the MIT License.<br>
+		<b>qrcodegen.js</b><br>Created by Nayuki.<br>Licensed under the MIT License.<br>
+		<b>rasterizeHTML.js</b><br>Created by cburgmer.<br>Licensed under the MIT License.<br>
+		</p>
+	</div>
+</div>
+`;
 
 const custom_course_popup = `
 <div class="custom-course-manager">
@@ -1186,16 +1583,16 @@ const custom_course_popup = `
         </div>
 
         <div class="button-group">
-            <div tabindex="0" id="add-new-course" class="default-button unselectable course-button" onclick="submitNewCourse()">Add</div>
-            <div tabindex="0" id="cancel-new-course" class="default-button unselectable course-button" onclick="cancelNewCourse()">Cancel</div>
+            <button tabindex="0" id="add-new-course" class="default-button unselectable" onclick="submitNewCourse()">Add</button>
+            <button tabindex="0" id="cancel-new-course" class="default-button unselectable" onclick="cancelNewCourse()">Cancel</button>
         </div>
     </div>
     <div class="right-panel">
-        <div id="create-course" class="default-button unselectable course-button" onclick="createNewCourse()">Create New</div>
-        <div id="edit-course" class="default-button unselectable course-button" onclick="editCourse()">Edit</div>
+        <button id="create-course" class="default-button unselectable course-button" onclick="createNewCourse()">Create New</button>
+        <button id="edit-course" class="default-button unselectable course-button" onclick="editCourse()">Edit</button>
     </div>
 </div>
-`.replace("\n",'');
+`.replace("\n", '');
 
 
 const search_popup = `
@@ -1289,13 +1686,48 @@ const search_popup = `
 </div>
 <br>`;
 
+
+const new_schedule_popup = `
+<div id="new-schedule-container">
+	<div class="custom-course-manager">
+		<div class="create-schedule-form">
+			<div class="header">Name</div>
+			<div class="form-group">
+
+				<div>
+					<label for="schedule-name">Name</label>
+					<input type="text" id="schedule-name" class="input custom-course-input" placeholder="Name">
+				</div>
+
+				<div>
+					<label for="schedule-color">Color (optional)</label>
+					<input data-jscolor="{}" id="schedule-color" class="input custom-course-input">
+				</div>
+
+				<div>
+					<label for="schedule-copy">Copy courses from current schedule (optional)</label>
+					<input type="checkbox" id="schedule-copy" class="day-checkbox">
+				</div>
+			</div>
+	</div>
+</div>		
+`;
+
+
 const changelog_popup = `
 <div id="changelog-container">
-	<b>v1.8 Beta</b>
+	<b>v1.9 Beta</b>
 	<ul>
-		<li>Added Co/Prerequisites!!! Co/prereqs will now appear when searching, and under the description of each course.</li>
-		<li>Added ability to filter by co/prerequisites with "coreq:[none, some, "exact match]" and "prereq:[none, some, "exact match]"</li>	
+		<li>Added <b>multi-schedule</b> functionality! This allows you to create alternative schedules to plan out your courses. 
+		Additionally, you can name your schedules and change their <b>colors</b>.</li>
+		<li>Added <b>A N I M A T I O N S</b></li>
+		<li>Added automatic course links in descriptions and reqs!</li>
+		<li>Added settings panel</li>
+		<li>Added ability to delete data</li>
+		<li>Improved buttons, making them all use a single cohesive design.</li>
+		<li>Improved mobile mode</li>
+		<li>Improved initial loading speed</li>
+		<li>Improved accessibility tags</li>
 	</ul>
 </div>
-
 `;

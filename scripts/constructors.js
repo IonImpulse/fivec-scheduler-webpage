@@ -27,7 +27,7 @@ function sanitizeCourseList(courses) {
     return sanitized;
 }
 
-function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_index=false) {
+function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_index=false, play_animation) {
     let return_list = [];
     // Have to create one for each time slot it's in
     //
@@ -36,7 +36,14 @@ function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_i
     for (let time of course.displayed_timing) {
         // Create the div
         let course_div = document.createElement("div");
-        course_div.className = `${course.identifier}-loaded course-schedule-block unselectable`;
+        
+        course_div.className += `${course.identifier}-loaded course-schedule-block unselectable`;
+
+        if (play_animation) {
+            course_div.className += " add-animation";
+        }
+
+        
         course_div.style.backgroundColor = color;
 
         if (low_z_index) {
@@ -141,31 +148,26 @@ function createLoadedCourseListDiv(code, color) {
     div.classList.add("course-list");
     div.id = `course-list-${code}`;
 
-    let visibility_button = document.createElement("div");
-    visibility_button.className = "visibility-button";
-    if (!hidden_course_lists.includes(code)) {
-        visibility_button.classList.add("visible");
-    }
-    visibility_button.onclick = function () {
-        toggleCourseListVisibility(code);
-    };
-
     let delete_button = document.createElement("div");
     delete_button.className = "delete-course course-list";
     delete_button.onclick = function () {
-        deleteCourseList(code);
+        deleteCourseList(event, code);
     };
 
-    let merge_button = document.createElement("div");
-    merge_button.className = "merge-course";
-    merge_button.onclick = function () {
-        mergeCourseList(code);
+    let settings_button = document.createElement("div");
+    settings_button.className = "settings-course course-list";
+    settings_button.onclick = function () {
+        showCourseListSettings(event, code, color);
     };
 
-    div.insertBefore(visibility_button, div.firstChild);
-    div.appendChild(merge_button);
-    div.appendChild(delete_button);
+    if (code != "Main") {
+        div.appendChild(settings_button);
+        div.appendChild(delete_button);
+    }
 
+    div.onclick = function () {
+        setLoadedSchedule(code);
+    };
     return div;
 }
 

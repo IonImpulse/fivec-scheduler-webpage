@@ -1,4 +1,4 @@
-const current_version = '1.8.0';
+const current_version = '1.9.0';
 // On install, cache everything
 self.addEventListener('install', (event) => {
     event.waitUntil(
@@ -20,6 +20,7 @@ self.addEventListener('install', (event) => {
                 'scripts/libs/qrcodegen-v1.7.0-es6.js',
                 'scripts/libs/rasterizeHTML.allinone.js',
                 'scripts/libs/sweetalert2.min.js',
+                'scripts/libs/jscolor.min.js',
                 'scripts/workers/descriptions.js',
                 'scripts/workers/searcher.js',
                 'scripts/workers/courseSearch.js',
@@ -47,7 +48,10 @@ self.addEventListener('install', (event) => {
                 'img/custom-course-light.svg',
                 'img/visible-off.svg',
                 'img/visible-on.svg',
-                'img/checked.svg',
+                'img/checked-light.svg',
+                'img/checked-dark.svg',
+                'img/settings-light.svg',
+                'img/settings-dark.svg',
                 'img/favicons/android-chrome-192x192.png',
                 'img/favicons/android-chrome-512x512.png',
                 'img/favicons/apple-touch-icon.png',

@@ -89,34 +89,33 @@
         </div>
       </div>
       <div class="title-bar shadow">
-        <a href="https://www.5scheduler.io" class="logo"><img src="/img/favicons/favicon.svg" alt="5scheduler.io" class="logo"></a>
-        <div title="Share" tabindex="0" class="default-button share wide noselect" onclick="buttonShare()">
-        </div>
-        <div title="Search" tabindex="0" class="default-button search-button noselect" onclick="buttonSearch()">
+        <a href="https://www.5scheduler.io" class="logo"><img src="/img/favicons/favicon.svg?v=2.0" alt="5scheduler.io" class="logo"></a>
+        <button title="Share" tabindex="0" class="default-button share wide noselect" onclick="buttonShare()">
+        </button>
+        <button title="Search" tabindex="0" class="default-button search-button noselect" onclick="buttonSearch()">
           Search
-        </div>
-        <div title="Load" tabindex="0" class="default-button load wide noselect" onclick="buttonLoad()">
-        </div>
+        </button>
+        <button title="Load" tabindex="0" class="default-button load wide noselect" onclick="buttonLoad()">
+        </button>
       </div>
       <div id="schedule-box" class="shadow">
         <div id="schedule-table" class=""></div>
       </div>
       <div id="extra-buttons" class="course-desc shadow">
-        <div title="Custom Course Manager" tabindex="0" class="default-button noselect custom-course" onclick="buttonCustomCourse()">
-        </div>
-        <div title="Save As Image" tabindex="0" class="default-button noselect export" onclick="buttonExport()">
-        </div>
-        <div title="Print" tabindex="0" class="default-button noselect print" onclick="buttonPrint()">
-        </div>
-        <div title="iCalendar" tabindex="0" class="default-button noselect cal" onclick="buttonCal()">
-        </div>
-        <div title="Theme" tabindex="0" class="default-button noselect theme" onclick="buttonTheme()">
-        </div>
-        <div title="About" tabindex="0" class="default-button noselect about" onclick="buttonAbout()">
-        </div>
+        <button title="Custom Course Manager" tabindex="0" class="default-button noselect custom-course" onclick="buttonCustomCourse()">
+        </button>
+        <button title="Save As Image" tabindex="0" class="default-button noselect export" onclick="buttonExport()">
+        </button>
+        <button title="Print" tabindex="0" class="default-button noselect print" onclick="buttonPrint()">
+        </button>
+        <button title="iCalendar" tabindex="0" class="default-button noselect cal" onclick="buttonCal()">
+        </button>
+        <button title="Theme" tabindex="0" class="default-button noselect theme" onclick="buttonTheme()">
+        </button>
+        <button title="Settings" tabindex="0" class="default-button noselect settings" onclick="buttonSettings()">
+        </button>
       </div>
       <div id="course-info-box" class="course-desc shadow">
-        <div class="table-title">Course Info</div>
         <div id="course-info-table" class="">
         </div>
       </div>
@@ -126,8 +125,9 @@
         </div>
       </div>
       <div id="course-list-box" class="shadow">
-        <div id="loaded-course-lists-title" class="table-title">Course Lists Loaded</div>
+        <div id="loaded-course-lists-title" class="table-title">My Schedules</div>
         <div id="course-list-table" class="">
+          <div id="schedule-indicator"></div>
         </div>
       </div>
     </div>
@@ -137,6 +137,7 @@
     <script src="scripts/libs/rasterizeHTML.allinone.js"></script>
     <script src="scripts/libs/localforage.min.js"></script>
     <script src="scripts/libs/ics.deps.min.js"></script>
+    <script src="scripts/libs/jscolor.min.js"></script>
 
     <!--- Then load scripts -->
     <script src="scripts/constructors.js"></script>

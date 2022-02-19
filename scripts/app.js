@@ -46,7 +46,7 @@ function buttonLoad() {
 		} else if (result.value != undefined) {
 			await intakeCourseData(result.value);
 
-			updateSchedule();
+			updateSchedule(play_animation=true);
 		}
 	})
 }
@@ -731,9 +731,11 @@ async function appendCourseHTML(courses) {
 			s = "";
 		}
 
+
 		if (courses[0].startsWith("<b>")) {
-			courses[0].remove();
+			courses.remove(0);
 		}
+
 		courses.unshift(`<b>${courses.length >= 100 ? "100+" : courses.length} course${s} found. Click on a course to select it.</b>`);
 		// Superfast html updater
 		replaceHtml(output, courses.join("\n"));
@@ -842,6 +844,18 @@ async function addCourses() {
 	await save_json_data("loaded_local_courses", loaded_local_courses);
 
 	updateSchedule();
+
+	setTimeout(() => {
+		// Get courses added as html elements
+		for (let course of selected_courses) {
+			let els = document.getElementsByClassName(`${course}-loaded`);
+
+			for (let el of els) {
+				el.classList.add("added-from-search-animation");
+			}
+		}
+	}, 10);
+	
 
 	return num_courses;
 }
@@ -955,8 +969,6 @@ async function toggleCourseVisibility(identifier) {
 }
 
 async function setLoadedSchedule(code) {
-	console.log(`Loading ${code}`);
-
 	// If it's the currently loaded schedule, return
 	if (loaded_schedule.code == code) {
 		return;
@@ -986,7 +998,7 @@ async function setLoadedSchedule(code) {
 	await save_json_data("loaded_local_courses", loaded_local_courses);
 	await save_json_data("loaded_schedule", loaded_schedule);
 
-	updateSchedule();
+	updateSchedule(play_animation=true);
 
 	// Scroll to clicked on schedule
 	let el = document.getElementById("course-list-table");
@@ -999,22 +1011,6 @@ async function setLoadedSchedule(code) {
 
 }
 
-async function toggleCourseListVisibility(code) {
-	let el = document.getElementById(`course-list-${code}`);
-
-	el.firstElementChild.classList.toggle("visible");
-
-	if (hidden_course_lists.includes(code)) {
-		hidden_course_lists.splice(hidden_course_lists.indexOf(code), 1);
-	} else {
-		hidden_course_lists.push(code);
-	}
-
-	updateSchedule();
-
-	await save_json_data("hidden_course_lists", hidden_course_lists);
-}
-
 async function deleteCourseList(e = false, code) {
 	if (e) {
 		// Stop bubbling onclick event
@@ -1022,9 +1018,6 @@ async function deleteCourseList(e = false, code) {
 		e.cancelBubble = true;
 		if (e.stopPropagation) e.stopPropagation();
 	}
-
-
-	console.log("deleting" + code);
 
 	if (loaded_schedule.code == code) {
 		await setLoadedSchedule(loaded_course_lists[Math.max(0, loaded_schedule.index - 1)].code);
@@ -1148,7 +1141,7 @@ async function mergeCourseList(code) {
 	if (found) {
 		await save_json_data("loaded_course_lists", loaded_course_lists);
 		await save_json_data("loaded_local_courses", loaded_local_courses);
-		updateSchedule();
+		updateSchedule(play_animation);
 	}
 }
 
@@ -1378,8 +1371,6 @@ function addNewSchedule() {
 					throw new Error("Schedule must have unique name.");
 				}
 
-				console.log(color);
-
 				return {
 					schedule: {
 						code: name,
@@ -1422,7 +1413,7 @@ function addNewSchedule() {
 async function clearCourses() {
 	loaded_local_courses = [];
 	await save_json_data("loaded_local_courses", loaded_local_courses);
-	updateSchedule();
+	updateSchedule(play_animation=true);
 
 	Toast.fire({
 		title: 'Courses Cleared!',
@@ -1434,7 +1425,7 @@ async function clearSchedules() {
 	await setLoadedSchedule("Main");
 	loaded_course_lists = [];
 	await save_json_data("loaded_course_lists", loaded_course_lists);
-	updateSchedule();
+	updateSchedule(play_animation=true);
 
 	Toast.fire({
 		title: 'Schedules Cleared!',

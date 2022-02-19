@@ -20,6 +20,7 @@
   --padding-medium: 7px;
   --padding-small: 5px;
   --roundedness: 10px;
+  --small-roundedness: 5px;
   --search-button-background: rgb(64, 187, 33);
   --shadow-blur: 20px;
   --shadow-length: 4px;
@@ -41,9 +42,10 @@
   --cal-icon: url(../img/cal-light.svg);
   --dl-icon: url(../img/dl-light.svg);
   --custom-course-icon: url(../img/custom-course-light.svg);
-  --checked-icon: url(../img/checked.svg);
+  --checked-icon: url(../img/checked-light.svg);
   --settings-icon: url(../img/settings-light.svg);
   --hover-effect: 0.96;
+  --schedule-change-speed: 0.12s;
 }
 
 [data-theme="dark"] {
@@ -75,6 +77,7 @@
   --cal-icon: url(../img/cal-dark.svg);
   --dl-icon: url(../img/dl-dark.svg);
   --custom-course-icon: url(../img/custom-course-dark.svg);
+  --checked-icon: url(../img/checked-dark.svg);
   --settings-icon: url(../img/settings-dark.svg);
   --hover-effect: 1.2;
 }
@@ -100,9 +103,8 @@ body {
 
 body * {
   transition: background-color 0.2s ease-in-out, outline-width 0.05s ease-in-out,
-    outline-color 0.01s ease-in-out, outline-offset 0.01s ease-in-out,
-    z-index 0.1s ease-in-out, transform 0.08s ease-in-out,
-    width 0.1s ease-in-out, padding 0.1s ease-in-out;
+    outline-color 0.01s ease-in-out, outline-offset 0.01s ease-in-out, transform 0.08s ease-in-out,
+    width 0.15s cubic-bezier(0,1.5,1,1.5), padding 0.15s cubic-bezier(0,1.5,1,1.5);
 }
 
 canvas {
@@ -115,7 +117,7 @@ canvas {
   display: grid;
   gap: 10px;
   grid-template-columns: 4fr 1fr;
-  grid-template-rows: 0.3fr 3fr 3fr 2fr;
+  grid-template-rows: 0.3fr 2.2fr 3fr 2fr;
   grid-template-areas:
     "header right-header"
     "schedule course-info"
@@ -167,6 +169,62 @@ canvas {
 #fader.fade-out {
   opacity: 0;
   animation-name: fade-out;
+}
+
+.add-animation {
+  animation: glide-in var(--schedule-change-speed) ease-in-out;
+}
+
+@keyframes glide-in {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.remove-animation {
+  animation: glide-out var(--schedule-change-speed) ease-in-out;
+}
+
+@keyframes glide-out {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+.added-from-search-animation {
+  animation: added-from-search-animation .5s ease-in-out;
+}
+
+@keyframes added-from-search-animation {
+  0% {
+    transform: rotate(-10deg);
+    scale: 1;
+  }
+
+  25% {
+    transform: rotate(20deg);
+    scale: 1.1;
+  }
+
+  75% {
+    transform: rotate(-10deg);
+    scale: 1.1;
+  }
+
+  100% {
+    transform: rotate(0deg);
+    scale: 1;
+  }
 }
 
 #share-image {
@@ -432,14 +490,10 @@ canvas {
 }
 
 .line-v {
-  background-color: var(--text-light);
-  opacity: 0.5;
+  background-color: #22222241;
+  opacity: 1;
   width: 5px;
   margin: 0 auto;
-}
-
-.line-v:hover {
-  opacity: 1;
 }
 
 .line-v.red-line {
@@ -455,7 +509,7 @@ canvas {
   background-color: var(--background-alt);
   border-radius: var(--roundedness);
   display: inline-block;
-  overflow: auto;
+  overflow-y: scroll;
 }
 
 #course-list-box {
@@ -518,6 +572,10 @@ canvas {
   position: relative;
 }
 
+.course-schedule-block.selected {
+  z-index: 1060;
+}
+
 .course-search-result.selected {
   padding-left: 60px;
 }
@@ -527,7 +585,7 @@ canvas {
   background-size: 40%;
   background-repeat: no-repeat;
   background-position: center;
-  background-color: var(--search-button-background);
+  background-color: var(--text-main);
   width: 0px;
   height: 100%;
   position: absolute;
@@ -572,7 +630,7 @@ canvas {
   text-align: left;
   width: 30vw;
   max-height: 45vh;
-  overflow-y: auto;
+  overflow-y: scroll;
 }
 
 .align-right {
@@ -678,7 +736,7 @@ canvas {
 }
 
 .course-loaded {
-  font-size: 16px;
+  font-size: 14px;
   padding: var(--padding-medium);
   display: grid;
   position: relative;
@@ -734,7 +792,7 @@ canvas {
   margin: 0 auto;
 }
 .course-schedule-block {
-  border-radius: var(--roundedness);
+  border-radius: var(--small-roundedness);
   color: var(--text-course-schedule);
   cursor: pointer;
   display: flex;
@@ -847,8 +905,8 @@ canvas {
   border-radius: var(--roundedness);
   box-sizing: border-box;
   display: inline-block;
-  height: 30vh;
-  overflow: auto;
+  height: 25vh;
+  overflow-y: scroll;
   padding: var(--padding);
   width: 100%;
 }
@@ -908,7 +966,7 @@ a:visited {
   width: 5px;
   background-color: var(--text-main);
   border-radius: var(--roundedness);
-  transition: top 0.3s;
+  transition: top var(--schedule-change-speed);
 }
 
 #course-box {

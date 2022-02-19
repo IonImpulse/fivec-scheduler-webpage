@@ -262,34 +262,55 @@ function generateLines() {
     }
 }
 
-function updateSchedule() {
+function updateSchedule(play_animation=false) {
+
     max_grid_rows = 0;
 
-    clearSchedule();
-    updateLoadedCourses();
-    updateLoadedCustomCourses();
-    updateLoadedCourseLists();
-    updateStarredCourses();
-    updateDistanceLines();
-    updateCredits();
+    clearSchedule(play_animation).then(() => {
+        updateLoadedCourses(play_animation);
+        updateDistanceLines(play_animation);
+        updateLoadedCustomCourses(play_animation);
 
-    if (max_grid_rows == 0) {
-        max_grid_rows = 350;
-    } else {
-        max_grid_rows = Math.min(350, max_grid_rows + 20);
-    }
-
-    schedule_element.style.gridTemplateRows = `35px repeat(${max_grid_rows}, 1fr) repeat(${350 - max_grid_rows}, .1fr)`;
+        updateLoadedCourseLists();
+        updateStarredCourses();
+        updateCredits();
+    
+        if (max_grid_rows == 0) {
+            max_grid_rows = 350;
+        } else {
+            max_grid_rows = Math.min(350, max_grid_rows + 20);
+        }
+    
+        //max_grid_rows = 350;
+    
+        schedule_element.style.gridTemplateRows = `35px repeat(${max_grid_rows}, 1fr) repeat(${350 - max_grid_rows}, .1fr)`;  
+    });
 }
 
-function clearSchedule() {
+async function clearSchedule(play_animation) {
     let course_divs = schedule_element.getElementsByClassName("course-schedule-block");
+    let timing_lines = schedule_element.getElementsByClassName("popup-holder");
+    
+
+    if (play_animation) {
+        // First add remove animation class
+        for (let i = 0; i < course_divs.length; i++) {
+            course_divs[i].classList.add("remove-animation");
+        }
+
+        for (let i = 0; i < timing_lines.length; i++) {
+            timing_lines[i].classList.add("remove-animation");
+        }
+
+        // Wait for animation to finish
+        await sleep(100)
+    }
+    
 
     while (course_divs[0]) {
         course_divs[0].parentNode.removeChild(course_divs[0]);
     }
 
-    let timing_lines = schedule_element.getElementsByClassName("popup-holder");
     while (timing_lines[0]) {
         timing_lines[0].parentNode.removeChild(timing_lines[0]);
     }
@@ -301,7 +322,7 @@ function removeAllChildren(element) {
     }
 }
 
-function createScheduleGridDivs(courses, loaded, filter_hidden=false) {
+function createScheduleGridDivs(courses, loaded, filter_hidden=false, play_animation) {
     // Add new course divs
     let sanitized_courses = sanitizeCourseList(courses);
     if (filter_hidden) { 
@@ -316,7 +337,7 @@ function createScheduleGridDivs(courses, loaded, filter_hidden=false) {
                 color += "CC";
             }
 
-            let course_div_list = createScheduleGridDiv(sanitized_courses[slow_index], color, set_max_grid_rows = true);
+            let course_div_list = createScheduleGridDiv(sanitized_courses[slow_index], color, set_max_grid_rows = true, low_z_index=false, play_animation);
 
             for (let course_div of course_div_list) {
                 schedule_element.appendChild(course_div);
@@ -327,7 +348,7 @@ function createScheduleGridDivs(courses, loaded, filter_hidden=false) {
     }
 }
 
-function updateLoadedCourses() {
+function updateLoadedCourses(play_animation) {
     let course_list_table = document.getElementById("course-table");
 
     removeAllChildren(course_list_table);
@@ -339,7 +360,7 @@ function updateLoadedCourses() {
         }
     }
 
-    createScheduleGridDivs(loaded_local_courses, false, true);
+    createScheduleGridDivs(loaded_local_courses, false, true, play_animation);
     
 }
 
@@ -440,7 +461,7 @@ function distanceLatLon(lat1, lon1, lat2, lon2, unit) {
 	return dist
 }
 
-function updateDistanceLines() {
+function updateDistanceLines(play_animation) {
     // First, create a nested array of all locations using displayed times
     let line_list = [[], [], [], [], []];
     let courses_with_timing = loaded_local_courses.filter((course) => course.displayed_timing != undefined && !hidden_courses.includes(course.identifier));
@@ -483,7 +504,7 @@ function updateDistanceLines() {
             if (course_a_loc[0] != undefined && course_b_loc[0] != undefined) {
                 if (course_a_loc[0] != "" && course_b_loc[0] != "") {
                     let distance = distanceLatLon(course_a_loc[0], course_a_loc[1], course_b_loc[0], course_b_loc[1], "F");
-                    generateTimeLine(course_a, course_b, distance);
+                    generateTimeLine(course_a, course_b, distance, play_animation);
                 }
             } else {
                 console.warn(`Location key ${course_a_key} is ${course_a_loc}\nLocation key ${course_b_key} is ${course_b_loc}\n`);
@@ -493,7 +514,7 @@ function updateDistanceLines() {
     }
 }
 
-function generateTimeLine(course_a, course_b, distance) {
+function generateTimeLine(course_a, course_b, distance, play_animation) {
     let el_a = document.getElementById(`${course_a.course.identifier}|${course_a.index}`);
     let el_b = document.getElementById(`${course_b.course.identifier}|${course_b.index}`);
 
@@ -504,6 +525,10 @@ function generateTimeLine(course_a, course_b, distance) {
     let line_div = document.createElement("div");
     line_div.classList.add("line-v");
     line_div.classList.add("popup-holder");
+
+    if (play_animation) {
+        line_div.classList.add("add-animation");
+    }
 
     let id = `distance-info-${grid_column}-${grid_row_start}-${grid_row_end}`;
     line_div.style.gridColumnStart = grid_column;

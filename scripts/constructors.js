@@ -27,7 +27,7 @@ function sanitizeCourseList(courses) {
     return sanitized;
 }
 
-function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_index=false) {
+function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_index=false, play_animation) {
     let return_list = [];
     // Have to create one for each time slot it's in
     //
@@ -36,7 +36,14 @@ function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_i
     for (let time of course.displayed_timing) {
         // Create the div
         let course_div = document.createElement("div");
-        course_div.className = `${course.identifier}-loaded course-schedule-block unselectable`;
+        
+        course_div.className += `${course.identifier}-loaded course-schedule-block unselectable`;
+
+        if (play_animation) {
+            course_div.className += " add-animation";
+        }
+
+        
         course_div.style.backgroundColor = color;
 
         if (low_z_index) {

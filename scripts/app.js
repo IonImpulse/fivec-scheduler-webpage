@@ -1720,11 +1720,10 @@ const changelog_popup = `
 	<ul>
 		<li>Added <b>multi-schedule</b> functionality! This allows you to create alternative schedules to plan out your courses. 
 		Additionally, you can name your schedules and change their <b>colors</b>.</li>
-		<li>Added A N I M A T I O N S</li>
+		<li>Added <b>A N I M A T I O N S</b></li>
 		<li>Added automatic course links in descriptions and reqs!</li>
 		<li>Added settings panel</li>
 		<li>Added ability to delete data</li>
-		<li>Added links to courses in descriptions, reqs, and prereqs</li>
 		<li>Improved buttons, making them all use a single cohesive design.</li>
 		<li>Improved mobile mode</li>
 		<li>Improved initial loading speed</li>

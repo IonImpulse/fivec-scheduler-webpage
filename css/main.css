@@ -29,6 +29,7 @@
   --text-light: #616161;
   --text-main: #252525;
   --link-color: #106497;
+  --line-color: #22222241;
   --theme-icon: url(../img/theme-light.svg);
   --export-icon: url(../img/export-light.svg);
   --print-icon: url(../img/print-light.svg);
@@ -68,6 +69,7 @@
   --text-light: #bdbdbd;
   --text-main: #dbdbdb;
   --link-color: #83c3eb;
+  --line-color: #c0c0c041;
   --theme-icon: url(../img/theme-dark.svg);
   --export-icon: url(../img/export-dark.svg);
   --print-icon: url(../img/print-dark.svg);
@@ -490,7 +492,7 @@ canvas {
 }
 
 .line-v {
-  background-color: #22222241;
+  background-color: var(--line-color);
   opacity: 1;
   width: 5px;
   margin: 0 auto;

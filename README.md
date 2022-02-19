@@ -10,6 +10,7 @@ Live at [www.5scheduler.io](https://www.5scheduler.io/)
 - 🚀 **SUPERFAST** everything - tested to be the fastest course scheduler for the 5Cs
 - 🔍 **Fast** & **Smart** typo-resistant search engine for all courses at the [Claremont Colleges](https://www.claremont.edu/)
 - 🌗 Light & **Dark** Mode
+- 🔢 Create **Multiple Schedules** to plan out your semester
 - 🔮 Displays both **Prerequisites** and **Corequisites**
 - 🔀 Switch between HMC's and the other 4C's credit system
 - 📧 **Share and load** schedules as a code, link, or QR code
@@ -43,12 +44,12 @@ Unfortunately, due to security policies in browsers, you cannot just open the in
 ## Stats for Nerds
 - Built using plain JS, CSS, & HTML5
 - API repo at [fivec-scheduler-server](https://github.com/IonImpulse/fivec-scheduler-server), built using Rust
-- Website first run size is ~630 KB, subsequent runs are ~3 KB. Compressed using GZip
-   - Course data: 428 KB
-   - JS: 75 KB
-   - Images: 61 KB
+- Website first run size is ~717 KB, subsequent runs are ~3 KB. Compressed using GZip
+   - Course data: 492 KB
+   - JS: 96 KB
+   - Images: 65 KB
    - Fonts: 56 KB
    - CSS: 11 KB
    - HTML: 4 KB
 - Scored 99/100 for all tests in Google Lighthouse
-- Speed index of 2.7s for first run, 0.7s for repeat runs with 0s blocking time on WebPageTest
+- Speed index of 1.3s for first run, 0.4s for repeat runs with 0s blocking time on WebPageTest

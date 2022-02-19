@@ -45,7 +45,7 @@
   --checked-icon: url(../img/checked-light.svg);
   --settings-icon: url(../img/settings-light.svg);
   --hover-effect: 0.96;
-  --schedule-change-speed: 0.12s;
+  --schedule-change-speed: .1s;
 }
 
 [data-theme="dark"] {
@@ -172,7 +172,7 @@ canvas {
 }
 
 .add-animation {
-  animation: glide-in var(--schedule-change-speed) ease-in-out;
+  animation: glide-in var(--schedule-change-speed) ease-out;
 }
 
 @keyframes glide-in {
@@ -187,7 +187,7 @@ canvas {
 }
 
 .remove-animation {
-  animation: glide-out var(--schedule-change-speed) ease-in-out;
+  animation: glide-out var(--schedule-change-speed) ease-out;
 }
 
 @keyframes glide-out {
@@ -1400,7 +1400,7 @@ h1 {
   }
 
   #schedule-box {
-    height: 1000px;
+    height: 600px;
   }
 
   #add-schedule {

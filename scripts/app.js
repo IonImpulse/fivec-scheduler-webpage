@@ -733,7 +733,7 @@ async function appendCourseHTML(courses) {
 
 
 		if (courses[0].startsWith("<b>")) {
-			courses.remove(0);
+			courses.shift();
 		}
 
 		courses.unshift(`<b>${courses.length >= 100 ? "100+" : courses.length} course${s} found. Click on a course to select it.</b>`);

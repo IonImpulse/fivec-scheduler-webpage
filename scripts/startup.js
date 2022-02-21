@@ -704,13 +704,13 @@ async function loadPossibleParams() {
                 `Invalid Code! ${error}`
             )
         }
+
+        // Reset url so bookmarks don't get messed up
+
+        let obj = { Title: window.location.title, Url: window.location.href.split("?")[0] ?? window.location.href };  
+
+        history.pushState(obj, obj.Title, obj.Url);  
     }
-
-    // Reset url so bookmarks don't get messed up
-
-    let obj = { Title: window.location.title, Url: window.location.href.split("?")[0] ?? window.location.href };  
-
-    history.pushState(obj, obj.Title, obj.Url);  
 }
 
 function showChangelog() {

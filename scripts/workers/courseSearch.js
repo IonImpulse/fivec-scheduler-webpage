@@ -27,6 +27,7 @@ function createResultDiv(course, color, index) {
 
 	let prereqs = "";
 	let coreqs = "";
+	let perm_count = "";
 
 	// Create pre and co req boxes
 	if (course.prerequisites.length > 0) {
@@ -37,9 +38,12 @@ function createResultDiv(course, color, index) {
 		coreqs = `<span class="coreqs-highlight" onclick="addSearchFilter(\'coreq:some\')">Coreq(s)</span>`;
 	}
 
+	if (course.perm_count > 0) {
+		perm_count = `<span class="perms-highlight" onclick="addSearchFilter(\'permslessthan:${course.perm_count}\')">Perms: ${course.perm_count}</span>`;
+	}
 
 	// Put the course code and status in a div on the right
-	let num_students = `<span class="align-right"><b>${course.seats_taken}/${course.max_seats}${prereqs}${coreqs}${status}</b></span>`;
+	let num_students = `<span class="align-right"><b>${course.seats_taken}/${course.max_seats}${perm_count}${prereqs}${coreqs}${status}</b></span>`;
 
 	course_div += `${course_code}: ${course.title} ${num_students}`;
     course_div += "</div>";
@@ -242,6 +246,12 @@ function search_courses(query, all_courses_global, filters, hmc_mode) {
 					}
 				}
 			}));
+		} else if (key == "permslessthan"){
+			results = results.filter(t => (t.obj || t).perm_count <= parseInt(filters[key]));
+		} else if (key = "permsequalto"){
+			results = results.filter(t => (t.obj || t).perm_count == parseInt(filters[key]));
+		} else if (key == "permgreaterthan"){
+			results = results.filter(t => (t.obj || t).perm_count >= parseInt(filters[key]));
 		}
 	}
 

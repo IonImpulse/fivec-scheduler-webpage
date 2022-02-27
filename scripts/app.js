@@ -695,7 +695,7 @@ async function backgroundCourseSearch() {
 	}
 
 	if (input.value == "" && all_course_results_html.length > 0) {
-		appendCourseHTML(all_course_results_html);
+		appendCourseHTML(all_course_results_html, document.getElementById("course-input").value);
 
 		postProcessSearch(input.value, all_course_results_html);
 
@@ -705,7 +705,7 @@ async function backgroundCourseSearch() {
 	searching_worker.onmessage = function (e) {
 		const html_courses = e.data;
 
-		appendCourseHTML(html_courses);
+		appendCourseHTML(html_courses, document.getElementById("course-input").value);
 
 		postProcessSearch(document.getElementById("course-input").value, html_courses);
 	}
@@ -717,11 +717,11 @@ async function sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function appendCourseHTML(courses) {
+async function appendCourseHTML(courses, query) {
 	let output = document.getElementById("course-search-results");
 
 	if (courses.length == 0) {
-		output.innerHTML = "<b>No results found</b>";
+		output.innerHTML = `<b>No results found</b><br><br>Search for this course on <b><a class="clickable-text" href='https://www.5catalog.io/?search=${encodeURIComponent(query)}' target='_blank'>5catalog.io</a></b>`;
 
 		return;
 	} else {

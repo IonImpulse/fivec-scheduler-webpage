@@ -395,6 +395,12 @@ async function buttonSearch() {
 		}).then(async (result) => {
 			document.removeEventListener("keydown", focusAndInput);
 
+			// Reset url so bookmarks don't get messed up
+
+			let obj = { Title: window.location.title, Url: window.location.href.split("?")[0] ?? window.location.href };  
+
+			history.pushState(obj, obj.Title, obj.Url);  
+
 			if (result.isConfirmed) {
 				let num_courses = await addCourses();
 
@@ -1194,6 +1200,10 @@ function toggleCourseOverlay(identifier) {
 }
 
 function showCourseOverlay(identifier, override = false) {
+	if (all_desc_global == undefined || all_desc_global.length == 0) {
+		return
+	}
+
 	if (overlay.locked == false || override == true) {
 		if (all_desc_global.length == 0) {
 			updateDescAndSearcher();
@@ -1684,6 +1694,8 @@ const search_popup = `
     <div id="course-search-desc" class="course-desc">
     </div>
 </div>
+<div id="course-search-cart">
+</div>
 <br>`;
 
 
@@ -1719,6 +1731,9 @@ const changelog_popup = `
 	<b>v1.9 Beta</b>
 	<ul>
 		<li>Added PERM counts to the course search results</li>
+		<li>Added linkback to <a href="https://www.5catalog.io/">5catalog.io</a></li>
+		<li>Added cart to course selection</li>
+		<li>Fixed undefined description bug</li>
 	</ul>
 </div>
 `;

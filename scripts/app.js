@@ -12,8 +12,8 @@ jscolor.presets.default = {
 
 function buttonLoad() {
 	Swal.fire({
-		title: 'Load Course List',
-		html: `<div><input maxlength='7' id="code-input" oninput="checkIfFull()"></div>`,
+		title: 'Load Schedule',
+		html: `<i>Enter a saved schedule code. To add courses, exit and click the "Search" button.</i><div><input maxlength='7' id="code-input" oninput="checkIfFull()"></div>`,
 		focusConfirm: false,
 		showCancelButton: true,
 		confirmButtonText: 'Load',
@@ -736,7 +736,7 @@ async function appendCourseHTML(courses, query) {
 			courses.shift();
 		}
 
-		courses.unshift(`<b>${courses.length >= 100 ? "100+" : courses.length} course${s} found. Click on a course to select it.</b>`);
+		courses.unshift(`<b>${courses.length >= 100 ? "100+" : courses.length} course${s} found. Click on a course to select and add it.</b>`);
 		// Superfast html updater
 		replaceHtml(output, courses.join("\n"));
 		for (let s of selected_courses) {

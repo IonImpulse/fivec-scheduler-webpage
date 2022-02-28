@@ -13,7 +13,7 @@ jscolor.presets.default = {
 function buttonLoad() {
 	Swal.fire({
 		title: 'Load Schedule',
-		html: `<i>Enter a saved schedule code. To add courses, exit and click the "Search" button.</i><div><input maxlength='7' id="code-input" oninput="checkIfFull()"></div>`,
+		html: `<i>Enter a saved schedule code.<br>To add courses, exit and click the "Search" button.</i><div><input maxlength='7' id="code-input" oninput="checkIfFull()"></div>`,
 		focusConfirm: false,
 		showCancelButton: true,
 		confirmButtonText: 'Load',
@@ -804,6 +804,17 @@ function toggleCourseSelection(identifier) {
 		el.innerText = "";
 	} else {
 		el.innerText = "s";
+	}
+
+	updateCart();
+}
+
+function updateCart() {
+	let cart = document.getElementById("course-search-cart");
+	cart.innerHTML = "";
+
+	for (let s = 0; s < selected_courses.length; s++) {
+		cart.innerHTML += `<div class="cart-item" style="background-color:${colors[s]};">${selected_courses[s]}</div>`;
 	}
 }
 

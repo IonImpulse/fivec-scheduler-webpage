@@ -1376,6 +1376,28 @@ h1 {
   font-size: 14px !important;
 }
 
+#course-search-cart {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  margin-top: 20px;
+  height: 30px;
+}
+
+.cart-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--roundedness);
+  background-color: var(--background-alt);
+  color: var(--text-main);  
+  padding: var(--padding-medium);
+  margin-right: 10px;
+  font-size: smaller;
+}
+
+
 /* =============================
 
     MOBILE STYLES

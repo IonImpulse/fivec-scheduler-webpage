@@ -794,7 +794,7 @@ canvas {
 }
 
 .qr-code {
-  width: 80%;
+  width: 70%;
   margin: 0 auto;
 }
 .course-schedule-block {
@@ -1391,7 +1391,7 @@ h1 {
   align-items: center;
   border-radius: var(--roundedness);
   background-color: var(--background-alt);
-  color: var(--text-main);  
+  color: var(--text-course-schedule);
   padding: var(--padding-medium);
   margin-right: 10px;
   font-size: smaller;
@@ -1641,5 +1641,9 @@ h1 {
     margin: 0 auto;
     margin-bottom: 10px;
     height: 60px;
+  }
+
+  .swal2-title {
+    font-size: 2em !important;
   }
 }

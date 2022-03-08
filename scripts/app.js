@@ -1310,7 +1310,7 @@ function toSvgString(qr, border, lightColor, darkColor) {
 `
 }
 
-function addSearchFilter(filter) {
+function addSearchFilter(filter, e=false) {
 	// Stop bubbling onclick event
 	if (!(e??true)) {
 		var e = window.event;

@@ -6,6 +6,22 @@ onmessage = function(e) {
     postMessage(course_divs);
 }
 
+const filter_split_at = [":", "<=", ">=", "<", ">", "="];
+
+// Split a string at any of the provided strings
+// Returns the split string and the string that was split at
+function splitAtList(str, list) {
+	for (let i = 0; i < list.length; i++) {
+		if (str.includes(list[i])) {
+			let split_at = list[i];
+			let split_str = str.split(split_at);
+			return [split_str, split_at];
+		}
+	}
+
+	return false;
+}
+
 function createResultDiv(course, color, index) {
 	let identifier = course.identifier;
 
@@ -70,11 +86,12 @@ function tweakSearch(string) {
 	let return_string = string.toLowerCase();
 
 	// Common replacements
-	// Type can be "full" or "any"
+	// Type can be "full", "number", or "any"
 	// Full only matches full tokens/words separated by spaces
+	// Number matches any phrase next to a number, but keeps the number
 	const replacements = [
 		{ type: "full", search: "cs", replace: "csci" },
-		{ type: "full", search: "e", replace: "engr"},
+		{ type: "full", search: "e", replace: "engr" },
 		{ type: "full", search: "hmc", replace: "HarveyMudd" },
 		{ type: "full", search: "cmc", replace: "ClaremontMckenna" },
 		{ type: "full", search: "harvey mudd", replace: "HarveyMudd" },
@@ -84,35 +101,24 @@ function tweakSearch(string) {
 	for (let replacement of replacements) {
 		if (replacement.type == "full") {
 			return_string = return_string.replaceAll(new RegExp(`\\b${replacement.search}\\b`, 'g'), replacement.replace);
+			let regex = new RegExp(`\\b(${replacement.search})([0-9]+)\\b`, 'g');
+
+			// Find matches
+			let matches = [...return_string.matchAll(regex)];
+			
+			// Replace matches with the replacement and number
+			for (let match of matches) {
+				return_string = return_string.replaceAll(match[0], `${replacement.replace}${match[2]}`);
+			}
 		} else if (replacement.type == "any") {
 			return_string = return_string.replaceAll(replacement.search, replacement.replace);
 		}
 	}
 
-	// Add a 0 to the course number
-	let num_corrected_string = "";
-
-	for (part of return_string.split(" ")) {
-		// JS is horrible, to see if a string is a number or not
-		// I have to parse it then take the output and convert
-		// that back to a string.
-		//
-		// Then I can compare it to the string value of "NaN" to see
-		// if it's a number or not.
-		if (`${parseInt(part)}` != "NaN") {
-			if (part.length == 2) {
-				num_corrected_string += ` 0${part}`;
-			} else if (part.length == 1) {
-				num_corrected_string += ` 00${part}`;
-			} else {
-				num_corrected_string += ` ${part}`;
-			}
-		} else {
-			num_corrected_string += ` ${part}`;
-		}
-	}
-
-	return_string = num_corrected_string;
+	// Pad all numbers to 3 digits with 0s
+	return_string = return_string.replaceAll(/([0-9]+)/g, (match) => {
+		return match.padStart(3, "0");
+	});
 
 	return return_string.trim().toLowerCase();
 }
@@ -158,46 +164,46 @@ function search_courses(query, all_courses_global, filters, hmc_mode) {
 	}
     
 	// Apply filters
-	for (let key of Object.keys(filters)) {
-		if (["status", "dept", "id", "code"].includes(key)) {
-			results = results.filter(t => (t.obj || t)[key].toLowerCase() == filters[key].toLowerCase());
-		} else if (key == "with") {
-			results = results.filter(t => (t.obj || t).instructorString.toLowerCase().replaceAll(".", "").includes(filters[key].replaceAll("-", " ").replace(".", "").toLowerCase()));
-		} else if (key == "on") {
-			let days_to_search = filters[key].split(",").map(day => capitalize(day));
+	for (let filter of filters) {
+		if (["status", "dept", "id", "code"].includes(filter.key)) {
+			results = results.filter(t => (t.obj || t)[filter.key].toLowerCase() == filter.value.toLowerCase());
+		} else if (filter.key == "with") {
+			results = results.filter(t => (t.obj || t).instructorString.toLowerCase().replaceAll(".", "").includes(filter.value.replaceAll("-", " ").replace(".", "").toLowerCase()));
+		} else if (filter.key == "on") {
+			let days_to_search = filter.value.split(",").map(day => capitalize(day));
 			results = results.filter(t => (t.obj || t).timing.map(e => e.days).some(k => k.some(l => days_to_search.includes(l))));
-		} else if (key == "credits") {
+		} else if (filter.key == "credits") {
 			if (hmc_mode) {
-				results = results.filter(t => (t.obj || t).credits_hmc/100 == filters[key]);
+				results = results.filter(t => (t.obj || t).credits_hmc/100 == filter.value);
 			} else {
-				results = results.filter(t => (t.obj || t).credits/100 == filters[key]);
+				results = results.filter(t => (t.obj || t).credits/100 == filter.value);
 			}
-		} else if (key == "section") {
-			results = results.filter(t => parseInt((t.obj || t).section) == filters[key]);
-		} else if (key == "at") {
-			results = results.filter(t => (t.obj || t).timing.map(e => e.location.school).flat().includes(toApiSchool(filters[key])));
-		} else if (key == "location") {
-			results = results.filter(t => (t.obj || t).timing.map(e => e.location.building).some(x => x.toLowerCase().includes(filters[key].toLowerCase())));
-		} else if (key == "prereq") {
-			if (filters[key].toLowerCase() == "none") {
+		} else if (filter.key == "section") {
+			results = results.filter(t => parseInt((t.obj || t).section) == filter.value);
+		} else if (filter.key == "at") {
+			results = results.filter(t => (t.obj || t).timing.map(e => e.location.school).flat().includes(toApiSchool(filter.value)));
+		} else if (filter.key == "location") {
+			results = results.filter(t => (t.obj || t).timing.map(e => e.location.building).some(x => x.toLowerCase().includes(filter.value.toLowerCase())));
+		} else if (filter.key == "prereq") {
+			if (filter.value.toLowerCase() == "none") {
 				results = results.filter(t => (t.obj || t).prerequisites.length == 0);
-			} else if (filters[key].toLowerCase() == "some") {
+			} else if (filter.value.toLowerCase() == "some") {
 				results = results.filter(t => (t.obj || t).prerequisites.length > 0);
 			} else {
-				results = results.filter(t => (t.obj || t).prerequisites == filters[key]);
+				results = results.filter(t => (t.obj || t).prerequisites == filter.value);
 			}
-		} else if (key == "coreq") {
-			if (filters[key].toLowerCase() == "none") {
+		} else if (filter.key == "coreq") {
+			if (filter.value.toLowerCase() == "none") {
 				results = results.filter(t => (t.obj || t).corequisites.length == 0);
-			} else if (filters[key].toLowerCase() == "some") {
+			} else if (filter.value.toLowerCase() == "some") {
 				results = results.filter(t => (t.obj || t).corequisites.length > 0);
 			} else {
-				results = results.filter(t => (t.obj || t).corequisites == filters[key]);
+				results = results.filter(t => (t.obj || t).corequisites == filter.value);
 			}
-		} else if (key == "after" || key == "before") {
+		} else if (filter.key == "after" || filter.key == "before") {
 			let time_to_search = [0, 0];
 
-			let time = filters[key].toLowerCase();
+			let time = filter.value.toLowerCase();
 			let offset = 0;
 
 			// Convert to 24 hour time
@@ -234,7 +240,7 @@ function search_courses(query, all_courses_global, filters, hmc_mode) {
 					}	
 				}
 
-				if (key == "after") {
+				if (filter.key == "after") {
 					let start_time = e.start_time.split(":").map(i => parseInt(i));
 					if (timeDiffMins(time_to_search, start_time) >= 0) {
 						return true;
@@ -246,12 +252,30 @@ function search_courses(query, all_courses_global, filters, hmc_mode) {
 					}
 				}
 			}));
-		} else if (key == "permslessthan"){
-			results = results.filter(t => (t.obj || t).perm_count <= parseInt(filters[key]));
-		} else if (key = "permsequalto"){
-			results = results.filter(t => (t.obj || t).perm_count == parseInt(filters[key]));
-		} else if (key == "permgreaterthan"){
-			results = results.filter(t => (t.obj || t).perm_count >= parseInt(filters[key]));
+		} else if (filter.key == "perms"){
+			console.log("{}", filter);
+
+			switch (filter.type.toLowerCase()) {
+				case "<":
+					results = results.filter(t => (t.obj || t).perm_count < parseInt(filter.value));
+					break;
+				case ">":
+					results = results.filter(t => (t.obj || t).perm_count > parseInt(filter.value));
+					break;
+				case "=":
+					results = results.filter(t => (t.obj || t).perm_count == parseInt(filter.value));
+					break;
+				case ">=":
+					results = results.filter(t => (t.obj || t).perm_count >= parseInt(filter.value));
+					break;
+				case "<=":
+					results = results.filter(t => (t.obj || t).perm_count <= parseInt(filter.value));
+					break;
+				case ":":
+					re
+				default:
+					break;
+			}
 		}
 	}
 
@@ -279,13 +303,18 @@ function capitalize(s) {
 function getFilters(input) {
 	let split = input.split(" ");
 
-	let filters = {};
+	let filters = [];
 	let wanted_search_term = "";
 
 	for (let part of split) {
-		if (part.includes(":")) {
-			let split_part = part.split(":");
-			filters[split_part[0]] = split_part[1];
+		let split = splitAtList(part, filter_split_at);
+
+		if (split) {
+			filters.push({
+				key: split[0][0],
+				value: split[0][1],
+				type: split[1],
+			});
 		} else {
 			wanted_search_term += part + " ";
 		}

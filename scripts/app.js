@@ -1739,7 +1739,7 @@ const new_schedule_popup = `
 
 const changelog_popup = `
 <div id="changelog-container">
-	<b>v1.9 Beta</b>
+	<b>v1.10 Beta</b>
 	<ul>
 		<li>Added PERM counts to the course search results</li>
 		<li>Added linkback to <a href="https://www.5catalog.io/">5catalog.io</a></li>

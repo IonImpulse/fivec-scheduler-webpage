@@ -99,15 +99,19 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 		let coreq_node = "<div class=\"corequisites\">";
 		coreq_node += `<b>Corequisites:</b>\n${findCourseLinks(course.corequisites)}</div>`;
 
+		let perms_node = "<div class=\"perm-count\">";
+		perms_node += `<b>Perm Count:</b> ${course.perm_count}</div>`;
+
         let notes_node = "<div";
 		notes_node += " class=\"notes\">";
 		notes_node += `<b>Notes:</b> <i>${findCourseLinks(course.notes)}</i></div>`;
-
+		
 		course_desc_node += credit_node;
 		course_desc_node += instructor_node;
 		course_desc_node += desc_node;
 		course_desc_node += prereq_node;
 		course_desc_node += coreq_node;
+		course_desc_node += perms_node;
         course_desc_node += notes_node;
 
 		all_desc_global.push(course_desc_node);

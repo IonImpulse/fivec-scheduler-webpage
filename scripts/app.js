@@ -12,8 +12,8 @@ jscolor.presets.default = {
 
 function buttonLoad() {
 	Swal.fire({
-		title: 'Load Course List',
-		html: `<div><input maxlength='7' id="code-input" oninput="checkIfFull()"></div>`,
+		title: 'Load Schedule',
+		html: `<i>Enter a saved schedule code.<br>To add courses, exit and click the "Search" button.</i><div><input maxlength='7' id="code-input" oninput="checkIfFull()"></div>`,
 		focusConfirm: false,
 		showCancelButton: true,
 		confirmButtonText: 'Load',
@@ -395,6 +395,12 @@ async function buttonSearch() {
 		}).then(async (result) => {
 			document.removeEventListener("keydown", focusAndInput);
 
+			// Reset url so bookmarks don't get messed up
+
+			let obj = { Title: window.location.title, Url: window.location.href.split("?")[0] ?? window.location.href };  
+
+			history.pushState(obj, obj.Title, obj.Url);  
+
 			if (result.isConfirmed) {
 				let num_courses = await addCourses();
 
@@ -695,7 +701,7 @@ async function backgroundCourseSearch() {
 	}
 
 	if (input.value == "" && all_course_results_html.length > 0) {
-		appendCourseHTML(all_course_results_html);
+		appendCourseHTML(all_course_results_html, document.getElementById("course-input").value);
 
 		postProcessSearch(input.value, all_course_results_html);
 
@@ -705,7 +711,7 @@ async function backgroundCourseSearch() {
 	searching_worker.onmessage = function (e) {
 		const html_courses = e.data;
 
-		appendCourseHTML(html_courses);
+		appendCourseHTML(html_courses, document.getElementById("course-input").value);
 
 		postProcessSearch(document.getElementById("course-input").value, html_courses);
 	}
@@ -717,11 +723,11 @@ async function sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function appendCourseHTML(courses) {
+async function appendCourseHTML(courses, query) {
 	let output = document.getElementById("course-search-results");
 
 	if (courses.length == 0) {
-		output.innerHTML = "<b>No results found</b>";
+		output.innerHTML = `<b>No results found</b><br><br>Search for this course on <b><a class="clickable-text" href='https://www.5catalog.io/?search=${encodeURIComponent(query)}' target='_blank'>5catalog.io</a></b>`;
 
 		return;
 	} else {
@@ -736,7 +742,7 @@ async function appendCourseHTML(courses) {
 			courses.shift();
 		}
 
-		courses.unshift(`<b>${courses.length >= 100 ? "100+" : courses.length} course${s} found. Click on a course to select it.</b>`);
+		courses.unshift(`<b>${courses.length >= 100 ? "100+" : courses.length} course${s} found. Click on a course to select and add it.</b>`);
 		// Superfast html updater
 		replaceHtml(output, courses.join("\n"));
 		for (let s of selected_courses) {
@@ -798,6 +804,17 @@ function toggleCourseSelection(identifier) {
 		el.innerText = "";
 	} else {
 		el.innerText = "s";
+	}
+
+	updateCart();
+}
+
+function updateCart() {
+	let cart = document.getElementById("course-search-cart");
+	cart.innerHTML = "";
+
+	for (let s = 0; s < selected_courses.length; s++) {
+		cart.innerHTML += `<div class="cart-item" style="background-color:${colors[s]};">${selected_courses[s]}</div>`;
 	}
 }
 
@@ -1194,6 +1211,10 @@ function toggleCourseOverlay(identifier) {
 }
 
 function showCourseOverlay(identifier, override = false) {
+	if (all_desc_global == undefined || all_desc_global.length == 0) {
+		return
+	}
+
 	if (overlay.locked == false || override == true) {
 		if (all_desc_global.length == 0) {
 			updateDescAndSearcher();
@@ -1289,7 +1310,7 @@ function toSvgString(qr, border, lightColor, darkColor) {
 `
 }
 
-function addSearchFilter(filter) {
+function addSearchFilter(filter, e=false) {
 	// Stop bubbling onclick event
 	if (!(e??true)) {
 		var e = window.event;
@@ -1684,6 +1705,8 @@ const search_popup = `
     <div id="course-search-desc" class="course-desc">
     </div>
 </div>
+<div id="course-search-cart">
+</div>
 <br>`;
 
 
@@ -1716,18 +1739,12 @@ const new_schedule_popup = `
 
 const changelog_popup = `
 <div id="changelog-container">
-	<b>v1.9 Beta</b>
+	<b>v1.10 Beta</b>
 	<ul>
-		<li>Added <b>multi-schedule</b> functionality! This allows you to create alternative schedules to plan out your courses. 
-		Additionally, you can name your schedules and change their <b>colors</b>.</li>
-		<li>Added <b>A N I M A T I O N S</b></li>
-		<li>Added automatic course links in descriptions and reqs!</li>
-		<li>Added settings panel</li>
-		<li>Added ability to delete data</li>
-		<li>Improved buttons, making them all use a single cohesive design.</li>
-		<li>Improved mobile mode</li>
-		<li>Improved initial loading speed</li>
-		<li>Improved accessibility tags</li>
+		<li>Added PERM counts to the course search results</li>
+		<li>Added linkback to <a href="https://www.5catalog.io/">5catalog.io</a></li>
+		<li>Added cart to course selection</li>
+		<li>Fixed undefined description bug</li>
 	</ul>
 </div>
 `;

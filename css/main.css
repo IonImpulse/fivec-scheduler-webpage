@@ -12,6 +12,7 @@
   --logo-primary: #4572e4;
   --logo-secondary: #9eb9fe;
   --selected: #33b4f0;
+  --perms: #973b93;
   --prereqs: #4165c9;
   --coreqs: #2690a3;
   --confirm: #c6ecc0;
@@ -46,7 +47,7 @@
   --checked-icon: url(../img/checked-light.svg);
   --settings-icon: url(../img/settings-light.svg);
   --hover-effect: 0.96;
-  --schedule-change-speed: .1s;
+  --schedule-change-speed: 0.1s;
 }
 
 [data-theme="dark"] {
@@ -60,6 +61,7 @@
   --course-open: #7ee271;
   --course-reopened: #e0c06a;
   --search-button-background: #57ac4f;
+  --perms: #d17dcd;
   --prereqs: #7995e0;
   --coreqs: #52bed1;
   --confirm: #59a150;
@@ -105,8 +107,9 @@ body {
 
 body * {
   transition: background-color 0.2s ease-in-out, outline-width 0.05s ease-in-out,
-    outline-color 0.01s ease-in-out, outline-offset 0.01s ease-in-out, transform 0.08s ease-in-out,
-    width 0.15s cubic-bezier(0,1.5,1,1.5), padding 0.15s cubic-bezier(0,1.5,1,1.5);
+    outline-color 0.01s ease-in-out, outline-offset 0.01s ease-in-out,
+    transform 0.08s ease-in-out, width 0.15s cubic-bezier(0, 1.5, 1, 1.5),
+    padding 0.15s cubic-bezier(0, 1.5, 1, 1.5);
 }
 
 canvas {
@@ -204,7 +207,7 @@ canvas {
 }
 
 .added-from-search-animation {
-  animation: added-from-search-animation .5s ease-in-out;
+  animation: added-from-search-animation 0.5s ease-in-out;
 }
 
 @keyframes added-from-search-animation {
@@ -733,7 +736,8 @@ canvas {
 
 .status-highlight:hover,
 .prereqs-highlight:hover,
-.coreqs-highlight:hover {
+.coreqs-highlight:hover,
+.perms-highlight:hover {
   outline: 4px var(--selected) solid;
 }
 
@@ -790,7 +794,7 @@ canvas {
 }
 
 .qr-code {
-  width: 80%;
+  width: 70%;
   margin: 0 auto;
 }
 .course-schedule-block {
@@ -1004,6 +1008,7 @@ a:visited {
 #course-search-desc .description,
 #course-search-desc .prerequisites,
 #course-search-desc .corequisites,
+#course-search-desc .perm-count,
 #course-search-desc .notes {
   color: var(--text-main);
   font: 14px var(--main-font), monospace;
@@ -1026,6 +1031,7 @@ a:visited {
 #course-info-table .credits,
 #course-info-table .description,
 #course-info-table .prerequisites,
+#course-info-table .perm-count,
 #course-info-table .corequisites {
   color: var(--text-main);
   font: 12px var(--main-font);
@@ -1308,6 +1314,14 @@ label {
   margin-left: 10px;
 }
 
+.perms-highlight {
+  border-radius: var(--roundedness);
+  background-color: var(--background-alt);
+  padding: var(--padding-small);
+  color: var(--perms);
+  margin-left: 10px;
+}
+
 #add-schedule {
   color: var(--text-alt);
   width: 70%;
@@ -1361,6 +1375,28 @@ h1 {
   margin-bottom: 10px;
   font-size: 14px !important;
 }
+
+#course-search-cart {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  margin-top: 20px;
+  height: 30px;
+}
+
+.cart-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--roundedness);
+  background-color: var(--background-alt);
+  color: var(--text-course-schedule);
+  padding: var(--padding-medium);
+  margin-right: 10px;
+  font-size: smaller;
+}
+
 
 /* =============================
 
@@ -1605,5 +1641,9 @@ h1 {
     margin: 0 auto;
     margin-bottom: 10px;
     height: 60px;
+  }
+
+  .swal2-title {
+    font-size: 2em !important;
   }
 }

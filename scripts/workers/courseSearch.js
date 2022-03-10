@@ -272,7 +272,11 @@ function search_courses(query, all_courses_global, filters, hmc_mode) {
 					results = results.filter(t => (t.obj || t).perm_count <= parseInt(filter.value));
 					break;
 				case ":":
-					re
+					if (key.value.toLowerCase() == "some") {
+						results = results.filter(t => (t.obj || t).perm_count > 0);
+					} else if (key.value.toLowerCase() == "none") {
+						results = results.filter(t => (t.obj || t).perm_count == 0);
+					}
 				default:
 					break;
 			}

@@ -1,0 +1,6 @@
+[{
+        "relation": ["delegate_permission/common.handle_all_urls"],
+        "target" : { "namespace": "android_app", "package_name": "io.app_5scheduler.twa",
+                     "sha256_cert_fingerprints": ["58:A4:8F:FF:77:C3:88:A6:33:6F:83:F9:E0:49:BD:B7:72:C2:B4:AA:0C:A7:58:BD:25:65:6B:65:14:05:F5:F9"] }
+      }
+]

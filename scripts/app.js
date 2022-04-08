@@ -1784,7 +1784,7 @@ const changelog_popup = `
 	<b>v1.11 Beta</b>
 	<ul>
 		<li>Update descriptions for courses</li>
-		<li>Clicking on items in cart now removes them></li>
+		<li>Clicking on items in cart now removes them</li>
 		<li>Courses in search now have a color tab to indicate their source college</li>
 		<li>Fixed time bug</li>
 		<li>Fixed filter bug</li>

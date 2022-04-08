@@ -745,7 +745,7 @@ async function backgroundCourseSearch() {
 		postProcessSearch(document.getElementById("course-input").value, html_courses);
 	}
 
-	searching_worker.postMessage([input.value, all_courses_global, colors, settings.hmc_mode]);
+	searching_worker.postMessage([input.value, all_courses_global, colors, settings.hmc_mode, loaded_local_courses]);
 }
 
 async function sleep(ms) {
@@ -1786,6 +1786,8 @@ const changelog_popup = `
 		<li>Update descriptions for courses</li>
 		<li>Clicking on items in cart now removes them</li>
 		<li>Courses in search now have a color tab to indicate their source college</li>
+		<li>Added conflict sensing in search</li>
+		<li>Adjusted sizing of search results</li>
 		<li>Fixed time bug</li>
 		<li>Fixed filter bug</li>
 	</ul>

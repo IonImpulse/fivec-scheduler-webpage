@@ -48,6 +48,12 @@
   --settings-icon: url(../img/settings-light.svg);
   --hover-effect: 0.96;
   --schedule-change-speed: 0.1s;
+
+  --school-HarveyMudd: #fdb913;
+  --school-Pomona: #20438f;
+  --school-ClaremontMckenna: #b1213b;
+  --school-Pitzer: #ff5e00;
+  --school-Scripps: #34715b;
 }
 
 [data-theme="dark"] {
@@ -571,6 +577,7 @@ canvas {
   margin: 10px;
   overflow: hidden;
   padding: var(--padding);
+  padding-left: 30px;
   text-align: left;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -602,6 +609,14 @@ canvas {
 
 .selected .checkbox {
   width: 40px;
+}
+
+.course-search-result .checkbox {
+  background-position: 80% 50%;
+}
+
+.course-search-result.course-loaded .checkbox {
+  background-position: center;
 }
 
 .unselectable {
@@ -1395,6 +1410,17 @@ h1 {
   padding: var(--padding-medium);
   margin-right: 10px;
   font-size: smaller;
+  cursor: pointer;
+}
+
+.school-color-tab {
+  position: absolute;
+  display: inline-block;
+  top: -3px;
+  left: -13px;
+  height: 100%;
+  width: 26px;
+  border: 3px solid var(--background-alt);
 }
 
 

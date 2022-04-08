@@ -72,11 +72,13 @@ async function update_database(full=true) {
         all_course_results_html = "";
         await save_json_data("course_data", json);
         all_courses_global = json.courses;
+        timestamp_global = json.timestamp;
 
         await save_json_data("loaded_local_courses", loaded_local_courses);
         await save_json_data("loaded_course_lists", loaded_course_lists);
     } else {
         all_courses_global = current_data.courses;
+        timestamp_global = current_data.timestamp;
     }
 
     // Update courses that might be invalid

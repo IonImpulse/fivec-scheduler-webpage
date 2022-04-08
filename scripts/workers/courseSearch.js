@@ -36,7 +36,7 @@ function createResultDiv(course, color, index) {
 	course_div += ` style="background-color: ${color};">`;
 
 	// Create checkbox
-	course_div += ` <div class="checkbox"></div>`;
+	course_div += `<div class="checkbox"></div>`;
 
 	let course_code = `<b>${course.identifier}</b>`;
 	let status = `<span class="status-highlight ${course.status}" onclick="addSearchFilter(\'status:${course.status}\')">${course.status}</span>`;
@@ -59,9 +59,12 @@ function createResultDiv(course, color, index) {
 	}
 
 	// Put the course code and status in a div on the right
-	let num_students = `<span class="align-right"><b>${course.seats_taken}/${course.max_seats}${perm_count}${prereqs}${coreqs}${status}</b></span>`;
+	let statuses = `<span class="align-right"><b>${course.seats_taken}/${course.max_seats}${perm_count}${prereqs}${coreqs}${status}</b></span>`;
 
-	course_div += `${course_code}: ${course.title} ${num_students}`;
+	// Put the school color tab
+	let school_color = `<span class="school-color-tab" style="background-color: var(--school-${course.timing[0].location.school ?? "NA"})"></span>`;
+
+	course_div += `${school_color} ${course_code}: ${course.title} ${statuses}`;
     course_div += "</div>";
 
 	return course_div;
@@ -184,22 +187,10 @@ function search_courses(query, all_courses_global, filters, hmc_mode) {
 			results = results.filter(t => (t.obj || t).timing.map(e => e.location.school).flat().includes(toApiSchool(filter.value)));
 		} else if (filter.key == "location") {
 			results = results.filter(t => (t.obj || t).timing.map(e => e.location.building).some(x => x.toLowerCase().includes(filter.value.toLowerCase())));
-		} else if (filter.key == "prereq") {
-			if (filter.value.toLowerCase() == "none") {
-				results = results.filter(t => (t.obj || t).prerequisites.length == 0);
-			} else if (filter.value.toLowerCase() == "some") {
-				results = results.filter(t => (t.obj || t).prerequisites.length > 0);
-			} else {
-				results = results.filter(t => (t.obj || t).prerequisites == filter.value);
-			}
-		} else if (filter.key == "coreq") {
-			if (filter.value.toLowerCase() == "none") {
-				results = results.filter(t => (t.obj || t).corequisites.length == 0);
-			} else if (filter.value.toLowerCase() == "some") {
-				results = results.filter(t => (t.obj || t).corequisites.length > 0);
-			} else {
-				results = results.filter(t => (t.obj || t).corequisites == filter.value);
-			}
+		} else if (filter.key == "prereq" || filter.key == "prereqs") {
+			results = handleNumberFilter(filter.type, filter.value, "prerequisites", results);
+		} else if (filter.key == "coreq" || filter.key == "coreqs") {
+			results = handleNumberFilter(filter.type, filter.value, "corequisites", results);
 		} else if (filter.key == "after" || filter.key == "before") {
 			let time_to_search = [0, 0];
 
@@ -252,38 +243,44 @@ function search_courses(query, all_courses_global, filters, hmc_mode) {
 					}
 				}
 			}));
-		} else if (filter.key == "perms"){
-			console.log("{}", filter);
-
-			switch (filter.type.toLowerCase()) {
-				case "<":
-					results = results.filter(t => (t.obj || t).perm_count < parseInt(filter.value));
-					break;
-				case ">":
-					results = results.filter(t => (t.obj || t).perm_count > parseInt(filter.value));
-					break;
-				case "=":
-					results = results.filter(t => (t.obj || t).perm_count == parseInt(filter.value));
-					break;
-				case ">=":
-					results = results.filter(t => (t.obj || t).perm_count >= parseInt(filter.value));
-					break;
-				case "<=":
-					results = results.filter(t => (t.obj || t).perm_count <= parseInt(filter.value));
-					break;
-				case ":":
-					if (key.value.toLowerCase() == "some") {
-						results = results.filter(t => (t.obj || t).perm_count > 0);
-					} else if (key.value.toLowerCase() == "none") {
-						results = results.filter(t => (t.obj || t).perm_count == 0);
-					}
-				default:
-					break;
-			}
+		} else if (filter.key == "perm" || filter.key == "perms") {
+			results = handleNumberFilter(filter.type, filter.value, "perm_count", results);
 		}
 	}
 
     return results;
+}
+
+function handleNumberFilter(filter_type, filter_value, object_key, results) {
+	switch (filter_type.toLowerCase()) {
+		case "<":
+			results = results.filter(t => (t.obj || t)[object_key] < parseInt(filter_value));
+			break;
+		case ">":
+			results = results.filter(t => (t.obj || t)[object_key] > parseInt(filter_value));
+			break;
+		case "=":
+			results = results.filter(t => (t.obj || t)[object_key] == parseInt(filter_value));
+			break;
+		case ">=":
+			results = results.filter(t => (t.obj || t)[object_key] >= parseInt(filter_value));
+			break;
+		case "<=":
+			results = results.filter(t => (t.obj || t)[object_key] <= parseInt(filter_value));
+			break;
+		case ":":
+			if (filter_value.toLowerCase() == "some") {
+				results = results.filter(t => (t.obj || t)[object_key].length > 0);
+			} else if (filter_value.toLowerCase() == "none") {
+				results = results.filter(t => (t.obj || t)[object_key].length == 0);
+			} else if (filter_value !== NaN) {
+				results = results.filter(t => (t.obj || t)[object_key] == parseInt(filter_value));
+			}
+		default:
+			break;
+	}
+
+	return results;
 }
 
 function timeDiffMins(time_arr_a, time_arr_b) {

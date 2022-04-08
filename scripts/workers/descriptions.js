@@ -4,7 +4,9 @@ function convertTime(time) {
 	let return_time = time.substring(0, 5);
 	let first_two = parseInt(time.substring(0, 2));
 
-	if (first_two > 12) {
+	if (first_two == 12) {
+		return "12:00 PM";
+	} else if (first_two >= 12) {
 		return (first_two - 12) + return_time.substring(2) + " PM";
 	} else {
 		return return_time + " AM";
@@ -51,8 +53,8 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 			let end_time = convertTime(time.end_time);
 			let local = time.location;
 
-			timing_node += `<b>${start_time} - ${end_time}:</b> ${day_str}<br>@ `;
-			timing_node += `<span class="clickable-text" onclick="addSearchFilter(\'at:${local.school}'\)">${local.school}</span>`;
+			timing_node += `<b>${start_time} - ${end_time}:</b> ${day_str}<br>`;
+			timing_node += `<span class="clickable-text" onclick="addSearchFilter(\'at:${local.school}'\)">${schoolToReadable(local.school)}</span>`;
 			timing_node += `, ${local.building}, Room ${local.room}</div>`;
 
 			course_desc_node += timing_node;
@@ -118,6 +120,21 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 	}
 
     return all_desc_global;
+}
+
+function schoolToReadable(school) {
+	switch (school) {
+		case "HarveyMudd":
+			return "Harvey Mudd";
+		case "ClaremontMckenna":
+			return "Claremont McKenna";
+		case "Pomona":
+			return "Pomona";
+		case "Pitzer":
+			return "Pitzer";
+		case "Scripps":
+			return "Scripps";
+	}
 }
 
 function findCourseLinks(text) {

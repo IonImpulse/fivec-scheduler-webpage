@@ -1,7 +1,7 @@
 importScripts("../libs/fuzzysort.js");
 
 onmessage = function(e) {
-    let course_divs = expensiveCourseSearch(e.data[0], e.data[1], e.data[2], e.data[3]);
+    let course_divs = expensiveCourseSearch(e.data[0], e.data[1], e.data[2], e.data[3], e.data[4]);
 
     postMessage(course_divs);
 }
@@ -22,7 +22,7 @@ function splitAtList(str, list) {
 	return false;
 }
 
-function createResultDiv(course, color, index) {
+function createResultDiv(course, color, index, loaded_local_courses) {
 	let identifier = course.identifier;
 
 	let course_div = "<div";
@@ -55,11 +55,20 @@ function createResultDiv(course, color, index) {
 	}
 
 	if (course.perm_count > 0) {
-		perm_count = `<span class="perms-highlight" onclick="addSearchFilter(\'permslessthan:${course.perm_count}\')">Perms: ${course.perm_count}</span>`;
+		perm_count = `<span class="perms-highlight" onclick="addSearchFilter(\'perms<${course.perm_count}\')">Perms: ${course.perm_count}</span>`;
 	}
 
+	// Check timing against loaded courses
+	let timing_conflicts = checkForConflicts(course, loaded_local_courses);
+
+	let conflicts = "";
+	if (timing_conflicts.length > 0) {
+		conflicts = `<span class="conflicts-highlight" onclick="addSearchFilter(\'conflicts:none\')">Conflict</span>`;
+	}
+	
+
 	// Put the course code and status in a div on the right
-	let statuses = `<span class="align-right"><b>${course.seats_taken}/${course.max_seats}${perm_count}${prereqs}${coreqs}${status}</b></span>`;
+	let statuses = `<span class="align-right"><b>${course.seats_taken}/${course.max_seats}${perm_count}${prereqs}${coreqs}${status}${conflicts}</b></span>`;
 
 	// Put the school color tab
 	let school_color = `<span class="school-color-tab" style="background-color: var(--school-${course.timing[0].location.school ?? "NA"})"></span>`;
@@ -68,6 +77,48 @@ function createResultDiv(course, color, index) {
     course_div += "</div>";
 
 	return course_div;
+}
+
+function checkForConflicts(course, loaded_local_courses) {
+	let timing_conflicts = [];
+
+	for (let i = 0; i < loaded_local_courses.length; i++) {
+		let loaded_course = loaded_local_courses[i];
+
+		if (loaded_course.identifier == course.identifier) {
+			continue;
+		}
+
+		Loop:
+		for (let j = 0; j < loaded_course.timing.length; j++) {
+			for (let k = 0; k < course.timing.length; k++) {
+				if (loaded_course.timing[j].day == course.timing[k].day) {
+					let loaded_course_start_minutes = timeToMinutes(loaded_course.timing[j].start_time);
+					let loaded_course_end_minutes = timeToMinutes(loaded_course.timing[j].end_time);
+
+					let course_start_minutes = timeToMinutes(course.timing[k].start_time);
+					let course_end_minutes = timeToMinutes(course.timing[k].end_time);
+
+					if (loaded_course_start_minutes >= course_start_minutes && loaded_course_start_minutes <= course_end_minutes) {
+						timing_conflicts.push(loaded_course.identifier);
+						break Loop;
+					} else if (loaded_course_end_minutes >= course_start_minutes && loaded_course_end_minutes <= course_end_minutes) {
+						timing_conflicts.push(loaded_course.identifier);
+						break Loop;
+					}
+				}
+			}
+		}
+	}
+
+	return timing_conflicts;
+}
+
+function timeToMinutes(time) {
+	let time_split = time.split(":");
+	let minutes = parseInt(time_split[0]) * 60 + parseInt(time_split[1]);
+
+	return minutes;
 }
 
 function toApiSchool(school) {
@@ -126,7 +177,7 @@ function tweakSearch(string) {
 	return return_string.trim().toLowerCase();
 }
 
-function search_courses(query, all_courses_global, filters, hmc_mode) {
+function search_courses(query, all_courses_global, filters, hmc_mode, loaded_local_courses) {
     const options = {
         limit: 100, // don't return more results than you need!
         allowTypo: true, // if you don't care about allowing typos
@@ -245,6 +296,12 @@ function search_courses(query, all_courses_global, filters, hmc_mode) {
 			}));
 		} else if (filter.key == "perm" || filter.key == "perms") {
 			results = handleNumberFilter(filter.type, filter.value, "perm_count", results);
+		} else if (filter.key == "conflict" || filter.key == "conflicts") {
+			if (filter.value == "some") {
+				results = results.filter(t => checkForConflicts((t.obj || t), loaded_local_courses).length > 0);
+			} else if (filter.value == "none") {
+				results = results.filter(t => checkForConflicts((t.obj || t), loaded_local_courses).length == 0);
+			}
 		}
 	}
 
@@ -326,7 +383,7 @@ function getFilters(input) {
 	return {filters: filters, input: wanted_search_term};
 }
 
-function expensiveCourseSearch(input, all_courses_global, colors, hmc_mode) {
+function expensiveCourseSearch(input, all_courses_global, colors, hmc_mode, loaded_local_courses) {
     let results = [];
 
     if (input == "") {
@@ -338,14 +395,14 @@ function expensiveCourseSearch(input, all_courses_global, colors, hmc_mode) {
 
 		console.log(`${filters_object.input} => ${search_term}`);
 		
-		results = search_courses(search_term, all_courses_global, filters_object.filters, hmc_mode);
+		results = search_courses(search_term, all_courses_global, filters_object.filters, hmc_mode, loaded_local_courses);
 	}
 
     let output = [];
 
     for (let i = 0; i < results.length; i++) {
         let course = results[i].obj ?? results[i];
-        let course_div = createResultDiv(course, colors[i % colors.length], course.descIndex);
+        let course_div = createResultDiv(course, colors[i % colors.length], course.descIndex, loaded_local_courses);
 
         output.push(course_div);
     }

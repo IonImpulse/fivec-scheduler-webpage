@@ -15,6 +15,7 @@
   --perms: #973b93;
   --prereqs: #4165c9;
   --coreqs: #2690a3;
+  --conflicts: #e97272;
   --confirm: #c6ecc0;
   --deny: #e7bbbb;
   --padding: 13px;
@@ -562,11 +563,11 @@ canvas {
   background-color: var(--background-alt);
   border-radius: var(--roundedness);
   padding: var(--padding);
-  height: 50vh;
+  height: 42vh;
   margin-top: 10px;
   overflow-x: hidden;
   overflow-y: auto;
-  width: 60vw;
+  width: 70vw;
 }
 
 .course-search-result {
@@ -649,7 +650,7 @@ canvas {
   padding: 2vw;
   text-align: left;
   width: 30vw;
-  max-height: 45vh;
+  max-height: 35vh;
   overflow-y: scroll;
 }
 
@@ -752,7 +753,8 @@ canvas {
 .status-highlight:hover,
 .prereqs-highlight:hover,
 .coreqs-highlight:hover,
-.perms-highlight:hover {
+.perms-highlight:hover,
+.conflicts-highlight:hover {
   outline: 4px var(--selected) solid;
 }
 
@@ -1334,6 +1336,14 @@ label {
   background-color: var(--background-alt);
   padding: var(--padding-small);
   color: var(--perms);
+  margin-left: 10px;
+}
+
+.conflicts-highlight {
+  border-radius: var(--roundedness);
+  background-color: var(--background-alt);
+  padding: var(--padding-small);
+  color: var(--conflicts);
   margin-left: 10px;
 }
 

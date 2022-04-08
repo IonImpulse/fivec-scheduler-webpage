@@ -638,6 +638,35 @@ function buttonTheme() {
 	toggle_theme();
 }
 
+function parseUnixTime(unix_time) {
+	let d = new Date(unix_time * 1000);
+
+	let day = d.getDate();
+	let month = d.getMonth() + 1;
+	let year = d.getFullYear();
+
+	let hour = d.getHours();
+	let minute = d.getMinutes();
+
+	if (day < 10) {
+		day = `0${day}`;
+	}
+
+	if (month < 10) {
+		month = `0${month}`;
+	}
+
+	if (hour < 10) {
+		hour = `0${hour}`;
+	}
+
+	if (minute < 10) {
+		minute = `0${minute}`;
+	}
+
+	return `${year}-${month}-${day} ${hour}:${minute}`;
+}
+
 async function buttonSettings() {
 	Swal.fire({
 		title: 'Settings',
@@ -659,7 +688,7 @@ async function buttonSettings() {
 	
 	let status = await fetch(`${API_URL}${STATUS}`).then(async res => await res.json());
 
-	statuses[0].innerHTML = `<b>API Status:</b> ${status.alive ? "<span class='green'>Online</span>" : "<span class='red'>Offline</span>"}`;
+	statuses[0].innerHTML = `<b>API Status:</b> ${status.alive ? `<span class='green'>Online: ${parseUnixTime(timestamp_global)}</span>` : "<span class='red'>Offline</span>"}`;
 
 	statuses[1].innerHTML = `<b>Total Courses Loaded:</b> ${all_courses_global.length}`;
 
@@ -785,25 +814,30 @@ async function postProcessSearch(input, html) {
 }
 
 function toggleCourseSelection(identifier) {
-	let el = document.getElementById(identifier);
+	// First, find in selected courses
+	let index = selected_courses.indexOf(identifier);
 
-	if (el.className == "course-search-result unselectable") {
-		selected_courses.push(el.id);
-		el.className = "course-search-result unselectable selected";
+	if (index > -1) {
+		selected_courses.splice(index, 1);
 	} else {
-		selected_courses.splice(selected_courses.indexOf(el.id), 1);
-		el.className = "course-search-result unselectable";
+		selected_courses.push(identifier);
 	}
 
-	el = document.getElementById("course-add-num");
-	el.innerText = selected_courses.length;
+	let el = document.getElementById(identifier);
 
-	el = document.getElementById("multiple-course-s");
+	if (el != null) {
+		el.classList.toggle("selected");
+	}
+
+	let num_courses = document.getElementById("course-add-num");
+	num_courses.innerText = selected_courses.length;
+
+	let num_courses_s = document.getElementById("multiple-course-s");
 
 	if (selected_courses.length == 1) {
-		el.innerText = "";
+		num_courses_s.innerText = "";
 	} else {
-		el.innerText = "s";
+		num_courses_s.innerText = "s";
 	}
 
 	updateCart();
@@ -814,7 +848,7 @@ function updateCart() {
 	cart.innerHTML = "";
 
 	for (let s = 0; s < selected_courses.length; s++) {
-		cart.innerHTML += `<div class="cart-item" style="background-color:${colors[s]};">${selected_courses[s]}</div>`;
+		cart.innerHTML += `<div class="cart-item" style="background-color:${colors[s]};" onclick="toggleCourseSelection('${selected_courses[s]}')">${selected_courses[s]}</div>`;
 	}
 }
 
@@ -1663,6 +1697,14 @@ const search_popup = `
 					If combined with "on", only checks time for that day
 				</div>
                 <br>
+				<div>
+					<b>By perms, prereqs, and coreqs</b>
+					<br>
+					<b>perms:[number, some, none], prereqs:[number, some, none], coreqs:[number, some, none]</b>
+					<br>
+					Ex: perms<=15, prereqs=2, coreqs:none
+				</div>
+				<br>
                 <div>
                     <b>By status: "status:[open, reopened, closed]"</b>
                     Ex: status:open
@@ -1672,6 +1714,11 @@ const search_popup = `
 					<b>By location: "location:[name]"</b>
 					Ex: location:McGregor
 				</div>
+                <br>
+                <div>
+                    <b>By section: "section:[number]"</b>
+                    Ex: section:3
+                </div>
 				<br>
                 <div>
                     <b>By code: "code:[code-id]"</b>
@@ -1686,11 +1733,6 @@ const search_popup = `
                 <div>
                     <b>By department: "dept:[dept-id]"</b>
                     Ex: dept:af
-                </div>
-                <br>
-                <div>
-                    <b>By section: "section:[number]"</b>
-                    Ex: section:3
                 </div>
             </div>
         </span>
@@ -1739,12 +1781,13 @@ const new_schedule_popup = `
 
 const changelog_popup = `
 <div id="changelog-container">
-	<b>v1.10 Beta</b>
+	<b>v1.11 Beta</b>
 	<ul>
-		<li>Added PERM counts to the course search results</li>
-		<li>Added linkback to <a href="https://www.5catalog.io/">5catalog.io</a></li>
-		<li>Added cart to course selection</li>
-		<li>Fixed undefined description bug</li>
+		<li>Update descriptions for courses</li>
+		<li>Clicking on items in cart now removes them></li>
+		<li>Courses in search now have a color tab to indicate their source college</li>
+		<li>Fixed time bug</li>
+		<li>Fixed filter bug</li>
 	</ul>
 </div>
 `;

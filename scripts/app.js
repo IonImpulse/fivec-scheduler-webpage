@@ -1789,15 +1789,11 @@ const new_schedule_popup = `
 
 const changelog_popup = `
 <div id="changelog-container">
-	<b>v1.11 Beta</b>
+	<b>v1.12 Beta</b>
 	<ul>
-		<li>Update descriptions for courses</li>
-		<li>Clicking on items in cart now removes them</li>
-		<li>Courses in search now have a color tab to indicate their source college</li>
-		<li>Added conflict sensing in search</li>
-		<li>Adjusted sizing of search results</li>
-		<li>Fixed time bug</li>
-		<li>Fixed filter bug</li>
+		<li>No longer displays times that aren't used</li>
+		<li>Added option to disable animations</li>
+		<li>Fix conflict timing bug</li>
 	</ul>
 </div>
 `;

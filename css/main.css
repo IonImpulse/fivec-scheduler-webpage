@@ -595,7 +595,7 @@ canvas {
 
 .checkbox {
   background-image: var(--checked-icon);
-  background-size: 40%;
+  background-size: 35%;
   background-repeat: no-repeat;
   background-position: center;
   background-color: var(--text-main);
@@ -609,7 +609,7 @@ canvas {
 }
 
 .selected .checkbox {
-  width: 40px;
+  width: 50px;
 }
 
 .course-search-result .checkbox {

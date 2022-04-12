@@ -280,6 +280,13 @@ function updateSchedule(play_animation=false) {
         } else {
             max_grid_rows = Math.min(350, max_grid_rows + 20);
         }
+
+        // Delete the last few timings
+        let lines_to_delete = (350 - max_grid_rows)/20 - 1;
+        for (let i = 0; i < lines_to_delete; i++) {
+            let time_label = document.getElementById("time-" + (23 - i));
+            time_label.remove();
+        }
     
         //max_grid_rows = 350;
     

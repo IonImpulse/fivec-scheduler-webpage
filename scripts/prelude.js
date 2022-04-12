@@ -39,6 +39,7 @@ var loaded_schedule = {};
 var settings = {
     hmc_mode: false,
     show_time_line: true,
+    disable_animations: false,
 };
 
 // Day names for various sets

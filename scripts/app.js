@@ -714,6 +714,12 @@ async function buttonSettings() {
 		saveSettings();
 	});
 	
+	let disable_animations = document.getElementById("disable-animations")
+	disable_animations.checked = settings.disable_animations;
+	disable_animations.addEventListener("click", () => {
+		settings.disable_animations = disable_animations.checked;
+		saveSettings();
+	});
 }
 
 function saveSettings() {
@@ -1538,6 +1544,8 @@ const settings_popup =
 			<input type="checkbox" class="day-checkbox" id="show-current-time"><br>
 			<label for="hmc-credits">HMC Credits</label>
 			<input type="checkbox" class="day-checkbox" id="hmc-credits"><br>
+			<label for="disable-animations">Disable animations</label>
+			<input type="checkbox" class="day-checkbox" id="disable-animations"><br>
 		</div>
 
 		<div class="settings-zone">

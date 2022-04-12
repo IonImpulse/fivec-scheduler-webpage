@@ -47,9 +47,9 @@ async function startup() {
     update_loop();
 
     // Create reusable web worker threads
-    desc_worker = new Worker('scripts/workers/descriptions.js?v=1.11.1000');
-    searcher_worker = new Worker('scripts/workers/searcher.js?v=1.11.1000');
-	searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.11.1001');
+    desc_worker = new Worker('scripts/workers/descriptions.js?v=1.12.0');
+    searcher_worker = new Worker('scripts/workers/searcher.js?v=1.12.0');
+	searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.12.0');
 
     // Start worker threads to generate descriptions + searcher
     updateDescAndSearcher(false);
@@ -284,8 +284,10 @@ function updateSchedule(play_animation=false) {
         // Delete the last few timings
         let lines_to_delete = (350 - max_grid_rows)/20 - 1;
         for (let i = 0; i < lines_to_delete; i++) {
-            let time_label = document.getElementById("time-" + (22 - i));
-            time_label.remove();
+            let time_label = document.getElementById("time-" + (23 - i));
+            if (time_label != undefined) {
+                time_label.remove();
+            }
         }
     
         //max_grid_rows = 350;
@@ -508,10 +510,12 @@ function updateDistanceLines(play_animation) {
             let course_b_key = `${course_b.timing.locations[0].school}-${course_b.timing.locations[0].building}`;
             let course_b_loc = locations[course_b_key];
             
-            if (course_a_loc[0] != undefined && course_b_loc[0] != undefined) {
-                if (course_a_loc[0] != "" && course_b_loc[0] != "") {
-                    let distance = distanceLatLon(course_a_loc[0], course_a_loc[1], course_b_loc[0], course_b_loc[1], "F");
-                    generateTimeLine(course_a, course_b, distance, play_animation);
+            if (course_a_loc != undefined && course_b_loc != undefined) {
+                if (course_a_loc[0] != undefined && course_b_loc[0] != undefined) {
+                    if (course_a_loc[0] != "" && course_b_loc[0] != "") {
+                        let distance = distanceLatLon(course_a_loc[0], course_a_loc[1], course_b_loc[0], course_b_loc[1], "F");
+                        generateTimeLine(course_a, course_b, distance, play_animation);
+                    }
                 }
             } else {
                 console.warn(`Location key ${course_a_key} is ${course_a_loc}\nLocation key ${course_b_key} is ${course_b_loc}\n`);

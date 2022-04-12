@@ -854,7 +854,7 @@ function updateCart() {
 	cart.innerHTML = "";
 
 	for (let s = 0; s < selected_courses.length; s++) {
-		cart.innerHTML += `<div class="cart-item" style="background-color:${colors[s]};" onclick="toggleCourseSelection('${selected_courses[s]}')">${selected_courses[s]}</div>`;
+		cart.innerHTML += `<div class="cart-item" style="background-color:${colors[s % colors.length]};" onclick="toggleCourseSelection('${selected_courses[s]}')">${selected_courses[s]}</div>`;
 	}
 }
 
@@ -1546,8 +1546,6 @@ const settings_popup =
 			<input type="checkbox" class="day-checkbox" id="show-current-time"><br>
 			<label for="hmc-credits">HMC Credits</label>
 			<input type="checkbox" class="day-checkbox" id="hmc-credits"><br>
-			<label for="disable-animations">Disable animations</label>
-			<input type="checkbox" class="day-checkbox" id="disable-animations"><br>
 		</div>
 
 		<div class="settings-zone">
@@ -1794,8 +1792,10 @@ const changelog_popup = `
 	<b>v1.12 Beta</b>
 	<ul>
 		<li>No longer displays times that aren't used</li>
-		<li>Added option to disable animations</li>
-		<li>Fix conflict timing bug</li>
+		<li>Fixed location bug</li>
+		<li>Fixed cart color bug</li>
+		<li>Fixed timing bug</li>
+		<li>Fixed conflict timing bug</li>
 	</ul>
 </div>
 `;

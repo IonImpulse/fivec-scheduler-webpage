@@ -714,6 +714,12 @@ async function buttonSettings() {
 		saveSettings();
 	});
 	
+	let disable_animations = document.getElementById("disable-animations")
+	disable_animations.checked = settings.disable_animations;
+	disable_animations.addEventListener("click", () => {
+		settings.disable_animations = disable_animations.checked;
+		saveSettings();
+	});
 }
 
 function saveSettings() {
@@ -848,7 +854,7 @@ function updateCart() {
 	cart.innerHTML = "";
 
 	for (let s = 0; s < selected_courses.length; s++) {
-		cart.innerHTML += `<div class="cart-item" style="background-color:${colors[s]};" onclick="toggleCourseSelection('${selected_courses[s]}')">${selected_courses[s]}</div>`;
+		cart.innerHTML += `<div class="cart-item" style="background-color:${colors[s % colors.length]};" onclick="toggleCourseSelection('${selected_courses[s]}')">${selected_courses[s]}</div>`;
 	}
 }
 
@@ -1348,8 +1354,10 @@ function addSearchFilter(filter, e=false) {
 	// Stop bubbling onclick event
 	if (!(e??true)) {
 		var e = window.event;
-		e.cancelBubble = true;
-		if (e.stopPropagation) e.stopPropagation();
+		if (e != undefined) {
+			e.cancelBubble = true;
+			if (e.stopPropagation) e.stopPropagation();
+		}
 	}
 
 	let el = document.getElementById("course-input");
@@ -1781,15 +1789,13 @@ const new_schedule_popup = `
 
 const changelog_popup = `
 <div id="changelog-container">
-	<b>v1.11 Beta</b>
+	<b>v1.12 Beta</b>
 	<ul>
-		<li>Update descriptions for courses</li>
-		<li>Clicking on items in cart now removes them</li>
-		<li>Courses in search now have a color tab to indicate their source college</li>
-		<li>Added conflict sensing in search</li>
-		<li>Adjusted sizing of search results</li>
-		<li>Fixed time bug</li>
-		<li>Fixed filter bug</li>
+		<li>No longer displays times that aren't used</li>
+		<li>Fixed location bug</li>
+		<li>Fixed cart color bug</li>
+		<li>Fixed timing bug</li>
+		<li>Fixed conflict timing bug</li>
 	</ul>
 </div>
 `;

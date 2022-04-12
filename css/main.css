@@ -595,7 +595,7 @@ canvas {
 
 .checkbox {
   background-image: var(--checked-icon);
-  background-size: 40%;
+  background-size: 35%;
   background-repeat: no-repeat;
   background-position: center;
   background-color: var(--text-main);
@@ -609,7 +609,7 @@ canvas {
 }
 
 .selected .checkbox {
-  width: 40px;
+  width: 50px;
 }
 
 .course-search-result .checkbox {
@@ -944,10 +944,14 @@ canvas {
 
 .swal2-title,
 #course-add-num {
-  font-family: var(--main-font), sans-serif;
-  font-weight: 600;
+  font-family: var(--main-font), sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 30px !important;
 }
 
+#course-add-num {
+  font-size: 16px !important;
+}
 .swal2-textarea,
 .swal2-html-container,
 .swal2-validation-message,

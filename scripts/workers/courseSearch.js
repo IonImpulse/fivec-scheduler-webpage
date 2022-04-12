@@ -92,7 +92,7 @@ function checkForConflicts(course, loaded_local_courses) {
 		Loop:
 		for (let j = 0; j < loaded_course.timing.length; j++) {
 			for (let k = 0; k < course.timing.length; k++) {
-				if (loaded_course.timing[j].day == course.timing[k].day) {
+				if (loaded_course.timing[j].days.some(x => course.timing[k].days.includes(x))) {
 					let loaded_course_start_minutes = timeToMinutes(loaded_course.timing[j].start_time);
 					let loaded_course_end_minutes = timeToMinutes(loaded_course.timing[j].end_time);
 

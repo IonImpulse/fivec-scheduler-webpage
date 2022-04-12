@@ -1354,8 +1354,10 @@ function addSearchFilter(filter, e=false) {
 	// Stop bubbling onclick event
 	if (!(e??true)) {
 		var e = window.event;
-		e.cancelBubble = true;
-		if (e.stopPropagation) e.stopPropagation();
+		if (e != undefined) {
+			e.cancelBubble = true;
+			if (e.stopPropagation) e.stopPropagation();
+		}
 	}
 
 	let el = document.getElementById("course-input");

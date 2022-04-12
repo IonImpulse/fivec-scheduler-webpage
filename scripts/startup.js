@@ -32,10 +32,6 @@ async function startup() {
     updateScheduleSizing();
 
     updateSchedule();
-    // Then, check if site was loaded from
-    // from QR code w/ course list code
-    await loadPossibleParams();
-
 
     // Remove fade-in class
     let fader = document.getElementById("fader")
@@ -58,6 +54,10 @@ async function startup() {
     // Start worker threads to generate descriptions + searcher
     updateDescAndSearcher(false);
     updateSchedule();
+
+    // Then, check if site was loaded from
+    // from QR code w/ course list code
+    await loadPossibleParams();
 }
 
 var installEvent;
@@ -284,7 +284,7 @@ function updateSchedule(play_animation=false) {
         // Delete the last few timings
         let lines_to_delete = (350 - max_grid_rows)/20 - 1;
         for (let i = 0; i < lines_to_delete; i++) {
-            let time_label = document.getElementById("time-" + (23 - i));
+            let time_label = document.getElementById("time-" + (22 - i));
             time_label.remove();
         }
     

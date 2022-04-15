@@ -568,6 +568,7 @@ canvas {
   overflow-x: hidden;
   overflow-y: auto;
   width: 70vw;
+  text-rendering: optimizeSpeed;
 }
 
 .course-search-result {
@@ -946,7 +947,7 @@ canvas {
 #course-add-num {
   font-family: var(--main-font), sans-serif !important;
   font-weight: 600 !important;
-  font-size: 30px !important;
+  font-size: 20px !important;
 }
 
 #course-add-num {
@@ -1191,8 +1192,7 @@ a:visited {
 }
 
 label {
-  font: 18px var(--main-font);
-  margin-bottom: 5px;
+  font: 12px var(--main-font);
   font-weight: 700;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -1208,10 +1208,9 @@ label {
 }
 
 .day-checkbox {
-  width: 30px;
-  height: 30px;
-  margin: 0 auto;
-  margin: var(--padding);
+  width: 20px;
+  height: 20px;
+  margin: var(--padding-small);
 }
 
 .small-label {
@@ -1219,7 +1218,7 @@ label {
   font: 12px var(--main-font);
   font-weight: 700;
   transform: translateY(-15px);
-  margin: var(--padding);
+  margin: var(--padding-small);
   top: 0px;
 }
 
@@ -1239,7 +1238,7 @@ label {
 .input {
   background-color: var(--text-alt);
   color: var(--text-main);
-  width: 10vw;
+  width: 8vw;
   border-radius: var(--roundedness);
   outline: 1px solid #00000000;
   outline-offset: -1px;
@@ -1247,8 +1246,12 @@ label {
   margin-top: 1px;
   box-shadow: 0 0 0 1px var(--button-outline);
   padding: var(--padding);
-  font: 16px var(--main-font), sans-serif;
+  font: 15px var(--main-font), sans-serif;
   font-weight: 500;
+}
+
+.custom-course-input {
+  margin-top: 5px;
 }
 
 .custom-course-input:not(:placeholder-shown).custom-course-input:valid {
@@ -1265,7 +1268,7 @@ label {
 
 #search-container {
   display: grid;
-  grid-template-columns: 12fr 6fr 1fr 30fr 1fr 10fr 10fr;
+  grid-template-columns: 10fr 1fr 8fr 30fr 1fr 10fr 10fr;
   justify-content: center;
   justify-items: center;
   align-items: center;
@@ -1274,14 +1277,12 @@ label {
   margin-bottom: 10px;
 }
 
-#hmc-credits-label {
-  grid-column-start: 2;
-  grid-column-end: 3;
-}
-
-#hmc-credits {
+#hmc-credits-search {
   grid-column-start: 3;
   grid-column-end: 4;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 #course-input {

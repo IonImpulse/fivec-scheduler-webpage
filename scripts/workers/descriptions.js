@@ -138,7 +138,7 @@ function schoolToReadable(school) {
 }
 
 function findCourseLinks(text) {
-	let matches = text.replaceAll(course_regex, function (match, p1, p2, p3) {
+	let matches = (text ?? "").replaceAll(course_regex, function (match, p1, p2, p3) {
 		let p3_str = " ";
 		
 		if (p3 != undefined) {

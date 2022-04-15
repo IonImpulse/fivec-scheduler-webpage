@@ -99,7 +99,7 @@ function checkForConflicts(course, loaded_local_courses) {
 					let course_start = timeToMinutes(course.timing[k].start_time);
 					let course_end = timeToMinutes(course.timing[k].end_time);
 
-					if (load_start <= course_end || course_start <= load_end) {
+					if (load_start <= course_end && course_start <= load_end) {
 						timing_conflicts.push(loaded_course.identifier);
 						break Loop;
 					}

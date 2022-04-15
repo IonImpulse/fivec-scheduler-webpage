@@ -727,7 +727,8 @@ function saveSettings() {
 	updateSchedule();
 }
 
-async function backgroundCourseSearch() {
+async function backgroundCourseSearch(full=false) {
+	console.log(full);
 	let input = document.getElementById("course-input");
 	let output = document.getElementById("course-search-results");
 
@@ -736,7 +737,7 @@ async function backgroundCourseSearch() {
 	}
 
 	if (input.value == "" && all_course_results_html.length > 0) {
-		appendCourseHTML(all_course_results_html, document.getElementById("course-input").value);
+		appendCourseHTML(all_course_results_html, document.getElementById("course-input").value, full);
 
 		postProcessSearch(input.value, all_course_results_html);
 
@@ -746,7 +747,7 @@ async function backgroundCourseSearch() {
 	searching_worker.onmessage = function (e) {
 		const html_courses = e.data;
 
-		appendCourseHTML(html_courses, document.getElementById("course-input").value);
+		appendCourseHTML(html_courses, document.getElementById("course-input").value, full);
 
 		postProcessSearch(document.getElementById("course-input").value, html_courses);
 	}
@@ -758,7 +759,15 @@ async function sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function appendCourseHTML(courses, query) {
+async function showAllCourses() {
+	await backgroundCourseSearch(full=true);
+	setTimeout(() => {
+		let el = document.getElementById("course-search-results");
+		el.getElementsByClassName("course-search-result")[300].scrollIntoView(alignToTop=false,scrollIntoViewOptions={behavior: "smooth"});
+	}, 100);
+}
+
+function appendCourseHTML(courses, query, full=false) {
 	let output = document.getElementById("course-search-results");
 
 	if (courses.length == 0) {
@@ -772,14 +781,27 @@ async function appendCourseHTML(courses, query) {
 			s = "";
 		}
 
-
 		if (courses[0].startsWith("<b>")) {
 			courses.shift();
 		}
 
 		courses.unshift(`<b>${courses.length >= 100 ? "100+" : courses.length} course${s} found. Click on a course to select and add it.</b>`);
-		// Superfast html updater
-		replaceHtml(output, courses.join("\n"));
+
+		console.log(courses.length);
+		console.log(full);
+
+		if (courses.length > 300 && full == false) {
+			// Append the first 100 courses
+			let first = courses.slice(0, 300);
+			
+			// Add button to show all courses
+			first.push(`<br><a class="clickable-text"  onclick="showAllCourses()">Show all courses</a><br>`);
+
+			replaceHtml(output, first.join("\n"));
+		} else {
+			replaceHtml(output, courses.join("\n"));
+		}
+		
 		for (let s of selected_courses) {
 			let course = document.getElementById(s);
 
@@ -804,10 +826,7 @@ function replaceHtml(el, html) {
 	return newEl;
 };
 
-async function postProcessSearch(input, html) {
-	let course_data = load_json_data("course_data");
-	let output = document.getElementById("course-search-results");
-
+function postProcessSearch(input, html) {
 	if (input == "") {
 		setCourseDescription(0);
 
@@ -815,8 +834,6 @@ async function postProcessSearch(input, html) {
 			all_course_results_html = html;
 		}
 	}
-
-	output.scroll({ top: 0, behavior: 'smooth' });
 }
 
 function toggleCourseSelection(identifier) {
@@ -1660,8 +1677,11 @@ const custom_course_popup = `
 
 const search_popup = `
 <div id="search-container">
-	<label id="hmc-credits-label" for="hmc-credits">HMC Credits</label>
-	<input id="hmc-credits" type="checkbox" class="day-checkbox" onclick="toggleCreditMode()">
+	<div id="hmc-credits-search">
+		<label id="hmc-credits-label" for="hmc-credits">HMC Credits</label>
+		<input id="hmc-credits" type="checkbox" class="day-checkbox" onclick="toggleCreditMode()">
+	</div>
+
     <input class="input" id="course-input" placeholder="Search by course code, title, or instructor...">
 
     <span id="filter-help" class="popup-holder unselectable" onmouseenter="showPopup(\'#filter-help-text\')" onmouseleave="hidePopup(\'#filter-help-text\')">
@@ -1789,13 +1809,11 @@ const new_schedule_popup = `
 
 const changelog_popup = `
 <div id="changelog-container">
-	<b>v1.12 Beta</b>
+	<b>v1.13 Beta</b>
 	<ul>
-		<li>No longer displays times that aren't used</li>
-		<li>Fixed location bug</li>
-		<li>Fixed cart color bug</li>
-		<li>Fixed timing bug</li>
-		<li>Fixed conflict timing bug</li>
+		<li>Significant search performance improvements</li>
+		<li>Reduced and reformatted font sizes</li>
+		<li>Slightly improved text rendering performance</li>
 	</ul>
 </div>
 `;

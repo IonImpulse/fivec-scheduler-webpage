@@ -5,7 +5,7 @@ function convertTime(time) {
 	let first_two = parseInt(time.substring(0, 2));
 
 	if (first_two == 12) {
-		return "12:00 PM";
+		return `12${return_time.substring(2)} PM`;
 	} else if (first_two >= 12) {
 		return (first_two - 12) + return_time.substring(2) + " PM";
 	} else {

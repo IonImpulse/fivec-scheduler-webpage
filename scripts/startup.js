@@ -47,7 +47,7 @@ async function startup() {
     update_loop();
 
     // Create reusable web worker threads
-    desc_worker = new Worker('scripts/workers/descriptions.js?v=1.13.0');
+    desc_worker = new Worker('scripts/workers/descriptions.js?v=1.13.2');
     searcher_worker = new Worker('scripts/workers/searcher.js?v=1.13.0');
 	searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.13.1');
 

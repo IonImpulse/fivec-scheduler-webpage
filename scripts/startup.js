@@ -585,6 +585,8 @@ function generateTimeLine(course_a, course_b, distance, play_animation) {
     
     info_div_text.appendChild(info_div_title);
 
+    info_div_text.innerHTML += `Time between classes: <b>${time_diff}</b> minutes<br><br>`;
+
     info_div_text.innerHTML += `<i>Approximate timings if...</i><br>`;
     info_div_text.innerHTML += `Walking: ~<b>${walking_time}</b> minutes<br>`;
     info_div_text.innerHTML += `Skateboarding: ~<b>${skateboarding_time}</b> minutes<br>`;

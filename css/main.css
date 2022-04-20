@@ -575,7 +575,7 @@ canvas {
   border-radius: var(--roundedness);
   color: var(--text-course-schedule);
   cursor: pointer;
-  font: 16px/16px var(--main-font), sans-serif;
+  font: 15px/15px var(--main-font), sans-serif;
   margin: 10px;
   overflow: hidden;
   padding: var(--padding);
@@ -584,6 +584,12 @@ canvas {
   text-overflow: ellipsis;
   white-space: nowrap;
   position: relative;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  row-gap: 10px;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .course-schedule-block.selected {
@@ -658,6 +664,9 @@ canvas {
 .align-right {
   float: right;
   text-align: right;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .course-desc .title {

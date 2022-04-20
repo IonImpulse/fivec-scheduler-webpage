@@ -728,7 +728,6 @@ function saveSettings() {
 }
 
 async function backgroundCourseSearch(full=false) {
-	console.log(full);
 	let input = document.getElementById("course-input");
 	let output = document.getElementById("course-search-results");
 
@@ -786,9 +785,6 @@ function appendCourseHTML(courses, query, full=false) {
 		}
 
 		courses.unshift(`<b>${courses.length >= 100 ? "100+" : courses.length} course${s} found. Click on a course to select and add it.</b>`);
-
-		console.log(courses.length);
-		console.log(full);
 
 		if (courses.length > 300 && full == false) {
 			// Append the first 100 courses

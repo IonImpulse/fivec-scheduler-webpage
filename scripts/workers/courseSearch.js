@@ -73,7 +73,7 @@ function createResultDiv(course, color, index, loaded_local_courses) {
 	// Put the school color tab
 	let school_color = `<span class="school-color-tab" style="background-color: var(--school-${course.timing[0].location.school ?? "NA"})"></span>`;
 
-	course_div += `${school_color} ${course_code}: ${course.title} ${statuses}`;
+	course_div += `${school_color} <span>${course_code}: ${course.title}</span> ${statuses}`;
     course_div += "</div>";
 
 	return course_div;
@@ -221,7 +221,8 @@ function search_courses(query, all_courses_global, filters, hmc_mode, loaded_loc
 		} else if (filter.key == "with") {
 			results = results.filter(t => (t.obj || t).instructorString.toLowerCase().replaceAll(".", "").includes(filter.value.replaceAll("-", " ").replace(".", "").toLowerCase()));
 		} else if (filter.key == "on") {
-			let days_to_search = filter.value.split(",").map(day => capitalize(day));
+			let days_to_search = filter.value.split(",").map(day => parseCapDay(day));
+			console.log(days_to_search);
 			results = results.filter(t => (t.obj || t).timing.map(e => e.days).some(k => k.some(l => days_to_search.includes(l))));
 		} else if (filter.key == "credits") {
 			if (hmc_mode) {
@@ -270,10 +271,13 @@ function search_courses(query, all_courses_global, filters, hmc_mode, loaded_loc
 				return;
 			}
 
-			results = results.filter(t => (t.obj || t).timing.some(e => {
-				// Return false if day is not included in "on" filter
-				if (filters["on"] != null) {
-					let days_to_search = filters["on"].split(",").map(day => capitalize(day));
+			results = results.filter(t => (t.obj || t).timing.every(e => {
+
+				let on_filter = filters.find(x => x.key == "on");
+
+				if (on_filter != null) {
+					let days_to_search = on_filter.value.split(",").map(day => parseCapDay(day));
+
 					if (!e.days.some(l => days_to_search.includes(l))) {
 						return false;
 					}	
@@ -303,6 +307,32 @@ function search_courses(query, all_courses_global, filters, hmc_mode, loaded_loc
 	}
 
     return results;
+}
+
+function parseCapDay(str) {
+	let day = capitalize(str);
+
+	switch (day) {
+		case "M":
+			return "Monday";
+			break;
+		case "T":
+			return "Tuesday";
+			break;
+		case "W":
+			return "Wednesday";
+			break;
+		case "R":
+			return "Thursday";
+			break;
+		case "F":
+			return "Friday";
+			break;
+		default:
+			return day;
+			break;
+	}
+
 }
 
 function handleNumberFilter(filter_type, filter_value, object_key, results) {

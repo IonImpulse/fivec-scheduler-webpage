@@ -36,13 +36,22 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 		subtitle_node += " class=\"subtitle\">";
 		subtitle_node += `${course.identifier}</div>`;
 
-		let status_node = "<div";
-		status_node += ` class=\"course-status ${course.status}\">`;
-		status_node += `${course.status} - ${course.seats_taken}/${course.max_seats}</div>`;
+		let status = `<span class="status-highlight ${course.status}" onclick="addSearchFilter(\'status:${course.status}\')">${course.status}</span>`;
 
-		course_desc_node += title_node;
+		let perm_count = "";
+	
+		if (course.perm_count > 0) {
+			perm_count = `<span class="perms-highlight" onclick="addSearchFilter(\'perms<${course.perm_count}\')">Perms: ${course.perm_count}</span>`;
+		}
+
+		// Put the course code and status in a div on the right
+		let status_node = `<span class="desc-statuses"><b>${course.seats_taken}/${course.max_seats}</b><b>${perm_count}${status}</b></span>`;
+
 		course_desc_node += subtitle_node;
+		course_desc_node += title_node;
 		course_desc_node += status_node;
+
+		let timing = `<span class="desc-blob">`;
 
 		for (let time of course.timing) {
 			let timing_node = "<div";
@@ -57,8 +66,14 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 			timing_node += `<span class="clickable-text" onclick="addSearchFilter(\'at:${local.school}'\)">${schoolToReadable(local.school)}</span>`;
 			timing_node += `, ${local.building}, Room ${local.room}</div>`;
 
-			course_desc_node += timing_node;
+			timing += timing_node;
 		}
+
+		timing += "</span>";
+
+		course_desc_node += timing;
+
+		course_desc_node += `<span class="desc-blob">`;
 
 		let credit_node = "<div";
 		credit_node += " class=\"credits\">";
@@ -71,7 +86,7 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 			credits = course.credits/100;
 		}
 
-		credit_node += `<br><b>Credits:</b> <span class="clickable-text" onclick="addSearchFilter(\'credits:${credits}\')">${credits.toFixed(2)}</span></div>`;
+		credit_node += `<b>Credits:</b> <span class="clickable-text" onclick="addSearchFilter(\'credits:${credits}\')">${credits.toFixed(2)}</span></div>`;
 
 		let instructor_node = "<div";
 		instructor_node += " class=\"instructors\">";
@@ -101,9 +116,6 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 		let coreq_node = "<div class=\"corequisites\">";
 		coreq_node += `<b>Corequisites:</b>\n${findCourseLinks(course.corequisites)}</div>`;
 
-		let perms_node = "<div class=\"perm-count\">";
-		perms_node += `<b>Perm Count:</b> ${course.perm_count}</div>`;
-
         let notes_node = "<div";
 		notes_node += " class=\"notes\">";
 		notes_node += `<b>Notes:</b> <i>${findCourseLinks(course.notes)}</i></div>`;
@@ -113,8 +125,9 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 		course_desc_node += desc_node;
 		course_desc_node += prereq_node;
 		course_desc_node += coreq_node;
-		course_desc_node += perms_node;
         course_desc_node += notes_node;
+
+		course_desc_node += "</span>";
 
 		all_desc_global.push(course_desc_node);
 	}

@@ -4,8 +4,7 @@
   --background-alt: #f0f1f3;
   --background-main: #ffffff;
   --button-main: #ffffff;
-  --button-outline: #999999;
-  --button-outline-active: #000000;
+  --button-main-active: #e6e6ff;
   --course-closed: #b93838;
   --course-open: #39a32b;
   --course-reopened: #bb7c33;
@@ -22,12 +21,12 @@
   --padding-medium: 7px;
   --padding-small: 5px;
   --roundedness: 10px;
-  --small-roundedness: 5px;
+  --small-roundedness: 2px;
   --search-button-background: rgb(64, 187, 33);
   --shadow-blur: 20px;
   --shadow-length: 4px;
   --text-alt: #fdfdfd;
-  --text-course-schedule: #fdfdfd;
+  --text-course-schedule: #ffffff;
   --text-light: #616161;
   --text-main: #252525;
   --link-color: #106497;
@@ -62,8 +61,7 @@
   --background-alt: #16151a;
   --background-main: #222227;
   --button-main: #222227;
-  --button-outline: #757575;
-  --button-outline-active: #9e9e9e;
+  --button-main-active: #2f2f42;
   --course-closed: #e27878;
   --course-open: #7ee271;
   --course-reopened: #e0c06a;
@@ -113,7 +111,7 @@ body {
 }
 
 body * {
-  transition: background-color 0.2s ease-in-out, outline-width 0.05s ease-in-out,
+  transition: background-color 0.1s ease-in-out, outline-width 0.05s ease-in-out,
     outline-color 0.01s ease-in-out, outline-offset 0.01s ease-in-out,
     transform 0.08s ease-in-out, width 0.15s cubic-bezier(0, 1.5, 1, 1.5),
     padding 0.15s cubic-bezier(0, 1.5, 1, 1.5);
@@ -314,7 +312,7 @@ canvas {
   justify-content: space-between;
   align-items: center;
   align-content: center;
-  padding: var(--padding);
+  padding: var(--padding-medium);
 }
 
 #schedule-box {
@@ -342,15 +340,15 @@ canvas {
   border-radius: var(--roundedness);
   color: var(--text-main);
   cursor: pointer;
-  height: 40px;
-  width: 40px;
+  height: 45px;
+  width: 45px;
   background-size: 30px 30px;
   text-align: center;
   background-repeat: no-repeat;
   background-position: center;
-  border: var(--button-outline) solid 1px;
   font: 1rem/1rem var(--main-font), monospace;
   box-sizing: border-box;
+  border: unset;
 }
 
 .default-button.swal {
@@ -380,8 +378,7 @@ canvas {
 }
 
 .default-button:hover {
-  transform: translate(2px, 2px);
-  border: var(--button-outline-active) solid 1px;
+  background-color: var(--button-main-active);
 }
 
 #pwa-prompt-box {
@@ -587,7 +584,7 @@ canvas {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  row-gap: 10px;
+  row-gap: 14px;
   justify-content: space-between;
   align-items: center;
 }
@@ -677,7 +674,7 @@ canvas {
 
 .course-desc .subtitle {
   color: var(--text-light);
-  font: 14px "JetBrains Mono", monospace;
+  font: 16px "JetBrains Mono", monospace;
   margin-bottom: 5px;
 }
 
@@ -743,7 +740,7 @@ canvas {
 }
 
 .status-highlight {
-  background-color: var(--background-alt);
+  background-color: var(--background-main);
   border-radius: var(--roundedness);
   padding: var(--padding-small);
   margin-left: 10px;
@@ -766,6 +763,7 @@ canvas {
 .perms-highlight:hover,
 .conflicts-highlight:hover {
   outline: 4px var(--selected) solid;
+  cursor: pointer;
 }
 
 .course-loaded {
@@ -934,11 +932,11 @@ canvas {
 }
 
 #course-info-table {
-  background-color: var(--background-alt);
+  background-color: var(--background-main);
   border-radius: var(--roundedness);
   box-sizing: border-box;
   display: inline-block;
-  height: 25vh;
+  height: 27vh;
   overflow-y: scroll;
   padding: var(--padding);
   width: 100%;
@@ -986,6 +984,10 @@ a:visited {
   display: inline-block;
   padding: var(--padding);
   min-width: 20vw;
+}
+
+#extra-buttons {
+  padding: var(--padding-medium);
 }
 
 #course-info-box {
@@ -1044,8 +1046,6 @@ a:visited {
   color: var(--text-main);
   font: 14px var(--main-font), monospace;
   margin-top: 1vh;
-  max-height: 15vh;
-  overflow: auto;
 }
 
 .delete-course:hover,
@@ -1271,13 +1271,10 @@ label {
   outline: 2px solid var(--course-closed);
 }
 
-.input:focus {
-  outline: 2px solid var(--link-color);
-}
 
 #search-container {
   display: grid;
-  grid-template-columns: 10fr 1fr 8fr 30fr 1fr 10fr 10fr;
+  grid-template-columns: 10fr 1fr 8fr 30fr 3fr 10fr 10fr;
   justify-content: center;
   justify-items: center;
   align-items: center;
@@ -1301,6 +1298,12 @@ label {
   margin: 0 auto;
   width: 90%;
   height: 60%;
+  background-color: var(--background-alt);
+}
+
+.input:focus {
+  outline: 2px solid var(--link-color);
+  background-color: var(--background-main) !important;
 }
 
 #filter-help {
@@ -1329,36 +1332,30 @@ label {
   margin: 0 auto;
 }
 
-.prereqs-highlight {
+.prereqs-highlight,
+.coreqs-highlight,
+.perms-highlight,
+.conflicts-highlight {
   border-radius: var(--roundedness);
-  background-color: var(--background-alt);
-  color: var(--prereqs);
+  background-color: var(--background-main);
   padding: var(--padding-small);
   margin-left: 10px;
+}
+
+.prereqs-highlight {
+  color: var(--prereqs);
 }
 
 .coreqs-highlight {
-  border-radius: var(--roundedness);
-  background-color: var(--background-alt);
-  padding: var(--padding-small);
   color: var(--coreqs);
-  margin-left: 10px;
 }
 
 .perms-highlight {
-  border-radius: var(--roundedness);
-  background-color: var(--background-alt);
-  padding: var(--padding-small);
   color: var(--perms);
-  margin-left: 10px;
 }
 
 .conflicts-highlight {
-  border-radius: var(--roundedness);
-  background-color: var(--background-alt);
-  padding: var(--padding-small);
   color: var(--conflicts);
-  margin-left: 10px;
 }
 
 #add-schedule {
@@ -1447,6 +1444,31 @@ h1 {
   border: 3px solid var(--background-alt);
 }
 
+
+.desc-statuses {
+  font-family: var(--main-font);
+  font-size: 14px;
+  background-color: var(--background-alt);
+  color: var(--text-main);
+  padding: var(--padding);
+  border-radius: var(--roundedness);
+  display: grid;
+  grid-template-columns: 50px auto;
+  justify-content: left;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.desc-blob {
+  background-color: var(--background-alt);
+  color: var(--text-main);
+  padding: var(--padding);
+  border-radius: var(--roundedness);
+  display: grid;
+  margin-bottom: 5px;
+
+}
 
 /* =============================
 
@@ -1606,7 +1628,6 @@ h1 {
 
   #course-info-table,
   #course-list-table {
-    width: 88vw;
     max-height: 500px;
   }
 

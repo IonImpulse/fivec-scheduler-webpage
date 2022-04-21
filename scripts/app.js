@@ -1805,11 +1805,9 @@ const new_schedule_popup = `
 
 const changelog_popup = `
 <div id="changelog-container">
-	<b>v1.13 Beta</b>
+	<b>v1.14 Beta</b>
 	<ul>
-		<li>Significant search performance improvements</li>
-		<li>Reduced and reformatted font sizes</li>
-		<li>Slightly improved text rendering performance</li>
+		<li>Changed button & outline appearance</li>
 	</ul>
 </div>
 `;

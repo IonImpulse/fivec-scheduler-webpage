@@ -217,7 +217,7 @@ function search_courses(query, all_courses_global, filters, hmc_mode, loaded_loc
 	// Apply filters
 	for (let filter of filters) {
 		if (["status", "dept", "id", "code"].includes(filter.key)) {
-			results = results.filter(t => (t.obj || t)[filter.key].toLowerCase() == filter.value.toLowerCase());
+			results = results.filter(t => filter.value.split(",").includes((t.obj || t)[filter.key].toLowerCase()));
 		} else if (filter.key == "with") {
 			results = results.filter(t => (t.obj || t).instructorString.toLowerCase().replaceAll(".", "").includes(filter.value.replaceAll("-", " ").replace(".", "").toLowerCase()));
 		} else if (filter.key == "on") {

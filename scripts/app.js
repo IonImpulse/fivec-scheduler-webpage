@@ -430,6 +430,8 @@ async function buttonSearch() {
 
 		input.focus();
 
+		button_filters = [];
+		
 		// For screenreaders/text browsers, we need to make the content available to the user in a non-visual way.
 		input.addEventListener("keyup", function (event) {
 			if (event.code === "Enter") {
@@ -447,7 +449,6 @@ async function buttonSearch() {
 			backgroundCourseSearch();
 
 		});
-
 
 		setTimeout(function () {
 			backgroundCourseSearch();

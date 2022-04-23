@@ -16,12 +16,12 @@ async function startup() {
           // registration failed
           console.log('Registration failed with ' + error);
         });
+
     }
     // Then, call an update request
     let update = update_database(full=false);
     await update_from_local();
     // Add PWA install prompt
-    pwaInstallPrompt();
 
     // Website generation
     generateGridTimes();
@@ -41,15 +41,14 @@ async function startup() {
     if (show_changelog) {
         showChangelog();
     }
-
-    
+   
     await update;
     update_loop();
 
     // Create reusable web worker threads
-    desc_worker = new Worker('scripts/workers/descriptions.js?v=1.13.2');
-    searcher_worker = new Worker('scripts/workers/searcher.js?v=1.13.0');
-	searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.13.11');
+    desc_worker = new Worker('scripts/workers/descriptions.js?v=1.14.0');
+    searcher_worker = new Worker('scripts/workers/searcher.js?v=1.14.0');
+	searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.14.0');
 
     // Start worker threads to generate descriptions + searcher
     updateDescAndSearcher(false);
@@ -115,52 +114,6 @@ function getVisited() {
 function setVisited() {
     localStorage.setItem('install-prompt', true);
 }
-
-function pwaInstallPrompt() {
-    // this event will only fire if the user does not have the pwa installed
-    window.addEventListener('beforeinstallprompt', (event) => {
-        event.preventDefault();
-    
-        // if no localStorage is set, first time visitor
-        if (!getVisited()) {
-            // show the prompt banner
-            install_holder.style.display = 'flex';
-    
-            // store the event for later use
-            installEvent = event;
-        }
-    });
-    
-    install_button.addEventListener('click', () => {
-        // hide the prompt banner
-        install_holder.style.display = 'none';
-    
-        // trigger the prompt to show to the user
-        installEvent.prompt();
-    
-        // check what choice the user made
-        installEvent.userChoice.then((choice) => {
-            // if the user declined, we don't want to show the button again
-            // set localStorage to true
-            if (choice.outcome !== 'accepted') {
-                setVisited();
-            }
-    
-            installEvent = null;
-        });
-    });
-
-    close_button.addEventListener('click', () => {
-        // set localStorage to true
-        setVisited();
-      
-        // hide the prompt banner
-        install_holder.style.display = 'none';  
-      
-        installEvent = null;
-    });
-}
-
 
 async function updateDescAndSearcher(full=true) {
     desc_worker.onmessage = function(e) {

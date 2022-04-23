@@ -7,7 +7,7 @@ Contains ALL global variables used.
 
 // Version number
 // Will delete localStorage variables when updating
-const current_version = '1.13';
+const current_version = '1.14';
 
 // Average paces for distance calcs
 const walking_feet_per_minute = 328;
@@ -27,6 +27,7 @@ var hidden_course_lists = [];
 var locations = {};
 
 var overlay = { identifier: null, locked: false };
+var button_filters = [];
 var loaded_local_courses = [];
 var loaded_course_lists = [];
 var loaded_custom_courses = [];

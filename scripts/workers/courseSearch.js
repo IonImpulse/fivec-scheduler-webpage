@@ -1,7 +1,7 @@
 importScripts("../libs/fuzzysort.js");
 
 onmessage = function(e) {
-    let course_divs = expensiveCourseSearch(e.data[0], e.data[1], e.data[2], e.data[3], e.data[4]);
+    let course_divs = expensiveCourseSearch(e.data[0], e.data[1], e.data[2], e.data[3], e.data[4], e.data[5]);
 
     postMessage(course_divs);
 }
@@ -217,7 +217,7 @@ function search_courses(query, all_courses_global, filters, hmc_mode, loaded_loc
 	// Apply filters
 	for (let filter of filters) {
 		if (["status", "dept", "id", "code"].includes(filter.key)) {
-			results = results.filter(t => (t.obj || t)[filter.key].toLowerCase() == filter.value.toLowerCase());
+			results = results.filter(t => filter.value.split(",").includes((t.obj || t)[filter.key].toLowerCase()));
 		} else if (filter.key == "with") {
 			results = results.filter(t => (t.obj || t).instructorString.toLowerCase().replaceAll(".", "").includes(filter.value.replaceAll("-", " ").replace(".", "").toLowerCase()));
 		} else if (filter.key == "on") {
@@ -410,19 +410,17 @@ function getFilters(input) {
 	return {filters: filters, input: wanted_search_term};
 }
 
-function expensiveCourseSearch(input, all_courses_global, colors, hmc_mode, loaded_local_courses) {
+function expensiveCourseSearch(input, all_courses_global, colors, hmc_mode, loaded_local_courses, button_filters) {
     let results = [];
 
-    if (input == "") {
+    if (input == "" && button_filters.length == 0) {
         results = all_courses_global;
 	} else {
 		const filters_object = getFilters(input);
 
 		const search_term = tweakSearch(filters_object.input, all_courses_global);
 
-		console.log(`${filters_object.input} => ${search_term}`);
-		
-		results = search_courses(search_term, all_courses_global, filters_object.filters, hmc_mode, loaded_local_courses);
+		results = search_courses(search_term, all_courses_global, filters_object.filters.concat(button_filters), hmc_mode, loaded_local_courses);
 	}
 
     let output = [];

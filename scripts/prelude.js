@@ -27,6 +27,7 @@ var hidden_course_lists = [];
 var locations = {};
 
 var overlay = { identifier: null, locked: false };
+var button_filters = [];
 var loaded_local_courses = [];
 var loaded_course_lists = [];
 var loaded_custom_courses = [];

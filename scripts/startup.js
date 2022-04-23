@@ -16,6 +16,7 @@ async function startup() {
           // registration failed
           console.log('Registration failed with ' + error);
         });
+
     }
     // Then, call an update request
     let update = update_database(full=false);
@@ -40,15 +41,14 @@ async function startup() {
     if (show_changelog) {
         showChangelog();
     }
-
-    
+   
     await update;
     update_loop();
 
     // Create reusable web worker threads
     desc_worker = new Worker('scripts/workers/descriptions.js?v=1.13.20');
     searcher_worker = new Worker('scripts/workers/searcher.js?v=1.13.0');
-	searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.13.11');
+	searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.13.14');
 
     // Start worker threads to generate descriptions + searcher
     updateDescAndSearcher(false);

@@ -448,14 +448,6 @@ async function buttonSearch() {
 
 		});
 
-		document.getElementsByClassName("swal2-popup")[0].addEventListener("keydown", function (event) {
-			if (event.getModifierState("Control")
-				|| event.key.includes("Arrow")) {
-				return;
-			}
-
-			focusAndInput(event);
-		});
 
 		setTimeout(function () {
 			backgroundCourseSearch();
@@ -491,6 +483,126 @@ const Toast = Swal.mixin({
 		toast.addEventListener('mouseleave', Swal.resumeTimer)
 	}
 })
+
+function toggleFilters() {
+	let el = document.getElementById("filter-container");
+	el.classList.toggle("hidden");
+
+	if (el.classList.contains("hidden")) {
+		el.removeEventListener("click", updateButtonFilters);
+		el.removeEventListener("keydown", updateButtonFilters);
+	} else {
+		el.addEventListener("click", updateButtonFilters);
+		el.addEventListener("keydown", updateButtonFilters);
+		updateButtonFilters();
+	}	
+}
+
+async function updateButtonFilters() {
+	let filters = [];
+
+	// Get status filters
+	let open_check = document.getElementById("open-check").checked;
+	let closed_check = document.getElementById("closed-check").checked;
+	let reopened_check = document.getElementById("reopened-check").checked;
+
+	if (open_check || closed_check || reopened_check) {
+		let filter = {
+			key: "status",
+			value: "",
+			type: ":"
+		}
+
+		if (open_check) {
+			filter.value += "open,";
+		}
+
+		if (closed_check) {
+			filter.value += "closed,";
+		}
+
+		if (reopened_check) {
+			filter.value += "reopened,";
+		}
+
+		filter.value = filter.value.slice(0, -1);
+
+		filters.push(filter);
+	}
+
+	// Get time filters
+	let time_after = document.getElementById("filter-time-after").value;
+	let time_before = document.getElementById("filter-time-before").value;
+
+	if (time_after) {
+		filters.push({
+			key: "after",
+			value: time_after,
+			type: ":"
+		});
+	}
+
+	if (time_before) {
+		filters.push({
+			key: "before",
+			value: time_before,
+			type: ":"
+		});
+	}
+
+	// Get days of week filters
+	let monday_check = document.getElementById("monday-check").checked;
+	let tuesday_check = document.getElementById("tuesday-check").checked;
+	let wednesday_check = document.getElementById("wednesday-check").checked;
+	let thursday_check = document.getElementById("thursday-check").checked;
+	let friday_check = document.getElementById("friday-check").checked;
+
+	if (monday_check || tuesday_check || wednesday_check || thursday_check || friday_check) {
+		let filter = {
+			key: "on",
+			value: "",
+			type: ":"
+		}
+
+		if (monday_check) {
+			filter.value += "m,";
+		}
+
+		if (tuesday_check) {
+			filter.value += "t,";
+		}
+
+		if (wednesday_check) {
+			filter.value += "w,";
+		}
+
+		if (thursday_check) {
+			filter.value += "r,";
+		}
+
+		if (friday_check) {
+			filter.value += "f,";
+		}
+
+		filter.value = filter.value.slice(0, -1);
+
+		filters.push(filter);
+	}
+
+	// Get conflict check
+	let conflict_check = document.getElementById("hide-conflicts-check").checked;
+
+	if (conflict_check) {
+		filters.push({
+			key: "conflicts",
+			value: "none",
+			type: ":"
+		});
+	}
+
+	button_filters = filters;
+	await backgroundCourseSearch();
+}
 
 async function buttonShare() {
 
@@ -735,7 +847,7 @@ async function backgroundCourseSearch(full=false) {
 		return;
 	}
 
-	if (input.value == "" && all_course_results_html.length > 0) {
+	if (input.value == "" && all_course_results_html.length > 0 && button_filters.length == 0) {
 		appendCourseHTML(all_course_results_html, document.getElementById("course-input").value, full);
 
 		postProcessSearch(input.value, all_course_results_html);
@@ -751,7 +863,7 @@ async function backgroundCourseSearch(full=false) {
 		postProcessSearch(document.getElementById("course-input").value, html_courses);
 	}
 
-	searching_worker.postMessage([input.value, all_courses_global, colors, settings.hmc_mode, loaded_local_courses]);
+	searching_worker.postMessage([input.value, all_courses_global, colors, settings.hmc_mode, loaded_local_courses, button_filters]);
 }
 
 async function sleep(ms) {
@@ -1624,7 +1736,7 @@ const custom_course_popup = `
 
             <div>
                 <label for="course-start-time">Start Time > 7:00AM*</label>
-                <input type="time" min="07:00" max="22:00" id="course-start-time" class="input custom-course-input placeholder="7:00" required>
+                <input type="time" min="07:00" max="22:00" id="course-start-time" class="input custom-course-input" placeholder="7:00" required>
             </div>
 
             <div>
@@ -1680,7 +1792,89 @@ const search_popup = `
 
     <input class="input" id="course-input" placeholder="Search by course code, title, or instructor...">
 
-    <span id="filter-help" class="popup-holder unselectable" onmouseenter="showPopup(\'#filter-help-text\')" onmouseleave="hidePopup(\'#filter-help-text\')">
+	<span id="filter-button" class="default-button filters unselectable" onclick="toggleFilters()"></span>
+
+    <span id="term-container"></span>
+</div>
+
+<div id="filter-container" class="hidden">
+		<div class="filter-item">
+			<div class="filter-checkboxes status">
+				<div>
+					<label class="filter-label" for="open-check">Open</label>
+					<input id="open-check" type="checkbox" class="filter-checkbox">
+				</div>
+				<div>
+					<label class="filter-label" for="reopened-check">Reopened</label>
+					<input id="reopened-check" type="checkbox" class="filter-checkbox">
+				</div>
+				<div>
+					<label class="filter-label" for="closed-check">Closed</label>
+					<input id="closed-check" type="checkbox" class="filter-checkbox">
+				</div>
+			</div>
+		</div>
+
+		<div class="filter-item">
+			<label class="filter-label" for="filter-time-after">After</label>
+			<input min="07:00" max="22:00" type="time" id="filter-time-after" class="filter-input" placeholder="7:00">
+		</div>
+
+		<div class="filter-item">
+			<label class="filter-label" for="filter-time-before">Before</label>
+			<input min="07:00" max="22:00" type="time" id="filter-time-before" class="filter-input" placeholder="22:00">		
+		</div>	
+
+		<div class="filter-item">
+			<div class="filter-checkboxes">
+				<div>
+					<label class="filter-label" for="monday-check">Mon</label>
+					<input id="monday-check" type="checkbox" class="filter-checkbox">
+				</div>
+				<div>
+					<label class="filter-label" for="tuesday-check">Tue</label>
+					<input id="tuesday-check" type="checkbox" class="filter-checkbox">
+				</div>
+				<div>
+					<label class="filter-label" for="wednesday-check">Wed</label>
+					<input id="wednesday-check" type="checkbox" class="filter-checkbox">
+				</div>
+				<div>
+					<label class="filter-label" for="thursday-check">Thu</label>
+					<input id="thursday-check" type="checkbox" class="filter-checkbox">
+				</div>
+				<div>
+					<label class="filter-label" for="friday-check">Fri</label>
+					<input id="friday-check" type="checkbox" class="filter-checkbox">
+				</div>
+			</div>		
+		</div>
+
+
+		<div class="filter-item">
+			<div class="filter-checkboxes">
+				<div>
+					<label class="filter-label" for="hide-conflicts-check">Hide Conflicts</label>
+					<input id="hide-conflicts-check" type="checkbox" class="filter-checkbox">
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<div id="course-search-box">
+    <div id="course-search-results">
+        <b>Loading...</b>
+    </div>
+    <div id="course-search-desc" class="course-desc">
+    </div>
+</div>
+<div id="course-search-cart">
+</div>`;
+
+const filter_help = `
+<span id="filter-help" class="popup-holder unselectable" onmouseenter="showPopup(\'#filter-help-text\')" onmouseleave="hidePopup(\'#filter-help-text\')">
         ?
         <span>
             <div id="filter-help-text" class="popup-text other-side" >
@@ -1761,20 +1955,7 @@ const search_popup = `
             </div>
         </span>
     </span>
-
-    <span id="term-container"></span>
-</div>
-<div id="course-search-box">
-    <div id="course-search-results">
-        <b>Loading...</b>
-    </div>
-    <div id="course-search-desc" class="course-desc">
-    </div>
-</div>
-<div id="course-search-cart">
-</div>
-<br>`;
-
+`;
 
 const new_schedule_popup = `
 <div id="new-schedule-container">

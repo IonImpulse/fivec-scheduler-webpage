@@ -21,7 +21,7 @@
   --padding-medium: 7px;
   --padding-small: 5px;
   --roundedness: 10px;
-  --small-roundedness: 2px;
+  --small-roundedness: 5px;
   --search-button-background: rgb(64, 187, 33);
   --shadow-blur: 20px;
   --shadow-length: 4px;
@@ -46,6 +46,7 @@
   --custom-course-icon: url(../img/custom-course-light.svg);
   --checked-icon: url(../img/checked-light.svg);
   --settings-icon: url(../img/settings-light.svg);
+  --filters-icon: url(../img/filters-light.svg);
   --hover-effect: 0.96;
   --schedule-change-speed: 0.1s;
 
@@ -88,6 +89,7 @@
   --custom-course-icon: url(../img/custom-course-dark.svg);
   --checked-icon: url(../img/checked-dark.svg);
   --settings-icon: url(../img/settings-dark.svg);
+  --filters-icon: url(../img/filters-dark.svg);
   --hover-effect: 1.2;
 }
 
@@ -449,6 +451,10 @@ canvas {
   margin-right: 8vw;
 }
 
+.default-button.filters {
+  background-image: var(--filters-icon);
+}
+
 .search-button {
   padding-left: var(--padding-medium);
   padding-right: var(--padding-medium);
@@ -720,7 +726,7 @@ canvas {
   left: 80%;
   width: 350px;
   transition: opacity 0.2s ease-in-out;
-  box-shadow: 0 0 1px 1px var(--button-outline);
+  box-shadow: 0 0 1px 1px var(--button-main-active);
 }
 
 .popup-text.other-side {
@@ -1453,7 +1459,7 @@ h1 {
   padding: var(--padding);
   border-radius: var(--roundedness);
   display: grid;
-  grid-template-columns: 50px auto;
+  grid-template-columns: 70px auto;
   justify-content: left;
   align-items: center;
   margin-top: 10px;
@@ -1467,9 +1473,75 @@ h1 {
   border-radius: var(--roundedness);
   display: grid;
   margin-bottom: 5px;
-
 }
 
+#filter-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  overflow-y: hidden;
+  transition: height 0.1s ease-in-out;
+  height: 60px;
+  width: 80%;
+  margin: 0 auto;
+}
+
+#filter-container.hidden {
+  height: 0px;
+}
+
+.filter-item {
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+.filter-select {
+  position: relative;
+}
+
+.filter-label {
+  position: absolute;
+  font-size: 12px;
+  transform: translate(0px, -20px);
+  margin-bottom: 10px;
+}
+
+.filter-input {
+  height: 20px;
+  background-color: var(--background-alt);
+  border-radius: var(--roundedness);
+  padding: var(--padding-small);
+  font-size: 14px;
+  color: var(--text-main);
+  font-family: var(--main-font);
+  border:unset;
+}
+
+.filter-checkboxes {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  align-content: space-between;
+  justify-content: center;
+  width: 100%;
+  gap: 10px;
+}
+
+.filter-checkboxes.status {
+  gap: 40px;
+}
+
+.filter-checkbox {
+  width: 20px;
+  height: 20px;
+  margin: unset;
+  margin-right: 10px;
+  position: relative;
+}
 /* =============================
 
     MOBILE STYLES

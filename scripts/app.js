@@ -431,7 +431,7 @@ async function buttonSearch() {
 		input.focus();
 
 		button_filters = [];
-		
+
 		// For screenreaders/text browsers, we need to make the content available to the user in a non-visual way.
 		input.addEventListener("keyup", function (event) {
 			if (event.code === "Enter") {
@@ -1990,6 +1990,9 @@ const changelog_popup = `
 	<b>v1.14 Beta</b>
 	<ul>
 		<li>Changed button & outline appearance</li>
+		<li>Updated description appearance</li>
+		<li>Added filter button to search bar</li>
+		<li>Fixed some filter bugs</li>
 	</ul>
 </div>
 `;

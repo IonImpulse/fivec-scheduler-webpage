@@ -233,7 +233,8 @@ function search_courses(query, all_courses_global, filters, hmc_mode, loaded_loc
 		} else if (filter.key == "section") {
 			results = results.filter(t => parseInt((t.obj || t).section) == filter.value);
 		} else if (filter.key == "at") {
-			results = results.filter(t => (t.obj || t).timing.map(e => e.location.school).flat().includes(toApiSchool(filter.value)));
+			let schools_to_search = filter.value.split(",").map(school => toApiSchool(school));
+			results = results.filter(t => (t.obj || t).timing.map(e => e.location.school).flat().some(s => schools_to_search.includes(s)));
 		} else if (filter.key == "location") {
 			results = results.filter(t => (t.obj || t).timing.map(e => e.location.building).some(x => x.toLowerCase().includes(filter.value.toLowerCase())));
 		} else if (filter.key == "prereq" || filter.key == "prereqs") {

@@ -7,7 +7,7 @@ Contains ALL global variables used.
 
 // Version number
 // Will delete localStorage variables when updating
-const current_version = '1.14';
+const current_version = '1.15';
 
 // Average paces for distance calcs
 const walking_feet_per_minute = 328;

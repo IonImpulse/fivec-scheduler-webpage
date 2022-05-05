@@ -80,6 +80,81 @@ const colors_dark = [
     "#3d7991",
 ];
 
+
+/// *****
+/// Common course area categories
+/// *****
+const category_stem = [
+    "AISS",
+    "AS",
+    "ALS",
+    "ASTR",
+    "BIOL",
+    "CHEM",
+    "CLES",
+    "COGS",
+    "CSMT",
+    "CSCI",
+    "CL",
+    "DSCI",
+    "EA",
+    "GEOG",
+    "LGCS",
+    "MCBI",
+    "MATH",
+    "MOBI",
+    "NEUR",
+    "PHYS",
+];
+
+const category_humanities = [
+    "HUM",
+];
+
+const category_athletics = [
+    "PE",
+];
+
+const category_language = [
+    "ALAN",  
+];
+
+const category_mudd_hsa = [
+    "4HSA",
+];
+
+const category_mudd_writ_intensive = [
+    "4WRT",
+];
+
+const category_po_writ_intensive = [
+    "1WIR",
+];
+
+const category_po_area_1 = [
+    "1A1",
+];
+
+const category_po_area_2 = [
+    "1A2",
+];
+
+const category_po_area_3 = [
+    "1A3",
+]
+
+const category_po_area_4 = [
+    "1A4",
+];
+
+const category_po_area_5 = [
+    "1A5",
+];
+
+const category_po_area_6 = [
+    "1A6",
+];
+
 // *****
 // Prelude functions
 // *****

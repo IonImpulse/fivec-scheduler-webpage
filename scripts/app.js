@@ -2104,12 +2104,10 @@ const new_schedule_popup = `
 
 const changelog_popup = `
 <div id="changelog-container">
-	<b>v1.14 Beta</b>
+	<b>v1.15 Beta</b>
 	<ul>
-		<li>Changed button & outline appearance</li>
-		<li>Updated description appearance</li>
-		<li>Added filter button to search bar</li>
-		<li>Fixed some filter bugs</li>
+		<li>Added even more filters: school, prof, location, credits, and areas</li>
+		<li>Added areas! Including Writing Intensives, HSAs, and Pomona Area Reqs.</li>
 	</ul>
 </div>
 `;

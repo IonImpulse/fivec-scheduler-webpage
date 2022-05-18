@@ -1718,6 +1718,14 @@ async function clearAllData() {
 	});
 }
 
+function buttonPermute() {
+	permutation_worker.onmessage = function(e) {
+		console.log(e.data);
+	}
+
+	permutation_worker.postMessage([loaded_local_courses, all_courses_global]);
+}
+
 
 // *****
 // HTML Popups

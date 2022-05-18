@@ -51,6 +51,7 @@ const weekdays_short = ["Mon", "Tue", "Wed", "Thu", "Fri"];
 var searcher_worker;
 var desc_worker;
 var searching_worker;
+var permutation_worker;
 
 var all_course_results_html = [];
 

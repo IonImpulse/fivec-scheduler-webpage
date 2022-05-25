@@ -35,6 +35,7 @@ var vertical_layout = false;
 var show_changelog = true;
 var last_course_desc = 0;
 var loaded_schedule = {};
+var max_grid_rows = 0;
 
 // Default settings
 var settings = {
@@ -108,53 +109,21 @@ const category_stem = [
     "PHYS",
 ];
 
-const category_humanities = [
-    "HUM",
-];
-
-const category_athletics = [
-    "PE",
-];
-
-const category_language = [
-    "ALAN",  
-];
-
-const category_mudd_hsa = [
-    "4HSA",
-];
-
-const category_mudd_writ_intensive = [
-    "4WRT",
-];
-
-const category_po_writ_intensive = [
-    "1WIR",
-];
-
-const category_po_area_1 = [
-    "1A1",
-];
-
-const category_po_area_2 = [
-    "1A2",
-];
-
-const category_po_area_3 = [
-    "1A3",
-]
-
-const category_po_area_4 = [
-    "1A4",
-];
-
-const category_po_area_5 = [
-    "1A5",
-];
-
-const category_po_area_6 = [
-    "1A6",
-];
+const category_lookup = {
+    "STEM": category_stem,
+    "Humanities": ["HUM"],
+    "PE": ["PE"],
+    "Languages": ["ALAN"],
+    "Mudd HSA": ["4HSA"],
+    "Mudd Writ Intensive": ["4WRT"],
+    "Pomona Writ Intensive": ["1WIR"],
+    "Pomona Area 1": ["1A1"],
+    "Pomona Area 2": ["1A2"],
+    "Pomona Area 3": ["1A3"],
+    "Pomona Area 4": ["1A4"],
+    "Pomona Area 5": ["1A5"],
+    "Pomona Area 6": ["1A6"],
+}
 
 // *****
 // Prelude functions

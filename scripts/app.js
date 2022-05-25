@@ -432,6 +432,18 @@ async function buttonSearch() {
 
 		button_filters = [];
 
+		// Update area filters
+		const filter_areas = document.getElementById("filter-area");
+
+		for (let key of Object.keys(category_lookup)) {
+			// Create element
+			const to_append = `<option value="${key}">${key}</option>`;
+
+			// Append to filter
+			filter_areas.innerHTML += to_append;
+		}
+
+
 		// For screenreaders/text browsers, we need to make the content available to the user in a non-visual way.
 		input.addEventListener("keyup", function (event) {
 			if (event.code === "Enter") {
@@ -672,6 +684,16 @@ async function updateButtonFilters() {
 		});
 	}
 
+	// Get area filters
+	let area_input = document.getElementById("filter-area").value;
+	if (area_input.trim() != "") {
+		filters.push({
+			key: "area",
+			value: area_input,
+			type: ":"
+		});
+	}
+
 	button_filters = filters;
 	await backgroundCourseSearch();
 }
@@ -897,13 +919,6 @@ async function buttonSettings() {
 		settings.hmc_mode = credits.checked;
 		saveSettings();
 	});
-	
-	let disable_animations = document.getElementById("disable-animations")
-	disable_animations.checked = settings.disable_animations;
-	disable_animations.addEventListener("click", () => {
-		settings.disable_animations = disable_animations.checked;
-		saveSettings();
-	});
 }
 
 function saveSettings() {
@@ -935,7 +950,7 @@ async function backgroundCourseSearch(full=false) {
 		postProcessSearch(document.getElementById("course-input").value, html_courses);
 	}
 
-	searching_worker.postMessage([input.value, all_courses_global, colors, settings.hmc_mode, loaded_local_courses, button_filters]);
+	searching_worker.postMessage([input.value, all_courses_global, colors, settings.hmc_mode, loaded_local_courses, button_filters, category_lookup]);
 }
 
 async function sleep(ms) {
@@ -1972,8 +1987,8 @@ const search_popup = `
 
 		<div class="filter-item">
 			<label class="filter-label" for="filter-course-area">Area</label>
-			<select id="filter-area">
-				<option value="">All</option>
+			<select id="filter-area" class="filter-input">
+				<option class="option-class" value="">All</option>
 			</select>
 		</div>
 

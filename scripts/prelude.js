@@ -111,7 +111,6 @@ const category_stem = [
 
 const category_lookup = {
     "STEM": category_stem,
-    "Humanities": ["HUM"],
     "PE": ["PE"],
     "Languages": ["ALAN"],
     "Mudd HSA": ["4HSA"],

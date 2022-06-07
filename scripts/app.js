@@ -2130,7 +2130,8 @@ const changelog_popup = `
 	<b>v1.15 Beta</b>
 	<ul>
 		<li>Added even more filters: school, prof, location, credits, and areas</li>
-		<li>Added areas! Including Writing Intensives, HSAs, and Pomona Area Reqs.</li>
+		<li>Added course areas! You can now sort by Writing Intensives, HSAs, and Pomona Area Reqs.</li>
+		<li>Added permutation creator! Generate all possible schedules for your course load.</li>
 	</ul>
 </div>
 `;

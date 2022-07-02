@@ -1476,17 +1476,21 @@ h1 {
 }
 
 #filter-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
   overflow-y: hidden;
-  transition: height 0.1s ease-in-out;
-  height: 60px;
-  width: 80%;
+  transition: max-height 0.1s ease-in-out;
+  max-height: 600px;
+  width: 85%;
   margin: 0 auto;
+  column-gap: 60px;
 }
 
 #filter-container.hidden {
-  height: 0px;
+  max-height: 0px;
 }
 
 .filter-item {
@@ -1531,8 +1535,13 @@ h1 {
   gap: 10px;
 }
 
-.filter-checkboxes.status {
-  gap: 40px;
+
+.filter-checkboxes.status * {
+  width: 60px;
+}
+
+.filter-checkboxes.schools {
+  gap: 10px;
 }
 
 .filter-checkbox {
@@ -1542,6 +1551,23 @@ h1 {
   margin-right: 10px;
   position: relative;
 }
+
+.filter-item > input {
+  width: 60%;
+}
+
+#hide-conflicts-container {
+  width: 140px;
+}
+
+#filter-area {
+  height: 30px;
+}
+
+select *.option-class {
+  font-family: var(--main-font);
+}
+
 /* =============================
 
     MOBILE STYLES

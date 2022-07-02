@@ -1,7 +1,7 @@
 importScripts("../libs/fuzzysort.js");
 
 onmessage = function(e) {
-    let course_divs = expensiveCourseSearch(e.data[0], e.data[1], e.data[2], e.data[3], e.data[4], e.data[5]);
+    let course_divs = expensiveCourseSearch(e.data[0], e.data[1], e.data[2], e.data[3], e.data[4], e.data[5], e.data[6]);
 
     postMessage(course_divs);
 }
@@ -174,7 +174,7 @@ function tweakSearch(string) {
 	return return_string.trim().toLowerCase();
 }
 
-function search_courses(query, all_courses_global, filters, hmc_mode, loaded_local_courses) {
+function search_courses(query, all_courses_global, filters, hmc_mode, loaded_local_courses, category_lookup) {
     const options = {
         limit: 100, // don't return more results than you need!
         allowTypo: true, // if you don't care about allowing typos
@@ -233,7 +233,8 @@ function search_courses(query, all_courses_global, filters, hmc_mode, loaded_loc
 		} else if (filter.key == "section") {
 			results = results.filter(t => parseInt((t.obj || t).section) == filter.value);
 		} else if (filter.key == "at") {
-			results = results.filter(t => (t.obj || t).timing.map(e => e.location.school).flat().includes(toApiSchool(filter.value)));
+			let schools_to_search = filter.value.split(",").map(school => toApiSchool(school));
+			results = results.filter(t => (t.obj || t).timing.map(e => e.location.school).flat().some(s => schools_to_search.includes(s)));
 		} else if (filter.key == "location") {
 			results = results.filter(t => (t.obj || t).timing.map(e => e.location.building).some(x => x.toLowerCase().includes(filter.value.toLowerCase())));
 		} else if (filter.key == "prereq" || filter.key == "prereqs") {
@@ -303,6 +304,9 @@ function search_courses(query, all_courses_global, filters, hmc_mode, loaded_loc
 			} else if (filter.value == "none") {
 				results = results.filter(t => checkForConflicts((t.obj || t), loaded_local_courses).length == 0);
 			}
+		} else if (filter.key == "area") {
+			const areas = category_lookup[filter.value];
+			results = results.filter(t => (t.obj || t).associations.some(p => areas.includes(p)));
 		}
 	}
 
@@ -410,7 +414,7 @@ function getFilters(input) {
 	return {filters: filters, input: wanted_search_term};
 }
 
-function expensiveCourseSearch(input, all_courses_global, colors, hmc_mode, loaded_local_courses, button_filters) {
+function expensiveCourseSearch(input, all_courses_global, colors, hmc_mode, loaded_local_courses, button_filters, category_lookup) {
     let results = [];
 
     if (input == "" && button_filters.length == 0) {
@@ -420,7 +424,7 @@ function expensiveCourseSearch(input, all_courses_global, colors, hmc_mode, load
 
 		const search_term = tweakSearch(filters_object.input, all_courses_global);
 
-		results = search_courses(search_term, all_courses_global, filters_object.filters.concat(button_filters), hmc_mode, loaded_local_courses);
+		results = search_courses(search_term, all_courses_global, filters_object.filters.concat(button_filters), hmc_mode, loaded_local_courses, category_lookup);
 	}
 
     let output = [];

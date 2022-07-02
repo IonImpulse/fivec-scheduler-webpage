@@ -432,6 +432,18 @@ async function buttonSearch() {
 
 		button_filters = [];
 
+		// Update area filters
+		const filter_areas = document.getElementById("filter-area");
+
+		for (let key of Object.keys(category_lookup)) {
+			// Create element
+			const to_append = `<option value="${key}">${key}</option>`;
+
+			// Append to filter
+			filter_areas.innerHTML += to_append;
+		}
+
+
 		// For screenreaders/text browsers, we need to make the content available to the user in a non-visual way.
 		input.addEventListener("keyup", function (event) {
 			if (event.code === "Enter") {
@@ -491,10 +503,10 @@ function toggleFilters() {
 
 	if (el.classList.contains("hidden")) {
 		el.removeEventListener("click", updateButtonFilters);
-		el.removeEventListener("keydown", updateButtonFilters);
+		el.removeEventListener("keyup", updateButtonFilters);
 	} else {
 		el.addEventListener("click", updateButtonFilters);
-		el.addEventListener("keydown", updateButtonFilters);
+		el.addEventListener("keyup", updateButtonFilters);
 		updateButtonFilters();
 	}	
 }
@@ -551,6 +563,46 @@ async function updateButtonFilters() {
 		});
 	}
 
+	// Get school filters
+	let hm_check = document.getElementById("filter-hmc").checked;
+	let po_check = document.getElementById("filter-pomona").checked;
+	let sc_check = document.getElementById("filter-scripps").checked;
+	let pz_check = document.getElementById("filter-pitzer").checked;
+	let cm_check = document.getElementById("filter-cmc").checked;
+
+	if (hm_check || po_check || sc_check || pz_check || cm_check) {
+		let filter = {
+			key: "at",
+			value: "",
+			type: ":"
+		}
+
+		if (hm_check) {
+			filter.value += "hmc,";
+		}
+
+		if (po_check) {
+			filter.value += "po,";
+		}
+
+		if (sc_check) {
+			filter.value += "sc,";
+		}
+
+		if (pz_check) {
+			filter.value += "pz,";
+		}
+
+		if (cm_check) {
+			filter.value += "cm,";
+		}
+
+		filter.value = filter.value.slice(0, -1);
+
+		filters.push(filter);
+	}
+
+
 	// Get days of week filters
 	let monday_check = document.getElementById("monday-check").checked;
 	let tuesday_check = document.getElementById("tuesday-check").checked;
@@ -590,6 +642,37 @@ async function updateButtonFilters() {
 		filters.push(filter);
 	}
 
+	// Get instructor filters
+	let instructor_input = document.getElementById("filter-instructor").value;
+	if (instructor_input.trim() != "") {
+		filters.push({
+			key: "with",
+			value: instructor_input,
+			type: ":"
+		});
+	}
+
+	// Get location filters
+	let location_input = document.getElementById("filter-location").value;
+	if (location_input.trim() != "") {
+		filters.push({
+			key: "location",
+			value: location_input,
+			type: ":"
+		});
+	}
+
+	// Get credits filters
+	let credits_input = document.getElementById("filter-credits").value;
+	if (credits_input.trim() != "") {
+		filters.push({
+			key: "credits",
+			value: credits_input,
+			type: ":"
+		});
+	}
+
+
 	// Get conflict check
 	let conflict_check = document.getElementById("hide-conflicts-check").checked;
 
@@ -597,6 +680,16 @@ async function updateButtonFilters() {
 		filters.push({
 			key: "conflicts",
 			value: "none",
+			type: ":"
+		});
+	}
+
+	// Get area filters
+	let area_input = document.getElementById("filter-area").value;
+	if (area_input.trim() != "") {
+		filters.push({
+			key: "area",
+			value: area_input,
 			type: ":"
 		});
 	}
@@ -826,13 +919,6 @@ async function buttonSettings() {
 		settings.hmc_mode = credits.checked;
 		saveSettings();
 	});
-	
-	let disable_animations = document.getElementById("disable-animations")
-	disable_animations.checked = settings.disable_animations;
-	disable_animations.addEventListener("click", () => {
-		settings.disable_animations = disable_animations.checked;
-		saveSettings();
-	});
 }
 
 function saveSettings() {
@@ -864,7 +950,7 @@ async function backgroundCourseSearch(full=false) {
 		postProcessSearch(document.getElementById("course-input").value, html_courses);
 	}
 
-	searching_worker.postMessage([input.value, all_courses_global, colors, settings.hmc_mode, loaded_local_courses, button_filters]);
+	searching_worker.postMessage([input.value, all_courses_global, colors, settings.hmc_mode, loaded_local_courses, button_filters, category_lookup]);
 }
 
 async function sleep(ms) {
@@ -1647,6 +1733,14 @@ async function clearAllData() {
 	});
 }
 
+function buttonPermute() {
+	permutation_worker.onmessage = function(e) {
+		console.log(e.data);
+	}
+
+	permutation_worker.postMessage([loaded_local_courses, all_courses_global]);
+}
+
 
 // *****
 // HTML Popups
@@ -1800,23 +1894,6 @@ const search_popup = `
 
 <div id="filter-container" class="hidden">
 		<div class="filter-item">
-			<div class="filter-checkboxes status">
-				<div>
-					<label class="filter-label" for="open-check">Open</label>
-					<input id="open-check" type="checkbox" class="filter-checkbox">
-				</div>
-				<div>
-					<label class="filter-label" for="reopened-check">Reopened</label>
-					<input id="reopened-check" type="checkbox" class="filter-checkbox">
-				</div>
-				<div>
-					<label class="filter-label" for="closed-check">Closed</label>
-					<input id="closed-check" type="checkbox" class="filter-checkbox">
-				</div>
-			</div>
-		</div>
-
-		<div class="filter-item">
 			<label class="filter-label" for="filter-time-after">After</label>
 			<input min="07:00" max="22:00" type="time" id="filter-time-after" class="filter-input" placeholder="7:00">
 		</div>
@@ -1851,10 +1928,73 @@ const search_popup = `
 			</div>		
 		</div>
 
+		<div class="filter-item">
+			<div class="filter-checkboxes schools">
+				<div>
+					<label class="filter-label" for="filter-hmc">HM</label>
+					<input id="filter-hmc" type="checkbox" class="filter-checkbox">
+				</div>
+				<div>
+					<label class="filter-label" for="filter-pomona">PO</label>
+					<input id="filter-pomona" type="checkbox" class="filter-checkbox">
+				</div>
+				<div>
+					<label class="filter-label" for="filter-cmc">CM</label>
+					<input id="filter-cmc" type="checkbox" class="filter-checkbox">
+				</div>
+				<div>
+					<label class="filter-label" for="filter-scripps">SC</label>
+					<input id="filter-scripps" type="checkbox" class="filter-checkbox">
+				</div>
+				<div>
+					<label class="filter-label" for="filter-pitzer">PZ</label>
+					<input id="filter-pitzer" type="checkbox" class="filter-checkbox">
+				</div>
+			</div>
+		</div>
+		
+		<div class="filter-item">
+			<div class="filter-checkboxes status">
+				<div>
+					<label class="filter-label" for="open-check">Open</label>
+					<input id="open-check" type="checkbox" class="filter-checkbox">
+				</div>
+				<div>
+					<label class="filter-label" for="reopened-check">Reopened</label>
+					<input id="reopened-check" type="checkbox" class="filter-checkbox">
+				</div>
+				<div>
+					<label class="filter-label" for="closed-check">Closed</label>
+					<input id="closed-check" type="checkbox" class="filter-checkbox">
+				</div>
+			</div>
+		</div>
+
+		<div class="filter-item">
+			<label class="filter-label" for="filter-instructor">Instructor</label>
+			<input type="text" id="filter-instructor" class="filter-input" placeholder="Instructor">
+		</div>
+
+		<div class="filter-item">
+			<label class="filter-label" for="filter-location">Location</label>
+			<input type="text" id="filter-location" class="filter-input" placeholder="Shan, Estella, etc.">
+		</div>
+
+		<div class="filter-item">
+			<label class="filter-label" for="filter-credits">Credits</label>
+			<input type="number" id="filter-credits" class="filter-input" placeholder="Credits">
+		</div>
+
+		<div class="filter-item">
+			<label class="filter-label" for="filter-course-area">Area</label>
+			<select id="filter-area" class="filter-input">
+				<option class="option-class" value="">All</option>
+			</select>
+		</div>
 
 		<div class="filter-item">
 			<div class="filter-checkboxes">
-				<div>
+				<div id="hide-conflicts-container">
 					<label class="filter-label" for="hide-conflicts-check">Hide Conflicts</label>
 					<input id="hide-conflicts-check" type="checkbox" class="filter-checkbox">
 				</div>
@@ -1987,12 +2127,11 @@ const new_schedule_popup = `
 
 const changelog_popup = `
 <div id="changelog-container">
-	<b>v1.14 Beta</b>
+	<b>v1.15 Beta</b>
 	<ul>
-		<li>Changed button & outline appearance</li>
-		<li>Updated description appearance</li>
-		<li>Added filter button to search bar</li>
-		<li>Fixed some filter bugs</li>
+		<li>Added even more filters: school, prof, location, credits, and areas</li>
+		<li>Added course areas! You can now sort by Writing Intensives, HSAs, and Pomona Area Reqs.</li>
+		<li>Added permutation creator code, permutation editor coming soon!</li>
 	</ul>
 </div>
 `;

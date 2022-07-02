@@ -24,7 +24,6 @@ async function startup() {
     // Add PWA install prompt
 
     // Website generation
-    generateGridTimes();
     generateDays();
     generateLines();
     timeLineLoop();
@@ -46,9 +45,10 @@ async function startup() {
     update_loop();
 
     // Create reusable web worker threads
-    desc_worker = new Worker('scripts/workers/descriptions.js?v=1.14.0');
-    searcher_worker = new Worker('scripts/workers/searcher.js?v=1.14.0');
-	searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.14.0');
+    desc_worker = new Worker('scripts/workers/descriptions.js?v=1.15.0');
+    searcher_worker = new Worker('scripts/workers/searcher.js?v=1.15.0');
+	searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.15.0');
+    permutation_worker = new Worker('scripts/workers/permutations.js?v=1.15.0');
 
     // Start worker threads to generate descriptions + searcher
     updateDescAndSearcher(false);
@@ -130,6 +130,10 @@ async function updateDescAndSearcher(full=true) {
 
 // Generates and sets divs for timeslots
 function generateGridTimes() {
+    while (document.getElementsByClassName("time").length > 0) {
+        document.getElementsByClassName("time")[0].remove();
+    }
+
     for (let i = 7; i <= 12; i++) {
         let time = document.createElement("div");
         time.className = "time";
@@ -227,7 +231,8 @@ function updateSchedule(play_animation=false) {
         updateLoadedCourseLists();
         updateStarredCourses();
         updateCredits();
-    
+        generateGridTimes();
+
         if (max_grid_rows == 0) {
             max_grid_rows = 350;
         } else {

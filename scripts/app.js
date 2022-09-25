@@ -86,7 +86,8 @@ function buttonCustomCourse() {
 		},
 		buttonsStyling: false,
 	}).then(async (result) => {
-		await save_json_data("loaded_custom_courses", loaded_custom_courses);
+
+		await saveState();
 
 		Toast.fire({
 			icon: 'success',
@@ -106,11 +107,11 @@ function buttonCustomCourse() {
 function updateCustomCourseList() {
 	try {
 		const el = document.getElementById("custom-course-list");
-		if (loaded_custom_courses.length > 0) {
+		if (state.custom_courses.length > 0) {
 			el.innerHTML = "";
 
 			let i = 0;
-			for (let course of loaded_custom_courses) {
+			for (let course of state.custom_courses) {
 				let course_div = createLoadedCourseDiv(course.identifier, course.title, colors[i % colors.length]);
 				el.appendChild(course_div);
 				i++;
@@ -198,15 +199,15 @@ async function submitNewCourse() {
 			}]
 		}
 
-		let exists = loaded_custom_courses.findIndex(course => course.identifier == new_course.identifier);
+		let exists = state.custom_courses.findIndex(course => course.identifier == new_course.identifier);
 
 		if (exists != -1) {
-			loaded_custom_courses[exists] = new_course;
+			state.custom_courses[exists] = new_course;
 		} else {
-			loaded_custom_courses.push(new_course);
+			state.custom_courses.push(new_course);
 		}
 
-		await save_json_data("loaded_custom_courses", loaded_custom_courses);
+		await saveState();
 
 		const right_panel = document.getElementsByClassName("right-panel")[0];
 		const course_form = document.getElementsByClassName("create-course-form")[0];
@@ -236,7 +237,7 @@ async function editCourse() {
 		right_panel.style.display = "none";
 		course_form.style.display = "block";
 
-		const course = loaded_custom_courses.find(course => course.identifier == course_id);
+		const course = state.custom_courses.find(course => course.identifier == course_id);
 
 		populateField("course-title", course.title);
 		populateField("course-identifier", course.identifier);
@@ -363,9 +364,9 @@ function buttonPrint() {
 }
 
 async function buttonSearch() {
-	selected_courses = [];
+	state.selected = [];
 
-	if (all_courses_global == null) {
+	if (state.courses == null) {
 		Swal.fire({
 			title: 'Error fetching courses!',
 			icon: 'error',
@@ -419,7 +420,7 @@ async function buttonSearch() {
 		// Set hmc credit mode:
 		let hmc_credit_mode = document.getElementById("hmc-credits");
 
-		hmc_credit_mode.checked = settings.hmc_mode;
+		hmc_credit_mode.checked = state.settings.hmc_mode;
 
 		let input = document.getElementById("course-input");
 		document.getElementById("course-search-results").addEventListener("keydown", function (event) {
@@ -430,7 +431,7 @@ async function buttonSearch() {
 
 		input.focus();
 
-		button_filters = [];
+		state.button_filters = [];
 
 		// Update area filters
 		const filter_areas = document.getElementById("filter-area");
@@ -694,13 +695,13 @@ async function updateButtonFilters() {
 		});
 	}
 
-	button_filters = filters;
+	state.button_filters = filters;
 	await backgroundCourseSearch();
 }
 
 async function buttonShare() {
 
-	if (loaded_local_courses.length == 0) {
+	if (getLoadedCourses().length == 0) {
 		Swal.fire({
 			title: 'No courses have been locally loaded!',
 			icon: 'error',
@@ -718,7 +719,7 @@ async function buttonShare() {
 				'Access-Control-Allow-Origin': '*',
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify([loaded_local_courses, loaded_custom_courses])
+			body: JSON.stringify([getLoadedCourses(), state.custom_courses])
 		});
 
 		const code = await response.json();
@@ -750,15 +751,15 @@ async function buttonShare() {
 }
 
 function buttonCal() {
-	if (loaded_local_courses.length == 0) {
+	if (getLoadedCourses().length == 0) {
 		Swal.fire({
 			title: 'No courses have been locally loaded!',
 			icon: 'error'
 		})
 	} else {
-		ical_all = generateICal(loaded_local_courses);
-		ical_starred = generateICal(loaded_local_courses.filter(course => starred_courses.includes(course.identifier)));
-		ical_nstarred = generateICal(loaded_local_courses.filter(course => !starred_courses.includes(course.identifier)));
+		ical_all = generateICal(getLoadedCourses());
+		ical_starred = generateICal(getLoadedCourses().filter(course => state.starred_courses.includes(course.identifier)));
+		ical_nstarred = generateICal(getLoadedCourses().filter(course => !state.starred_courses.includes(course.identifier)));
 
 		Swal.fire({
 			title: 'Save as iCal',
@@ -894,35 +895,35 @@ async function buttonSettings() {
 	
 	let status = await fetch(`${API_URL}${STATUS}`).then(async res => await res.json());
 
-	statuses[0].innerHTML = `<b>API Status:</b> ${status.alive ? `<span class='green'>Online: ${parseUnixTime(timestamp_global)}</span>` : "<span class='red'>Offline</span>"}`;
+	statuses[0].innerHTML = `<b>API Status:</b> ${status.alive ? `<span class='green'>Online: ${parseUnixTime(state.last_updated)}</span>` : "<span class='red'>Offline</span>"}`;
 
-	statuses[1].innerHTML = `<b>Total Courses Loaded:</b> ${all_courses_global.length}`;
+	statuses[1].innerHTML = `<b>Total Courses Loaded:</b> ${state.courses.length}`;
 
-	statuses[2].innerHTML = `<b>Loaded Local Courses:</b> ${loaded_local_courses.length}`;
+	statuses[2].innerHTML = `<b>Loaded Local Courses:</b> ${getLoadedCourses().length}`;
 
-	statuses[3].innerHTML = `<b>Loaded Custom Courses:</b> ${loaded_custom_courses.length}`;
+	statuses[3].innerHTML = `<b>Loaded Custom Courses:</b> ${state.custom_courses.length}`;
 
-	statuses[4].innerHTML = `<b>Loaded Schedules:</b> ${loaded_course_lists.length}`;
+	statuses[4].innerHTML = `<b>Loaded Schedules:</b> ${state.schedules.length}`;
 
-	statuses[5].innerHTML = `<b>Locations:</b> ${Object.keys(locations).length}`;
+	statuses[5].innerHTML = `<b>Locations:</b> ${Object.keys(state.locations).length}`;
 
 	let time = document.getElementById("show-current-time")
-	time.checked = settings.show_time_line;
+	time.checked = state.settings.show_time_line;
 	time.addEventListener("click", () => {
-		settings.show_time_line = time.checked;
+		state.settings.show_time_line = time.checked;
 		saveSettings();
 	});
 
 	let credits = document.getElementById("hmc-credits")
-	credits.checked = settings.hmc_mode;
+	credits.checked = state.settings.hmc_mode;
 	credits.addEventListener("click", () => {
-		settings.hmc_mode = credits.checked;
+		state.settings.hmc_mode = credits.checked;
 		saveSettings();
 	});
 }
 
 function saveSettings() {
-	localStorage.setItem("settings", JSON.stringify(settings));
+	localStorage.setItem("settings", JSON.stringify(state.settings));
 	updateSchedule();
 }
 
@@ -934,10 +935,10 @@ async function backgroundCourseSearch(full=false) {
 		return;
 	}
 
-	if (input.value == "" && all_course_results_html.length > 0 && button_filters.length == 0) {
-		appendCourseHTML(all_course_results_html, document.getElementById("course-input").value, full);
+	if (input.value == "" && t_state.search_results.length > 0 && state.button_filters.length == 0) {
+		appendCourseHTML(t_state.search_results, document.getElementById("course-input").value, full);
 
-		postProcessSearch(input.value, all_course_results_html);
+		postProcessSearch(input.value, t_state.search_results);
 
 		return;
 	}
@@ -950,7 +951,7 @@ async function backgroundCourseSearch(full=false) {
 		postProcessSearch(document.getElementById("course-input").value, html_courses);
 	}
 
-	searching_worker.postMessage([input.value, all_courses_global, colors, settings.hmc_mode, loaded_local_courses, button_filters, category_lookup]);
+	searching_worker.postMessage([input.value, state.courses, colors, state.settings.hmc_mode, getLoadedCourses(), state.button_filters, category_lookup]);
 }
 
 async function sleep(ms) {
@@ -997,7 +998,7 @@ function appendCourseHTML(courses, query, full=false) {
 			replaceHtml(output, courses.join("\n"));
 		}
 		
-		for (let s of selected_courses) {
+		for (let s of state.selected) {
 			let course = document.getElementById(s);
 
 			if (course != null) {
@@ -1025,20 +1026,20 @@ function postProcessSearch(input, html) {
 	if (input == "") {
 		setCourseDescription(0);
 
-		if (all_course_results_html == []) {
-			all_course_results_html = html;
+		if (t_state.search_results == []) {
+			t_state.search_results = html;
 		}
 	}
 }
 
 function toggleCourseSelection(identifier) {
 	// First, find in selected courses
-	let index = selected_courses.indexOf(identifier);
+	let index = state.selected.indexOf(identifier);
 
 	if (index > -1) {
-		selected_courses.splice(index, 1);
+		state.selected.splice(index, 1);
 	} else {
-		selected_courses.push(identifier);
+		state.selected.push(identifier);
 	}
 
 	let el = document.getElementById(identifier);
@@ -1048,11 +1049,11 @@ function toggleCourseSelection(identifier) {
 	}
 
 	let num_courses = document.getElementById("course-add-num");
-	num_courses.innerText = selected_courses.length;
+	num_courses.innerText = state.selected.length;
 
 	let num_courses_s = document.getElementById("multiple-course-s");
 
-	if (selected_courses.length == 1) {
+	if (state.selected.length == 1) {
 		num_courses_s.innerText = "";
 	} else {
 		num_courses_s.innerText = "s";
@@ -1065,15 +1066,15 @@ function updateCart() {
 	let cart = document.getElementById("course-search-cart");
 	cart.innerHTML = "";
 
-	for (let s = 0; s < selected_courses.length; s++) {
-		cart.innerHTML += `<div class="cart-item" style="background-color:${colors[s % colors.length]};" onclick="toggleCourseSelection('${selected_courses[s]}')">${selected_courses[s]}</div>`;
+	for (let s = 0; s < state.selected.length; s++) {
+		cart.innerHTML += `<div class="cart-item" style="background-color:${colors[s % colors.length]};" onclick="toggleCourseSelection('${state.selected[s]}')">${state.selected[s]}</div>`;
 	}
 }
 
 function setCourseDescription(index) {
-	last_course_desc = index;
+	t_state.last_description = index;
 	let course_search_desc = document.getElementById("course-search-desc");
-	let course_info = all_desc_global[index];
+	let course_info = state.descriptions[index];
 
 	if (course_search_desc.firstChild != null) {
 		course_search_desc.removeChild(course_search_desc.firstChild);
@@ -1089,15 +1090,15 @@ async function addCourses() {
 	let courses = [];
 
 	// Find courses from identifier
-	for (let course of selected_courses) {
-		courses.push(all_courses_global.filter(e => e.identifier == course)[0]);
+	for (let course of state.selected) {
+		courses.push(state.courses.filter(e => e.identifier == course)[0]);
 	}
 
 	let num_courses = 0;
 
 	for (let course of courses) {
 		let found = false;
-		for (let l_course of loaded_local_courses) {
+		for (let l_course of getLoadedCourses()) {
 			if (l_course.identifier == course.identifier) {
 				found = true;
 				break;
@@ -1105,18 +1106,18 @@ async function addCourses() {
 		}
 
 		if (!found) {
-			loaded_local_courses.push(course);
+			addToLoadedCourses(course);
 			num_courses++;
 		}
 	}
 
-	await save_json_data("loaded_local_courses", loaded_local_courses);
+	await saveState();
 
 	updateSchedule();
 
 	setTimeout(() => {
 		// Get courses added as html elements
-		for (let course of selected_courses) {
+		for (let course of state.selected) {
 			let els = document.getElementsByClassName(`${course}-loaded`);
 
 			for (let el of els) {
@@ -1132,16 +1133,16 @@ async function addCourses() {
 async function addToCourseLists(course_list) {
 	let found = false;
 
-	for (let l_course of loaded_course_lists) {
-		if (l_course.code == course_list.code) {
+	for (let l_course of state.schedules) {
+		if (l_course.name == course_list.name) {
 			found = true;
 			break;
 		}
 	}
 
 	if (!found) {
-		loaded_course_lists.push(course_list);
-		await save_json_data("loaded_course_lists", loaded_course_lists);
+		state.schedules.push(course_list);
+		await saveState();
 
 		return true;
 	} else {
@@ -1152,16 +1153,16 @@ async function addToCourseLists(course_list) {
 async function addToCustomCourseList(custom_courses) {
 	let number_of_conflicts = 0;
 	for (let course of custom_courses) {
-		if (loaded_custom_courses.filter(x => x.identifier == course.identifier) > 0) {
+		if (state.custom_courses.filter(x => x.identifier == course.identifier) > 0) {
 			number_of_conflicts++;
 		} else {
-			loaded_custom_courses.push(course);
+			state.custom_courses.push(course);
 		}
 	}
 
 	if (custom_courses.length - number_of_conflicts > 0) {
 		await updateDescAndSearcher(false);
-		await save_json_data("loaded_custom_courses", loaded_custom_courses);
+		await saveState();
 	}
 
 	return number_of_conflicts;
@@ -1170,46 +1171,44 @@ async function addToCustomCourseList(custom_courses) {
 async function deleteCourse(identifier) {
 	let found = false;
 
-	for (let i = 0; i < loaded_local_courses.length; i++) {
-		let course = loaded_local_courses[i];
+	for (let i = 0; i < getLoadedCourses().length; i++) {
+		let course = getNthLoadedCourse(i);
 
 		if (course.identifier == identifier) {
 			found = true;
 
-			if (course.identifier == overlay.identifier && overlay.status) {
-				overlay.locked = false;
-				overlay.identifier = "";
+			if (course.identifier == t_state.overlay.identifier && t_state.overlay.status) {
+				t_state.overlay.locked = false;
+				t_state.overlay.identifier = "";
 
 				// Remove the highlight
 				removeHighlightCourses(identifier);
 			}
-			loaded_local_courses.splice(i, 1);
+			deleteNthLoadedCourse(i);
 			break;
 		}
 	}
 
 	if (found) {
-		await save_json_data("loaded_local_courses", loaded_local_courses);
-		await save_json_data("loaded_schedule", loaded_schedule);
-		await save_json_data("loaded_course_lists", loaded_course_lists);
+		await saveState();
 		updateSchedule();
 		return;
 	}
 
 	found = false;
 
-	for (let i = 0; i < loaded_custom_courses.length; i++) {
-		let course = loaded_custom_courses[i];
+	for (let i = 0; i < state.custom_courses.length; i++) {
+		let course = state.custom_courses[i];
 
 		if (course.identifier == identifier) {
 			found = true;
-			loaded_custom_courses.splice(i, 1);
+			state.custom_courses.splice(i, 1);
 			break;
 		}
 	}
 
 	if (found) {
-		await save_json_data("loaded_custom_courses", loaded_custom_courses);
+		await saveState();
 		updateCustomCourseList();
 		updateSchedule();
 		return;
@@ -1226,53 +1225,46 @@ async function toggleCourseVisibility(identifier) {
 
 	el.firstElementChild.classList.toggle("visible");
 
-	if (hidden_courses.includes(identifier)) {
-		hidden_courses.splice(hidden_courses.indexOf(identifier), 1);
+	if (state.hidden_courses.includes(identifier)) {
+		state.hidden_courses.splice(state.hidden_courses.indexOf(identifier), 1);
 	} else {
-		hidden_courses.push(identifier);
+		state.hidden_courses.push(identifier);
 	}
 
 	updateSchedule();
 
-	await save_json_data("hidden_courses", hidden_courses);
+	await saveState();
 }
 
-async function setLoadedSchedule(code) {
+async function setLoadedSchedule(name) {
 	// If it's the currently loaded schedule, return
-	if (loaded_schedule.code == code) {
+	if (state.schedules[state.loaded].name == name) {
 		return;
 	}
 
 	// Unload the current schedule
-	loaded_course_lists.splice(loaded_schedule.index, 0, {
-		courses: loaded_local_courses,
-		code: loaded_schedule.code,
-		color: loaded_schedule.color,
+	state.schedules.splice(state.loaded, 0, {
+		courses: getLoadedCourses(),
+		name: state.schedules[state.loaded].name,
+		color: state.schedules[state.loaded].color,
 	});
 
 	// Get from course lists
-	for (let i = 0; i < loaded_course_lists.length; i++) {
-		if (loaded_course_lists[i].code == code) {
-			let found_schedule = loaded_course_lists.splice(i, 1)[0];
-
-			loaded_schedule.code = found_schedule.code;
-			loaded_schedule.index = i;
-			loaded_schedule.color = found_schedule.color;
-			loaded_local_courses = found_schedule.courses;
+	for (let i = 0; i < state.schedules.length; i++) {
+		if (state.schedules[i].name == name) {
+			state.loaded = i;
 			break;
 		}
 	}
 
-	await save_json_data("loaded_course_lists", loaded_course_lists);
-	await save_json_data("loaded_local_courses", loaded_local_courses);
-	await save_json_data("loaded_schedule", loaded_schedule);
+	await saveState();
 
 	updateSchedule(play_animation=true);
 
 	// Scroll to clicked on schedule
 	let el = document.getElementById("course-list-table");
 
-	el.children[loaded_schedule.index].scrollIntoView({
+	el.children[state.loaded].scrollIntoView({
 		behavior: "instant",
 		block: "center",
 		inline: "center"
@@ -1280,7 +1272,7 @@ async function setLoadedSchedule(code) {
 
 }
 
-async function deleteCourseList(e = false, code) {
+async function deleteCourseList(e = false, name) {
 	if (e) {
 		// Stop bubbling onclick event
 		if (!e) var e = window.event;
@@ -1288,18 +1280,19 @@ async function deleteCourseList(e = false, code) {
 		if (e.stopPropagation) e.stopPropagation();
 	}
 
-	if (loaded_schedule.code == code) {
-		await setLoadedSchedule(loaded_course_lists[Math.max(0, loaded_schedule.index - 1)].code);
-		await save_json_data("loaded_schedule", loaded_schedule);
+	if (state.schedules[state.loaded].name == name) {
+		await setLoadedSchedule(state.schedules[Math.max(0, state.loaded - 1)].name);
+
+		await saveState()
 	}
 
-	for (let i = 0; i < loaded_course_lists.length; i++) {
-		let course_list = loaded_course_lists[i];
+	for (let i = 0; i < state.schedules.length; i++) {
+		let course_list = state.schedules[i];
 
-		if (course_list.code == code) {
-			loaded_course_lists.splice(i, 1);
+		if (course_list.name == name) {
+			state.schedules.splice(i, 1);
 
-			await save_json_data("loaded_course_lists", loaded_course_lists);
+			await saveState();
 
 			await setLoadedSchedule("Main");
 
@@ -1310,7 +1303,7 @@ async function deleteCourseList(e = false, code) {
 	updateLoadedCourseLists();
 }
 
-async function showCourseListSettings(e, code, color) {
+async function showCourseListSettings(e, name, color) {
 	if (e) {
 		// Stop bubbling onclick event
 		if (!e) var e = window.event;
@@ -1352,17 +1345,17 @@ async function showCourseListSettings(e, code, color) {
 		},
 	}).then(async (result) => {
 		if (result != undefined) {
-			if (loaded_schedule.code == code) {
-				loaded_schedule.code = result.value.new_code;
-				loaded_schedule.color = result.value.color;
-				await save_json_data("loaded_schedule", loaded_schedule);
+			if (state.schedules[state.loaded].name == name) {
+				state.schedules[state.loaded].name = result.value.new_code;
+				state.schedules[state.loaded].color = result.value.color;
+				await saveState();
 			} else {
 				// Find in loaded_course_lists
-				for (let i = 0; i < loaded_course_lists.length; i++) {
-					if (loaded_course_lists[i].code == code) {
-						loaded_course_lists[i].code = result.value.new_code;
-						loaded_course_lists[i].color = result.value.color;
-						await save_json_data("loaded_course_lists", loaded_course_lists);
+				for (let i = 0; i < state.schedules.length; i++) {
+					if (state.schedules[i].name == name) {
+						state.schedules[i].name = result.value.new_code;
+						state.schedules[i].color = result.value.color;
+						await saveState();
 						break;
 					}
 				}
@@ -1376,7 +1369,7 @@ async function showCourseListSettings(e, code, color) {
 		}
 	});
 
-	document.getElementById("schedule-name").value = code;
+	document.getElementById("schedule-name").value = name;
 	document.getElementById("schedule-color").value = color;
 
 	document.getElementById("schedule-copy").remove();
@@ -1387,29 +1380,28 @@ async function showCourseListSettings(e, code, color) {
 	jscolor.install();
 }
 
-async function mergeCourseList(code) {
+async function mergeCourseList(name) {
 	let found = false;
 
-	for (let i = 0; i < loaded_course_lists.length; i++) {
-		let course_list = loaded_course_lists[i];
+	for (let i = 0; i < state.schedules.length; i++) {
+		let course_list = state.schedules[i];
 
-		if (course_list.code == code) {
+		if (course_list.name == name) {
 			found = true;
 
 			for (let course of course_list.courses) {
-				if (!loaded_local_courses.map((el) => el.identifier).includes(course.identifier)) {
-					loaded_local_courses.push(course);
+				if (!getLoadedCourses().map((el) => el.identifier).includes(course.identifier)) {
+					addToLoadedCourses(course);
 				}
 			}
 
-			loaded_course_lists.splice(i, 1);
+			state.schedules.splice(i, 1);
 			break;
 		}
 	}
 
 	if (found) {
-		await save_json_data("loaded_course_lists", loaded_course_lists);
-		await save_json_data("loaded_local_courses", loaded_local_courses);
+		await saveState();
 		updateSchedule(play_animation);
 	}
 }
@@ -1432,29 +1424,29 @@ function removeHighlightCourses(identifier) {
 
 function toggleCourseOverlay(identifier) {
 	// Case one: nothing has happened yet
-	if (overlay.locked == false) {
-		overlay.locked = true;
-		overlay.identifier = identifier;
+	if (t_state.overlay.locked == false) {
+		t_state.overlay.locked = true;
+		t_state.overlay.identifier = identifier;
 
 		// Highlight the courses
 		highlightCourses(identifier);
 		showCourseOverlay(identifier, override = true);
 	}
 	// Case two: we're already showing the overlay, and it's the same course
-	else if (overlay.locked == true && overlay.identifier == identifier) {
-		overlay.locked = false;
-		overlay.identifier = "";
+	else if (t_state.overlay.locked == true && t_state.overlay.identifier == identifier) {
+		t_state.overlay.locked = false;
+		t_state.overlay.identifier = "";
 
 		// Remove the highlight
 		removeHighlightCourses(identifier);
 	}
 	// Case three: we're already showing the overlay, and it's a different course
-	else if (overlay.locked == true && overlay.identifier != identifier) {
+	else if (t_state.overlay.locked == true && t_state.overlay.identifier != identifier) {
 		// Remove the highlight
-		removeHighlightCourses(overlay.identifier);
+		removeHighlightCourses(t_state.overlay.identifier);
 
-		overlay.locked = true;
-		overlay.identifier = identifier;
+		t_state.overlay.locked = true;
+		t_state.overlay.identifier = identifier;
 
 		// Highlight the courses
 		highlightCourses(identifier);
@@ -1463,23 +1455,23 @@ function toggleCourseOverlay(identifier) {
 }
 
 function showCourseOverlay(identifier, override = false) {
-	if (all_desc_global == undefined || all_desc_global.length == 0) {
+	if (state.descriptions == undefined || state.descriptions.length == 0) {
 		return
 	}
 
-	if (overlay.locked == false || override == true) {
-		if (all_desc_global.length == 0) {
+	if (t_state.overlay.locked == false || override == true) {
+		if (state.descriptions.length == 0) {
 			updateDescAndSearcher();
 		}
 
-		let index = all_courses_global.findIndex((el) => el.identifier == identifier);
+		let index = state.courses.findIndex((el) => el.identifier == identifier);
 
 		if (index == -1) {
-			index = loaded_custom_courses.findIndex((el) => el.identifier == identifier);
-			index += all_courses_global.length;
+			index = state.custom_courses.findIndex((el) => el.identifier == identifier);
+			index += state.courses.length;
 		}
 
-		let course_info = all_desc_global[index];
+		let course_info = state.descriptions[index];
 
 		let course_info_table = document.getElementById("course-info-table");
 
@@ -1505,13 +1497,13 @@ function starCourse(identifier) {
 	e.cancelBubble = true;
 	if (e.stopPropagation) e.stopPropagation();
 
-	if (starred_courses.includes(identifier)) {
-		starred_courses.splice(starred_courses.indexOf(identifier), 1);
+	if (state.starred_courses.includes(identifier)) {
+		state.starred_courses.splice(state.starred_courses.indexOf(identifier), 1);
 	} else {
-		starred_courses.push(identifier);
+		state.starred_courses.push(identifier);
 	}
 
-	save_json_data("starred_courses", starred_courses);
+	save_json_data("starred_courses", state.starred_courses);
 
 	let els = document.getElementsByClassName(`${identifier}-loaded`);
 
@@ -1605,18 +1597,18 @@ function hidePopup(query) {
 }
 
 function toggleCreditMode() {
-	if (settings.hmc_mode) {
-		settings.hmc_mode = false;
+	if (state.settings.hmc_mode) {
+		state.settings.hmc_mode = false;
 	} else {
-		settings.hmc_mode = true;
+		state.settings.hmc_mode = true;
 	}
 
 	updateCredits();
 	updateDescAndSearcher(full = true).then(() => {
-		setCourseDescription(last_course_desc);
+		setCourseDescription(t_state.last_description);
 	});
 
-	localStorage.setItem("settings", JSON.stringify(settings));
+	localStorage.setItem("settings", JSON.stringify(state.settings));
 }
 
 function addNewSchedule() {
@@ -1642,7 +1634,7 @@ function addNewSchedule() {
 					throw new Error("Please enter a name for the schedule.")
 				}
 
-				if (loaded_schedule.code == name || loaded_custom_courses.map((x) => x.code).includes(name)) {
+				if (state.schedules[state.loaded].name == name || state.custom_courses.map((x) => x.code).includes(name)) {
 					throw new Error("Schedule must have unique name.");
 				}
 
@@ -1666,11 +1658,12 @@ function addNewSchedule() {
 			let new_schedule = result.value.schedule;
 
 			if (result.value.copy) {
-				new_schedule.courses = JSON.parse(JSON.stringify(loaded_local_courses));
+				new_schedule.courses = JSON.parse(JSON.stringify(getLoadedCourses()));
 			}
 
-			loaded_course_lists.push(new_schedule);
-			await save_json_data("loaded_course_lists", loaded_course_lists);
+			state.schedules.push(new_schedule);
+
+			await saveState();
 
 			setLoadedSchedule(new_schedule.code);
 
@@ -1686,8 +1679,8 @@ function addNewSchedule() {
 }
 
 async function clearCourses() {
-	loaded_local_courses = [];
-	await save_json_data("loaded_local_courses", loaded_local_courses);
+	setLoadedCourses([]);
+	await saveState();
 	updateSchedule(play_animation=true);
 
 	Toast.fire({
@@ -1698,8 +1691,8 @@ async function clearCourses() {
 
 async function clearSchedules() {
 	await setLoadedSchedule("Main");
-	loaded_course_lists = [];
-	await save_json_data("loaded_course_lists", loaded_course_lists);
+	state.schedules = [];
+	await saveState();
 	updateSchedule(play_animation=true);
 
 	Toast.fire({
@@ -1738,7 +1731,7 @@ function buttonPermute() {
 		console.log(e.data);
 	}
 
-	permutation_worker.postMessage([loaded_local_courses, all_courses_global]);
+	permutation_worker.postMessage([getLoadedCourses(), state.courses]);
 }
 
 

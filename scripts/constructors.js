@@ -1,3 +1,11 @@
+function generateSchedule() {
+    generateDays();
+    generateLines();
+    timeLineLoop();
+    window.addEventListener('resize', updateScheduleSizing);
+    updateScheduleSizing();
+}
+
 function sanitizeCourseList(courses) {
     let sanitized = [];
     for (let course of courses.filter(course => course.timing[0].start_time != "00:00:00" && !course.timing.some(d => d.days.some(x => ["Saturday", "Sunday"].includes(x))) && course.timing[0].days[0] != "NA")) {
@@ -89,7 +97,7 @@ function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_i
             course_div.style.gridRowEnd = layout.end_row;
 
             if (set_max_grid_rows) {
-                max_grid_rows = Math.max(max_grid_rows, layout.end_row);
+                t_state.max_grid_rows = Math.max(t_state.max_grid_rows, layout.end_row);
             }
 
             // Get the day
@@ -185,7 +193,7 @@ function createLoadedCourseDiv(identifier, title, color) {
 
     let visibility_button = document.createElement("div");
     visibility_button.className = "visibility-button";
-    if (!hidden_courses.includes(identifier)) {
+    if (!state.hidden_courses.includes(identifier)) {
         visibility_button.classList.add("visible");
     }
     visibility_button.onclick = function () {

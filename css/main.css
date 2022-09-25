@@ -17,11 +17,11 @@
   --conflicts: #e97272;
   --confirm: #c6ecc0;
   --deny: #e7bbbb;
-  --padding: 13px;
-  --padding-medium: 7px;
-  --padding-small: 5px;
-  --roundedness: 10px;
-  --small-roundedness: 5px;
+  --padding: 10px;
+  --padding-medium: 5px;
+  --padding-small: 4px;
+  --roundedness: 6px;
+  --small-roundedness: 2px;
   --search-button-background: rgb(64, 187, 33);
   --shadow-blur: 20px;
   --shadow-length: 4px;
@@ -566,7 +566,8 @@ canvas {
   background-color: var(--background-alt);
   border-radius: var(--roundedness);
   padding: var(--padding);
-  height: 42vh;
+  height: 60vh;
+  flex-grow: 1;
   margin-top: 10px;
   overflow-x: hidden;
   overflow-y: auto;
@@ -639,7 +640,8 @@ canvas {
 }
 
 .swal-wide {
-  width: 80vw !important;
+  width: 100vw !important;
+  height: 90vh !important;
 }
 
 .swal-medium-wide {
@@ -659,8 +661,8 @@ canvas {
 #course-search-desc {
   padding: 2vw;
   text-align: left;
+  height: 100%;
   width: 30vw;
-  max-height: 35vh;
   overflow-y: scroll;
 }
 

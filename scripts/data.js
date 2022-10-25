@@ -42,7 +42,6 @@ async function update_database() {
         } else {
             console.debug("Found data, requesting update if stale...");
             response = fetch(`${API_URL}${UPDATE_IF_STALE(state.last_updated)}`);
-            
         }
     
         let data = await response;
@@ -60,21 +59,19 @@ async function update_database() {
 
     state.locations = await location_update;    
 
-    if (json != "No update needed") {
+    if (json != "No update needed" && json != undefined) {
         console.debug("New data found...");
         t_state.search_results = "";
         state.courses = json.courses;
         state.last_updated = json.timestamp;
+        state.term = json.term;
+        updateDescAndSearcher();
 
         await saveState();
     }
 
     // Update courses that might be invalid
     hydrateCoursesFromState()
-
-    if (full || json != "No update needed") {
-        updateDescAndSearcher();
-    }
 
     if (state.schedules.length == 0) {
         state.schedules = [

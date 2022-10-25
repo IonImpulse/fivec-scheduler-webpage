@@ -36,7 +36,7 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 		subtitle_node += " class=\"subtitle\">";
 		subtitle_node += `${course.identifier}</div>`;
 
-		let status = `<span class="status-highlight ${course.status}" onclick="addSearchFilter(\'status:${course.status}\')">${course.status}</span>`;
+		let status = `<span class="status-highlight ${course.status}">${course.status}</span>`;
 
 		let perm_count = "";
 	
@@ -45,7 +45,7 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 		}
 
 		// Put the course code and status in a div on the right
-		let status_node = `<span class="desc-statuses"><span class="seats-highlight">${course.seats_taken} / ${course.max_seats}</span><b>${perm_count}${status}</b></span>`;
+		let status_node = `<span class="desc-statuses"><span class="seats-highlight">${course.seats_taken} / ${course.max_seats}</span><b>${status}${perm_count}</b></span>`;
 
 		course_desc_node += subtitle_node;
 		course_desc_node += title_node;

@@ -468,10 +468,8 @@ async function buttonSearch() {
 		}, 350);
 
 		// Create stats
-		let course_data = await load_json_data("course_data");
-
 		let term_div = document.getElementById("term-container");
-		term_div.innerHTML = `<b>Term:</b> ${course_data.term}`;
+		term_div.innerHTML = `<b>Term:</b> ${state.term}`;
 	}
 }
 

@@ -4,29 +4,16 @@
 
 // Runs all startup scripts
 async function startup() {
-    // First, check if site was loaded from
-    // as a PWA *before* attempting to load
-    // assets/data
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('../sw.js', {scope: '../'})
-        .then((reg) => {
-          // registration worked
-          console.log('Registration succeeded. Scope is ' + reg.scope);
-        }).catch((error) => {
-          // registration failed
-          console.log('Registration failed with ' + error);
-        });
-
-    }
     // Get state
     let new_state = await getState();
 
     if (new_state != null) {
         state = new_state;
+        console.log("Loaded state: ", state);
     }
 
     // Then, call an update request
-    let update = update_database(full=false);
+    let update = update_database();
 
     // Website generation
     generateSchedule();
@@ -40,9 +27,9 @@ async function startup() {
     update_loop();
 
     // Create reusable web worker threads
-    desc_worker = new Worker('scripts/workers/descriptions.js?v=1.15.4');
+    desc_worker = new Worker('scripts/workers/descriptions.js?v=1.15.5');
     searcher_worker = new Worker('scripts/workers/searcher.js?v=1.15.0');
-	searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.15.31');
+	searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.15.35');
     permutation_worker = new Worker('scripts/workers/permutations.js?v=1.15.0');
 
     // Start worker threads to generate descriptions + searcher
@@ -385,13 +372,11 @@ function updateLoadedCourseLists() {
 
     
     for (let i = 0; i < state.schedules.length; i++) {
-        if (i == state.loaded) {
-            el.appendChild(createLoadedCourseListDiv(state.schedules[i].name, state.loaded.color ?? colors[i % colors.length]));
+        el.appendChild(createLoadedCourseListDiv(state.schedules[i].name, state.schedules[i].color ?? colors[i % colors.length]));
 
+        if (i == state.loaded) {
             document.getElementById("schedule-indicator").style.top = `${el.lastChild.offsetTop}px`;
             document.getElementById("schedule-indicator").style.height = `${el.lastChild.offsetHeight}px`;
-        } else  {
-            el.appendChild(createLoadedCourseListDiv(state.schedules[i].name, state.schedules[i].color ?? colors[i % colors.length]));
         }
     }
 

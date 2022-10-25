@@ -6,7 +6,7 @@ onmessage = function(e) {
     postMessage(course_divs);
 }
 
-const filter_split_at = [":", "<=", ">=", "<", ">", "="];
+const filter_split_at = [":", "<=", ">=", "<", ">", "=", "@"];
 
 // Split a string at any of the provided strings
 // Returns the split string and the string that was split at
@@ -241,9 +241,9 @@ function search_courses(query, all_courses_global, filters, hmc_mode, loaded_loc
 			}
 		} else if (filter.key == "section") {
 			results = results.filter(t => parseInt((t.obj || t).section) == filter.value);
-		} else if (filter.key == "at") {
+		} else if (filter.key == "at" || filter.type == "@") {
 			let schools_to_search = filter.value.split(",").map(school => toApiSchool(school));
-			results = results.filter(t => (t.obj || t).timing.map(e => e.location.school).flat().some(s => schools_to_search.includes));
+			results = results.filter(t => (t.obj || t).timing.map(e => e.location.school).flat().some(s => schools_to_search.includes(s)));
 		} else if (filter.key == "location") {
 			results = results.filter(t => (t.obj || t).timing.map(e => e.location.building).some(x => x.toLowerCase().includes(filter.value.toLowerCase())));
 		} else if (filter.key == "prereq" || filter.key == "prereqs") {
@@ -432,6 +432,8 @@ function expensiveCourseSearch(input, all_courses_global, colors, hmc_mode, load
 		const filters_object = getFilters(input);
 
 		const search_term = tweakSearch(filters_object.input, all_courses_global);
+
+		console.log(button_filters);
 
 		results = search_courses(search_term, all_courses_global, filters_object.filters.concat(button_filters), hmc_mode, loaded_local_courses, category_lookup);
 	}

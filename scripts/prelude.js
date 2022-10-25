@@ -23,13 +23,14 @@ var state = {
     // Storage
     last_updated: 0,
     courses: [],
+    term: "Loading...",
     descriptions: [],
     locations: {},
 
     // loaded points to index in schedules
     loaded: 0,
     // schedules is a list of schedules
-    // schedules are fomratted as:
+    // schedules are formatted as:
     // {
     //     name: "Schedule Name",
     //     courses: [course1, course2, ...]

@@ -57,7 +57,8 @@ async function update_database() {
         console.warn(`${error}\nError occurred while fetching data, falling back on local cache...`);
         json = "No update needed";
     }
-    
+
+    state.locations = await location_update;    
 
     if (json != "No update needed") {
         console.debug("New data found...");
@@ -74,11 +75,17 @@ async function update_database() {
     if (full || json != "No update needed") {
         updateDescAndSearcher();
     }
-    
-    await location_update;
 
-    if (state.locations == null) {
-        state.locations = {};
+    if (state.schedules.length == 0) {
+        state.schedules = [
+            {
+                name: "Main",
+                courses: [],
+                color: undefined
+            }
+        ];
+
+        state.loaded = 0;
     }
 
     console.log(
@@ -106,11 +113,13 @@ function hydrateCourse(course) {
 }        
 
 async function update_locations() {
-    response = fetch(`${API_URL}${GET_LOCATIONS}`);
+    let response = fetch(`${API_URL}${GET_LOCATIONS}`);
     let data = await response;
-    if (data.status != 408) {
+
+    if (data.status == 200) {
         let json = await data.json();
-        await save_json_data("locations", json);        
+
+        return json;
     }
 }
 

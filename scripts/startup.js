@@ -40,9 +40,9 @@ async function startup() {
     update_loop();
 
     // Create reusable web worker threads
-    desc_worker = new Worker('scripts/workers/descriptions.js?v=1.15.0');
+    desc_worker = new Worker('scripts/workers/descriptions.js?v=1.15.4');
     searcher_worker = new Worker('scripts/workers/searcher.js?v=1.15.0');
-	searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.15.0');
+	searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.15.31');
     permutation_worker = new Worker('scripts/workers/permutations.js?v=1.15.0');
 
     // Start worker threads to generate descriptions + searcher
@@ -384,18 +384,14 @@ function updateLoadedCourseLists() {
     };  
 
     
-    for (let i = 0; i < state.schedules.length + 1; i++) {
+    for (let i = 0; i < state.schedules.length; i++) {
         if (i == state.loaded) {
             el.appendChild(createLoadedCourseListDiv(state.schedules[i].name, state.loaded.color ?? colors[i % colors.length]));
 
             document.getElementById("schedule-indicator").style.top = `${el.lastChild.offsetTop}px`;
             document.getElementById("schedule-indicator").style.height = `${el.lastChild.offsetHeight}px`;
         } else  {
-            let index = i;
-            if (i > state.loaded) {
-                index = i - 1;
-            }
-            el.appendChild(createLoadedCourseListDiv(state.schedules[index].name, state.schedules[index].color ?? colors[i % colors.length]));
+            el.appendChild(createLoadedCourseListDiv(state.schedules[i].name, state.schedules[i].color ?? colors[i % colors.length]));
         }
     }
 
@@ -610,7 +606,7 @@ function sumCredits(courses) {
 
 async function intakeCourseData(data) {
     let course_list = {
-        code: data.code,
+        name: data.code,
         courses: data.courses.local_courses,
     };
 

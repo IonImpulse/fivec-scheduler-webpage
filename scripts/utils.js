@@ -1,5 +1,5 @@
 function getLoadedCourses() {
-    return state.schedules[state.loaded].courses
+    return (state.schedules[state.loaded] ?? {courses: []}).courses
 }
 
 function setLoadedCourses(courses) {

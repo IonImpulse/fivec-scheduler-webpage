@@ -53,7 +53,7 @@ function buttonLoad() {
 
 function checkIfFull() {
 	if (document.getElementById("code-input").value.length == 7) {
-		document.getElementsByClassName("swal2-confirm swal2-styled")[0].focus();
+		document.getElementsByClassName("confirm")[0].focus();
 	}
 }
 
@@ -1242,13 +1242,6 @@ async function setLoadedSchedule(name) {
 		return;
 	}
 
-	// Unload the current schedule
-	state.schedules.splice(state.loaded, 0, {
-		courses: getLoadedCourses(),
-		name: state.schedules[state.loaded].name,
-		color: state.schedules[state.loaded].color,
-	});
-
 	// Get from course lists
 	for (let i = 0; i < state.schedules.length; i++) {
 		if (state.schedules[i].name == name) {
@@ -1634,13 +1627,13 @@ function addNewSchedule() {
 					throw new Error("Please enter a name for the schedule.")
 				}
 
-				if (state.schedules[state.loaded].name == name || state.custom_courses.map((x) => x.code).includes(name)) {
+				if (state.schedules[state.loaded].name == name || state.custom_courses.map((x) => x.name).includes(name)) {
 					throw new Error("Schedule must have unique name.");
 				}
 
 				return {
 					schedule: {
-						code: name,
+						name: name,
 						color: color == "#FFFFFF" ? undefined : color,
 						courses: [],
 					},
@@ -1665,7 +1658,7 @@ function addNewSchedule() {
 
 			await saveState();
 
-			setLoadedSchedule(new_schedule.code);
+			setLoadedSchedule(new_schedule.name);
 
 			Toast.fire({
 				title: 'New Schedule Added!',
@@ -1691,7 +1684,13 @@ async function clearCourses() {
 
 async function clearSchedules() {
 	await setLoadedSchedule("Main");
-	state.schedules = [];
+	state.schedules = [
+		{
+            name: "Main",
+            courses: [],
+            color: undefined
+        }
+	];
 	await saveState();
 	updateSchedule(play_animation=true);
 
@@ -1732,6 +1731,13 @@ function buttonPermute() {
 	}
 
 	permutation_worker.postMessage([getLoadedCourses(), state.courses]);
+}
+
+function showInfoHover(id, info_text) {
+	Swal.fire({
+		title: `Info for ${id}`,
+		text: info_text,
+	})
 }
 
 

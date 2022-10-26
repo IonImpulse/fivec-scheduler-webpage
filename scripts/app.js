@@ -1730,6 +1730,7 @@ async function buttonPermute() {
 
 		const el = document.getElementById("permute-status");
 		if (t_state.permutations.length == 0) {
+			t_state.current_permutation = 0;
 			if (e.data.time == 10000) {
 				el.innerHTML = "Permute timed out.";
 			} else {

@@ -1801,9 +1801,9 @@ function buttonMap() {
 
 	var map = L.map('map').setView([34.1007613, -117.7117505], 16);
 
-	L.tileLayer('https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png', {
-		maxZoom: 20,
-		attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+	L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		maxZoom: 19,
+		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	}).addTo(map);
 
 	let locs = [];
@@ -1811,11 +1811,11 @@ function buttonMap() {
 
 	let locs_loaded_courses = [];
 	let locs_loaded_courses_content = [];
-	
+
 	for (let course of state.courses) {
 		for (let time of course.timing) {
-            let key = `${time.location.school}-${time.location.building}`;
-            let loc = state.locations[key];
+			let key = `${time.location.school}-${time.location.building}`;
+			let loc = state.locations[key];
 
 			if (loc) {
 				if (!locs.includes(loc)) {
@@ -1830,7 +1830,7 @@ function buttonMap() {
 						locs_content[index] += to_add;
 					}
 				}
-				
+
 				if (getLoadedCourses().map(x => x.identifier).includes(course.identifier)) {
 					if (!locs_loaded_courses.includes(loc)) {
 						locs_loaded_courses.push(loc);
@@ -1867,7 +1867,7 @@ function buttonMap() {
 			radius: 10
 		}).addTo(map);
 
-		marker.bindPopup(content, options = {maxHeight: 200, maxWidth: 400, className: "map-popup"});
+		marker.bindPopup(content, options = { maxHeight: 200, maxWidth: 400, className: "map-popup" });
 	}
 }
 

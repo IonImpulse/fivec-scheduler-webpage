@@ -92,7 +92,7 @@ async function update_database() {
 
 function hydrateCoursesFromState() {
     for (let s of state.schedules) {
-        if (s.courses != undefined) {
+        if (s.courses == undefined) {
             s.courses = [];
         }
         for (let c of s.courses) {

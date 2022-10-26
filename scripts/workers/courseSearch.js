@@ -6,7 +6,7 @@ onmessage = function(e) {
     postMessage(course_divs);
 }
 
-const filter_split_at = [":", "<=", ">=", "<", ">", "="];
+const filter_split_at = [":", "<=", ">=", "<", ">", "=", "@"];
 
 // Split a string at any of the provided strings
 // Returns the split string and the string that was split at
@@ -22,7 +22,7 @@ function splitAtList(str, list) {
 	return false;
 }
 
-function createResultDiv(course, color, index, loaded_local_courses) {
+function createResultDiv(i, course, color, index, loaded_local_courses) {
 	let identifier = course.identifier;
 
 	let course_div = "<div";
@@ -33,13 +33,14 @@ function createResultDiv(course, color, index, loaded_local_courses) {
 
 	course_div += ` onclick="toggleCourseSelection(\'${identifier}\')"`;
     course_div += ` onmouseenter="setCourseDescription(\'${index}\')"`;
-	course_div += ` style="background-color: ${color};">`;
+	course_div += ` style="background-color: ${color}; z-index: ${10000 - i};">`;
 
 	// Create checkbox
 	course_div += `<div class="checkbox"></div>`;
 
 	let course_code = `<b>${course.identifier}</b>`;
-	let status = `<span class="status-highlight ${course.status}" onclick="addSearchFilter(\'status:${course.status}\')">${course.status}</span>`;
+	let seats = `<span class="seats-highlight">${course.seats_taken} / ${course.max_seats}</span>`;
+	let status = `<span class="status-inline ${course.status}">${course.status}</span>`;
 
 	let prereqs = "";
 	let coreqs = "";
@@ -47,15 +48,20 @@ function createResultDiv(course, color, index, loaded_local_courses) {
 
 	// Create pre and co req boxes
 	if (course.prerequisites.length > 0) {
-		prereqs = `<span class="prereqs-highlight" onclick="addSearchFilter(\'prereq:some\')">Prereq(s)</span>`;
+		console.log(course.prerequisites);
+		let popup = `<span id="${identifier}-prereqs" class="popup-text search"><p>${course.prerequisites}</p></span>`;
+
+		prereqs = `<span class="prereqs-highlight popup-holder" onmouseenter="showPopup(\'#${identifier}-prereqs\')" onmouseleave="hidePopup(\'#${identifier}-prereqs\')">Prereq ${popup}</span>`;
 	}
 
 	if (course.corequisites.length > 0) {
-		coreqs = `<span class="coreqs-highlight" onclick="addSearchFilter(\'coreq:some\')">Coreq(s)</span>`;
+		let popup = `<span id="${identifier}-coreqs" class="popup-text search"><p>${course.corequisites}</p></span>`;
+
+		coreqs = `<span class="coreqs-highlight popup-holder" onmouseenter="showPopup(\'#${identifier}-coreqs\')" onmouseleave="hidePopup(\'#${identifier}-coreqs\')">Coreq ${popup}</span>`;
 	}
 
 	if (course.perm_count > 0) {
-		perm_count = `<span class="perms-highlight" onclick="addSearchFilter(\'perms<${course.perm_count}\')">Perms: ${course.perm_count}</span>`;
+		perm_count = `<span class="perms-highlight">Perms: ${course.perm_count}</span>`;
 	}
 
 	// Check timing against loaded courses
@@ -63,17 +69,21 @@ function createResultDiv(course, color, index, loaded_local_courses) {
 
 	let conflicts = "";
 	if (timing_conflicts.length > 0) {
-		conflicts = `<span class="conflicts-highlight" onclick="addSearchFilter(\'conflicts:none\')">Conflict</span>`;
+		let popup = `<span id="${identifier}-conflicts" class="popup-text search"><p>${timing_conflicts.map(course => {
+			return `<b>${course.identifier}</b><br>${course.title}`;
+		}).join("<br>")}</p></span>`;
+
+		conflicts = `<span class="conflicts-highlight popup-holder" onmouseenter="showPopup(\'#${identifier}-conflicts\')" onmouseleave="hidePopup(\'#${identifier}-conflicts\')">Conflict ${popup}</span>`;
 	}
 	
 
 	// Put the course code and status in a div on the right
-	let statuses = `<span class="align-right"><b>${course.seats_taken}/${course.max_seats}${perm_count}${prereqs}${coreqs}${status}${conflicts}</b></span>`;
+	let statuses = `<span class="align-right"><b>${perm_count}${prereqs}${coreqs}${conflicts}${seats}${status}</b></span>`;
 
 	// Put the school color tab
 	let school_color = `<span class="school-color-tab" style="background-color: var(--school-${course.timing[0].location.school ?? "NA"})"></span>`;
 
-	course_div += `${school_color} <span>${course_code}: ${course.title}</span> ${statuses}`;
+	course_div += `${school_color} <span> <span class="course-code">${course_code}:</span> <span class="course-title">${course.title}</span></span> ${statuses}`;
     course_div += "</div>";
 
 	return course_div;
@@ -100,7 +110,7 @@ function checkForConflicts(course, loaded_local_courses) {
 					let course_end = timeToMinutes(course.timing[k].end_time);
 
 					if (load_start <= course_end && course_start <= load_end) {
-						timing_conflicts.push(loaded_course.identifier);
+						timing_conflicts.push(loaded_course);
 						break Loop;
 					}
 				}
@@ -179,7 +189,7 @@ function search_courses(query, all_courses_global, filters, hmc_mode, loaded_loc
         limit: 100, // don't return more results than you need!
         allowTypo: true, // if you don't care about allowing typos
         threshold: -10000, // don't return bad results
-        keys: ['identifier', 'title', 'instructorString'], // keys to search
+        keys: ['identifier', 'title', 'instructorString',], // keys to search
     }
 
     let results = [];
@@ -232,7 +242,7 @@ function search_courses(query, all_courses_global, filters, hmc_mode, loaded_loc
 			}
 		} else if (filter.key == "section") {
 			results = results.filter(t => parseInt((t.obj || t).section) == filter.value);
-		} else if (filter.key == "at") {
+		} else if (filter.key == "at" || filter.type == "@") {
 			let schools_to_search = filter.value.split(",").map(school => toApiSchool(school));
 			results = results.filter(t => (t.obj || t).timing.map(e => e.location.school).flat().some(s => schools_to_search.includes(s)));
 		} else if (filter.key == "location") {
@@ -424,6 +434,8 @@ function expensiveCourseSearch(input, all_courses_global, colors, hmc_mode, load
 
 		const search_term = tweakSearch(filters_object.input, all_courses_global);
 
+		console.log(button_filters);
+
 		results = search_courses(search_term, all_courses_global, filters_object.filters.concat(button_filters), hmc_mode, loaded_local_courses, category_lookup);
 	}
 
@@ -431,7 +443,7 @@ function expensiveCourseSearch(input, all_courses_global, colors, hmc_mode, load
 
     for (let i = 0; i < results.length; i++) {
         let course = results[i].obj ?? results[i];
-        let course_div = createResultDiv(course, colors[i % colors.length], course.descIndex, loaded_local_courses);
+        let course_div = createResultDiv(i, course, colors[i % colors.length], course.descIndex, loaded_local_courses);
 
         output.push(course_div);
     }

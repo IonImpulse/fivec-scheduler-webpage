@@ -1,4 +1,4 @@
-const current_version = '1.15.0';
+const current_version = '1.16.0';
 // On install, cache everything
 self.addEventListener('install', (event) => {
     event.waitUntil(
@@ -12,6 +12,7 @@ self.addEventListener('install', (event) => {
                 'scripts/data.js',
                 'scripts/prelude.js',
                 'scripts/startup.js',
+                'scripts/utils.js',
                 'scripts/libs/focus-visible.js',
                 'scripts/libs/fuzzysort.js',
                 'scripts/libs/ics.deps.min.js',

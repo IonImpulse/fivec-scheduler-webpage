@@ -19,24 +19,16 @@ async function save_json_data(name, data) {
     return localforage.setItem(name, data);
 }
 
-async function update_from_local() {
-    loaded_local_courses = await load_json_data("loaded_local_courses") ?? [];
-    loaded_schedule = await load_json_data("loaded_schedule") ?? {code:"Main", index:0, color: undefined};
-    loaded_course_lists = await load_json_data("loaded_course_lists") ?? [];
-    loaded_custom_courses = await load_json_data("loaded_custom_courses") ?? [];
-    starred_courses = await load_json_data("starred_courses") ?? [];
-    hidden_courses = await load_json_data("hidden_courses") ?? [];
-    hidden_course_lists = await load_json_data("hidden_course_lists") ?? [];
-    locations = await load_json_data("locations") ?? {};
+async function getState() {
+    return await load_json_data("state");
 }
 
-async function update_database(full=true) {
+async function saveState() {
+    return await save_json_data("state", state);
+}
+
+async function update_database() {
     console.debug("Updating database...");
-    let current_data = await load_json_data("course_data");
-   
-    if (full) {
-        await update_from_local();
-    }
 
     let location_update = update_locations();
 
@@ -44,13 +36,12 @@ async function update_database(full=true) {
     let json;
 
     try {
-        if (current_data === null || current_data.timestamp == undefined || Object.entries(current_data).length === 0) {
+        if (state.courses === null || state.last_updated == 0 || Object.entries(state.courses).length === 0) {
             console.debug("No data found, requesting full update...");
             response = fetch(`${API_URL}${FULL_UPDATE}`);
         } else {
             console.debug("Found data, requesting update if stale...");
-            response = fetch(`${API_URL}${UPDATE_IF_STALE(current_data.timestamp)}`);
-            
+            response = fetch(`${API_URL}${UPDATE_IF_STALE(state.last_updated)}`);
         }
     
         let data = await response;
@@ -65,67 +56,70 @@ async function update_database(full=true) {
         console.warn(`${error}\nError occurred while fetching data, falling back on local cache...`);
         json = "No update needed";
     }
-    
 
-    if (json != "No update needed") {
+    state.locations = await location_update;    
+
+    if (json != "No update needed" && json != undefined) {
         console.debug("New data found...");
-        all_course_results_html = "";
-        await save_json_data("course_data", json);
-        all_courses_global = json.courses;
-        timestamp_global = json.timestamp;
+        t_state.search_results = "";
+        state.courses = json.courses;
+        state.last_updated = json.timestamp;
+        state.term = json.term;
+        updateDescAndSearcher();
 
-        await save_json_data("loaded_local_courses", loaded_local_courses);
-        await save_json_data("loaded_course_lists", loaded_course_lists);
-    } else {
-        all_courses_global = current_data.courses;
-        timestamp_global = current_data.timestamp;
+        await saveState();
     }
 
     // Update courses that might be invalid
-    loaded_local_courses = update_courses(all_courses_global, loaded_local_courses);
-    for (let i = 0; i < loaded_course_lists.length; i++) {
-        loaded_course_lists[i] = update_courses(all_courses_global, loaded_course_lists[i])
-    }
+    hydrateCoursesFromState()
 
-    if (full || json != "No update needed") {
-        updateDescAndSearcher();
-    }
-    
-    await location_update;
+    if (state.schedules.length == 0) {
+        state.schedules = [
+            {
+                name: "Main",
+                courses: [],
+                color: undefined
+            }
+        ];
 
-    locations = await load_json_data("locations");
-    
-    if (locations == null) {
-        locations = {};
+        state.loaded = 0;
     }
 
     console.log(
-        `Total Courses Loaded: ${all_courses_global.length}\nTotal Local Courses Loaded: ${loaded_local_courses.length}\nTotal Course Lists Loaded: ${loaded_course_lists.length}\nTotal Custom Courses Loaded: ${loaded_custom_courses.length}\nLocations Loaded: ${Object.keys(locations).length}`
+        `Total Courses Loaded: ${state.courses.length}\nTotal Local Courses Loaded: ${getLoadedCourses().length}\nTotal Course Lists Loaded: ${state.schedules.length}\nTotal Custom Courses Loaded: ${state.custom_courses.length}\nLocations Loaded: ${Object.keys(state.locations).length}`
     );
 }
 
-async function update_locations() {
-    response = fetch(`${API_URL}${GET_LOCATIONS}`);
-    let data = await response;
-    if (data.status != 408) {
-        let json = await data.json();
-        await save_json_data("locations", json);        
-    }
-}
-
-function update_courses(source_list, target_list) {
-
-    // Update courses
-    for (let i = 0; i < target_list.length; i++) {
-        let main_course = source_list.find(course => course.identifier == target_list[i].identifier);
-
-        if (main_course != undefined) {
-            target_list[i] = main_course;
+function hydrateCoursesFromState() {
+    for (let s of state.schedules) {
+        for (let c of s.courses) {
+            c = hydrateCourse(c)
         }
     }
-
-    return target_list
 }
+
+function hydrateCourse(course) {
+    let main_course = state.courses.find(c => c.identifier == course.identifier);
+
+    if (main_course != undefined) {
+        main_course.color = course.color;
+        return main_course;
+    } else {
+        return course;
+    }
+}        
+
+async function update_locations() {
+    let response = fetch(`${API_URL}${GET_LOCATIONS}`);
+    let data = await response;
+
+    if (data.status == 200) {
+        let json = await data.json();
+
+        return json;
+    }
+}
+
 function update_loop() {
     setTimeout(function () {
         update_database();

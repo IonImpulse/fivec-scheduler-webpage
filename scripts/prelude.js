@@ -7,7 +7,7 @@ Contains ALL global variables used.
 
 // Version number
 // Will delete localStorage variables when updating
-const current_version = '1.15';
+const current_version = '1.16.0';
 
 // Average paces for distance calcs
 const walking_feet_per_minute = 328;
@@ -16,32 +16,65 @@ const biking_feet_per_minute = 880;
 
 // *****
 // Global Variables
+// that need to be saved
+// upon reload
 // *****
-var timestamp_global = 0;
-var all_courses_global = [];
-var all_desc_global = [];
-var selected_courses = [];
-var starred_courses = [];
-var hidden_courses = [];
-var hidden_course_lists = [];
-var locations = {};
+var state = {
+    // Storage
+    last_updated: 0,
+    courses: [],
+    term: "Loading...",
+    descriptions: [],
+    locations: {},
 
-var overlay = { identifier: null, locked: false };
-var button_filters = [];
-var loaded_local_courses = [];
-var loaded_course_lists = [];
-var loaded_custom_courses = [];
-var vertical_layout = false;
-var show_changelog = true;
-var last_course_desc = 0;
-var loaded_schedule = {};
-var max_grid_rows = 0;
+    // loaded points to index in schedules
+    loaded: 0,
+    // schedules is a list of schedules
+    // schedules are formatted as:
+    // {
+    //     name: "Schedule Name",
+    //     courses: [course1, course2, ...]
+    //     color: "#hex color"
+    // }
+    schedules: [
+        {
+            name: "Main",
+            courses: [],
+            color: undefined
+        }
+    ],
+    // custom courses
+    custom_courses: [],
+    starred_courses: [],
+    hidden_courses: [],
+    hidden_course_lists: [],
 
-// Default settings
-var settings = {
-    hmc_mode: false,
-    show_time_line: true,
+
+    // Settings
+    settings: {
+        hmc_mode: false,
+        show_time_line: true,
+    },
 };
+
+// *****
+// Global Variables
+/// that can be lost
+// upon reload
+// *****
+var t_state = {
+    selected: [],
+    overlay: { identifier: null, locked: false },
+    button_filters: [],
+    vertical_layout: false,
+    show_changelog: false,
+    last_description: 0,
+    max_grid_rows: 0,
+    search_results: [],
+    permutations: [],
+    current_permutation: 0,
+};
+
 
 // Day names for various sets
 const days_full = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -53,8 +86,6 @@ var searcher_worker;
 var desc_worker;
 var searching_worker;
 var permutation_worker;
-
-var all_course_results_html = [];
 
 var colors;
 
@@ -148,17 +179,9 @@ function getTheme() {
     }
 }
 
-function getSettings() {
-    let loaded_settings = JSON.parse(localStorage.getItem("settings"));
-
-    if (loaded_settings != null) {
-        settings = loaded_settings;
-    }
-}
-
 function isVerticalLayout() {
-    vertical_layout = window.matchMedia("only screen and (max-width: 760px)").matches;
-    return vertical_layout;
+    t_state.vertical_layout = window.matchMedia("only screen and (max-width: 760px)").matches;
+    return t_state.vertical_layout;
 }
 
 function getVersion() {
@@ -167,12 +190,12 @@ function getVersion() {
     if (old_version == null) {
         old_version = 0;
     }
-    
+
     if (old_version != current_version) {
         localStorage.setItem("version", current_version);
-        show_changelog = true;
+        t_state.show_changelog = true;
     } else {
-        show_changelog = false;
+        t_state.show_changelog = false;
     }
 }
 
@@ -182,7 +205,6 @@ document.addEventListener("keydown", function (event) {
     }
 });
 
-getSettings();
 getVersion();
 getTheme();
 isVerticalLayout();

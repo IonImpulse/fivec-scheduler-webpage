@@ -4,40 +4,22 @@
 
 // Runs all startup scripts
 async function startup() {
-    // First, check if site was loaded from
-    // as a PWA *before* attempting to load
-    // assets/data
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('../sw.js', {scope: '../'})
-        .then((reg) => {
-          // registration worked
-          console.log('Registration succeeded. Scope is ' + reg.scope);
-        }).catch((error) => {
-          // registration failed
-          console.log('Registration failed with ' + error);
-        });
+    // Get state
+    let new_state = await getState();
 
+    if (new_state != null) {
+        state = new_state;
+        console.log("Loaded state: ", state);
     }
+
     // Then, call an update request
-    let update = update_database(full=false);
-    await update_from_local();
-    // Add PWA install prompt
+    let update = update_database();
 
     // Website generation
-    generateDays();
-    generateLines();
-    timeLineLoop();
-    window.addEventListener('resize', updateScheduleSizing);
-    updateScheduleSizing();
-
-    updateSchedule();
-
-    // Remove fade-in class
-    let fader = document.getElementById("fader")
-    fader.classList.add('fade-out');
+    generateSchedule();
 
     // New version? Show changelog
-    if (show_changelog) {
+    if (t_state.show_changelog) {
         showChangelog();
     }
    
@@ -45,10 +27,10 @@ async function startup() {
     update_loop();
 
     // Create reusable web worker threads
-    desc_worker = new Worker('scripts/workers/descriptions.js?v=1.15.0');
-    searcher_worker = new Worker('scripts/workers/searcher.js?v=1.15.0');
-	searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.15.0');
-    permutation_worker = new Worker('scripts/workers/permutations.js?v=1.15.0');
+    desc_worker = new Worker('scripts/workers/descriptions.js?v=1.16.0');
+    searcher_worker = new Worker('scripts/workers/searcher.js?v=1.16.0');
+	searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.16.0');
+    permutation_worker = new Worker('scripts/workers/permutations.js?v=1.16.0');
 
     // Start worker threads to generate descriptions + searcher
     updateDescAndSearcher(false);
@@ -57,12 +39,12 @@ async function startup() {
     // Then, check if site was loaded from
     // from QR code w/ course list code
     await loadPossibleParams();
+
+    // Remove fade-in class
+    let fader = document.getElementById("fader")
+    fader.classList.add('fade-out');
 }
 
-var installEvent;
-const install_holder = document.querySelector("#pwa-prompt-box");
-const install_button = document.querySelector(".install");
-const close_button = document.querySelector("#hide-install");
 const schedule_element = document.getElementById("schedule-table");
 
 function timeLineLoop() {
@@ -79,7 +61,7 @@ function updateTimeLine() {
         el.remove()
     }
 
-    if (!settings.show_time_line) {
+    if (!state.settings.show_time_line) {
         return;
     }
 
@@ -117,15 +99,15 @@ function setVisited() {
 
 async function updateDescAndSearcher(full=true) {
     desc_worker.onmessage = function(e) {
-        all_desc_global = e.data;
+        state.descriptions = e.data;
     }
 
     searcher_worker.onmessage = function(e) {
-        all_courses_global = e.data;
+        state.courses = e.data;
     }
 
-    desc_worker.postMessage([[], all_courses_global, loaded_custom_courses, settings.hmc_mode, full]);
-    searcher_worker.postMessage([all_courses_global]);
+    desc_worker.postMessage([[], state.courses, state.custom_courses, state.settings.hmc_mode, full]);
+    searcher_worker.postMessage([state.courses]);
 }
 
 // Generates and sets divs for timeslots
@@ -170,7 +152,7 @@ function generateDays() {
         divs[0].remove()
     }
 
-    if (vertical_layout) {
+    if (t_state.vertical_layout) {
         days = weekdays_short;
     } else {
         days = weekdays_full;
@@ -189,7 +171,7 @@ function generateDays() {
     }
 }
 function updateScheduleSizing() {
-    let current_layout = vertical_layout;
+    let current_layout = t_state.vertical_layout;
 
     if (current_layout != isVerticalLayout()) {
         generateDays();
@@ -221,7 +203,7 @@ function generateLines() {
 
 function updateSchedule(play_animation=false) {
 
-    max_grid_rows = 0;
+    t_state.max_grid_rows = 0;
 
     clearSchedule(play_animation).then(() => {
         updateLoadedCourses(play_animation);
@@ -233,14 +215,14 @@ function updateSchedule(play_animation=false) {
         updateCredits();
         generateGridTimes();
 
-        if (max_grid_rows == 0) {
-            max_grid_rows = 350;
+        if (t_state.max_grid_rows == 0) {
+            t_state.max_grid_rows = 350;
         } else {
-            max_grid_rows = Math.min(350, max_grid_rows + 20);
+            t_state.max_grid_rows = Math.min(350, t_state.max_grid_rows + 20);
         }
 
         // Delete the last few timings
-        let lines_to_delete = (350 - max_grid_rows)/20 - 1;
+        let lines_to_delete = (350 - t_state.max_grid_rows)/20 - 1;
         for (let i = 0; i < lines_to_delete; i++) {
             let time_label = document.getElementById("time-" + (23 - i));
             if (time_label != undefined) {
@@ -250,7 +232,7 @@ function updateSchedule(play_animation=false) {
     
         //max_grid_rows = 350;
     
-        schedule_element.style.gridTemplateRows = `35px repeat(${max_grid_rows}, 1fr) repeat(${350 - max_grid_rows}, .1fr)`;  
+        schedule_element.style.gridTemplateRows = `35px repeat(${t_state.max_grid_rows}, 1fr) repeat(${350 - t_state.max_grid_rows}, .1fr)`;  
     });
 }
 
@@ -293,7 +275,7 @@ function createScheduleGridDivs(courses, loaded, filter_hidden=false, play_anima
     // Add new course divs
     let sanitized_courses = sanitizeCourseList(courses);
     if (filter_hidden) { 
-        sanitized_courses = sanitized_courses.filter(course => !hidden_courses.includes(course.identifier)); 
+        sanitized_courses = sanitized_courses.filter(course => !state.hidden_courses.includes(course.identifier)); 
     }
     let slow_index = 0;
     for (let i = 0; i < courses.length && slow_index < sanitized_courses.length; i++) {
@@ -320,19 +302,19 @@ function updateLoadedCourses(play_animation) {
 
     removeAllChildren(course_list_table);
 
-    if (loaded_local_courses.length > 0) {
-        for (let i = 0; i < loaded_local_courses.length; i++) {
+    if (getLoadedCourses().length > 0) {
+        for (let i = 0; i < getLoadedCourses().length; i++) {
 
-            course_list_table.appendChild(createLoadedCourseDiv(loaded_local_courses[i].identifier, loaded_local_courses[i].title, colors[i % colors.length]));
+            course_list_table.appendChild(createLoadedCourseDiv(getLoadedCourses()[i].identifier, getLoadedCourses()[i].title, colors[i % colors.length]));
         }
     }
 
-    createScheduleGridDivs(loaded_local_courses, false, true, play_animation);
+    createScheduleGridDivs(getLoadedCourses(), false, true, play_animation);
     
 }
 
 function updateLoadedCustomCourses() {
-    createScheduleGridDivs(loaded_custom_courses);
+    createScheduleGridDivs(state.custom_courses);
 }
 
 function timeToGrid(time) {
@@ -389,18 +371,12 @@ function updateLoadedCourseLists() {
     };  
 
     
-    for (let i = 0; i < loaded_course_lists.length + 1; i++) {
-        if (i == loaded_schedule.index) {
-            el.appendChild(createLoadedCourseListDiv(loaded_schedule.code, loaded_schedule.color ?? colors[i % colors.length]));
+    for (let i = 0; i < state.schedules.length; i++) {
+        el.appendChild(createLoadedCourseListDiv(state.schedules[i].name, state.schedules[i].color ?? colors[i % colors.length]));
 
+        if (i == state.loaded) {
             document.getElementById("schedule-indicator").style.top = `${el.lastChild.offsetTop}px`;
             document.getElementById("schedule-indicator").style.height = `${el.lastChild.offsetHeight}px`;
-        } else  {
-            let index = i;
-            if (i > loaded_schedule.index) {
-                index = i - 1;
-            }
-            el.appendChild(createLoadedCourseListDiv(loaded_course_lists[index].code, loaded_course_lists[index].color ?? colors[i % colors.length]));
         }
     }
 
@@ -408,7 +384,7 @@ function updateLoadedCourseLists() {
 }
 
 function updateStarredCourses() {
-    for (let identifier of starred_courses) {
+    for (let identifier of state.starred_courses) {
         showStarCourse(identifier);
     }
 }
@@ -431,7 +407,7 @@ function distanceLatLon(lat1, lon1, lat2, lon2, unit) {
 function updateDistanceLines(play_animation) {
     // First, create a nested array of all locations using displayed times
     let line_list = [[], [], [], [], []];
-    let courses_with_timing = loaded_local_courses.filter((course) => course.displayed_timing != undefined && !hidden_courses.includes(course.identifier));
+    let courses_with_timing = getLoadedCourses().filter((course) => course.displayed_timing != undefined && !state.hidden_courses.includes(course.identifier));
     for (let course of courses_with_timing) {
         for (let timing of course.displayed_timing) {
             let days = [];
@@ -462,11 +438,11 @@ function updateDistanceLines(play_animation) {
         for (let i = 0; i < day.length - 1; i++) {
             let course_a = day[i];
             let course_a_key = `${course_a.timing.locations[0].school}-${course_a.timing.locations[0].building}`;
-            let course_a_loc = locations[course_a_key];
+            let course_a_loc = state.locations[course_a_key];
 
             let course_b = day[i + 1];
             let course_b_key = `${course_b.timing.locations[0].school}-${course_b.timing.locations[0].building}`;
-            let course_b_loc = locations[course_b_key];
+            let course_b_loc = state.locations[course_b_key];
             
             if (course_a_loc != undefined && course_b_loc != undefined) {
                 if (course_a_loc[0] != undefined && course_b_loc[0] != undefined) {
@@ -580,7 +556,7 @@ function updateCredits() {
     const loaded_title = document.getElementById("loaded-courses-title");
     const lists_title = document.getElementById("loaded-course-lists-title");
 
-    let local_credits = sumCredits(loaded_local_courses.filter(course => !hidden_courses.includes(course.identifier)));
+    let local_credits = sumCredits(getLoadedCourses().filter(course => !state.hidden_courses.includes(course.identifier)));
     
     if (local_credits > 0) {
         let ending = "Credits";
@@ -599,7 +575,7 @@ function sumCredits(courses) {
     let credits = 0;
 
     for (let course of courses) {
-        if (settings.hmc_mode) {
+        if (state.settings.hmc_mode) {
             credits += course.credits_hmc ?? 0;
         } else {
             credits += course.credits ?? 0;
@@ -615,7 +591,7 @@ function sumCredits(courses) {
 
 async function intakeCourseData(data) {
     let course_list = {
-        code: data.code,
+        name: data.code,
         courses: data.courses.local_courses,
     };
 

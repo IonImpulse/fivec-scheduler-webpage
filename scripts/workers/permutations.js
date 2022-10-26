@@ -8,13 +8,7 @@ onmessage = function(e) {
 
     console.log(`Permutation took ${time_after - time_now} ms`);
 
-    let timeout = this.setTimeout(() => {
-        // If it takes too long, just return an empty array
-        postMessage({results: [], time: 10000});
-    }, 10000);
-    
     postMessage({results: results, time: time_after - time_now});
-    timeout.clear();
 }
 
 function permuteSchedule(all_courses_global, schedule_to_permute) {

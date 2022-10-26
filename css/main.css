@@ -132,7 +132,7 @@ canvas {
   display: grid;
   gap: 10px;
   grid-template-columns: 4fr 1fr;
-  grid-template-rows: 0.3fr 2.2fr 3fr 2fr;
+  grid-template-rows: 0.3fr 2.2fr 3.5fr 1.5fr;
   grid-template-areas:
     "header right-header"
     "schedule course-info"
@@ -531,7 +531,6 @@ canvas {
   background-color: var(--background-alt);
   border-radius: var(--roundedness);
   display: inline-block;
-  overflow-y: scroll;
 }
 
 #course-list-box {
@@ -541,6 +540,7 @@ canvas {
   flex-direction: column;
   flex-grow: 2;
   padding: var(--padding);
+  overflow-y: scroll;
 }
 
 #course-list-table {
@@ -548,7 +548,6 @@ canvas {
   border-radius: var(--roundedness);
   position: relative;
   max-height: 20vh;
-  overflow: auto;
   width: 100%;
 }
 
@@ -556,7 +555,7 @@ canvas {
   background-color: var(--background-alt);
   border-radius: var(--roundedness);
   color: var(--text-main);
-  font: 700 larger var(--main-font), sans-serif;
+  font: 700 16px var(--main-font), sans-serif;
   margin-bottom: 1vh;
   padding: var(--padding-medium);
   padding-left: var(--padding);
@@ -945,12 +944,19 @@ canvas {
 }
 
 .delete-course {
+  background-color: var(--background-main);
+  border-radius: var(--roundedness);
   background-image: url(../img/delete.svg);
-  background-size: cover;
-  height: 1vmax;
-  width: 1vmax;
+  background-size: 14px;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 20px;
+  width: 20px;
   grid-column-start: 4;
   grid-column-end: 5;
+  position: absolute;
+  right: 0;
+  top: 3px;
 }
 
 .delete-course.course-list {
@@ -981,7 +987,6 @@ canvas {
   border-radius: var(--roundedness);
   box-sizing: border-box;
   display: inline-block;
-  height: 27vh;
   overflow-y: scroll;
   padding: var(--padding);
   width: 100%;
@@ -1055,10 +1060,10 @@ a:visited {
 
 #course-box {
   grid-area: courses-list;
-  height: 30vh;
   display: flex;
   flex-direction: column;
   flex-grow: 2;
+  overflow-y: scroll;
 }
 
 #course-list-box {

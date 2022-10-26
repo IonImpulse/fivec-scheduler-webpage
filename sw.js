@@ -1,4 +1,4 @@
-const current_version = '1.16.6.3';
+const current_version = '1.16.6.4';
 // On install, cache everything
 self.addEventListener('install', (event) => {
     event.waitUntil(

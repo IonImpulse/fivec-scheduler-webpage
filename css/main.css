@@ -944,7 +944,7 @@ canvas {
 }
 
 .delete-course {
-  background-color: var(--background-main);
+  background-color: #000;
   border-radius: var(--roundedness);
   background-image: url(../img/delete.svg);
   background-size: 14px;

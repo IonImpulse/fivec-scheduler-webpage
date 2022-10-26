@@ -1624,6 +1624,28 @@ select *.option-class {
   font-family: var(--main-font);
 }
 
+#permute-container {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 2fr 1.2fr .5fr .5fr;
+  column-gap: 10px;
+}
+
+#permute-status {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--main-font);
+  color: var(--text-main);
+}
+
+#permute-container button {
+  width: 100%;
+  height: 30px;
+  background-color: var(--background-alt);
+}
+
 /* =============================
 
     MOBILE STYLES

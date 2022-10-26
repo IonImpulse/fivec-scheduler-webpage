@@ -71,6 +71,8 @@ var t_state = {
     last_description: 0,
     max_grid_rows: 0,
     search_results: [],
+    permutations: [],
+    current_permutation: 0,
 };
 
 

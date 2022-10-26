@@ -48,6 +48,7 @@ function createResultDiv(i, course, color, index, loaded_local_courses) {
 
 	// Create pre and co req boxes
 	if (course.prerequisites.length > 0) {
+		console.log(course.prerequisites);
 		let popup = `<span id="${identifier}-prereqs" class="popup-text search"><p>${course.prerequisites}</p></span>`;
 
 		prereqs = `<span class="prereqs-highlight popup-holder" onmouseenter="showPopup(\'#${identifier}-prereqs\')" onmouseleave="hidePopup(\'#${identifier}-prereqs\')">Prereq ${popup}</span>`;

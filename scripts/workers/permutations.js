@@ -2,11 +2,18 @@ onmessage = function(e) {
     const schedule_to_permute = e.data[0];
     const all_courses_global = e.data[1];
 
-    console.time("permuteSchedule");
+    const time_now = new Date();
     const results = permuteSchedule(all_courses_global, schedule_to_permute);
-    console.timeEnd("permuteSchedule");
+    const time_after = new Date();
+
+    console.log(`Permutation took ${time_after - time_now} ms`);
+
+    this.setTimeout(() => {
+        // If it takes too long, just return an empty array
+        postMessage({results: [], time: 10000});
+    }, 10000);
     
-    postMessage(results);
+    postMessage({results: results, time: time_after - time_now});
 }
 
 function permuteSchedule(all_courses_global, schedule_to_permute) {

@@ -113,7 +113,16 @@
         <div id="course-table" class="">
         </div>
 
-        <button id="permute-button" class="default-button noselect" onclick="buttonPermute()">
+        <div id="permute-container">
+          <div id="permute-status">
+            Ready
+          </div>
+
+          <button id="permute-button" class="default-button noselect" onclick="buttonPermute()">Permute</button>
+          <button id="prev-permutation-button" class="default-button noselect" onclick="buttonPrevPermutation()"><</button>
+          <button id="next-permutation-button" class="default-button noselect" onclick="buttonNextPermutation()">></button>
+        </div>
+
       </div>
       <div id="course-list-box" class="shadow">
         <div id="loaded-course-lists-title" class="table-title">My Schedules</div>

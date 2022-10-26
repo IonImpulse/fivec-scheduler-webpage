@@ -1723,12 +1723,64 @@ async function clearAllData() {
 	});
 }
 
-function buttonPermute() {
+async function buttonPermute() {
 	permutation_worker.onmessage = function(e) {
 		console.log(e.data);
+		t_state.permutations = e.data.results;
+
+		const el = document.getElementById("permute-status");
+		if (t_state.permutations.length == 0) {
+			if (e.data.time == 10000) {
+				el.innerHTML = "Permute timed out.";
+			} else {
+				el.innerHTML = "None found.";
+			}
+		} else {
+			el.innerHTML = `${t_state.permutations.length} Result`;
+			if (t_state.permutations.length != 1) {
+				el.innerHTML += "s";
+			}
+			document.getElementById("permute-button").innerText = "Accept";
+		}
+
 	}
 
-	permutation_worker.postMessage([getLoadedCourses(), state.courses]);
+	if (document.getElementById("permute-button").innerText == "Accept") {
+		await saveState();
+		document.getElementById("permute-button").innerText = "Permute";
+	} else if (getLoadedCourses().length > 0) {
+		document.getElementById("permute-status").innerText = "Permuting...";
+		permutation_worker.postMessage([getLoadedCourses(), state.courses]);
+	}
+
+}
+
+function buttonNextPermutation() {
+	if (t_state.current_permutation >= t_state.permutations.length - 1) {
+		return;
+	}
+
+	t_state.current_permutation += 1;
+	setLoadedCourses(t_state.permutations[t_state.current_permutation]);
+	updateSchedule();
+
+	const el = document.getElementById("permute-status");
+
+	el.innerText = `Viewing ${t_state.current_permutation + 1}/${t_state.permutations.length}`;
+}
+
+function buttonPrevPermutation() {
+	if (t_state.current_permutation == 0) {
+		return;
+	}
+
+	t_state.current_permutation -= 1;
+	setLoadedCourses(t_state.permutations[t_state.current_permutation]);
+	updateSchedule();
+
+	const el = document.getElementById("permute-status");
+
+	el.innerText = `Viewing ${t_state.current_permutation + 1}/${t_state.permutations.length}`;
 }
 
 function showInfoHover(id, info_text) {
@@ -2124,11 +2176,11 @@ const new_schedule_popup = `
 
 const changelog_popup = `
 <div id="changelog-container">
-	<b>v1.15 Beta</b>
+	<b>v1.16 Beta</b>
 	<ul>
-		<li>Added even more filters: school, prof, location, credits, and areas</li>
-		<li>Added course areas! You can now sort by Writing Intensives, HSAs, and Pomona Area Reqs.</li>
-		<li>Added permutation creator code, permutation editor coming soon!</li>
+		<li>Overall UI refinement</li>
+		<li>Hovering over a conflict tag when searching now displays the conflicting courses!</li>
+		<li>Permutation have been added! Click the <b>Permute</b> button to view all possible schedule alternatives.</li>
 	</ul>
 </div>
 `;

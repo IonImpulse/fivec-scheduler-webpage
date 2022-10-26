@@ -1,4 +1,4 @@
-const current_version = '1.16.5';
+const current_version = '1.16.6';
 // On install, cache everything
 self.addEventListener('install', (event) => {
     event.waitUntil(
@@ -7,6 +7,7 @@ self.addEventListener('install', (event) => {
                 'index.html',
                 'css/main.css',
                 'css/sweetalert2.min.css',
+                'css/leaflet.css',
                 'scripts/app.js',
                 'scripts/constructors.js',
                 'scripts/data.js',
@@ -22,6 +23,8 @@ self.addEventListener('install', (event) => {
                 'scripts/libs/rasterizeHTML.allinone.js',
                 'scripts/libs/sweetalert2.min.js',
                 'scripts/libs/jscolor.min.js',
+                'scripts/libs/leaflet.js',
+                'scripts/libs/leaflet-providers.js',
                 'scripts/workers/descriptions.js',
                 'scripts/workers/searcher.js',
                 'scripts/workers/courseSearch.js',
@@ -55,6 +58,8 @@ self.addEventListener('install', (event) => {
                 'img/settings-dark.svg',
                 'img/filters-dark.svg',
                 'img/filters-light.svg',
+                'img/map-dark.svg',
+                'img/map-light.svg',
                 'img/favicons/android-chrome-192x192.png',
                 'img/favicons/android-chrome-512x512.png',
                 'img/favicons/apple-touch-icon.png',

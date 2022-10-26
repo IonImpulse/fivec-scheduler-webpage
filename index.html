@@ -33,6 +33,7 @@
     <!-- CSS -->
     <link href="css/main.css" rel="stylesheet" type="text/css">
     <link href="css/sweetalert2.min.css" rel="stylesheet" type="text/css">
+    <link href="css/leaflet.css" rel="stylesheet" type="text/css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet">
@@ -84,7 +85,7 @@
         <button title="Share" tabindex="0" class="default-button share wide noselect" onclick="buttonShare()">
         </button>
         <button title="Search" tabindex="0" class="default-button search-button noselect" onclick="buttonSearch()">
-          Search
+          Search/Add Courses
         </button>
         <button title="Load" tabindex="0" class="default-button load wide noselect" onclick="buttonLoad()">
         </button>
@@ -93,6 +94,8 @@
         <div id="schedule-table" class=""></div>
       </div>
       <div id="extra-buttons" class="course-desc shadow">
+        <button title="Open Schedule Map" tabindex="0" class="default-button noselect map" onclick="buttonMap()">
+        </button>
         <button title="Custom Course Manager" tabindex="0" class="default-button noselect custom-course" onclick="buttonCustomCourse()">
         </button>
         <button title="Save As Image" tabindex="0" class="default-button noselect export" onclick="buttonExport()">
@@ -138,6 +141,8 @@
     <script src="scripts/libs/localforage.min.js"></script>
     <script src="scripts/libs/ics.deps.min.js"></script>
     <script src="scripts/libs/jscolor.min.js"></script>
+    <script src="scripts/libs/leaflet.js"></script>
+    <script src="scripts/libs/leaflet-providers.js"></script>
 
     <script src="scripts/utils.js"></script>
 

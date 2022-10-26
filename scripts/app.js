@@ -46,7 +46,7 @@ function buttonLoad() {
 		} else if (result.value != undefined) {
 			await intakeCourseData(result.value);
 
-			updateSchedule(play_animation=true);
+			updateSchedule(play_animation = true);
 		}
 	})
 }
@@ -398,9 +398,9 @@ async function buttonSearch() {
 
 			// Reset url so bookmarks don't get messed up
 
-			let obj = { Title: window.location.title, Url: window.location.href.split("?")[0] ?? window.location.href };  
+			let obj = { Title: window.location.title, Url: window.location.href.split("?")[0] ?? window.location.href };
 
-			history.pushState(obj, obj.Title, obj.Url);  
+			history.pushState(obj, obj.Title, obj.Url);
 
 			if (result.isConfirmed) {
 				let num_courses = await addCourses();
@@ -507,7 +507,7 @@ function toggleFilters() {
 		el.addEventListener("click", updateButtonFilters);
 		el.addEventListener("keyup", updateButtonFilters);
 		updateButtonFilters();
-	}	
+	}
 }
 
 async function updateButtonFilters() {
@@ -886,11 +886,11 @@ async function buttonSettings() {
 		Toast.fire({
 			title: 'Settings saved!',
 			icon: 'success',
-		})		
+		})
 	});
 
 	let statuses = document.getElementsByClassName("status");
-	
+
 	let status = await fetch(`${API_URL}${STATUS}`).then(async res => await res.json());
 
 	statuses[0].innerHTML = `<b>API Status:</b> ${status.alive ? `<span class='green'>Online: ${parseUnixTime(state.last_updated)}</span>` : "<span class='red'>Offline</span>"}`;
@@ -925,7 +925,7 @@ function saveSettings() {
 	updateSchedule();
 }
 
-async function backgroundCourseSearch(full=false) {
+async function backgroundCourseSearch(full = false) {
 	let input = document.getElementById("course-input");
 	let output = document.getElementById("course-search-results");
 
@@ -957,14 +957,14 @@ async function sleep(ms) {
 }
 
 async function showAllCourses() {
-	await backgroundCourseSearch(full=true);
+	await backgroundCourseSearch(full = true);
 	setTimeout(() => {
 		let el = document.getElementById("course-search-results");
-		el.getElementsByClassName("course-search-result")[300].scrollIntoView(alignToTop=false,scrollIntoViewOptions={behavior: "smooth"});
+		el.getElementsByClassName("course-search-result")[300].scrollIntoView(alignToTop = false, scrollIntoViewOptions = { behavior: "smooth" });
 	}, 100);
 }
 
-function appendCourseHTML(courses, query, full=false) {
+function appendCourseHTML(courses, query, full = false) {
 	let output = document.getElementById("course-search-results");
 
 	if (courses.length == 0) {
@@ -987,7 +987,7 @@ function appendCourseHTML(courses, query, full=false) {
 		if (courses.length > 300 && full == false) {
 			// Append the first 100 courses
 			let first = courses.slice(0, 300);
-			
+
 			// Add button to show all courses
 			first.push(`<br><a class="clickable-text"  onclick="showAllCourses()">Show all courses</a><br>`);
 
@@ -995,7 +995,7 @@ function appendCourseHTML(courses, query, full=false) {
 		} else {
 			replaceHtml(output, courses.join("\n"));
 		}
-		
+
 		for (let s of state.selected) {
 			let course = document.getElementById(s);
 
@@ -1123,7 +1123,7 @@ async function addCourses() {
 			}
 		}
 	}, 10);
-	
+
 
 	return num_courses;
 }
@@ -1250,7 +1250,7 @@ async function setLoadedSchedule(name) {
 
 	await saveState();
 
-	updateSchedule(play_animation=true);
+	updateSchedule(play_animation = true);
 
 	// Scroll to clicked on schedule
 	let el = document.getElementById("course-list-table");
@@ -1317,22 +1317,22 @@ async function showCourseListSettings(e, name, color) {
 			try {
 				let new_code = document.getElementById("schedule-name").value;
 				let color = document.getElementById("schedule-color").value;
-	
+
 				if (new_code == "") {
 					throw new Error("Please enter a valid name");
 				}
-	
+
 				return {
 					new_code: new_code,
 					color: color,
 				}
-	
+
 			} catch (error) {
 				Swal.showValidationMessage(
 					`${error}`
 				)
 			}
-	
+
 		},
 	}).then(async (result) => {
 		if (result != undefined) {
@@ -1351,7 +1351,7 @@ async function showCourseListSettings(e, name, color) {
 					}
 				}
 			}
-	
+
 			updateSchedule();
 			Toast.fire({
 				title: `Changes Saved!`,
@@ -1545,9 +1545,9 @@ function toSvgString(qr, border, lightColor, darkColor) {
 `
 }
 
-function addSearchFilter(filter, e=false) {
+function addSearchFilter(filter, e = false) {
 	// Stop bubbling onclick event
-	if (!(e??true)) {
+	if (!(e ?? true)) {
 		var e = window.event;
 		if (e != undefined) {
 			e.cancelBubble = true;
@@ -1672,7 +1672,7 @@ function addNewSchedule() {
 async function clearCourses() {
 	setLoadedCourses([]);
 	await saveState();
-	updateSchedule(play_animation=true);
+	updateSchedule(play_animation = true);
 
 	Toast.fire({
 		title: 'Courses Cleared!',
@@ -1684,13 +1684,13 @@ async function clearSchedules() {
 	await setLoadedSchedule("Main");
 	state.schedules = [
 		{
-            name: "Main",
-            courses: [],
-            color: undefined
-        }
+			name: "Main",
+			courses: [],
+			color: undefined
+		}
 	];
 	await saveState();
-	updateSchedule(play_animation=true);
+	updateSchedule(play_animation = true);
 
 	Toast.fire({
 		title: 'Schedules Cleared!',
@@ -1724,8 +1724,7 @@ async function clearAllData() {
 }
 
 async function buttonPermute() {
-	permutation_worker.onmessage = function(e) {
-		console.log(e.data);
+	permutation_worker.onmessage = function (e) {
 		t_state.permutations = e.data.results;
 
 		const el = document.getElementById("permute-status");
@@ -1784,20 +1783,130 @@ function buttonPrevPermutation() {
 	el.innerText = `Viewing ${t_state.current_permutation + 1}/${t_state.permutations.length}`;
 }
 
-function showInfoHover(id, info_text) {
+
+function buttonMap() {
 	Swal.fire({
-		title: `Info for ${id}`,
-		text: info_text,
-	})
+		title: 'Map',
+		icon: '',
+		html: map_popup,
+		customClass: {
+			popup: 'swal-wide',
+			confirmButton: 'default-button swal confirm',
+		},
+		showCloseButton: true,
+		showCancelButton: false,
+		confirmButtonText:
+			`Done`,
+	});
+
+	var map = L.map('map').setView([34.1007613, -117.7117505], 16);
+
+	L.tileLayer('https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png', {
+		maxZoom: 20,
+		attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+	}).addTo(map);
+
+	let locs = [];
+	let locs_content = [];
+
+	let locs_loaded_courses = [];
+	let locs_loaded_courses_content = [];
+	
+	for (let course of state.courses) {
+		for (let time of course.timing) {
+            let key = `${time.location.school}-${time.location.building}`;
+            let loc = state.locations[key];
+
+			if (loc) {
+				if (!locs.includes(loc)) {
+					locs.push(loc);
+					let content = `${schoolToReadable(time.location.school)}<br><i>${time.location.building}</i>`;
+					content += `<br><br><b>${course.identifier}</b><br>${course.title}`;
+					locs_content.push(content);
+				} else {
+					let index = locs.indexOf(loc);
+					let to_add = `<br><b>${course.identifier}</b><br>${course.title}`;
+					if (locs_content[index].indexOf(to_add) == -1) {
+						locs_content[index] += to_add;
+					}
+				}
+				
+				if (getLoadedCourses().map(x => x.identifier).includes(course.identifier)) {
+					if (!locs_loaded_courses.includes(loc)) {
+						locs_loaded_courses.push(loc);
+						locs_loaded_courses_content.push(`<br><br>Your Courses:<br><b>${course.identifier}</b><br>${course.title}`);
+					} else {
+						let index = locs_loaded_courses.indexOf(loc);
+						let to_add = `<br><b>${course.identifier}</b><br>${course.title}`;
+						if (locs_loaded_courses_content[index].indexOf(to_add) == -1) {
+							locs_loaded_courses_content[index] += to_add;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	for (let i = 0; i < locs.length; i++) {
+		let color = "blue";
+		let fill_color = "#0011a1";
+		let content = locs_content[i];
+
+		if (locs_loaded_courses.includes(locs[i])) {
+			color = "red";
+			fill_color = "#a10000";
+			let index = locs_loaded_courses.indexOf(locs[i]);
+			content = content.split("</i>")[0] + "</i>" + locs_loaded_courses_content[index] + content.split("</i>")[1];
+		}
+
+		// have marker be a pin with the course code
+		let marker = L.circle([locs[i][0].replaceAll(",", ""), locs[i][1].replaceAll(",", "")], {
+			color: color,
+			fillColor: fill_color,
+			fillOpacity: .5,
+			radius: 10
+		}).addTo(map);
+
+		marker.bindPopup(content, options = {maxHeight: 200, maxWidth: 400, className: "map-popup"});
+	}
+}
+
+function schoolToReadable(school) {
+	switch (school) {
+		case "HarveyMudd":
+			return "Harvey Mudd";
+		case "ClaremontMckenna":
+			return "Claremont McKenna";
+		case "Pomona":
+			return "Pomona";
+		case "Pitzer":
+			return "Pitzer";
+		case "Scripps":
+			return "Scripps";
+		default:
+			return "Multiple Schools";
+	}
 }
 
 
 // *****
 // HTML Popups
 // *****
+const map_popup =
+	`
+<div id="map-box">
+	<div id="map"></div>
 
-const settings_popup = 
-`
+	<div id="map-legend">
+		<h1>Click on a location to see the courses that meet there</h1>
+		<h1>Red locations have courses in your schedule.</h1>
+	</div>
+</div>
+`;
+
+
+const settings_popup =
+	`
 <div class="settings-box">
 	<div id="settings-panel" class="settings-zone">
 		<div class="settings-zone">
@@ -2182,6 +2291,7 @@ const changelog_popup = `
 		<li>Overall UI refinement</li>
 		<li>Hovering over a conflict tag when searching now displays the conflicting courses!</li>
 		<li>Permutation have been added! Click the <b>Permute</b> button to view all possible schedule alternatives.</li>
+		<li>Mapping has been added! Click the <b>Map</b> button to view a map of all your courses.</li>
 	</ul>
 </div>
 `;

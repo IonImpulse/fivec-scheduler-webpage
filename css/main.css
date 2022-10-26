@@ -47,6 +47,7 @@
   --checked-icon: url(../img/checked-light.svg);
   --settings-icon: url(../img/settings-light.svg);
   --filters-icon: url(../img/filters-light.svg);
+  --map-icon: url(../img/map-light.svg);
   --hover-effect: 0.96;
   --schedule-change-speed: 0.1s;
 
@@ -91,6 +92,7 @@
   --checked-icon: url(../img/checked-dark.svg);
   --settings-icon: url(../img/settings-dark.svg);
   --filters-icon: url(../img/filters-dark.svg);
+  --map-icon: url(../img/map-dark.svg);
   --hover-effect: 1.2;
 }
 
@@ -116,7 +118,7 @@ body {
 body * {
   transition: background-color 0.1s ease-in-out, outline-width 0.05s ease-in-out,
     outline-color 0.01s ease-in-out, outline-offset 0.01s ease-in-out,
-    transform 0.08s ease-in-out, width 0.15s cubic-bezier(0, 1.5, 1, 1.5),
+    width 0.15s cubic-bezier(0, 1.5, 1, 1.5),
     padding 0.15s cubic-bezier(0, 1.5, 1, 1.5);
 }
 
@@ -440,6 +442,10 @@ canvas {
   background-image: var(--share-icon);
 }
 
+.default-button.map {
+  background-image: var(--map-icon);
+}
+
 .default-button.dl {
   background-image: var(--dl-icon);
   margin-right: var(--padding);
@@ -567,7 +573,7 @@ canvas {
   background-color: var(--background-alt);
   border-radius: var(--roundedness);
   padding: var(--padding);
-  height: 50vh;
+  height: 45vh;
   flex-grow: 1;
   margin-top: 10px;
   overflow-x: hidden;
@@ -663,7 +669,7 @@ canvas {
   padding: 0 2vw;
   text-align: left;
   margin-top: 10px;
-  height: 50vh;
+  height: 45vh;
   width: 30vw;
   overflow-y: scroll;
 }
@@ -768,7 +774,7 @@ canvas {
   display: inline-block;
   font-weight: bold;
   margin-right: 70px;
-  width: 50px;
+  min-width: 50px;
   text-align: center;
 }
 
@@ -1644,6 +1650,26 @@ select *.option-class {
   width: 100%;
   height: 30px;
   background-color: var(--background-alt);
+}
+
+#map-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+#map {
+  height: 70vh;
+  width: 70vw;
+}
+
+.map-popup {
+  font-family: var(--main-font);
+  font-size: 12px;
 }
 
 /* =============================

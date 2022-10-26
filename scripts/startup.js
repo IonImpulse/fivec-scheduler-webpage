@@ -27,10 +27,10 @@ async function startup() {
     update_loop();
 
     // Create reusable web worker threads
-    desc_worker = new Worker('scripts/workers/descriptions.js?v=1.16.0');
-    searcher_worker = new Worker('scripts/workers/searcher.js?v=1.16.0');
-	searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.16.0');
-    permutation_worker = new Worker('scripts/workers/permutations.js?v=1.16.2');
+    desc_worker = new Worker('scripts/workers/descriptions.js?v=1.16.6');
+    searcher_worker = new Worker('scripts/workers/searcher.js?v=1.16.6');
+	searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.16.6');
+    permutation_worker = new Worker('scripts/workers/permutations.js?v=1.16.6');
 
     // Start worker threads to generate descriptions + searcher
     updateDescAndSearcher(false);
@@ -365,7 +365,7 @@ function updateLoadedCourseLists() {
     let new_schedule = document.createElement("div");
     new_schedule.className = "default-button noselect";
     new_schedule.id = "add-schedule";
-    new_schedule.innerText = "Add new schedule...";
+    new_schedule.innerText = "New schedule...";
     new_schedule.onclick = () => {
         addNewSchedule();
     };  

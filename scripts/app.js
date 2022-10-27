@@ -1480,7 +1480,15 @@ function removeHighlightCourses(identifier) {
 	}
 }
 
-function toggleCourseOverlay(identifier) {
+function toggleCourseOverlay(identifier, off=false) {
+	// Case zero: force off
+	if (off) {
+		removeHighlightCourses(t_state.overlay.identifier);
+		t_state.overlay.locked = false;
+		t_state.overlay.identifier = "";
+		return;
+	}
+
 	// Case one: nothing has happened yet
 	if (t_state.overlay.locked == false) {
 		t_state.overlay.locked = true;
@@ -1973,6 +1981,15 @@ function schoolToReadable(school) {
 	}
 }
 
+
+document.getElementById("schedule-table").addEventListener("click", function(e) {
+	if (e.target.classList.contains("course-schedule-block") || e.target.parentElement.classList.contains("course-schedule-block")) {
+	} else {
+		toggleCourseOverlay("", off=true);
+
+	}
+
+});
 
 // *****
 // HTML Popups

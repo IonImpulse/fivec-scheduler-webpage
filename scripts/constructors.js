@@ -78,7 +78,12 @@ function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_i
         // Create the course room(s)
         let course_room = document.createElement("div");
         course_room.className = "room";
-        course_room.innerHTML = time.locations.map(x => `${x.building} ${x.room}`).join("<br>");
+
+        let course_rooms = time.locations.map(x => `${x.building} ${x.room}`);
+        // Remove duplicates
+        course_rooms = [...new Set(course_rooms)];
+        
+        course_room.innerHTML = course_rooms.join("<br>");
 
         // Append all the elements
         course_div.appendChild(course_identifier);
@@ -203,7 +208,7 @@ function createLoadedCourseDiv(identifier, title, color) {
     let delete_button = document.createElement("div");
     delete_button.className = "delete-course";
     delete_button.onclick = function () {
-        deleteCourse(identifier);
+        deleteCourse(event, identifier);
     };
 
     let star_button = document.createElement("div");

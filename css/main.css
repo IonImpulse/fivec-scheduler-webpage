@@ -118,8 +118,8 @@ body {
 body * {
   transition: background-color 0.1s ease-in-out, outline-width 0.05s ease-in-out,
     outline-color 0.01s ease-in-out, outline-offset 0.01s ease-in-out,
-    width 0.15s cubic-bezier(0, 1.5, 1, 1.5),
-    padding 0.15s cubic-bezier(0, 1.5, 1, 1.5);
+    width 0.15s ease,
+    padding 0.15s ease;
 }
 
 canvas {
@@ -172,74 +172,25 @@ canvas {
   box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
 }
 
-@keyframes fade-out {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
-
 #fader.fade-out {
   opacity: 0;
-  animation-name: fade-out;
+  animation: fadeOut .3s;
 }
 
 .add-animation {
-  animation: glide-in var(--schedule-change-speed) ease-out;
-}
-
-@keyframes glide-in {
-  from {
-    transform: translateY(-100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+  animation: fadeInDown .3s;
 }
 
 .remove-animation {
-  animation: glide-out var(--schedule-change-speed) ease-out;
+  animation: fadeOutUp .2s;
 }
 
-@keyframes glide-out {
-  from {
-    transform: translateY(0);
-    opacity: 1;
-  }
-  to {
-    transform: translateY(100%);
-    opacity: 0;
-  }
+.remove-animation-fast {
+  animation: fadeOutLeft .2s;
 }
 
 .added-from-search-animation {
-  animation: added-from-search-animation 0.5s ease-in-out;
-}
-
-@keyframes added-from-search-animation {
-  0% {
-    transform: rotate(-10deg);
-    scale: 1;
-  }
-
-  25% {
-    transform: rotate(20deg);
-    scale: 1.1;
-  }
-
-  75% {
-    transform: rotate(-10deg);
-    scale: 1.1;
-  }
-
-  100% {
-    transform: rotate(0deg);
-    scale: 1;
-  }
+  animation: fadeInLeft .2s;
 }
 
 #share-image {
@@ -531,6 +482,7 @@ canvas {
   background-color: var(--background-alt);
   border-radius: var(--roundedness);
   display: inline-block;
+  transition: height 0.5s ease;
 }
 
 #course-list-box {
@@ -1034,6 +986,7 @@ a:visited {
   display: inline-block;
   padding: var(--padding);
   min-width: 20vw;
+  transition: height 0.5s ease;
 }
 
 #extra-buttons {
@@ -1835,8 +1788,11 @@ select *.option-class {
   }
 
   #course-info-table,
-  #course-list-table {
-    max-height: 500px;
+  #course-list-table,
+  #course-box,
+  #course-list-box {
+    min-height: 500px;
+    max-height: 800px;
   }
 
   .custom-course-manager {

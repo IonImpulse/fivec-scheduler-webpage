@@ -22,6 +22,12 @@ function buttonLoad() {
 			confirmButton: 'default-button swal confirm',
 			cancelButton: 'default-button swal cancel',
 		},
+		showClass: {
+			popup: 'animate__animated animate__fadeInDown',
+		},
+		hideClass: {
+			popup: 'animate__animated animate__fadeOutUp',
+		},
 		buttonsStyling: false,
 		preConfirm: async () => {
 			try {
@@ -84,15 +90,17 @@ function buttonCustomCourse() {
 			confirmButton: 'default-button swal confirm',
 			cancelButton: 'default-button swal cancel',
 		},
+		showClass: {
+			popup: 'animate__animated animate__fadeInDown',
+		},
+		hideClass: {
+			popup: 'animate__animated animate__fadeOutUp',
+		},
 		buttonsStyling: false,
 	}).then(async (result) => {
 
 		await saveState();
 
-		Toast.fire({
-			icon: 'success',
-			title: `Saved custom course preferences`
-		})
 	});
 
 	document.getElementsByClassName("custom-course-manager")[0].addEventListener("keydown", function (event) {
@@ -266,6 +274,12 @@ function buttonExport() {
 			confirmButton: 'default-button swal confirm',
 			cancelButton: 'default-button swal cancel',
 		},
+		showClass: {
+			popup: 'animate__animated animate__fadeInDown',
+		},
+		hideClass: {
+			popup: 'animate__animated animate__fadeOutUp',
+		},
 		buttonsStyling: false,
 	});
 
@@ -327,6 +341,12 @@ function screenshotToCanvas(canvas, source) {
 					confirmButton: 'default-button swal confirm',
 					cancelButton: 'default-button swal cancel',
 				},
+				showClass: {
+					popup: 'animate__animated animate__fadeInDown',
+				},
+				hideClass: {
+					popup: 'animate__animated animate__fadeOutUp',
+				},
 				buttonsStyling: false,
 			})
 		});
@@ -374,6 +394,12 @@ async function buttonSearch() {
 				confirmButton: 'default-button swal confirm',
 				cancelButton: 'default-button swal cancel',
 			},
+			showClass: {
+				popup: 'animate__animated animate__fadeInDown',
+			},
+			hideClass: {
+				popup: 'animate__animated animate__fadeOutUp',
+			},
 			buttonsStyling: false,
 		});
 	} else {
@@ -391,6 +417,12 @@ async function buttonSearch() {
 				popup: 'swal-wide',
 				confirmButton: 'default-button swal confirm',
 				cancelButton: 'default-button swal cancel',
+			},
+			showClass: {
+				popup: 'animate__animated animate__fadeInDown',
+			},
+			hideClass: {
+				popup: 'animate__animated animate__fadeOutUp',
 			},
 			buttonsStyling: false,
 		}).then(async (result) => {
@@ -411,10 +443,6 @@ async function buttonSearch() {
 					s = "";
 				}
 
-				Toast.fire({
-					icon: 'success',
-					title: `Added ${num_courses} Course${s}`
-				})
 			}
 		});
 		// Set hmc credit mode:
@@ -707,6 +735,12 @@ async function buttonShare() {
 				confirmButton: 'default-button swal confirm',
 				cancelButton: 'default-button swal cancel',
 			},
+			showClass: {
+				popup: 'animate__animated animate__fadeInDown',
+			},
+			hideClass: {
+				popup: 'animate__animated animate__fadeOutUp',
+			},
 			buttonsStyling: false,
 		})
 	} else {
@@ -736,6 +770,12 @@ async function buttonShare() {
 				confirmButton: 'default-button swal confirm',
 				cancelButton: 'default-button swal cancel',
 			},
+			showClass: {
+				popup: 'animate__animated animate__fadeInDown',
+			},
+			hideClass: {
+				popup: 'animate__animated animate__fadeOutUp',
+			},
 			buttonsStyling: false,
 		});
 
@@ -752,7 +792,13 @@ function buttonCal() {
 	if (getLoadedCourses().length == 0) {
 		Swal.fire({
 			title: 'No courses have been locally loaded!',
-			icon: 'error'
+			icon: 'error',
+			showClass: {
+				popup: 'animate__animated animate__fadeInDown',
+			},
+			hideClass: {
+				popup: 'animate__animated animate__fadeOutUp',
+			},
 		})
 	} else {
 		ical_all = generateICal(getLoadedCourses());
@@ -765,6 +811,12 @@ function buttonCal() {
 			customClass: {
 				confirmButton: 'default-button swal confirm',
 				cancelButton: 'default-button swal cancel',
+			},
+			showClass: {
+				popup: 'animate__animated animate__fadeInDown',
+			},
+			hideClass: {
+				popup: 'animate__animated animate__fadeOutUp',
 			},
 			buttonsStyling: false,
 			html: `<div class="ical-box">
@@ -880,13 +932,14 @@ async function buttonSettings() {
 			cancelButton: 'default-button swal cancel',
 			popup: 'swal-medium-wide',
 		},
+		showClass: {
+			popup: 'animate__animated animate__fadeInDown',
+		},
+		hideClass: {
+			popup: 'animate__animated animate__fadeOutUp',
+		},
 		buttonsStyling: false,
 		html: settings_popup
-	}).then(() => {
-		Toast.fire({
-			title: 'Settings saved!',
-			icon: 'success',
-		})
 	});
 
 	let statuses = document.getElementsByClassName("status");
@@ -1166,7 +1219,8 @@ async function addToCustomCourseList(custom_courses) {
 	return number_of_conflicts;
 }
 
-async function deleteCourse(identifier) {
+async function deleteCourse(e, identifier) {
+	e.stopPropagation();
 	let found = false;
 
 	for (let i = 0; i < getLoadedCourses().length; i++) {
@@ -1186,6 +1240,17 @@ async function deleteCourse(identifier) {
 			break;
 		}
 	}
+
+	const els = document.getElementsByClassName(`${identifier}-loaded`);
+
+	for (let el of els) {
+		el.classList.add("remove-animation-fast");
+		setTimeout(() => {
+			el.remove();
+		}, 190);
+	}
+
+	await sleep(190);
 
 	if (found) {
 		await saveState();
@@ -1312,6 +1377,12 @@ async function showCourseListSettings(e, name, color) {
 			confirmButton: 'default-button swal confirm',
 			cancelButton: 'default-button swal cancel',
 		},
+		showClass: {
+			popup: 'animate__animated animate__fadeInDown',
+		},
+		hideClass: {
+			popup: 'animate__animated animate__fadeOutUp',
+		},
 		buttonsStyling: false,
 		preConfirm: async () => {
 			try {
@@ -1353,10 +1424,6 @@ async function showCourseListSettings(e, name, color) {
 			}
 
 			updateSchedule();
-			Toast.fire({
-				title: `Changes Saved!`,
-				icon: 'success',
-			});
 		}
 	});
 
@@ -1612,6 +1679,12 @@ function addNewSchedule() {
 			confirmButton: 'default-button swal confirm',
 			cancelButton: 'default-button swal cancel',
 		},
+		showClass: {
+			popup: 'animate__animated animate__fadeInDown',
+		},
+		hideClass: {
+			popup: 'animate__animated animate__fadeOutUp',
+		},
 		buttonsStyling: false,
 		confirmButtonText:
 			`Add`,
@@ -1709,6 +1782,12 @@ async function clearAllData() {
 			confirmButton: 'default-button swal confirm',
 			cancelButton: 'default-button swal cancel',
 		},
+		showClass: {
+			popup: 'animate__animated animate__fadeInDown',
+		},
+		hideClass: {
+			popup: 'animate__animated animate__fadeOutUp',
+		},
 		buttonsStyling: false,
 		confirmButtonText:
 			`Delete All Data`,
@@ -1792,6 +1871,12 @@ function buttonMap() {
 		customClass: {
 			popup: 'swal-wide',
 			confirmButton: 'default-button swal confirm',
+		},
+		showClass: {
+			popup: 'animate__animated animate__fadeInDown',
+		},
+		hideClass: {
+			popup: 'animate__animated animate__fadeOutUp',
 		},
 		showCloseButton: true,
 		showCancelButton: false,

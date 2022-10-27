@@ -27,7 +27,7 @@ async function startup() {
     update_loop();
 
     // Create reusable web worker threads
-    desc_worker = new Worker('scripts/workers/descriptions.js?v=1.16.6');
+    desc_worker = new Worker('scripts/workers/descriptions.js?v=1.16.8');
     searcher_worker = new Worker('scripts/workers/searcher.js?v=1.16.6');
 	searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.16.6');
     permutation_worker = new Worker('scripts/workers/permutations.js?v=1.16.6');
@@ -252,7 +252,7 @@ async function clearSchedule(play_animation) {
         }
 
         // Wait for animation to finish
-        await sleep(100)
+        await sleep(190)
     }
     
 

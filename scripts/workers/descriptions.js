@@ -52,21 +52,28 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 		course_desc_node += status_node;
 
 		let timing = `<span class="desc-blob">`;
+		let timing_done = [];
 
 		for (let time of course.timing) {
-			let timing_node = "<div";
-			timing_node += " class=\"timing\">";
+			let time_str = `${time.days} ${convertTime(time.start_time)} ${convertTime(time.end_time)} ${time.location.school} ${time.location.building} ${time.location.room}`;
 
-			let day_str = time.days.join(', ');
-			let start_time = convertTime(time.start_time);
-			let end_time = convertTime(time.end_time);
-			let local = time.location;
-
-			timing_node += `<b>${start_time} - ${end_time}:</b> ${day_str}<br>`;
-			timing_node += `<span class="clickable-text" onclick="addSearchFilter(\'at:${local.school}'\)">${schoolToReadable(local.school)}</span>`;
-			timing_node += `, ${local.building}, Room ${local.room}</div>`;
-
-			timing += timing_node;
+			if (!timing_done.includes(time_str)) {
+				timing_done.push(time_str);
+				
+				let timing_node = "<div";
+				timing_node += " class=\"timing\">";
+	
+				let day_str = time.days.join(', ');
+				let start_time = convertTime(time.start_time);
+				let end_time = convertTime(time.end_time);
+				let local = time.location;
+	
+				timing_node += `<b>${start_time} - ${end_time}:</b> ${day_str}<br>`;
+				timing_node += `<span class="clickable-text" onclick="addSearchFilter(\'at:${local.school}'\)">${schoolToReadable(local.school)}</span>`;
+				timing_node += `, ${local.building}, Room ${local.room}</div>`;
+	
+				timing += timing_node;
+			}		
 		}
 
 		timing += "</span>";

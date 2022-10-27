@@ -1,4 +1,4 @@
-const current_version = '1.16.6.4';
+const current_version = '1.16.6.5';
 // On install, cache everything
 self.addEventListener('install', (event) => {
     event.waitUntil(
@@ -8,6 +8,7 @@ self.addEventListener('install', (event) => {
                 'css/main.css',
                 'css/sweetalert2.min.css',
                 'css/leaflet.css',
+                'css/animate.min.css',
                 'scripts/app.js',
                 'scripts/constructors.js',
                 'scripts/data.js',

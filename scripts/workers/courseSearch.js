@@ -188,7 +188,7 @@ function search_courses(query, all_courses_global, filters, hmc_mode, loaded_loc
         limit: 100, // don't return more results than you need!
         allowTypo: true, // if you don't care about allowing typos
         threshold: -10000, // don't return bad results
-        keys: ['identifier', 'title', 'instructorString',], // keys to search
+        keys: ['identifier', 'title', 'instructorString'], // keys to search
     }
 
     let results = [];

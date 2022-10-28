@@ -384,8 +384,6 @@ function buttonPrint() {
 }
 
 async function buttonSearch() {
-	state.selected = [];
-
 	if (state.courses == null) {
 		Swal.fire({
 			title: 'Error fetching courses!',
@@ -442,7 +440,36 @@ async function buttonSearch() {
 				if (num_courses == 1) {
 					s = "";
 				}
-
+			} else {
+				if (t_state.selected.length > 0) {
+					Swal.fire({
+						title: 'Discard changes?',
+						icon: 'warning',
+						showCancelButton: true,
+						confirmButtonText: 'Go Back',
+						cancelButtonText: 'Discard',
+						customClass: {
+							confirmButton: 'default-button swal confirm',
+							cancelButton: 'default-button swal cancel',
+						},
+						showClass: {
+							popup: 'animate__animated animate__fadeInDown',
+						},
+						hideClass: {
+							popup: 'animate__animated animate__fadeOutUp',
+						},
+						buttonsStyling: false,
+					}).then((result) => {
+						console.log(result);
+						if (result.isCancelled) {
+							t_state.selected = [];
+						} else if (!result.isDismissed) {
+							buttonSearch();
+						} else {
+							t_state.selected = [];
+						}
+					})
+				}
 			}
 		});
 		// Set hmc credit mode:
@@ -498,6 +525,9 @@ async function buttonSearch() {
 		// Create stats
 		let term_div = document.getElementById("term-container");
 		term_div.innerHTML = `<b>Term:</b> ${state.term}`;
+
+		updateCart();
+
 	}
 }
 
@@ -1049,7 +1079,7 @@ function appendCourseHTML(courses, query, full = false) {
 			replaceHtml(output, courses.join("\n"));
 		}
 
-		for (let s of state.selected) {
+		for (let s of t_state.selected) {
 			let course = document.getElementById(s);
 
 			if (course != null) {
@@ -1085,12 +1115,12 @@ function postProcessSearch(input, html) {
 
 function toggleCourseSelection(identifier) {
 	// First, find in selected courses
-	let index = state.selected.indexOf(identifier);
+	let index = t_state.selected.indexOf(identifier);
 
 	if (index > -1) {
-		state.selected.splice(index, 1);
+		t_state.selected.splice(index, 1);
 	} else {
-		state.selected.push(identifier);
+		t_state.selected.push(identifier);
 	}
 
 	let el = document.getElementById(identifier);
@@ -1100,11 +1130,11 @@ function toggleCourseSelection(identifier) {
 	}
 
 	let num_courses = document.getElementById("course-add-num");
-	num_courses.innerText = state.selected.length;
+	num_courses.innerText = t_state.selected.length;
 
 	let num_courses_s = document.getElementById("multiple-course-s");
 
-	if (state.selected.length == 1) {
+	if (t_state.selected.length == 1) {
 		num_courses_s.innerText = "";
 	} else {
 		num_courses_s.innerText = "s";
@@ -1117,8 +1147,8 @@ function updateCart() {
 	let cart = document.getElementById("course-search-cart");
 	cart.innerHTML = "";
 
-	for (let s = 0; s < state.selected.length; s++) {
-		cart.innerHTML += `<div class="cart-item" style="background-color:${colors[s % colors.length]};" onclick="toggleCourseSelection('${state.selected[s]}')">${state.selected[s]}</div>`;
+	for (let s = 0; s < t_state.selected.length; s++) {
+		cart.innerHTML += `<div class="cart-item" style="background-color:${colors[s % colors.length]};" onclick="toggleCourseSelection('${t_state.selected[s]}')">${t_state.selected[s]}</div>`;
 	}
 }
 
@@ -1141,7 +1171,7 @@ async function addCourses() {
 	let courses = [];
 
 	// Find courses from identifier
-	for (let course of state.selected) {
+	for (let course of t_state.selected) {
 		courses.push(state.courses.filter(e => e.identifier == course)[0]);
 	}
 
@@ -1168,7 +1198,7 @@ async function addCourses() {
 
 	setTimeout(() => {
 		// Get courses added as html elements
-		for (let course of state.selected) {
+		for (let course of t_state.selected) {
 			let els = document.getElementsByClassName(`${course}-loaded`);
 
 			for (let el of els) {

@@ -433,13 +433,7 @@ async function buttonSearch() {
 			history.pushState(obj, obj.Title, obj.Url);
 
 			if (result.isConfirmed) {
-				let num_courses = await addCourses();
-
-				s = "s";
-
-				if (num_courses == 1) {
-					s = "";
-				}
+				await addCourses();
 			} else {
 				if (t_state.selected.length > 0) {
 					Swal.fire({
@@ -1129,6 +1123,10 @@ function toggleCourseSelection(identifier) {
 		el.classList.toggle("selected");
 	}
 
+	updateCart();
+}
+
+function updateCart() {
 	let num_courses = document.getElementById("course-add-num");
 	num_courses.innerText = t_state.selected.length;
 
@@ -1140,10 +1138,6 @@ function toggleCourseSelection(identifier) {
 		num_courses_s.innerText = "s";
 	}
 
-	updateCart();
-}
-
-function updateCart() {
 	let cart = document.getElementById("course-search-cart");
 	cart.innerHTML = "";
 
@@ -1205,6 +1199,9 @@ async function addCourses() {
 				el.classList.add("added-from-search-animation");
 			}
 		}
+
+		t_state.selected = [];
+
 	}, 10);
 
 

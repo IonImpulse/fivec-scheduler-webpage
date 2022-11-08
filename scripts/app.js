@@ -1220,6 +1220,7 @@ async function addToCourseLists(course_list) {
 
 	if (!found) {
 		state.schedules.push(course_list);
+		updateSchedule();
 		await saveState();
 
 		return true;

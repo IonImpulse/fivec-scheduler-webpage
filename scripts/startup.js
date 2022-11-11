@@ -29,7 +29,7 @@ async function startup() {
     // Create reusable web worker threads
     desc_worker = new Worker('scripts/workers/descriptions.js?v=1.16.8');
     searcher_worker = new Worker('scripts/workers/searcher.js?v=1.16.6');
-	searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.16.8');
+	searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.16.10');
     permutation_worker = new Worker('scripts/workers/permutations.js?v=1.16.6');
 
     // Start worker threads to generate descriptions + searcher
@@ -447,8 +447,10 @@ function updateDistanceLines(play_animation) {
             if (course_a_loc != undefined && course_b_loc != undefined) {
                 if (course_a_loc[0] != undefined && course_b_loc[0] != undefined) {
                     if (course_a_loc[0] != "" && course_b_loc[0] != "") {
-                        let distance = distanceLatLon(course_a_loc[0], course_a_loc[1], course_b_loc[0], course_b_loc[1], "F");
-                        generateTimeLine(course_a, course_b, distance, play_animation);
+                        if (course_a.course.sub_term == "" || course_b.course.sub_term == "" || course_a.course.sub_term == course_b.course.sub_term) {
+                            let distance = distanceLatLon(course_a_loc[0], course_a_loc[1], course_b_loc[0], course_b_loc[1], "F");
+                            generateTimeLine(course_a, course_b, distance, play_animation);
+                        }
                     }
                 }
             } else {
@@ -470,6 +472,12 @@ function generateTimeLine(course_a, course_b, distance, play_animation) {
     let line_div = document.createElement("div");
     line_div.classList.add("line-v");
     line_div.classList.add("popup-holder");
+    
+    if (course_a.course.sub_term != "") {
+        line_div.classList.add(course_a.course.sub_term);
+    } else if (course_b.course.sub_term != "") {
+        line_div.classList.add(course_b.course.sub_term);
+    }
 
     if (play_animation) {
         line_div.classList.add("add-animation");

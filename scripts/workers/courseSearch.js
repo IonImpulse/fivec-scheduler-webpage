@@ -45,6 +45,7 @@ function createResultDiv(i, course, color, index, loaded_local_courses) {
 	let prereqs = "";
 	let coreqs = "";
 	let perm_count = "";
+	let sub_term = "";
 
 	// Create pre and co req boxes
 	if (course.prerequisites.length > 0) {
@@ -63,6 +64,10 @@ function createResultDiv(i, course, color, index, loaded_local_courses) {
 		perm_count = `<span class="perms-highlight">Perms: ${course.perm_count}</span>`;
 	}
 
+	if (course.sub_term != "None") {
+		sub_term = `<span class="sub-term-highlight">${course.sub_term} Half-Semester</span>`;
+	}
+
 	// Check timing against loaded courses
 	let timing_conflicts = checkForConflicts(course, loaded_local_courses);
 
@@ -77,7 +82,7 @@ function createResultDiv(i, course, color, index, loaded_local_courses) {
 	
 
 	// Put the course code and status in a div on the right
-	let statuses = `<span class="align-right"><b>${perm_count}${prereqs}${coreqs}${conflicts}${seats}${status}</b></span>`;
+	let statuses = `<span class="align-right"><b>${sub_term}${perm_count}${prereqs}${coreqs}${conflicts}${seats}${status}</b></span>`;
 
 	// Put the school color tab
 	let school_color = `<span class="school-color-tab" style="background-color: var(--school-${course.timing[0].location.school ?? "NA"})"></span>`;
@@ -316,6 +321,10 @@ function search_courses(query, all_courses_global, filters, hmc_mode, loaded_loc
 		} else if (filter.key == "area") {
 			const areas = category_lookup[filter.value];
 			results = results.filter(t => (t.obj || t).associations.some(p => areas.includes(p)));
+		} else if (filter.key == "sub_term") {
+			if (filter.value == "some") {
+				results = results.filter(t => (t.obj || t).sub_term != "None");
+			}
 		}
 	}
 

@@ -44,8 +44,14 @@ function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_i
     for (let time of course.displayed_timing) {
         // Create the div
         let course_div = document.createElement("div");
-        
+
         course_div.className += `${course.identifier}-loaded course-schedule-block unselectable`;
+
+        // If half-semester, add the class
+        if (course.sub_term != "None") {
+            course_div.className += ` sub_term-${course.sub_term}`;
+        }
+        
 
         if (play_animation) {
             course_div.className += " add-animation";

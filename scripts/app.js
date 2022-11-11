@@ -745,6 +745,17 @@ async function updateButtonFilters() {
 		});
 	}
 
+	// Get sub terms
+	let sub_term_check = document.getElementById("filter-half-semester").checked;
+
+	if (sub_term_check) {
+		filters.push({
+			key: "sub_term",
+			value: "some",
+			type: ":"
+		});
+	}
+
 	state.button_filters = filters;
 	await backgroundCourseSearch();
 }
@@ -2290,6 +2301,14 @@ const search_popup = `
 			</div>
 		</div>
 
+		<div class="filter-item">
+			<div class="filter-checkboxes">
+				<div id="half-semester-container">
+					<label class="filter-label" for="filter-half-semester">Half-Semester</label>
+					<input id="filter-half-semester" type="checkbox" class="filter-checkbox">
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 

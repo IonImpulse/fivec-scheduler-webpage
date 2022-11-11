@@ -14,7 +14,8 @@
   --perms: #d17dcd;
   --prereqs: #7995e0;
   --coreqs: #52bed1;
-  --conflicts: #e97272;
+  --conflicts: #ec3131;
+  --sub-term: #464646;
   --confirm: #c6ecc0;
   --deny: #e7bbbb;
   --padding: 10px;
@@ -72,6 +73,7 @@
   --prereqs: #4165c9;
   --coreqs: #2690a3;
   --conflicts: #bb4040;
+  --sub-term: rgb(34, 34, 34);
   --confirm: #59a150;
   --deny: #a75454;
   --text-alt: #131313;
@@ -471,6 +473,10 @@ canvas {
 
 .line-v.red-line {
   background-color: var(--course-closed);
+}
+
+.line-v.First {
+  transform: translate(-50%, 0%);
 }
 
 .highlight {
@@ -1346,7 +1352,8 @@ label {
 .perms-highlight,
 .conflicts-highlight,
 .status-highlight,
-.seats-highlight {
+.seats-highlight,
+.sub-term-highlight {
   color: #fff;
   border-radius: var(--roundedness);
   background-color: var(--background-main);
@@ -1373,6 +1380,10 @@ label {
 
 .conflicts-highlight {
   background-color: var(--conflicts);
+}
+
+.sub-term-highlight {
+  background-color: var(--sub-term);
 }
 
 #add-schedule {
@@ -1580,6 +1591,10 @@ h1 {
   width: 140px;
 }
 
+#half-semester-container {
+  width: 180px;
+}
+
 #filter-area {
   height: 30px;
 }
@@ -1628,6 +1643,19 @@ select *.option-class {
 .map-popup {
   font-family: var(--main-font);
   font-size: 12px;
+}
+
+.sub_term-First, .sub-term-Second {
+  font-size: .8em !important;
+}
+
+.sub_term-First {
+  width: 50%;
+}
+
+.sub_term-Second {
+  width: 50%;
+  transform: translate(100%, 0);
 }
 
 /* =============================

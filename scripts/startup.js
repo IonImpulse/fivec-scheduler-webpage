@@ -22,14 +22,14 @@ async function startup() {
     if (t_state.show_changelog) {
         showChangelog();
     }
-   
+
     await update;
     update_loop();
 
     // Create reusable web worker threads
     desc_worker = new Worker('scripts/workers/descriptions.js?v=1.16.8');
     searcher_worker = new Worker('scripts/workers/searcher.js?v=1.16.6');
-	searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.16.10');
+    searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.16.10');
     permutation_worker = new Worker('scripts/workers/permutations.js?v=1.16.6');
 
     // Start worker threads to generate descriptions + searcher
@@ -48,7 +48,7 @@ async function startup() {
 const schedule_element = document.getElementById("schedule-table");
 
 function timeLineLoop() {
-    setTimeout(function() {
+    setTimeout(function () {
         updateTimeLine();
         timeLineLoop();
     }, 100);
@@ -97,12 +97,12 @@ function setVisited() {
     localStorage.setItem('install-prompt', true);
 }
 
-async function updateDescAndSearcher(full=true) {
-    desc_worker.onmessage = function(e) {
+async function updateDescAndSearcher(full = true) {
+    desc_worker.onmessage = function (e) {
         state.descriptions = e.data;
     }
 
-    searcher_worker.onmessage = function(e) {
+    searcher_worker.onmessage = function (e) {
         state.courses = e.data;
     }
 
@@ -146,7 +146,7 @@ function generateGridTimes() {
 }
 
 // Generates days of the week
-function generateDays() {    
+function generateDays() {
     let divs = schedule_element.getElementsByClassName("day");
     while (divs.length > 0) {
         divs[0].remove()
@@ -201,7 +201,7 @@ function generateLines() {
     }
 }
 
-function updateSchedule(play_animation=false) {
+function updateSchedule(play_animation = false) {
 
     t_state.max_grid_rows = 0;
 
@@ -214,6 +214,7 @@ function updateSchedule(play_animation=false) {
         updateStarredCourses();
         updateCredits();
         generateGridTimes();
+        updateConflictedCourses();
 
         if (t_state.max_grid_rows == 0) {
             t_state.max_grid_rows = 350;
@@ -222,24 +223,24 @@ function updateSchedule(play_animation=false) {
         }
 
         // Delete the last few timings
-        let lines_to_delete = (350 - t_state.max_grid_rows)/20 - 1;
+        let lines_to_delete = (350 - t_state.max_grid_rows) / 20 - 1;
         for (let i = 0; i < lines_to_delete; i++) {
             let time_label = document.getElementById("time-" + (23 - i));
             if (time_label != undefined) {
                 time_label.remove();
             }
         }
-    
+
         //max_grid_rows = 350;
-    
-        schedule_element.style.gridTemplateRows = `35px repeat(${t_state.max_grid_rows}, 1fr) repeat(${350 - t_state.max_grid_rows}, .1fr)`;  
+
+        schedule_element.style.gridTemplateRows = `35px repeat(${t_state.max_grid_rows}, 1fr) repeat(${350 - t_state.max_grid_rows}, .1fr)`;
     });
 }
 
 async function clearSchedule(play_animation) {
     let course_divs = schedule_element.getElementsByClassName("course-schedule-block");
     let timing_lines = schedule_element.getElementsByClassName("popup-holder");
-    
+
 
     if (play_animation) {
         // First add remove animation class
@@ -254,7 +255,7 @@ async function clearSchedule(play_animation) {
         // Wait for animation to finish
         await sleep(190)
     }
-    
+
 
     while (course_divs[0]) {
         course_divs[0].parentNode.removeChild(course_divs[0]);
@@ -271,11 +272,11 @@ function removeAllChildren(element) {
     }
 }
 
-function createScheduleGridDivs(courses, loaded, filter_hidden=false, play_animation) {
+function createScheduleGridDivs(courses, loaded, filter_hidden = false, play_animation) {
     // Add new course divs
     let sanitized_courses = sanitizeCourseList(courses);
-    if (filter_hidden) { 
-        sanitized_courses = sanitized_courses.filter(course => !state.hidden_courses.includes(course.identifier)); 
+    if (filter_hidden) {
+        sanitized_courses = sanitized_courses.filter(course => !state.hidden_courses.includes(course.identifier));
     }
     let slow_index = 0;
     for (let i = 0; i < courses.length && slow_index < sanitized_courses.length; i++) {
@@ -286,7 +287,7 @@ function createScheduleGridDivs(courses, loaded, filter_hidden=false, play_anima
                 color += "CC";
             }
 
-            let course_div_list = createScheduleGridDiv(sanitized_courses[slow_index], color, set_max_grid_rows = true, low_z_index=false, play_animation);
+            let course_div_list = createScheduleGridDiv(sanitized_courses[slow_index], color, set_max_grid_rows = true, low_z_index = false, play_animation);
 
             for (let course_div of course_div_list) {
                 schedule_element.appendChild(course_div);
@@ -310,7 +311,7 @@ function updateLoadedCourses(play_animation) {
     }
 
     createScheduleGridDivs(getLoadedCourses(), false, true, play_animation);
-    
+
 }
 
 function updateLoadedCustomCourses() {
@@ -345,6 +346,9 @@ function timeToGrid(time) {
         });
     }
 
+    // Order resturn list by start_row
+    return_list.sort((a, b) => a.start_row - b.start_row);
+
     return return_list;
 }
 
@@ -368,9 +372,9 @@ function updateLoadedCourseLists() {
     new_schedule.innerText = "New schedule...";
     new_schedule.onclick = () => {
         addNewSchedule();
-    };  
+    };
 
-    
+
     for (let i = 0; i < state.schedules.length; i++) {
         el.appendChild(createLoadedCourseListDiv(state.schedules[i].name, state.schedules[i].color ?? colors[i % colors.length]));
 
@@ -390,18 +394,18 @@ function updateStarredCourses() {
 }
 
 function distanceLatLon(lat1, lon1, lat2, lon2, unit) {
-	var radlat1 = Math.PI * lat1/180
-	var radlat2 = Math.PI * lat2/180
-	var theta = lon1-lon2
-	var radtheta = Math.PI * theta/180
-	var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
-	dist = Math.acos(dist)
-	dist = dist * 180/Math.PI
-	dist = dist * 60 * 1.1515
-	if (unit=="K") { dist = dist * 1.609344 }
-	if (unit=="N") { dist = dist * 0.8684 }
-    if (unit=="F") { dist = dist * 5280}
-	return dist
+    var radlat1 = Math.PI * lat1 / 180
+    var radlat2 = Math.PI * lat2 / 180
+    var theta = lon1 - lon2
+    var radtheta = Math.PI * theta / 180
+    var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+    dist = Math.acos(dist)
+    dist = dist * 180 / Math.PI
+    dist = dist * 60 * 1.1515
+    if (unit == "K") { dist = dist * 1.609344 }
+    if (unit == "N") { dist = dist * 0.8684 }
+    if (unit == "F") { dist = dist * 5280 }
+    return dist
 }
 
 function updateDistanceLines(play_animation) {
@@ -411,7 +415,7 @@ function updateDistanceLines(play_animation) {
     for (let course of courses_with_timing) {
         for (let timing of course.displayed_timing) {
             let days = [];
-            
+
             for (let day of timing.days) {
                 days.push(dayToIndex(day) - 1)
             }
@@ -443,7 +447,7 @@ function updateDistanceLines(play_animation) {
             let course_b = day[i + 1];
             let course_b_key = `${course_b.timing.locations[0].school}-${course_b.timing.locations[0].building}`;
             let course_b_loc = state.locations[course_b_key];
-            
+
             if (course_a_loc != undefined && course_b_loc != undefined) {
                 if (course_a_loc[0] != undefined && course_b_loc[0] != undefined) {
                     if (course_a_loc[0] != "" && course_b_loc[0] != "") {
@@ -456,7 +460,7 @@ function updateDistanceLines(play_animation) {
             } else {
                 console.warn(`Location key ${course_a_key} is ${course_a_loc}\nLocation key ${course_b_key} is ${course_b_loc}\n`);
             }
-            
+
         }
     }
 }
@@ -472,7 +476,7 @@ function generateTimeLine(course_a, course_b, distance, play_animation) {
     let line_div = document.createElement("div");
     line_div.classList.add("line-v");
     line_div.classList.add("popup-holder");
-    
+
     if (course_a.course.sub_term != "") {
         line_div.classList.add(course_a.course.sub_term);
     } else if (course_b.course.sub_term != "") {
@@ -490,7 +494,7 @@ function generateTimeLine(course_a, course_b, distance, play_animation) {
     line_div.style.gridRowEnd = grid_row_end;
 
     // Create info popup
-    let displayed_distance = Math.ceil(Math.round(distance * 15)/10);
+    let displayed_distance = Math.ceil(Math.round(distance * 15) / 10);
 
     if (displayed_distance < 100) {
         displayed_distance = "less than 100";
@@ -504,14 +508,14 @@ function generateTimeLine(course_a, course_b, distance, play_animation) {
     if (grid_column > 4) {
         info_div_text.classList.add("other-side");
     }
-    
+
     let info_div_title = document.createElement("div");
     info_div_title.classList.add("popup-title");
     info_div_title.innerText = `Distance: ${displayed_distance} feet`
 
-    let walking_time = Math.ceil((distance * 1.5)/walking_feet_per_minute);
-    let skateboarding_time = Math.ceil((distance * 1.5)/skateboarding_feet_per_minute);
-    let biking_time = Math.ceil((distance * 1.5)/biking_feet_per_minute);
+    let walking_time = Math.ceil((distance * 1.5) / walking_feet_per_minute);
+    let skateboarding_time = Math.ceil((distance * 1.5) / skateboarding_feet_per_minute);
+    let biking_time = Math.ceil((distance * 1.5) / biking_feet_per_minute);
 
     // Calculate time between classes
     let time_end = course_a.timing.end_time;
@@ -520,11 +524,11 @@ function generateTimeLine(course_a, course_b, distance, play_animation) {
     let time_diff = timeDiffMins(time_end, time_start);
 
     // If it's less then the time between classes, then turn the line red
-    if (time_diff < walking_time + Math.max(2, walking_time/2)) {
+    if (time_diff < walking_time + Math.max(2, walking_time / 2)) {
         line_div.classList.add("red-line");
         info_div_text.innerHTML += `<b><i>Warning! There may not be enough time to walk between these classes!</i></b><br>`;
     }
-    
+
     info_div_text.appendChild(info_div_title);
 
     info_div_text.innerHTML += `Time between classes: <b>${time_diff}</b> minutes<br><br>`;
@@ -542,8 +546,8 @@ function generateTimeLine(course_a, course_b, distance, play_animation) {
     line_div.onmouseleave = function () {
         hidePopup(`#${id}`)
     };
-    
-    
+
+
     schedule_element.appendChild(line_div);
 }
 
@@ -565,7 +569,7 @@ function updateCredits() {
     const lists_title = document.getElementById("loaded-course-lists-title");
 
     let local_credits = sumCredits(getLoadedCourses().filter(course => !state.hidden_courses.includes(course.identifier)));
-    
+
     if (local_credits > 0) {
         let ending = "Credits";
 
@@ -576,6 +580,31 @@ function updateCredits() {
         loaded_title.innerText = `Courses Loaded - ${local_credits} ${ending}`;
     } else {
         loaded_title.innerText = `Courses Loaded`;
+    }
+}
+
+function updateConflictedCourses() {
+    // Go day by day, and check for conflicts
+    let conflicted_courses = {};
+
+    for (let course of getLoadedCourses()) {
+        conflicted_courses[course.identifier] = checkForConflicts(course, getLoadedCourses()).map(conflict => conflict.identifier);
+    }
+
+    for (let i = 0; i < 5; i++) {
+        let els = document.getElementsByClassName(`course-day-${i}`);
+
+        // Start at 90 to account for starting at 1
+        let width = 90;
+        
+        console.log(els);
+
+        for (let j = 0; j < els.length; j++) {
+            // Run through all elements, and check if they conflict with any other elements
+            // Assign longer one "base" class, and reduce the other by 10%
+            
+            
+        }
     }
 }
 
@@ -591,7 +620,7 @@ function sumCredits(courses) {
     }
 
     if (credits > 0) {
-        credits = (credits/100).toFixed(2);
+        credits = (credits / 100).toFixed(2);
     }
 
     return credits;
@@ -662,9 +691,9 @@ async function loadPossibleParams() {
 
         // Reset url so bookmarks don't get messed up
 
-        let obj = { Title: window.location.title, Url: window.location.href.split("?")[0] ?? window.location.href };  
+        let obj = { Title: window.location.title, Url: window.location.href.split("?")[0] ?? window.location.href };
 
-        history.pushState(obj, obj.Title, obj.Url);  
+        history.pushState(obj, obj.Title, obj.Url);
     }
 }
 

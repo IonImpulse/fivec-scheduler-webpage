@@ -95,7 +95,7 @@
   --settings-icon: url(../img/settings-dark.svg);
   --filters-icon: url(../img/filters-dark.svg);
   --map-icon: url(../img/map-dark.svg);
-  --hover-effect: 1.2;
+  --hover-effect: 1.1;
 }
 
 .noscript {
@@ -211,7 +211,7 @@ canvas {
     )
     0 100%/10ch 2px no-repeat;
   border: none;
-  background-color: var(--course-open);
+  color: var(--course-open);
   display: block;
   font: 5ch "JetBrains mono", consolas, monospace;
   letter-spacing: 0.5ch;
@@ -479,6 +479,14 @@ canvas {
   transform: translate(-50%, 0%);
 }
 
+.line-v.Second {
+  transform: translate(50%, 0%);
+}
+
+.line-v:hover {
+  border: 2px solid var(--text-main);
+}
+
 .highlight {
   background-color: var(--text-light);
   opacity: 0.1;
@@ -590,6 +598,7 @@ canvas {
 
 .course-search-result.course-loaded .checkbox {
   background-position: center;
+
 }
 
 .unselectable {
@@ -730,7 +739,7 @@ canvas {
 .seats-highlight {
   display: inline-block;
   font-weight: bold;
-  margin-right: 70px;
+  margin-right: 75px;
   min-width: 50px;
   text-align: center;
 }
@@ -774,8 +783,8 @@ canvas {
   display: grid;
   position: relative;
   grid-template-columns: 1fr 1fr 10fr 1fr;
-  margin-bottom: 8px;
-  margin-top: 8px;
+  margin-bottom: 6px;
+  margin-top: 6px;
   align-items: center;
 }
 
@@ -835,10 +844,21 @@ canvas {
   text-align: center;
   z-index: 1000;
   position: relative;
+  width: 100%;
+  transition: width 0s;
 }
 
 .starred-course {
   z-index: 1050;
+}
+
+.course-schedule-block.conflict {
+  opacity: 0.9;
+}
+
+.course-schedule-block.conflict:hover {
+  opacity: 1;
+  z-index: 1060;
 }
 
 .course-schedule-block .name {
@@ -902,7 +922,7 @@ canvas {
 }
 
 .delete-course {
-  background-color: #000;
+  background-color: #252525;
   border-radius: var(--roundedness);
   background-image: url(../img/delete.svg);
   background-size: 14px;
@@ -1057,12 +1077,16 @@ a:visited {
   margin-top: 1vh;
 }
 
-.delete-course:hover,
+
 .merge-course:hover,
 .visibility-button:hover,
 .settings-course:hover,
 #hide-install *:hover {
   filter: brightness(1.6);
+}
+
+.delete-course:hover {
+  filter: invert(1);
 }
 
 #course-info-table .timing,

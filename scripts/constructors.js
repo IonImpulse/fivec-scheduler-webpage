@@ -51,7 +51,6 @@ function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_i
         if (course.sub_term != "None") {
             course_div.className += ` sub_term-${course.sub_term}`;
         }
-        
 
         if (play_animation) {
             course_div.className += " add-animation";
@@ -119,6 +118,8 @@ function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_i
             
             // Add the div to the grid
             let cloned_div = course_div.cloneNode(true);
+            cloned_div.className += ` course-day-${layout.start_column - 2}`;
+
             // Set course behavior
             cloned_div.onclick = function () {
                 toggleCourseOverlay(course.identifier)

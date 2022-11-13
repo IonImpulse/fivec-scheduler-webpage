@@ -2545,6 +2545,7 @@ const changelog_popup = `
 		<li>Added mapping of daily paths to map</li>
 		<li>Added locate button to all courses</li>	
 		<li>Added delete button to displayed courses</li>
+		<li>Added half-semester course support</li>
 		<li>Fixed course hydration bug</li>
 	</ul>
 </div>

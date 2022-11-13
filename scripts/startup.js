@@ -600,8 +600,6 @@ function updateConflictedCourses() {
             return b.style.gridRowStart - a.style.gridRowStart;
         });
 
-        console.log(els);
-
         // Start at 90 to account for starting at 1
         let width = 100;
 
@@ -620,7 +618,6 @@ function updateConflictedCourses() {
             }            
 
             if (el.style.gridRowEnd > prev_el.style.gridRowStart) {
-                console.log("Conflict of " + el.id + " and " + prev_el.id);
                 prev_el.style.width = `${width}%`;
 
                 if (width > 60) {

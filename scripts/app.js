@@ -2002,9 +2002,68 @@ function buttonMap(course=null, path=null) {
 		marker.bindPopup(content, options = { maxHeight: 200, maxWidth: 400, className: "map-popup" });
 	}
 
+	// Color in day lines
+	let line_legend = document.getElementById("map-line-legend");
+
+	let i = 0;
+	const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+	for (let el of line_legend.children) {
+		el.style.backgroundColor = colors[i];
+
+		// Get courses for that day by checking if "days" contains the day
+		let courses = getLoadedCourses();
+		
+		courses = courses.filter(
+			course => course.timing.map(x => x.days).flat().includes(days[i])
+		);
+
+
+		// Sort by time
+		courses.sort((a, b) => {
+			let a_time = a.timing.filter(x => x.days.includes(days[i]))[0];
+			let b_time = b.timing.filter(x => x.days.includes(days[i]))[0];
+
+			return timeToMinutes(a_time.start_time) - timeToMinutes(b_time.start_time);
+		});
+
+		// Draw line from each course to the next
+
+		let prev_course = null;
+		for (let course of courses) {
+			let time = course.timing.filter(x => x.days.includes(days[i]))[0];
+
+			let loc = state.locations[`${time.location.school}-${time.location.building}`];
+
+			if (loc && loc[0] != "") {
+				let latlng = [loc[0].replaceAll(",", ""), loc[1].replaceAll(",", "")];
+
+				if (prev_course) {
+					let prev_time = prev_course.timing.filter(x => x.days.includes(days[i]))[0];
+
+					let prev_loc = state.locations[`${prev_time.location.school}-${prev_time.location.building}`];
+
+
+					if (prev_loc && prev_loc[0] != "") {
+						let prev_latlng = [prev_loc[0].replaceAll(",", ""), prev_loc[1].replaceAll(",", "")];
+
+						let line = L.polyline([prev_latlng, latlng], { color: colors[i], weight: 3}).addTo(map);
+
+						let content = `<b>${prev_course.identifier}</b><br>${prev_course.title}<br><br><b>${course.identifier}</b><br>${course.title}`;
+
+						line.bindPopup(content, options = { maxHeight: 200, maxWidth: 400, className: "map-popup" });
+					}
+				}
+
+				prev_course = course;
+			}
+		}
+
+		i++;
+	}
+
 	if (course) {
 		console.log("Focusing on course", course);
-		
+
 		let course_obj = state.courses.find(x => x.identifier == course);
 
 		let locs = [];
@@ -2063,14 +2122,27 @@ document.getElementById("schedule-table").addEventListener("click", function(e) 
 const map_popup =
 	`
 <div id="map-box">
-	<div id="map-search-box">
-		<input id="map-search" class="input" type="text" placeholder="Search for place or course...">
-		
-	</div>
-
 	<div id="map-legend">
 		<p>Click on a location to see the courses that meet there</h1>
 		<p>Red locations have courses in your schedule.</h1>
+	</div>
+
+	<div id="map-line-legend">
+		<div id="map-line-legend-0">
+			Monday Path
+		</div>
+		<div id="map-line-legend-1">
+			Tuesday Path
+		</div>
+		<div id="map-line-legend-2">
+			Wednesday Path
+		</div>
+		<div id="map-line-legend-3">
+			Thursday Path
+		</div>
+		<div id="map-line-legend-4">
+			Friday Path
+		</div>
 	</div>
 
 	<div id="map"></div>

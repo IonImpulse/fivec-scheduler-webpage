@@ -1661,26 +1661,11 @@ select *.option-class {
 }
 
 #map-box {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  grid-template-areas: "desc desc" "legend map";
   width: 100%;
   height: 100%;
   overflow: hidden;
-}
-
-#map-search-box {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 5px;
-}
-
-#map-search {
-  width: 40%;
 }
 
 #map-legend p {
@@ -1690,7 +1675,23 @@ select *.option-class {
 
 #map-legend {
   margin-bottom: 5px;
+  grid-area: desc;
+}
 
+#map-line-legend {
+  grid-area: legend;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  row-gap: 10px;
+}
+
+#map-line-legend * {
+  padding: var(--padding);
+  width: 80%;
+  border-radius: var(--roundedness);
+  color: var(--text-course-schedule);
 }
 
 .default-button.locate {

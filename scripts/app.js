@@ -2072,7 +2072,7 @@ function buttonMap(course=null, path=null) {
 			let key = `${time.location.school}-${time.location.building}`;
 			let loc = state.locations[key];
 
-			if (loc) {
+			if (loc && loc[0] != "") {
 				if (!locs.includes(loc)) {
 					locs.push(loc);
 				}
@@ -2539,12 +2539,13 @@ const new_schedule_popup = `
 
 const changelog_popup = `
 <div id="changelog-container">
-	<b>v1.16 Beta</b>
+	<b>v1.17 Beta</b>
 	<ul>
-		<li>Overall UI refinement</li>
-		<li>Hovering over a conflict tag when searching now displays the conflicting courses!</li>
-		<li>Permutation have been added! Click the <b>Permute</b> button to view all possible schedule alternatives.</li>
-		<li>Mapping has been added! Click the <b>Map</b> button to view a map of all your courses.</li>
+		<li>Added dynamic course resizing when courses conflict</li>
+		<li>Added mapping of daily paths to map</li>
+		<li>Added locate button to all courses</li>	
+		<li>Added delete button to displayed courses</li>
+		<li>Fixed course hydration bug</li>
 	</ul>
 </div>
 `;

@@ -1670,8 +1670,45 @@ select *.option-class {
   overflow: hidden;
 }
 
+#map-search-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+#map-search {
+  width: 40%;
+}
+
+#map-legend p {
+  margin: 0px;
+  font-size: 14px;
+}
+
+#map-legend {
+  margin-bottom: 5px;
+
+}
+
+.default-button.locate {
+  height: auto;
+  width: fit-content;
+  padding: 2px 5px;
+  padding-left: 25px;
+  background-image: var(--map-icon);
+  background-repeat: no-repeat;
+  background-position: 5px;
+  background-size: 15px;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+
 #map {
-  height: 70vh;
+  height: 60vh;
   width: 70vw;
 }
 

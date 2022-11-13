@@ -76,7 +76,7 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 			}		
 		}
 
-		timing += "</span>";
+		timing += `<br><button class='default-button locate' onclick='buttonMap(course="${course.identifier}")'>Locate</button></span>`;
 
 		course_desc_node += timing;
 

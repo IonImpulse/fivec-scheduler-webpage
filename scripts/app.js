@@ -1910,7 +1910,7 @@ function buttonPrevPermutation() {
 }
 
 
-function buttonMap() {
+function buttonMap(course=null, path=null) {
 	Swal.fire({
 		title: 'Map',
 		icon: '',
@@ -1931,7 +1931,7 @@ function buttonMap() {
 			`Done`,
 	});
 
-	var map = L.map('map').setView([34.1007613, -117.7117505], 16);
+	var map = L.map('map').setView([34.1007613, -117.7117505], 15);
 
 	L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,
@@ -2001,6 +2001,33 @@ function buttonMap() {
 
 		marker.bindPopup(content, options = { maxHeight: 200, maxWidth: 400, className: "map-popup" });
 	}
+
+	if (course) {
+		console.log("Focusing on course", course);
+		
+		let course_obj = state.courses.find(x => x.identifier == course);
+
+		let locs = [];
+
+		for (let time of course_obj.timing) {
+			let key = `${time.location.school}-${time.location.building}`;
+			let loc = state.locations[key];
+
+			if (loc) {
+				if (!locs.includes(loc)) {
+					locs.push(loc);
+				}
+			}
+		}
+
+		let bounds = [];
+
+		for (let loc of locs) {
+			bounds.push([loc[0].replaceAll(",", ""), loc[1].replaceAll(",", "")]);
+		}
+
+		map.fitBounds(bounds);
+	}
 }
 
 function schoolToReadable(school) {
@@ -2036,12 +2063,17 @@ document.getElementById("schedule-table").addEventListener("click", function(e) 
 const map_popup =
 	`
 <div id="map-box">
-	<div id="map"></div>
+	<div id="map-search-box">
+		<input id="map-search" class="input" type="text" placeholder="Search for place or course...">
+		
+	</div>
 
 	<div id="map-legend">
-		<h1>Click on a location to see the courses that meet there</h1>
-		<h1>Red locations have courses in your schedule.</h1>
+		<p>Click on a location to see the courses that meet there</h1>
+		<p>Red locations have courses in your schedule.</h1>
 	</div>
+
+	<div id="map"></div>
 </div>
 `;
 

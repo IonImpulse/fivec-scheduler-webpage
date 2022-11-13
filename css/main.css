@@ -14,7 +14,8 @@
   --perms: #d17dcd;
   --prereqs: #7995e0;
   --coreqs: #52bed1;
-  --conflicts: #e97272;
+  --conflicts: #ec3131;
+  --sub-term: #464646;
   --confirm: #c6ecc0;
   --deny: #e7bbbb;
   --padding: 10px;
@@ -72,6 +73,7 @@
   --prereqs: #4165c9;
   --coreqs: #2690a3;
   --conflicts: #bb4040;
+  --sub-term: rgb(34, 34, 34);
   --confirm: #59a150;
   --deny: #a75454;
   --text-alt: #131313;
@@ -93,7 +95,7 @@
   --settings-icon: url(../img/settings-dark.svg);
   --filters-icon: url(../img/filters-dark.svg);
   --map-icon: url(../img/map-dark.svg);
-  --hover-effect: 1.2;
+  --hover-effect: 1.1;
 }
 
 .noscript {
@@ -209,7 +211,7 @@ canvas {
     )
     0 100%/10ch 2px no-repeat;
   border: none;
-  background-color: var(--course-open);
+  color: var(--course-open);
   display: block;
   font: 5ch "JetBrains mono", consolas, monospace;
   letter-spacing: 0.5ch;
@@ -473,6 +475,18 @@ canvas {
   background-color: var(--course-closed);
 }
 
+.line-v.First {
+  transform: translate(-50%, 0%);
+}
+
+.line-v.Second {
+  transform: translate(50%, 0%);
+}
+
+.line-v:hover {
+  border: 2px solid var(--text-main);
+}
+
 .highlight {
   background-color: var(--text-light);
   opacity: 0.1;
@@ -538,7 +552,7 @@ canvas {
   cursor: pointer;
   font: 15px/15px var(--main-font), sans-serif;
   margin: 10px;
-  padding: var(--padding);
+  padding: var(--padding-medium);
   padding-left: 30px;
   text-align: left;
   text-overflow: ellipsis;
@@ -584,6 +598,7 @@ canvas {
 
 .course-search-result.course-loaded .checkbox {
   background-position: center;
+
 }
 
 .unselectable {
@@ -724,7 +739,7 @@ canvas {
 .seats-highlight {
   display: inline-block;
   font-weight: bold;
-  margin-right: 70px;
+  margin-right: 75px;
   min-width: 50px;
   text-align: center;
 }
@@ -768,8 +783,8 @@ canvas {
   display: grid;
   position: relative;
   grid-template-columns: 1fr 1fr 10fr 1fr;
-  margin-bottom: 8px;
-  margin-top: 8px;
+  margin-bottom: 6px;
+  margin-top: 6px;
   align-items: center;
 }
 
@@ -829,10 +844,21 @@ canvas {
   text-align: center;
   z-index: 1000;
   position: relative;
+  width: 100%;
+  transition: width 0s;
 }
 
 .starred-course {
   z-index: 1050;
+}
+
+.course-schedule-block.conflict {
+  opacity: 0.9;
+}
+
+.course-schedule-block.conflict:hover {
+  opacity: 1;
+  z-index: 1060;
 }
 
 .course-schedule-block .name {
@@ -896,19 +922,26 @@ canvas {
 }
 
 .delete-course {
-  background-color: #000;
   border-radius: var(--roundedness);
   background-image: url(../img/delete.svg);
-  background-size: 14px;
   background-repeat: no-repeat;
   background-position: center;
-  height: 20px;
-  width: 20px;
+  height: 60%;
+  width: 100%;
   grid-column-start: 4;
   grid-column-end: 5;
   position: absolute;
   right: 0;
-  top: calc( 50% - 10px );
+}
+
+.delete-course.bottom-right {
+  position: absolute;
+  bottom: 6px;
+  right: 6px;
+  top: unset;
+  height: 1vmax;
+  width: 1vmax;
+  background-size: 70%;
 }
 
 .delete-course.course-list {
@@ -1051,12 +1084,16 @@ a:visited {
   margin-top: 1vh;
 }
 
-.delete-course:hover,
+
 .merge-course:hover,
 .visibility-button:hover,
 .settings-course:hover,
 #hide-install *:hover {
   filter: brightness(1.6);
+}
+
+.delete-course:hover {
+  filter: invert(1);
 }
 
 #course-info-table .timing,
@@ -1346,13 +1383,18 @@ label {
 .perms-highlight,
 .conflicts-highlight,
 .status-highlight,
-.seats-highlight {
+.seats-highlight,
+.sub-term-highlight {
   color: #fff;
   border-radius: var(--roundedness);
   background-color: var(--background-main);
   padding: var(--padding-small);
   margin-left: 5px;
   font-size: .9em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 20px;
 }
 
 .seats-highlight {
@@ -1373,6 +1415,10 @@ label {
 
 .conflicts-highlight {
   background-color: var(--conflicts);
+}
+
+.sub-term-highlight {
+  background-color: var(--sub-term);
 }
 
 #add-schedule {
@@ -1580,6 +1626,10 @@ h1 {
   width: 140px;
 }
 
+#half-semester-container {
+  width: 180px;
+}
+
 #filter-area {
   height: 30px;
 }
@@ -1611,23 +1661,77 @@ select *.option-class {
 }
 
 #map-box {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  grid-template-areas: "desc desc" "legend map";
   width: 100%;
   height: 100%;
   overflow: hidden;
+  grid-template-columns: 160px 1fr;
 }
 
+#map-legend p {
+  margin: 0px;
+  font-size: 14px;
+}
+
+#map-legend {
+  margin-bottom: 10px;
+  grid-area: desc;
+}
+
+#map-line-legend {
+  grid-area: legend;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  row-gap: 10px;
+  font-size: 12px;
+  width: 100%;
+}
+
+#map-line-legend * {
+  width: 70%;
+  padding: var(--padding);
+  border-radius: var(--roundedness);
+  color: var(--text-course-schedule);
+}
+
+.default-button.locate {
+  height: auto;
+  width: fit-content;
+  padding: 2px 5px;
+  padding-left: 25px;
+  background-image: var(--map-icon);
+  background-repeat: no-repeat;
+  background-position: 5px;
+  background-size: 15px;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+
 #map {
-  height: 70vh;
+  height: 60vh;
   width: 70vw;
 }
 
 .map-popup {
   font-family: var(--main-font);
   font-size: 12px;
+}
+
+.sub_term-First, .sub-term-Second {
+  font-size: .8em !important;
+}
+
+.sub_term-First {
+  width: 50%;
+}
+
+.sub_term-Second {
+  width: 50%;
+  transform: translate(100%, 0);
 }
 
 /* =============================
@@ -1733,7 +1837,8 @@ select *.option-class {
   #course-search-desc {
     padding: 0;
     width: 100%;
-    height: 100%;
+    height: 30vh;
+    overflow-y: scroll;
   }
 
   .swal2-info {
@@ -1741,8 +1846,8 @@ select *.option-class {
   }
 
   .align-right {
-    margin-bottom: 5px;
-    margin-top: 10px;
+    margin-bottom: 0px;
+    margin-top: 5px;
   }
 
   .day {
@@ -1829,8 +1934,9 @@ select *.option-class {
   }
 
   .course-search-result {
-    height: 50px;
     row-gap: 0px;
+    font-size: .7em;
+    overflow: hidden;
   }
 
   #fader {
@@ -1846,7 +1952,7 @@ select *.option-class {
   }
 
   #search-container {
-    height: 140px;
+    height: 80px;
     display: grid;
     grid-template-columns: 3fr 1fr 1fr;
     grid-template-areas:
@@ -1875,8 +1981,8 @@ select *.option-class {
     grid-area: search-box;
     width: 60vw;
     margin: 0 auto;
-    margin-bottom: 10px;
-    height: 60px;
+    margin-bottom: 5px;
+    height: 30px;
   }
 
   .swal2-title {
@@ -1885,5 +1991,10 @@ select *.option-class {
   
   .swal2-html-container {
     overflow-y: scroll !important;
+    margin: 5px !important;
+  }
+
+  #course-search-results > b {
+    font-size: .6em;
   }
 }

@@ -7,7 +7,7 @@ Contains ALL global variables used.
 
 // Version number
 // Will delete localStorage variables when updating
-const current_version = '1.16.6';
+const current_version = '1.17.0';
 
 // Average paces for distance calcs
 const walking_feet_per_minute = 328;
@@ -102,15 +102,15 @@ const colors_light = [
 ];
 
 const colors_dark = [
-    "#2c5b8e",
-    "#499112",
-    "#b86c25",
-    "#ac4f4f",
-    "#86378d",
-    "#ac4f8d",
-    "#933535",
-    "#396F34",
-    "#3d7991",
+    "#3871AF",
+    "#5AB117",
+    "#D88232",
+    "#CF5D5D",
+    "#AD48B6",
+    "#D364AE",
+    "#BB4444",
+    "#4D9747",
+    "#52A3C4",
 ];
 
 

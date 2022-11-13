@@ -745,6 +745,17 @@ async function updateButtonFilters() {
 		});
 	}
 
+	// Get sub terms
+	let sub_term_check = document.getElementById("filter-half-semester").checked;
+
+	if (sub_term_check) {
+		filters.push({
+			key: "sub_term",
+			value: "some",
+			type: ":"
+		});
+	}
+
 	state.button_filters = filters;
 	await backgroundCourseSearch();
 }
@@ -1899,7 +1910,7 @@ function buttonPrevPermutation() {
 }
 
 
-function buttonMap() {
+function buttonMap(course=null, path=null) {
 	Swal.fire({
 		title: 'Map',
 		icon: '',
@@ -1920,7 +1931,7 @@ function buttonMap() {
 			`Done`,
 	});
 
-	var map = L.map('map').setView([34.1007613, -117.7117505], 16);
+	var map = L.map('map').setView([34.1007613, -117.7117505], 15);
 
 	L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,
@@ -1990,6 +2001,92 @@ function buttonMap() {
 
 		marker.bindPopup(content, options = { maxHeight: 200, maxWidth: 400, className: "map-popup" });
 	}
+
+	// Color in day lines
+	let line_legend = document.getElementById("map-line-legend");
+
+	let i = 0;
+	const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+	for (let el of line_legend.children) {
+		el.style.backgroundColor = colors[i];
+
+		// Get courses for that day by checking if "days" contains the day
+		let courses = getLoadedCourses();
+		
+		courses = courses.filter(
+			course => course.timing.map(x => x.days).flat().includes(days[i])
+		);
+
+
+		// Sort by time
+		courses.sort((a, b) => {
+			let a_time = a.timing.filter(x => x.days.includes(days[i]))[0];
+			let b_time = b.timing.filter(x => x.days.includes(days[i]))[0];
+
+			return timeToMinutes(a_time.start_time) - timeToMinutes(b_time.start_time);
+		});
+
+		// Draw line from each course to the next
+
+		let prev_course = null;
+		for (let course of courses) {
+			let time = course.timing.filter(x => x.days.includes(days[i]))[0];
+
+			let loc = state.locations[`${time.location.school}-${time.location.building}`];
+
+			if (loc && loc[0] != "") {
+				let latlng = [loc[0].replaceAll(",", ""), loc[1].replaceAll(",", "")];
+
+				if (prev_course) {
+					let prev_time = prev_course.timing.filter(x => x.days.includes(days[i]))[0];
+
+					let prev_loc = state.locations[`${prev_time.location.school}-${prev_time.location.building}`];
+
+
+					if (prev_loc && prev_loc[0] != "") {
+						let prev_latlng = [prev_loc[0].replaceAll(",", ""), prev_loc[1].replaceAll(",", "")];
+
+						let line = L.polyline([prev_latlng, latlng], { color: colors[i], weight: 3}).addTo(map);
+
+						let content = `<b>${prev_course.identifier}</b><br>${prev_course.title}<br><br><b>${course.identifier}</b><br>${course.title}`;
+
+						line.bindPopup(content, options = { maxHeight: 200, maxWidth: 400, className: "map-popup" });
+					}
+				}
+
+				prev_course = course;
+			}
+		}
+
+		i++;
+	}
+
+	if (course) {
+		console.log("Focusing on course", course);
+
+		let course_obj = state.courses.find(x => x.identifier == course);
+
+		let locs = [];
+
+		for (let time of course_obj.timing) {
+			let key = `${time.location.school}-${time.location.building}`;
+			let loc = state.locations[key];
+
+			if (loc && loc[0] != "") {
+				if (!locs.includes(loc)) {
+					locs.push(loc);
+				}
+			}
+		}
+
+		let bounds = [];
+
+		for (let loc of locs) {
+			bounds.push([loc[0].replaceAll(",", ""), loc[1].replaceAll(",", "")]);
+		}
+
+		map.fitBounds(bounds);
+	}
 }
 
 function schoolToReadable(school) {
@@ -2025,12 +2122,30 @@ document.getElementById("schedule-table").addEventListener("click", function(e) 
 const map_popup =
 	`
 <div id="map-box">
-	<div id="map"></div>
-
 	<div id="map-legend">
-		<h1>Click on a location to see the courses that meet there</h1>
-		<h1>Red locations have courses in your schedule.</h1>
+		<p>Click on a location to see the courses that meet there</h1>
+		<p>Red locations have courses in your schedule.</h1>
 	</div>
+
+	<div id="map-line-legend">
+		<div id="map-line-legend-0">
+			Monday Path
+		</div>
+		<div id="map-line-legend-1">
+			Tuesday Path
+		</div>
+		<div id="map-line-legend-2">
+			Wednesday Path
+		</div>
+		<div id="map-line-legend-3">
+			Thursday Path
+		</div>
+		<div id="map-line-legend-4">
+			Friday Path
+		</div>
+	</div>
+
+	<div id="map"></div>
 </div>
 `;
 
@@ -2290,6 +2405,14 @@ const search_popup = `
 			</div>
 		</div>
 
+		<div class="filter-item">
+			<div class="filter-checkboxes">
+				<div id="half-semester-container">
+					<label class="filter-label" for="filter-half-semester">Half-Semester</label>
+					<input id="filter-half-semester" type="checkbox" class="filter-checkbox">
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 
@@ -2416,12 +2539,13 @@ const new_schedule_popup = `
 
 const changelog_popup = `
 <div id="changelog-container">
-	<b>v1.16 Beta</b>
+	<b>v1.17 Beta</b>
 	<ul>
-		<li>Overall UI refinement</li>
-		<li>Hovering over a conflict tag when searching now displays the conflicting courses!</li>
-		<li>Permutation have been added! Click the <b>Permute</b> button to view all possible schedule alternatives.</li>
-		<li>Mapping has been added! Click the <b>Map</b> button to view a map of all your courses.</li>
+		<li>Added dynamic course resizing when courses conflict</li>
+		<li>Added mapping of daily paths to map</li>
+		<li>Added locate button to all courses</li>	
+		<li>Added delete button to displayed courses</li>
+		<li>Fixed course hydration bug</li>
 	</ul>
 </div>
 `;

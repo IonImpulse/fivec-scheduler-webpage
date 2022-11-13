@@ -134,8 +134,16 @@ function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_i
             star_button.onclick = function () {
                 starCourse(course.identifier);
             };
+
+            // Create the delete button
+            let delete_button = document.createElement("div");
+            delete_button.className = "delete-course on-grid bottom-right";
+            delete_button.onclick = function () {
+                deleteCourse(event, course.identifier);
+            };
     
             cloned_div.appendChild(star_button);
+            cloned_div.appendChild(delete_button);
 
             return_list.push(cloned_div);
         }

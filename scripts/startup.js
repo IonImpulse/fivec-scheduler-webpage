@@ -547,6 +547,10 @@ function generateTimeLine(course_a, course_b, distance, play_animation) {
         hidePopup(`#${id}`)
     };
 
+    line_div.onclick = function () {
+        buttonMap();
+    };
+
 
     schedule_element.appendChild(line_div);
 }
@@ -584,27 +588,19 @@ function updateCredits() {
 }
 
 function updateConflictedCourses() {
-    // Go day by day, and check for conflicts
-    let conflicted_courses = {};
-
-    for (let course of getLoadedCourses()) {
-        conflicted_courses[course.identifier] = checkForConflicts(course, getLoadedCourses()).map(conflict => conflict.identifier);
-    }
-
     for (let i = 0; i < 5; i++) {
         let els = document.getElementsByClassName(`course-day-${i}`);
-
-        
-        
-        console.log(els);
-
+       
+    
         // Sort els by grid_start
         els = Array.from(els).sort((a, b) => {
             if (a.style.gridRowStart == b.style.gridRowStart) {
-                return a.style.gridColumnEnd - b.style.gridColumnEnd;
+                return b.style.gridColumnEnd - a.style.gridColumnEnd;
             }
-            return a.style.gridRowStart - b.style.gridRowStart;
+            return b.style.gridRowStart - a.style.gridRowStart;
         });
+
+        console.log(els);
 
         // Start at 90 to account for starting at 1
         let width = 100;
@@ -615,19 +611,25 @@ function updateConflictedCourses() {
         // and add the 'conflict' class to both elements. 
         // If it doesn't, set the width to 100
         for (let j = 1; j < els.length; j++) {
-            // Skip if el contains class sub_term-First or sub_term-Second
-            if (els[j].classList.contains("sub_term-First") || els[j].classList.contains("sub_term-Second")) {
-                continue;
-            }
-
             let el = els[j];
             let prev_el = els[j - 1];
 
-            if (el.style.gridRowStart < prev_el.style.gridRowEnd) {
-                width -= 10;
+            // Skip if el contains class sub_term-First or sub_term-Second
+            if (els[j].classList.contains("sub_term-First") || els[j].classList.contains("sub_term-Second")) {
+                continue;
+            }            
+
+            if (el.style.gridRowEnd > prev_el.style.gridRowStart) {
+                console.log("Conflict of " + el.id + " and " + prev_el.id);
+                prev_el.style.width = `${width}%`;
+
+                if (width > 60) {
+                    width -= 20;
+                } else {
+                    width -= 10;
+                }
 
                 el.style.width = `${width}%`;
-                prev_el.style.width = `${width}%`;
                 el.classList.add("conflict");
                 prev_el.classList.add("conflict");
 

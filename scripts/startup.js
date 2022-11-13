@@ -594,16 +594,46 @@ function updateConflictedCourses() {
     for (let i = 0; i < 5; i++) {
         let els = document.getElementsByClassName(`course-day-${i}`);
 
-        // Start at 90 to account for starting at 1
-        let width = 90;
+        
         
         console.log(els);
 
-        for (let j = 0; j < els.length; j++) {
-            // Run through all elements, and check if they conflict with any other elements
-            // Assign longer one "base" class, and reduce the other by 10%
-            
-            
+        // Sort els by grid_start
+        els = Array.from(els).sort((a, b) => {
+            if (a.style.gridRowStart == b.style.gridRowStart) {
+                return a.style.gridColumnEnd - b.style.gridColumnEnd;
+            }
+            return a.style.gridRowStart - b.style.gridRowStart;
+        });
+
+        // Start at 90 to account for starting at 1
+        let width = 100;
+
+        // Go through each element and check if it
+        // conflicts with the element before it. If it does,
+        // Set the width to 'width', subtract 10 from width,
+        // and add the 'conflict' class to both elements. 
+        // If it doesn't, set the width to 100
+        for (let j = 1; j < els.length; j++) {
+            // Skip if el contains class sub_term-First or sub_term-Second
+            if (els[j].classList.contains("sub_term-First") || els[j].classList.contains("sub_term-Second")) {
+                continue;
+            }
+
+            let el = els[j];
+            let prev_el = els[j - 1];
+
+            if (el.style.gridRowStart < prev_el.style.gridRowEnd) {
+                width -= 10;
+
+                el.style.width = `${width}%`;
+                prev_el.style.width = `${width}%`;
+                el.classList.add("conflict");
+                prev_el.classList.add("conflict");
+
+            } else {
+                width = 100;
+            }
         }
     }
 }

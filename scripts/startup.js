@@ -590,8 +590,8 @@ function updateCredits() {
 function updateConflictedCourses() {
     for (let i = 0; i < 5; i++) {
         let els = document.getElementsByClassName(`course-day-${i}`);
-       
-    
+
+
         // Sort els by grid_start
         els = Array.from(els).sort((a, b) => {
             if (a.style.gridRowStart == b.style.gridRowStart) {
@@ -615,9 +615,9 @@ function updateConflictedCourses() {
             // Skip if el contains class sub_term-First or sub_term-Second
             if (els[j].classList.contains("sub_term-First") || els[j].classList.contains("sub_term-Second")) {
                 continue;
-            }            
+            }
 
-            if (el.style.gridRowEnd > prev_el.style.gridRowStart) {
+            if (el.style.gridRowEnd > prev_el.style.gridRowStart || (el.style.gridRowStart == prev_el.style.gridRowStart && el.style.gridRowEnd == prev_el.style.gridRowEnd)) {
                 prev_el.style.width = `${width}%`;
 
                 if (width > 60) {

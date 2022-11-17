@@ -595,7 +595,7 @@ function updateConflictedCourses() {
         // Sort els by grid_start
         els = Array.from(els).sort((a, b) => {
             if (a.style.gridRowStart == b.style.gridRowStart) {
-                return b.style.gridColumnEnd - a.style.gridColumnEnd;
+                return b.style.gridRowEnd - a.style.gridRowEnd;
             }
             return b.style.gridRowStart - a.style.gridRowStart;
         });
@@ -617,7 +617,7 @@ function updateConflictedCourses() {
                 continue;
             }
 
-            if (el.style.gridRowEnd > prev_el.style.gridRowStart || (el.style.gridRowStart == prev_el.style.gridRowStart && el.style.gridRowEnd == prev_el.style.gridRowEnd)) {
+            if (Number(el.style.gridRowEnd) > Number(prev_el.style.gridRowStart) || (Number(el.style.gridRowStart) === Number(prev_el.style.gridRowStart) && Number(el.style.gridRowEnd) === Number(prev_el.style.gridRowEnd))) {
                 prev_el.style.width = `${width}%`;
 
                 if (width > 60) {

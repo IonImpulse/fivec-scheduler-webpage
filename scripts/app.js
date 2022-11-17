@@ -1037,7 +1037,7 @@ async function backgroundCourseSearch(full = false) {
 		postProcessSearch(document.getElementById("course-input").value, html_courses);
 	}
 
-	searching_worker.postMessage([input.value, state.courses, colors, state.settings.hmc_mode, getLoadedCourses(), state.button_filters, category_lookup]);
+	searching_worker.postMessage([input.value, state.courses, colors, state.settings.hmc_mode, getCheckedCourses(), state.button_filters, category_lookup]);
 }
 
 async function sleep(ms) {
@@ -2539,14 +2539,11 @@ const new_schedule_popup = `
 
 const changelog_popup = `
 <div id="changelog-container">
-	<b>v1.17 Beta</b>
+	<b>v1.18 Beta</b>
 	<ul>
-		<li>Added dynamic course resizing when courses conflict</li>
-		<li>Added mapping of daily paths to map</li>
-		<li>Added locate button to all courses</li>	
-		<li>Added delete button to displayed courses</li>
-		<li>Added half-semester course support</li>
-		<li>Fixed course hydration bug</li>
+		<li>Fixed conflict resizing bug</li>
+		<li>Fixed unchecked courses still counting as conflicting when searching for conflicts</li>
+		<li>Known bug: adding courses does not work in Firefox Private mode due to a browser limitation</li>
 	</ul>
 </div>
 `;

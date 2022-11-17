@@ -2,6 +2,10 @@ function getLoadedCourses() {
     return (state.schedules[state.loaded] ?? {courses: []}).courses
 }
 
+function getCheckedCourses() {
+	return (state.schedules[state.loaded] ?? {courses: []}).courses.filter(x => state.hidden_courses.indexOf(x.identifier) == -1);
+}
+
 function setLoadedCourses(courses) {
     state.schedules[state.loaded].courses = courses;
 }

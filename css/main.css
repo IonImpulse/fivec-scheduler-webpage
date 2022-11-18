@@ -1710,6 +1710,11 @@ select *.option-class {
   margin-top: 5px;
 }
 
+.clickable-text.rmp {
+  font-weight: bold;
+  font-style: normal;
+  cursor: pointer;
+}
 
 #map {
   height: 60vh;

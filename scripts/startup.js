@@ -27,10 +27,10 @@ async function startup() {
     update_loop();
 
     // Create reusable web worker threads
-    desc_worker = new Worker('scripts/workers/descriptions.js?v=1.17.0');
-    searcher_worker = new Worker('scripts/workers/searcher.js?v=1.17.0');
-    searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.17.0');
-    permutation_worker = new Worker('scripts/workers/permutations.js?v=1.17.0');
+    desc_worker = new Worker('scripts/workers/descriptions.js?v=1.18.0');
+    searcher_worker = new Worker('scripts/workers/searcher.js?v=1.18.0');
+    searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.18.0');
+    permutation_worker = new Worker('scripts/workers/permutations.js?v=1.18.0');
 
     // Start worker threads to generate descriptions + searcher
     updateDescAndSearcher(false);
@@ -595,7 +595,7 @@ function updateConflictedCourses() {
         // Sort els by grid_start
         els = Array.from(els).sort((a, b) => {
             if (a.style.gridRowStart == b.style.gridRowStart) {
-                return b.style.gridColumnEnd - a.style.gridColumnEnd;
+                return b.style.gridRowEnd - a.style.gridRowEnd;
             }
             return b.style.gridRowStart - a.style.gridRowStart;
         });
@@ -617,7 +617,7 @@ function updateConflictedCourses() {
                 continue;
             }
 
-            if (el.style.gridRowEnd > prev_el.style.gridRowStart || (el.style.gridRowStart == prev_el.style.gridRowStart && el.style.gridRowEnd == prev_el.style.gridRowEnd)) {
+            if (Number(el.style.gridRowEnd) > Number(prev_el.style.gridRowStart) || (Number(el.style.gridRowStart) === Number(prev_el.style.gridRowStart) && Number(el.style.gridRowEnd) === Number(prev_el.style.gridRowEnd))) {
                 prev_el.style.width = `${width}%`;
 
                 if (width > 60) {

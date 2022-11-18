@@ -1037,7 +1037,7 @@ async function backgroundCourseSearch(full = false) {
 		postProcessSearch(document.getElementById("course-input").value, html_courses);
 	}
 
-	searching_worker.postMessage([input.value, state.courses, colors, state.settings.hmc_mode, getLoadedCourses(), state.button_filters, category_lookup]);
+	searching_worker.postMessage([input.value, state.courses, colors, state.settings.hmc_mode, getCheckedCourses(), state.button_filters, category_lookup]);
 }
 
 async function sleep(ms) {
@@ -2116,6 +2116,29 @@ document.getElementById("schedule-table").addEventListener("click", function(e) 
 
 });
 
+function rmp(instructor_name, course_identifier) {
+	// Delete middle name
+	instructor_name = instructor_name.split(" ");
+	instructor_name = instructor_name[0] + " " + instructor_name[instructor_name.length - 1];
+	instructor_name = instructor_name.replaceAll(" ", "+");
+	
+	const school_ids = {
+		"HarveyMudd": "U2Nob29sLTQwMA==",
+		"Scripps": "U2Nob29sLTg4OQ==",
+		"Pitzer": "U2Nob29sLTc2OA==",
+		"ClaremontMckenna": "U2Nob29sLTIzNA==",
+		"Pomona": "U2Nob29sLTc3NA=="
+	}	
+
+	let course = state.courses.find(x => x.identifier == course_identifier);
+
+	let school_id = school_ids[course.timing[0].location.school];
+
+	let url = `https://www.ratemyprofessors.com/search/teachers?query=${instructor_name}&sid=${school_id ?? ""}`;
+
+	window.open(url, "_blank");
+}
+
 // *****
 // HTML Popups
 // *****
@@ -2539,14 +2562,13 @@ const new_schedule_popup = `
 
 const changelog_popup = `
 <div id="changelog-container">
-	<b>v1.17 Beta</b>
+	<b>v1.18 Beta</b>
 	<ul>
-		<li>Added dynamic course resizing when courses conflict</li>
-		<li>Added mapping of daily paths to map</li>
-		<li>Added locate button to all courses</li>	
-		<li>Added delete button to displayed courses</li>
-		<li>Added half-semester course support</li>
-		<li>Fixed course hydration bug</li>
+		<li>Added RateMyProfessor links to course descriptions</li>
+		<li>Fixed conflict resizing bug</li>
+		<li>Fixed course locate button placement bug</li>
+		<li>Fixed unchecked courses still counting as conflicting when searching for conflicts</li>
+		<li>Known bug: adding courses does not work in Firefox Private mode due to a browser limitation</li>
 	</ul>
 </div>
 `;

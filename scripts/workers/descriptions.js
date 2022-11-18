@@ -76,7 +76,7 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 			}		
 		}
 
-		timing += `<br><button class='default-button locate' onclick='buttonMap(course="${course.identifier}")'>Locate</button></span>`;
+		timing += `<button class='default-button locate' onclick='buttonMap(course="${course.identifier}")'>Locate</button></span>`;
 
 		course_desc_node += timing;
 
@@ -97,11 +97,13 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 
 		let instructor_node = "<div";
 		instructor_node += " class=\"instructors\">";
-		instructor_node += `<b>Instructors:</b> <i>`;
+		instructor_node += `<b>Instructors:</b> `;
 
 		for (let instructor of course.instructors) {
-			instructor_node += `<span class="clickable-text" onclick="addSearchFilter(\'with:${instructor.trim().replace(/\s/g, "-")}\')">${instructor}</span>`;
-			
+			instructor_node += `<span class="clickable-text" onclick="addSearchFilter(\'with:${instructor.trim().replace(/\s/g, "-")}\')"><i>${instructor}</i></span>`;
+			instructor_node += "<span> | </span>";
+			instructor_node += `<span class='clickable-text rmp' onclick='rmp("${instructor.trim()}", "${course.identifier}")'>RMP</span>`;
+
 			if (instructor != course.instructors[course.instructors.length - 1] && course.instructors.length > 1) {
 				if (course.instructors.length == 2) {
 					instructor_node += " & ";
@@ -111,7 +113,7 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 			}
 		}
 		
-		instructor_node += `</i></div>`;
+		instructor_node += `</div>`;
 
 		let desc_node = "<div";
 		desc_node += " class=\"description\">";

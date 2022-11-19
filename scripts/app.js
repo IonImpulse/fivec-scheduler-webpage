@@ -2562,13 +2562,9 @@ const new_schedule_popup = `
 
 const changelog_popup = `
 <div id="changelog-container">
-	<b>v1.18 Beta</b>
+	<b>v1.19 Beta</b>
 	<ul>
-		<li>Added RateMyProfessor links to course descriptions</li>
-		<li>Fixed conflict resizing bug</li>
-		<li>Fixed course locate button placement bug</li>
-		<li>Fixed unchecked courses still counting as conflicting when searching for conflicts</li>
-		<li>Known bug: adding courses does not work in Firefox Private mode due to a browser limitation</li>
+		
 	</ul>
 </div>
 `;

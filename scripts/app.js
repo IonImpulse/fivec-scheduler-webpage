@@ -485,7 +485,7 @@ async function buttonSearch() {
 		// Update area filters
 		const filter_areas = document.getElementById("filter-area");
 
-		for (let key of Object.keys(category_lookup)) {
+		for (let key of t_state.areas) {
 			// Create element
 			const to_append = `<option value="${key}">${key}</option>`;
 
@@ -1037,7 +1037,7 @@ async function backgroundCourseSearch(full = false) {
 		postProcessSearch(document.getElementById("course-input").value, html_courses);
 	}
 
-	searching_worker.postMessage([input.value, state.courses, colors, state.settings.hmc_mode, getCheckedCourses(), state.button_filters, category_lookup]);
+	searching_worker.postMessage([input.value, state.courses, colors, state.settings.hmc_mode, getCheckedCourses(), state.button_filters]);
 }
 
 async function sleep(ms) {
@@ -1675,18 +1675,9 @@ function addSearchFilter(filter, e = false) {
 		buttonSearch();
 		el = document.getElementById("course-input");
 	}
-	if (el.value.includes(filter.split(":")[0])) {
-		let input = el.value.split(" ");
-		input.forEach((el, index) => {
-			if (el.includes(filter.split(":")[0])) {
-				input[index] = filter;
-			}
-		});
+	
+	el.value = filter;
 
-		el.value = input.join(" ");
-	} else {
-		el.value += ` ${filter}`;
-	}
 	el.focus();
 	backgroundCourseSearch();
 }
@@ -2413,7 +2404,7 @@ const search_popup = `
 		</div>
 
 		<div class="filter-item">
-			<label class="filter-label" for="filter-course-area">Area</label>
+			<label class="filter-label" for="filter-course-area">Area/Fulfills</label>
 			<select id="filter-area" class="filter-input">
 				<option class="option-class" value="">All</option>
 			</select>
@@ -2564,7 +2555,11 @@ const changelog_popup = `
 <div id="changelog-container">
 	<b>v1.19 Beta</b>
 	<ul>
-		
+		<li>
+			Added filtering by <b>all requirements</b>! Includes GE, Major track, Area requirement, etc. 
+			Click on the filter icon in search and select the <b>Area/Fulfills</b> dropdown
+		</li>
+		<li>Fixed clicking courses not searching for course</li>
 	</ul>
 </div>
 `;

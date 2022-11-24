@@ -29,7 +29,7 @@ async function startup() {
     // Create reusable web worker threads
     desc_worker = new Worker('scripts/workers/descriptions.js?v=1.18.0');
     searcher_worker = new Worker('scripts/workers/searcher.js?v=1.18.0');
-    searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.18.0');
+    searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.18.3');
     permutation_worker = new Worker('scripts/workers/permutations.js?v=1.18.0');
 
     // Start worker threads to generate descriptions + searcher
@@ -39,6 +39,12 @@ async function startup() {
     // Then, check if site was loaded from
     // from QR code w/ course list code
     await loadPossibleParams();
+
+    // Get and sort all areas from courses
+    let areas = state.courses.map(course => course.fulfills).flat().filter((value, index, self) => self.indexOf(value) === index);
+    areas.sort((a, b) => a.localeCompare(b));
+
+    t_state.areas = areas;
 
     // Remove fade-in class
     let fader = document.getElementById("fader")

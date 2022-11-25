@@ -512,6 +512,12 @@ async function buttonSearch() {
 
 		});
 
+		let filters_el = document.getElementById("filter-container");
+		// Register event listeners for the filters
+		filters_el.addEventListener("click", updateButtonFilters);
+		filters_el.addEventListener("keyup", updateButtonFilters);
+		updateButtonFilters();
+
 		setTimeout(function () {
 			backgroundCourseSearch();
 		}, 350);
@@ -548,49 +554,23 @@ const Toast = Swal.mixin({
 	}
 })
 
-function toggleFilters() {
-	let el = document.getElementById("filter-container");
-	el.classList.toggle("hidden");
-
-	if (el.classList.contains("hidden")) {
-		el.removeEventListener("click", updateButtonFilters);
-		el.removeEventListener("keyup", updateButtonFilters);
-	} else {
-		el.addEventListener("click", updateButtonFilters);
-		el.addEventListener("keyup", updateButtonFilters);
-		updateButtonFilters();
-	}
-}
-
 async function updateButtonFilters() {
 	let filters = [];
 
 	// Get status filters
-	let open_check = document.getElementById("open-check").checked;
-	let closed_check = document.getElementById("closed-check").checked;
-	let reopened_check = document.getElementById("reopened-check").checked;
-
-	if (open_check || closed_check || reopened_check) {
-		let filter = {
-			key: "status",
-			value: "",
-			type: ":"
+	let filter = {
+		key: "status",
+		value: "",
+		type: ":"
+	}
+	for (let el of document.getElementById("status-options").children) {
+		if (el.classList.contains("selected")) {
+			filter.value += `${el.value},`;
 		}
+	}
 
-		if (open_check) {
-			filter.value += "open,";
-		}
-
-		if (closed_check) {
-			filter.value += "closed,";
-		}
-
-		if (reopened_check) {
-			filter.value += "reopened,";
-		}
-
+	if (filter.value.length > 0) {
 		filter.value = filter.value.slice(0, -1);
-
 		filters.push(filter);
 	}
 
@@ -2130,6 +2110,21 @@ function rmp(instructor_name, course_identifier) {
 	window.open(url, "_blank");
 }
 
+function setDay(index) {
+	const el = document.getElementById("day-options");
+	el.children[index].classList.toggle("selected");
+}
+
+function setSchool(index) {
+	const el = document.getElementById("school-options");
+	el.children[index].classList.toggle("selected");
+}
+
+function setStatus(index) {
+	const el = document.getElementById("status-options");
+	el.children[index].classList.toggle("selected");
+}
+
 // *****
 // HTML Popups
 // *****
@@ -2305,86 +2300,64 @@ const search_popup = `
 
     <input class="input" id="course-input" placeholder="Search by course code, title, or instructor...">
 
-	<span id="filter-button" class="default-button filters unselectable" onclick="toggleFilters()"></span>
-
     <span id="term-container"></span>
 </div>
 
-<div id="filter-container" class="hidden">
+<div id="course-search-box">
+	
+	<div id="filter-container" class="">
 		<div class="filter-item">
-			<label class="filter-label" for="filter-time-after">After</label>
-			<input min="07:00" max="22:00" type="time" id="filter-time-after" class="filter-input" placeholder="7:00">
+			<label class="filter-label" for="filter-course-area">Area/Fulfills</label>
+			<select id="filter-area" class="filter-input">
+				<option class="option-class" value="">All</option>
+			</select>
 		</div>
 
 		<div class="filter-item">
-			<label class="filter-label" for="filter-time-before">Before</label>
-			<input min="07:00" max="22:00" type="time" id="filter-time-before" class="filter-input" placeholder="22:00">		
-		</div>	
-
-		<div class="filter-item">
-			<div class="filter-checkboxes">
+			<div class="filter-times">
 				<div>
-					<label class="filter-label" for="monday-check">Mon</label>
-					<input id="monday-check" type="checkbox" class="filter-checkbox">
+					<label class="filter-label" for="filter-time-after">After</label>
+					<input min="07:00" max="22:00" type="time" id="filter-time-after" class="filter-input" placeholder="7:00">
 				</div>
 				<div>
-					<label class="filter-label" for="tuesday-check">Tue</label>
-					<input id="tuesday-check" type="checkbox" class="filter-checkbox">
-				</div>
-				<div>
-					<label class="filter-label" for="wednesday-check">Wed</label>
-					<input id="wednesday-check" type="checkbox" class="filter-checkbox">
-				</div>
-				<div>
-					<label class="filter-label" for="thursday-check">Thu</label>
-					<input id="thursday-check" type="checkbox" class="filter-checkbox">
-				</div>
-				<div>
-					<label class="filter-label" for="friday-check">Fri</label>
-					<input id="friday-check" type="checkbox" class="filter-checkbox">
-				</div>
-			</div>		
-		</div>
-
-		<div class="filter-item">
-			<div class="filter-checkboxes schools">
-				<div>
-					<label class="filter-label" for="filter-hmc">HM</label>
-					<input id="filter-hmc" type="checkbox" class="filter-checkbox">
-				</div>
-				<div>
-					<label class="filter-label" for="filter-pomona">PO</label>
-					<input id="filter-pomona" type="checkbox" class="filter-checkbox">
-				</div>
-				<div>
-					<label class="filter-label" for="filter-cmc">CM</label>
-					<input id="filter-cmc" type="checkbox" class="filter-checkbox">
-				</div>
-				<div>
-					<label class="filter-label" for="filter-scripps">SC</label>
-					<input id="filter-scripps" type="checkbox" class="filter-checkbox">
-				</div>
-				<div>
-					<label class="filter-label" for="filter-pitzer">PZ</label>
-					<input id="filter-pitzer" type="checkbox" class="filter-checkbox">
+					<label class="filter-label" for="filter-time-before">Before</label>
+					<input min="07:00" max="22:00" type="time" id="filter-time-before" class="filter-input" placeholder="22:00">
 				</div>
 			</div>
+
 		</div>
 		
 		<div class="filter-item">
-			<div class="filter-checkboxes status">
-				<div>
-					<label class="filter-label" for="open-check">Open</label>
-					<input id="open-check" type="checkbox" class="filter-checkbox">
-				</div>
-				<div>
-					<label class="filter-label" for="reopened-check">Reopened</label>
-					<input id="reopened-check" type="checkbox" class="filter-checkbox">
-				</div>
-				<div>
-					<label class="filter-label" for="closed-check">Closed</label>
-					<input id="closed-check" type="checkbox" class="filter-checkbox">
-				</div>
+			<label class="filter-label" for="day-options">Days</label>
+
+			<div class="options" id="day-options">
+				<button class="radio" onclick="setDay(0)" value="Monday">Mon</button>
+				<button class="radio" onclick="setDay(1)" value="Tuesday">Tue</button>
+				<button class="radio" onclick="setDay(2)" value="Wednesday">Wed</button>
+				<button class="radio" onclick="setDay(3)" value="Thursday">Thu</button>
+				<button class="radio" onclick="setDay(4)" value="Friday">Fri</button>	 
+			</div>	
+		</div>
+
+		<div class="filter-item">
+			<label class="filter-label" for="school-options">School</label>
+
+			<div class="options" id="school-options">
+				<button class="radio" onclick="setSchool(0)" value="PO">PO</button>
+				<button class="radio" onclick="setSchool(1)" value="HM">HM</button>
+				<button class="radio" onclick="setSchool(2)" value="CM">CM</button>
+				<button class="radio" onclick="setSchool(3)" value="SC">SC</button>
+				<button class="radio" onclick="setSchool(4)" value="PZ">PZ</button>	 
+			</div>	
+		</div>
+		
+		<div class="filter-item">
+			<label class="filter-label" for="status-options">Status</label>
+
+			<div class="options" id="status-options">
+				<button class="radio" onclick="setStatus(0)" value="open">Open</button>
+				<button class="radio" onclick="setStatus(1)" value="reopen">Reopened</button>
+				<button class="radio" onclick="setStatus(2)" value="closed">Closed</button>
 			</div>
 		</div>
 
@@ -2401,13 +2374,6 @@ const search_popup = `
 		<div class="filter-item">
 			<label class="filter-label" for="filter-credits">Credits</label>
 			<input type="number" id="filter-credits" class="filter-input" placeholder="Credits">
-		</div>
-
-		<div class="filter-item">
-			<label class="filter-label" for="filter-course-area">Area/Fulfills</label>
-			<select id="filter-area" class="filter-input">
-				<option class="option-class" value="">All</option>
-			</select>
 		</div>
 
 		<div class="filter-item">
@@ -2428,9 +2394,7 @@ const search_popup = `
 			</div>
 		</div>
 	</div>
-</div>
 
-<div id="course-search-box">
     <div id="course-search-results">
         <b>Loading...</b>
     </div>
@@ -2559,6 +2523,7 @@ const changelog_popup = `
 			Added filtering by <b>all requirements</b>! Includes GE, Major track, Area requirement, etc. 
 			Click on the filter icon in search and select the <b>Area/Fulfills</b> dropdown
 		</li>
+		<li>Revamped filter layout in search</li>
 		<li>Fixed clicking courses not searching for course</li>
 	</ul>
 </div>

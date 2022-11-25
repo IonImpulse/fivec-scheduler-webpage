@@ -537,13 +537,12 @@ canvas {
 #course-search-results {
   background-color: var(--background-alt);
   border-radius: var(--roundedness);
-  padding: var(--padding);
+  padding-top: var(--padding);
   height: 45vh;
   flex-grow: 1;
   margin-top: 10px;
   overflow-x: hidden;
   overflow-y: scroll;
-  width: 70vw;
 }
 
 .course-search-result {
@@ -610,7 +609,7 @@ canvas {
 }
 
 .swal-wide {
-  width: 90vw !important;
+  width: 95vw !important;
 }
 
 .swal-wide .swal2-actions {
@@ -627,8 +626,8 @@ canvas {
 }
 
 #course-search-box {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: 240px 13fr 6fr;
 }
 
 #course-search-desc {
@@ -636,7 +635,6 @@ canvas {
   text-align: left;
   margin-top: 10px;
   height: 45vh;
-  width: 30vw;
   overflow-y: scroll;
 }
 
@@ -1314,7 +1312,7 @@ label {
 
 #search-container {
   display: grid;
-  grid-template-columns: 10fr 1fr 8fr 30fr 3fr 10fr 10fr;
+  grid-template-columns: 10fr 1fr 8fr 30fr 10fr 10fr;
   justify-content: center;
   justify-items: center;
   align-items: center;
@@ -1355,8 +1353,8 @@ label {
 }
 
 #term-container {
-  grid-column-start: 6;
-  grid-column-end: 7;
+  grid-column-start: 5;
+  grid-column-end: 6;
   background-color: var(--background-main);
   box-shadow: 0 0 1px 1px var(--button-outline);
   padding: var(--padding-medium);
@@ -1543,16 +1541,14 @@ h1 {
 
 #filter-container {
   display:flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
   overflow-y: hidden;
-  transition: max-height 0.1s ease-in-out;
-  max-height: 600px;
-  width: 95%;
-  margin: 0 auto;
-  column-gap: 10px;
+  padding-top: 20px;
+  padding-left: 5px;
+  padding-right: 20px;
+  row-gap: 30px;
 }
 
 #filter-container.hidden {
@@ -1561,10 +1557,60 @@ h1 {
 
 .filter-item {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   position: relative;
-  margin-top: 10px;
-  justify-content: center;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.options {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+button.radio {
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0 8px;
+  height: 30px;
+  width: auto;
+  min-width: 40px;
+  color: var(--text-main);
+  border: 1px solid var(--background-alt);
+  background-color: var(--background-alt);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+
+
+button.radio:hover {
+  background-color: var(--background-main);
+  color: var(--text-main);
+}
+
+button.radio:active {
+  background-color: var(--text-light);
+  color: var(--text-alt);
+}
+
+button.radio.selected {
+  background-color: var(--text-main);
+  color: var(--text-alt);
+}
+
+button.radio:first-child,
+button.radio:first-child {
+  border-top-left-radius: var(--roundedness);
+  border-bottom-left-radius: var(--roundedness);
+}
+
+button.radio:last-child,
+button.radio:last-child {
+  border-top-right-radius: var(--roundedness);
+  border-bottom-right-radius: var(--roundedness);
 }
 
 .filter-select {
@@ -1575,51 +1621,58 @@ h1 {
   position: absolute;
   font-size: 12px;
   transform: translate(0px, -20px);
-  margin-bottom: 5px;
 }
 
 .filter-input {
   height: 20px;
   background-color: var(--background-alt);
   border-radius: var(--roundedness);
-  padding: var(--padding-small);
+  padding: 5px;
   font-size: 14px;
   color: var(--text-main);
   font-family: var(--main-font);
   border:unset;
+  width: inherit;
 }
 
 .filter-checkboxes {
   position: relative;
   display: flex;
   flex-direction: row;
-  margin-top: 10px;
-  margin-bottom: 5px;
-  align-content: space-between;
-  justify-content: center;
+  align-content: flex-start;
+  justify-content: space-between;
   width: 100%;
+  gap: 0px;
+}
+
+.filter-times {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
   gap: 10px;
 }
 
+.filter-times input {
+  width: 70px;
+}
 
 .filter-checkboxes.status * {
-  width: 60px;
+  width: 50px;
 }
 
 .filter-checkboxes.schools {
-  gap: 10px;
 }
 
 .filter-checkbox {
   width: 20px;
   height: 20px;
   margin: unset;
-  margin-right: 10px;
   position: relative;
 }
 
 .filter-item > input {
-  width: 60%;
+  height: 25px;
 }
 
 #hide-conflicts-container {
@@ -1631,6 +1684,7 @@ h1 {
 }
 
 #filter-area {
+  width: inherit;
   height: 30px;
 }
 

@@ -485,7 +485,7 @@ async function buttonSearch() {
 		// Update area filters
 		const filter_areas = document.getElementById("filter-area");
 
-		for (let key of Object.keys(category_lookup)) {
+		for (let key of t_state.areas) {
 			// Create element
 			const to_append = `<option value="${key}">${key}</option>`;
 
@@ -511,6 +511,12 @@ async function buttonSearch() {
 			backgroundCourseSearch();
 
 		});
+
+		let filters_el = document.getElementById("filter-container");
+		// Register event listeners for the filters
+		filters_el.addEventListener("click", updateButtonFilters);
+		filters_el.addEventListener("keyup", updateButtonFilters);
+		updateButtonFilters();
 
 		setTimeout(function () {
 			backgroundCourseSearch();
@@ -548,49 +554,23 @@ const Toast = Swal.mixin({
 	}
 })
 
-function toggleFilters() {
-	let el = document.getElementById("filter-container");
-	el.classList.toggle("hidden");
-
-	if (el.classList.contains("hidden")) {
-		el.removeEventListener("click", updateButtonFilters);
-		el.removeEventListener("keyup", updateButtonFilters);
-	} else {
-		el.addEventListener("click", updateButtonFilters);
-		el.addEventListener("keyup", updateButtonFilters);
-		updateButtonFilters();
-	}
-}
-
 async function updateButtonFilters() {
 	let filters = [];
 
 	// Get status filters
-	let open_check = document.getElementById("open-check").checked;
-	let closed_check = document.getElementById("closed-check").checked;
-	let reopened_check = document.getElementById("reopened-check").checked;
-
-	if (open_check || closed_check || reopened_check) {
-		let filter = {
-			key: "status",
-			value: "",
-			type: ":"
+	let filter = {
+		key: "status",
+		value: "",
+		type: ":"
+	}
+	for (let el of document.getElementById("status-options").children) {
+		if (el.classList.contains("selected")) {
+			filter.value += `${el.value},`;
 		}
+	}
 
-		if (open_check) {
-			filter.value += "open,";
-		}
-
-		if (closed_check) {
-			filter.value += "closed,";
-		}
-
-		if (reopened_check) {
-			filter.value += "reopened,";
-		}
-
+	if (filter.value.length > 0) {
 		filter.value = filter.value.slice(0, -1);
-
 		filters.push(filter);
 	}
 
@@ -615,81 +595,37 @@ async function updateButtonFilters() {
 	}
 
 	// Get school filters
-	let hm_check = document.getElementById("filter-hmc").checked;
-	let po_check = document.getElementById("filter-pomona").checked;
-	let sc_check = document.getElementById("filter-scripps").checked;
-	let pz_check = document.getElementById("filter-pitzer").checked;
-	let cm_check = document.getElementById("filter-cmc").checked;
-
-	if (hm_check || po_check || sc_check || pz_check || cm_check) {
-		let filter = {
-			key: "at",
-			value: "",
-			type: ":"
+	filter = {
+		key: "at",
+		value: "",
+		type: ":"
+	}
+	for (let el of document.getElementById("school-options").children) {
+		if (el.classList.contains("selected")) {
+			filter.value += `${el.value},`;
 		}
+	}
 
-		if (hm_check) {
-			filter.value += "hmc,";
-		}
-
-		if (po_check) {
-			filter.value += "po,";
-		}
-
-		if (sc_check) {
-			filter.value += "sc,";
-		}
-
-		if (pz_check) {
-			filter.value += "pz,";
-		}
-
-		if (cm_check) {
-			filter.value += "cm,";
-		}
-
+	if (filter.value.length > 0) {
 		filter.value = filter.value.slice(0, -1);
-
 		filters.push(filter);
 	}
 
 
 	// Get days of week filters
-	let monday_check = document.getElementById("monday-check").checked;
-	let tuesday_check = document.getElementById("tuesday-check").checked;
-	let wednesday_check = document.getElementById("wednesday-check").checked;
-	let thursday_check = document.getElementById("thursday-check").checked;
-	let friday_check = document.getElementById("friday-check").checked;
-
-	if (monday_check || tuesday_check || wednesday_check || thursday_check || friday_check) {
-		let filter = {
-			key: "on",
-			value: "",
-			type: ":"
+	filter = {
+		key: "on",
+		value: "",
+		type: ":"
+	}
+	for (let el of document.getElementById("day-options").children) {
+		if (el.classList.contains("selected")) {
+			filter.value += `${el.value},`;
 		}
+	}
 
-		if (monday_check) {
-			filter.value += "m,";
-		}
-
-		if (tuesday_check) {
-			filter.value += "t,";
-		}
-
-		if (wednesday_check) {
-			filter.value += "w,";
-		}
-
-		if (thursday_check) {
-			filter.value += "r,";
-		}
-
-		if (friday_check) {
-			filter.value += "f,";
-		}
-
+	if (filter.value.length > 0) {
 		filter.value = filter.value.slice(0, -1);
-
 		filters.push(filter);
 	}
 
@@ -725,7 +661,7 @@ async function updateButtonFilters() {
 
 
 	// Get conflict check
-	let conflict_check = document.getElementById("hide-conflicts-check").checked;
+	let conflict_check = document.getElementById("hide-conflicts-check").classList.contains("selected");
 
 	if (conflict_check) {
 		filters.push({
@@ -746,7 +682,7 @@ async function updateButtonFilters() {
 	}
 
 	// Get sub terms
-	let sub_term_check = document.getElementById("filter-half-semester").checked;
+	let sub_term_check = document.getElementById("filter-half-semester").classList.contains("selected");
 
 	if (sub_term_check) {
 		filters.push({
@@ -1037,7 +973,7 @@ async function backgroundCourseSearch(full = false) {
 		postProcessSearch(document.getElementById("course-input").value, html_courses);
 	}
 
-	searching_worker.postMessage([input.value, state.courses, colors, state.settings.hmc_mode, getCheckedCourses(), state.button_filters, category_lookup]);
+	searching_worker.postMessage([input.value, state.courses, colors, state.settings.hmc_mode, getCheckedCourses(), state.button_filters]);
 }
 
 async function sleep(ms) {
@@ -1675,18 +1611,9 @@ function addSearchFilter(filter, e = false) {
 		buttonSearch();
 		el = document.getElementById("course-input");
 	}
-	if (el.value.includes(filter.split(":")[0])) {
-		let input = el.value.split(" ");
-		input.forEach((el, index) => {
-			if (el.includes(filter.split(":")[0])) {
-				input[index] = filter;
-			}
-		});
+	
+	el.value = filter;
 
-		el.value = input.join(" ");
-	} else {
-		el.value += ` ${filter}`;
-	}
 	el.focus();
 	backgroundCourseSearch();
 }
@@ -2139,6 +2066,26 @@ function rmp(instructor_name, course_identifier) {
 	window.open(url, "_blank");
 }
 
+function setDay(index) {
+	const el = document.getElementById("day-options");
+	el.children[index].classList.toggle("selected");
+}
+
+function setSchool(index) {
+	const el = document.getElementById("school-options");
+	el.children[index].classList.toggle("selected");
+}
+
+function setStatus(index) {
+	const el = document.getElementById("status-options");
+	el.children[index].classList.toggle("selected");
+}
+
+function setMisc(index) {
+	const el = document.getElementById("misc-options");
+	el.children[index].classList.toggle("selected");
+}
+
 // *****
 // HTML Popups
 // *****
@@ -2314,86 +2261,64 @@ const search_popup = `
 
     <input class="input" id="course-input" placeholder="Search by course code, title, or instructor...">
 
-	<span id="filter-button" class="default-button filters unselectable" onclick="toggleFilters()"></span>
-
     <span id="term-container"></span>
 </div>
 
-<div id="filter-container" class="hidden">
+<div id="course-search-box">
+	
+	<div id="filter-container" class="">
 		<div class="filter-item">
-			<label class="filter-label" for="filter-time-after">After</label>
-			<input min="07:00" max="22:00" type="time" id="filter-time-after" class="filter-input" placeholder="7:00">
+			<label class="filter-label" for="filter-course-area">Area/Fulfills</label>
+			<select id="filter-area" class="filter-input">
+				<option class="option-class" value="">All</option>
+			</select>
 		</div>
 
 		<div class="filter-item">
-			<label class="filter-label" for="filter-time-before">Before</label>
-			<input min="07:00" max="22:00" type="time" id="filter-time-before" class="filter-input" placeholder="22:00">		
-		</div>	
-
-		<div class="filter-item">
-			<div class="filter-checkboxes">
+			<div class="filter-times">
 				<div>
-					<label class="filter-label" for="monday-check">Mon</label>
-					<input id="monday-check" type="checkbox" class="filter-checkbox">
+					<label class="filter-label" for="filter-time-after">After</label>
+					<input min="07:00" max="22:00" type="time" id="filter-time-after" class="filter-input" placeholder="7:00">
 				</div>
 				<div>
-					<label class="filter-label" for="tuesday-check">Tue</label>
-					<input id="tuesday-check" type="checkbox" class="filter-checkbox">
-				</div>
-				<div>
-					<label class="filter-label" for="wednesday-check">Wed</label>
-					<input id="wednesday-check" type="checkbox" class="filter-checkbox">
-				</div>
-				<div>
-					<label class="filter-label" for="thursday-check">Thu</label>
-					<input id="thursday-check" type="checkbox" class="filter-checkbox">
-				</div>
-				<div>
-					<label class="filter-label" for="friday-check">Fri</label>
-					<input id="friday-check" type="checkbox" class="filter-checkbox">
-				</div>
-			</div>		
-		</div>
-
-		<div class="filter-item">
-			<div class="filter-checkboxes schools">
-				<div>
-					<label class="filter-label" for="filter-hmc">HM</label>
-					<input id="filter-hmc" type="checkbox" class="filter-checkbox">
-				</div>
-				<div>
-					<label class="filter-label" for="filter-pomona">PO</label>
-					<input id="filter-pomona" type="checkbox" class="filter-checkbox">
-				</div>
-				<div>
-					<label class="filter-label" for="filter-cmc">CM</label>
-					<input id="filter-cmc" type="checkbox" class="filter-checkbox">
-				</div>
-				<div>
-					<label class="filter-label" for="filter-scripps">SC</label>
-					<input id="filter-scripps" type="checkbox" class="filter-checkbox">
-				</div>
-				<div>
-					<label class="filter-label" for="filter-pitzer">PZ</label>
-					<input id="filter-pitzer" type="checkbox" class="filter-checkbox">
+					<label class="filter-label" for="filter-time-before">Before</label>
+					<input min="07:00" max="22:00" type="time" id="filter-time-before" class="filter-input" placeholder="22:00">
 				</div>
 			</div>
+
 		</div>
 		
 		<div class="filter-item">
-			<div class="filter-checkboxes status">
-				<div>
-					<label class="filter-label" for="open-check">Open</label>
-					<input id="open-check" type="checkbox" class="filter-checkbox">
-				</div>
-				<div>
-					<label class="filter-label" for="reopened-check">Reopened</label>
-					<input id="reopened-check" type="checkbox" class="filter-checkbox">
-				</div>
-				<div>
-					<label class="filter-label" for="closed-check">Closed</label>
-					<input id="closed-check" type="checkbox" class="filter-checkbox">
-				</div>
+			<label class="filter-label" for="day-options">Days</label>
+
+			<div class="options" id="day-options">
+				<button class="radio" onclick="setDay(0)" value="Monday">Mon</button>
+				<button class="radio" onclick="setDay(1)" value="Tuesday">Tue</button>
+				<button class="radio" onclick="setDay(2)" value="Wednesday">Wed</button>
+				<button class="radio" onclick="setDay(3)" value="Thursday">Thu</button>
+				<button class="radio" onclick="setDay(4)" value="Friday">Fri</button>	 
+			</div>	
+		</div>
+
+		<div class="filter-item">
+			<label class="filter-label" for="school-options">School</label>
+
+			<div class="options" id="school-options">
+				<button class="radio" onclick="setSchool(0)" value="PO">PO</button>
+				<button class="radio" onclick="setSchool(1)" value="HM">HM</button>
+				<button class="radio" onclick="setSchool(2)" value="CM">CM</button>
+				<button class="radio" onclick="setSchool(3)" value="SC">SC</button>
+				<button class="radio" onclick="setSchool(4)" value="PZ">PZ</button>	 
+			</div>	
+		</div>
+		
+		<div class="filter-item">
+			<label class="filter-label" for="status-options">Status</label>
+
+			<div class="options" id="status-options">
+				<button class="radio" onclick="setStatus(0)" value="open">Open</button>
+				<button class="radio" onclick="setStatus(1)" value="reopen">Reopened</button>
+				<button class="radio" onclick="setStatus(2)" value="closed">Closed</button>
 			</div>
 		</div>
 
@@ -2413,33 +2338,15 @@ const search_popup = `
 		</div>
 
 		<div class="filter-item">
-			<label class="filter-label" for="filter-course-area">Area</label>
-			<select id="filter-area" class="filter-input">
-				<option class="option-class" value="">All</option>
-			</select>
-		</div>
+			<label class="filter-label" for="misc-options">Misc</label>
 
-		<div class="filter-item">
-			<div class="filter-checkboxes">
-				<div id="hide-conflicts-container">
-					<label class="filter-label" for="hide-conflicts-check">Hide Conflicts</label>
-					<input id="hide-conflicts-check" type="checkbox" class="filter-checkbox">
-				</div>
-			</div>
-		</div>
-
-		<div class="filter-item">
-			<div class="filter-checkboxes">
-				<div id="half-semester-container">
-					<label class="filter-label" for="filter-half-semester">Half-Semester</label>
-					<input id="filter-half-semester" type="checkbox" class="filter-checkbox">
-				</div>
+			<div class="options" id="misc-options">
+				<button id="hide-conflicts-check" class="radio" onclick="setMisc(0)" value="open">Hide Conflicts</button>
+				<button id="filter-half-semester" class="radio" onclick="setMisc(1)" value="open">Half Semester</button>
 			</div>
 		</div>
 	</div>
-</div>
 
-<div id="course-search-box">
     <div id="course-search-results">
         <b>Loading...</b>
     </div>
@@ -2562,13 +2469,14 @@ const new_schedule_popup = `
 
 const changelog_popup = `
 <div id="changelog-container">
-	<b>v1.18 Beta</b>
+	<b>v1.19 Beta</b>
 	<ul>
-		<li>Added RateMyProfessor links to course descriptions</li>
-		<li>Fixed conflict resizing bug</li>
-		<li>Fixed course locate button placement bug</li>
-		<li>Fixed unchecked courses still counting as conflicting when searching for conflicts</li>
-		<li>Known bug: adding courses does not work in Firefox Private mode due to a browser limitation</li>
+		<li>
+			Added filtering by <b>all requirements</b>! Includes GE, Major track, Area requirement, etc. 
+			Click on the filter icon in search and select the <b>Area/Fulfills</b> dropdown
+		</li>
+		<li>Revamped filter layout in search</li>
+		<li>Fixed clicking courses not searching for course</li>
 	</ul>
 </div>
 `;

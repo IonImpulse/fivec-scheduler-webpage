@@ -7,7 +7,7 @@ Contains ALL global variables used.
 
 // Version number
 // Will delete localStorage variables when updating
-const current_version = '1.18.0';
+const current_version = '1.19.0';
 
 // Average paces for distance calcs
 const walking_feet_per_minute = 328;
@@ -73,6 +73,7 @@ var t_state = {
     search_results: [],
     permutations: [],
     current_permutation: 0,
+    areas: [],
 };
 
 
@@ -112,48 +113,6 @@ const colors_dark = [
     "#4D9747",
     "#52A3C4",
 ];
-
-
-/// *****
-/// Common course area categories
-/// *****
-const category_stem = [
-    "AISS",
-    "AS",
-    "ALS",
-    "ASTR",
-    "BIOL",
-    "CHEM",
-    "CLES",
-    "COGS",
-    "CSMT",
-    "CSCI",
-    "CL",
-    "DSCI",
-    "EA",
-    "GEOG",
-    "LGCS",
-    "MCBI",
-    "MATH",
-    "MOBI",
-    "NEUR",
-    "PHYS",
-];
-
-const category_lookup = {
-    "STEM": category_stem,
-    "PE": ["PE"],
-    "Languages": ["ALAN"],
-    "Mudd HSA": ["4HSA"],
-    "Mudd Writ Intensive": ["4WRT"],
-    "Pomona Writ Intensive": ["1WIR"],
-    "Pomona Area 1": ["1A1"],
-    "Pomona Area 2": ["1A2"],
-    "Pomona Area 3": ["1A3"],
-    "Pomona Area 4": ["1A4"],
-    "Pomona Area 5": ["1A5"],
-    "Pomona Area 6": ["1A6"],
-}
 
 // *****
 // Prelude functions

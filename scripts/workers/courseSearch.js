@@ -1,7 +1,7 @@
 importScripts("../libs/fuzzysort.js");
 
 onmessage = function(e) {
-    let course_divs = expensiveCourseSearch(e.data[0], e.data[1], e.data[2], e.data[3], e.data[4], e.data[5], e.data[6]);
+    let course_divs = expensiveCourseSearch(e.data[0], e.data[1], e.data[2], e.data[3], e.data[4], e.data[5]);
 
     postMessage(course_divs);
 }
@@ -188,7 +188,7 @@ function tweakSearch(string) {
 	return return_string.trim().toLowerCase();
 }
 
-function search_courses(query, all_courses_global, filters, hmc_mode, loaded_local_courses, category_lookup) {
+function search_courses(query, all_courses_global, filters, hmc_mode, loaded_local_courses) {
     const options = {
         limit: 100, // don't return more results than you need!
         allowTypo: true, // if you don't care about allowing typos
@@ -319,8 +319,7 @@ function search_courses(query, all_courses_global, filters, hmc_mode, loaded_loc
 				results = results.filter(t => checkForConflicts((t.obj || t), loaded_local_courses).length == 0);
 			}
 		} else if (filter.key == "area") {
-			const areas = category_lookup[filter.value];
-			results = results.filter(t => (t.obj || t).associations.some(p => areas.includes(p)));
+			results = results.filter(t => (t.obj || t).fulfills.map(x => x.replace(/\s/g, "-")).some(p => p == filter.value));
 		} else if (filter.key == "sub_term") {
 			if (filter.value == "some") {
 				results = results.filter(t => (t.obj || t).sub_term != "None");
@@ -432,7 +431,7 @@ function getFilters(input) {
 	return {filters: filters, input: wanted_search_term};
 }
 
-function expensiveCourseSearch(input, all_courses_global, colors, hmc_mode, loaded_local_courses, button_filters, category_lookup) {
+function expensiveCourseSearch(input, all_courses_global, colors, hmc_mode, loaded_local_courses, button_filters) {
     let results = [];
 
     if (input == "" && button_filters.length == 0) {
@@ -444,7 +443,7 @@ function expensiveCourseSearch(input, all_courses_global, colors, hmc_mode, load
 
 		console.log(button_filters);
 
-		results = search_courses(search_term, all_courses_global, filters_object.filters.concat(button_filters), hmc_mode, loaded_local_courses, category_lookup);
+		results = search_courses(search_term, all_courses_global, filters_object.filters.concat(button_filters), hmc_mode, loaded_local_courses);
 	}
 
     let output = [];

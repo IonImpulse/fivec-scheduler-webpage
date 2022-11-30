@@ -119,6 +119,16 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 		desc_node += " class=\"description\">";
 		desc_node += `<b>Description:</b>\n${findCourseLinks(course.description)}</div>`;
 
+		let fulfulls_node = "<div";
+		fulfulls_node += " class=\"fulfills\">";
+		fulfulls_node += `<b>Fulfills:</b> `;
+		for (let fulfills of course.fulfills) {
+			fulfulls_node += `<span class="clickable-text" onclick="addSearchFilter(\'area:${fulfills.trim().replace(/\s/g, "-")}\')">${fulfills}</span>, `;
+		}
+
+		fulfulls_node = fulfulls_node.slice(0, -2);
+		fulfulls_node += `</div>`;
+
 		let prereq_node = "<div class=\"prerequisites\">";
 		prereq_node += `<b>Prerequisites:</b>\n${findCourseLinks(course.prerequisites)}</div>`;
 
@@ -132,6 +142,7 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 		course_desc_node += credit_node;
 		course_desc_node += instructor_node;
 		course_desc_node += desc_node;
+		course_desc_node += fulfulls_node;
 		course_desc_node += prereq_node;
 		course_desc_node += coreq_node;
         course_desc_node += notes_node;

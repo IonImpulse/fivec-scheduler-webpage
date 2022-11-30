@@ -319,7 +319,7 @@ function search_courses(query, all_courses_global, filters, hmc_mode, loaded_loc
 				results = results.filter(t => checkForConflicts((t.obj || t), loaded_local_courses).length == 0);
 			}
 		} else if (filter.key == "area") {
-			results = results.filter(t => (t.obj || t).fulfills.some(p => p == filter.value));
+			results = results.filter(t => (t.obj || t).fulfills.map(x => x.replace(/\s/g, "-")).some(p => p == filter.value));
 		} else if (filter.key == "sub_term") {
 			if (filter.value == "some") {
 				results = results.filter(t => (t.obj || t).sub_term != "None");

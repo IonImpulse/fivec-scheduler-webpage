@@ -127,6 +127,7 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 		}
 
 		fulfulls_node = fulfulls_node.slice(0, -2);
+		fulfulls_node += `</div>`;
 
 		let prereq_node = "<div class=\"prerequisites\">";
 		prereq_node += `<b>Prerequisites:</b>\n${findCourseLinks(course.prerequisites)}</div>`;

@@ -538,8 +538,6 @@ canvas {
   background-color: var(--background-alt);
   border-radius: var(--roundedness);
   padding-top: var(--padding);
-  height: 45vh;
-  flex-grow: 1;
   margin-top: 10px;
   overflow-x: hidden;
   overflow-y: scroll;
@@ -628,13 +626,13 @@ canvas {
 #course-search-box {
   display: grid;
   grid-template-columns: 240px 13fr 6fr;
+  height: 56vh;
 }
 
 #course-search-desc {
   padding: 0 2vw;
   text-align: left;
   margin-top: 10px;
-  height: 45vh;
   overflow-y: scroll;
 }
 
@@ -755,9 +753,6 @@ canvas {
   justify-content: center;
   border-left: 4px solid var(--background-alt);
   border-radius: 0 var(--roundedness) var(--roundedness) 0;
-}
-
-.course-code {
 }
 
 .course-title {
@@ -1544,7 +1539,7 @@ h1 {
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  overflow-y: hidden;
+  overflow-y: auto;
   padding-top: 20px;
   padding-left: 5px;
   padding-right: 20px;
@@ -1574,7 +1569,7 @@ button.radio {
   box-sizing: border-box;
   margin: 0px;
   padding: 0 8px;
-  height: 30px;
+  height: 25px;
   width: auto;
   min-width: 40px;
   color: var(--text-main);
@@ -1672,15 +1667,12 @@ button.radio:last-child {
 }
 
 .filter-item > input {
-  height: 25px;
+  height: 20px;
+  font-size: .6em;
 }
 
-#hide-conflicts-container {
-  width: 140px;
-}
-
-#half-semester-container {
-  width: 180px;
+.filter-item > label {
+  font-size: .6em;
 }
 
 #filter-area {

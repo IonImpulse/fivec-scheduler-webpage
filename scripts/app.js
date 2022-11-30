@@ -595,81 +595,37 @@ async function updateButtonFilters() {
 	}
 
 	// Get school filters
-	let hm_check = document.getElementById("filter-hmc").checked;
-	let po_check = document.getElementById("filter-pomona").checked;
-	let sc_check = document.getElementById("filter-scripps").checked;
-	let pz_check = document.getElementById("filter-pitzer").checked;
-	let cm_check = document.getElementById("filter-cmc").checked;
-
-	if (hm_check || po_check || sc_check || pz_check || cm_check) {
-		let filter = {
-			key: "at",
-			value: "",
-			type: ":"
+	filter = {
+		key: "at",
+		value: "",
+		type: ":"
+	}
+	for (let el of document.getElementById("school-options").children) {
+		if (el.classList.contains("selected")) {
+			filter.value += `${el.value},`;
 		}
+	}
 
-		if (hm_check) {
-			filter.value += "hmc,";
-		}
-
-		if (po_check) {
-			filter.value += "po,";
-		}
-
-		if (sc_check) {
-			filter.value += "sc,";
-		}
-
-		if (pz_check) {
-			filter.value += "pz,";
-		}
-
-		if (cm_check) {
-			filter.value += "cm,";
-		}
-
+	if (filter.value.length > 0) {
 		filter.value = filter.value.slice(0, -1);
-
 		filters.push(filter);
 	}
 
 
 	// Get days of week filters
-	let monday_check = document.getElementById("monday-check").checked;
-	let tuesday_check = document.getElementById("tuesday-check").checked;
-	let wednesday_check = document.getElementById("wednesday-check").checked;
-	let thursday_check = document.getElementById("thursday-check").checked;
-	let friday_check = document.getElementById("friday-check").checked;
-
-	if (monday_check || tuesday_check || wednesday_check || thursday_check || friday_check) {
-		let filter = {
-			key: "on",
-			value: "",
-			type: ":"
+	filter = {
+		key: "on",
+		value: "",
+		type: ":"
+	}
+	for (let el of document.getElementById("day-options").children) {
+		if (el.classList.contains("selected")) {
+			filter.value += `${el.value},`;
 		}
+	}
 
-		if (monday_check) {
-			filter.value += "m,";
-		}
-
-		if (tuesday_check) {
-			filter.value += "t,";
-		}
-
-		if (wednesday_check) {
-			filter.value += "w,";
-		}
-
-		if (thursday_check) {
-			filter.value += "r,";
-		}
-
-		if (friday_check) {
-			filter.value += "f,";
-		}
-
+	if (filter.value.length > 0) {
 		filter.value = filter.value.slice(0, -1);
-
 		filters.push(filter);
 	}
 
@@ -705,7 +661,7 @@ async function updateButtonFilters() {
 
 
 	// Get conflict check
-	let conflict_check = document.getElementById("hide-conflicts-check").checked;
+	let conflict_check = document.getElementById("hide-conflicts-check").classList.contains("selected");
 
 	if (conflict_check) {
 		filters.push({
@@ -726,7 +682,7 @@ async function updateButtonFilters() {
 	}
 
 	// Get sub terms
-	let sub_term_check = document.getElementById("filter-half-semester").checked;
+	let sub_term_check = document.getElementById("filter-half-semester").classList.contains("selected");
 
 	if (sub_term_check) {
 		filters.push({
@@ -2125,6 +2081,11 @@ function setStatus(index) {
 	el.children[index].classList.toggle("selected");
 }
 
+function setMisc(index) {
+	const el = document.getElementById("misc-options");
+	el.children[index].classList.toggle("selected");
+}
+
 // *****
 // HTML Popups
 // *****
@@ -2377,20 +2338,11 @@ const search_popup = `
 		</div>
 
 		<div class="filter-item">
-			<div class="filter-checkboxes">
-				<div id="hide-conflicts-container">
-					<label class="filter-label" for="hide-conflicts-check">Hide Conflicts</label>
-					<input id="hide-conflicts-check" type="checkbox" class="filter-checkbox">
-				</div>
-			</div>
-		</div>
+			<label class="filter-label" for="misc-options">Misc</label>
 
-		<div class="filter-item">
-			<div class="filter-checkboxes">
-				<div id="half-semester-container">
-					<label class="filter-label" for="filter-half-semester">Half-Semester</label>
-					<input id="filter-half-semester" type="checkbox" class="filter-checkbox">
-				</div>
+			<div class="options" id="misc-options">
+				<button id="hide-conflicts-check" class="radio" onclick="setMisc(0)" value="open">Hide Conflicts</button>
+				<button id="filter-half-semester" class="radio" onclick="setMisc(1)" value="open">Half Semester</button>
 			</div>
 		</div>
 	</div>

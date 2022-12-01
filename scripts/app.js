@@ -676,7 +676,7 @@ async function updateButtonFilters() {
 	if (area_input.trim() != "") {
 		filters.push({
 			key: "area",
-			value: area_input,
+			value: area_input.replace(/\s/g, "-"),
 			type: ":"
 		});
 	}

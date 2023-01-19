@@ -1455,7 +1455,7 @@ function removeHighlightCourses(identifier) {
 	}
 }
 
-function toggleCourseOverlay(identifier, off=false) {
+function toggleCourseOverlay(identifier, off = false) {
 	// Case zero: force off
 	if (off) {
 		removeHighlightCourses(t_state.overlay.identifier);
@@ -1611,7 +1611,7 @@ function addSearchFilter(filter, e = false) {
 		buttonSearch();
 		el = document.getElementById("course-input");
 	}
-	
+
 	el.value = filter;
 
 	el.focus();
@@ -1837,7 +1837,7 @@ function buttonPrevPermutation() {
 }
 
 
-function buttonMap(course=null, path=null) {
+function buttonMap(course = null, path = null) {
 	Swal.fire({
 		title: 'Map',
 		icon: '',
@@ -1939,7 +1939,7 @@ function buttonMap(course=null, path=null) {
 
 		// Get courses for that day by checking if "days" contains the day
 		let courses = getLoadedCourses();
-		
+
 		courses = courses.filter(
 			course => course.timing.map(x => x.days).flat().includes(days[i])
 		);
@@ -1973,7 +1973,7 @@ function buttonMap(course=null, path=null) {
 					if (prev_loc && prev_loc[0] != "") {
 						let prev_latlng = [prev_loc[0].replaceAll(",", ""), prev_loc[1].replaceAll(",", "")];
 
-						let line = L.polyline([prev_latlng, latlng], { color: colors[i], weight: 3}).addTo(map);
+						let line = L.polyline([prev_latlng, latlng], { color: colors[i], weight: 3 }).addTo(map);
 
 						let content = `<b>${prev_course.identifier}</b><br>${prev_course.title}<br><br><b>${course.identifier}</b><br>${course.title}`;
 
@@ -2034,10 +2034,10 @@ function schoolToReadable(school) {
 }
 
 
-document.getElementById("schedule-table").addEventListener("click", function(e) {
+document.getElementById("schedule-table").addEventListener("click", function (e) {
 	if (e.target.classList.contains("course-schedule-block") || e.target.parentElement.classList.contains("course-schedule-block")) {
 	} else {
-		toggleCourseOverlay("", off=true);
+		toggleCourseOverlay("", off = true);
 
 	}
 
@@ -2048,14 +2048,14 @@ function rmp(instructor_name, course_identifier) {
 	instructor_name = instructor_name.split(" ");
 	instructor_name = instructor_name[0] + " " + instructor_name[instructor_name.length - 1];
 	instructor_name = instructor_name.replaceAll(" ", "+");
-	
+
 	const school_ids = {
 		"HarveyMudd": "U2Nob29sLTQwMA==",
 		"Scripps": "U2Nob29sLTg4OQ==",
 		"Pitzer": "U2Nob29sLTc2OA==",
 		"ClaremontMckenna": "U2Nob29sLTIzNA==",
 		"Pomona": "U2Nob29sLTc3NA=="
-	}	
+	}
 
 	let course = state.courses.find(x => x.identifier == course_identifier);
 
@@ -2086,9 +2086,219 @@ function setMisc(index) {
 	el.children[index].classList.toggle("selected");
 }
 
+function buttonRoomFinder() {
+	Swal.fire({
+		title: "Room Finder",
+		html: room_popup,
+		showCloseButton: true,
+		showCancelButton: false,
+		confirmButtonText:
+			`Done`,
+		customClass: {
+			popup: 'swal-medium-wide',
+			confirmButton: 'default-button swal confirm',
+			cancelButton: 'default-button swal cancel',
+		},
+		showClass: {
+			popup: 'animate__animated animate__fadeInDown',
+		},
+		hideClass: {
+			popup: 'animate__animated animate__fadeOutUp',
+		},
+		buttonsStyling: false,
+	});
+
+	const buildings = document.getElementById("buildings");
+
+	// Contains objects of buildings with
+	// {
+	// 	name: "Building Name",
+	// 	rooms: [{}, {}, ...]
+	// }
+	// Each room object contains
+	// {
+	// 	name: "Room Name",
+	// 	courses: [{}, {}, ...]
+	//  times_used: [{}, {}, ...]
+	//  max_occupancy: 16
+	// }
+	// Times are just day, start_time, and end_time
+	let buildings_list = [];
+
+	for (let course of state.courses) {
+		for (let time of course.timing) {
+			let building = buildings_list.find(x => x.name == time.location.building);
+
+			if (!building) {
+				building = {
+					name: time.location.building,
+					rooms: [],
+				};
+
+				buildings_list.push(building);
+			}
+
+			let room = building.rooms.find(x => x.name == time.location.room);
+
+			if (!room) {
+				room = {
+					name: time.location.room,
+					courses: [],
+					times_used: [],
+					max_occupancy: 0
+				};
+
+				building.rooms.push(room);
+			}
+
+			if (!room.courses.includes(course)) {
+				room.courses.push(course);
+			}
+
+			let time_used = room.times_used.find(x => x.days == time.days && x.start_time == time.start_time && x.end_time == time.end_time);
+
+			if (!time_used) {
+				time_used = {
+					days: time.days,
+					start_time: time.start_time,
+					end_time: time.end_time
+				};
+
+				room.times_used.push(time_used);
+			}
+
+			room.max_occupancy = Math.max(room.max_occupancy, Math.max(course.seats_taken, course.max_seats));
+		}
+	}
+
+	buildings_list.sort((a, b) => a.name.localeCompare(b.name));
+
+	console.log(buildings_list);
+	const now = new Date();
+	const now_str = `${now.getHours()}:${now.getMinutes()}:00`;
+
+	for (let building of buildings_list) {
+		console.log("BUILDING", building.name);
+		const building_div = document.createElement("div");
+		building_div.classList.add("building");
+
+		const building_name = document.createElement("h1");
+		building_name.innerText = building.name;
+		building_div.appendChild(building_name);
+
+		const building_rooms = document.createElement("div");
+		building_rooms.classList.add("building-rooms");
+
+		let num_avail_rooms = 0;
+		let rooms = [];
+
+
+		let sorted_rooms = building.rooms.sort((a, b) => a.name.localeCompare(b.name));
+
+		for (let room of sorted_rooms) {
+			console.log("ROOM", room.name);
+			const room_div = document.createElement("div");
+			room_div.classList.add("room");
+
+			// if available, add aviailable class
+			let available = true;
+			for (let time of room.times_used) {
+				if (time.days.includes(days_full[now.getDay()])) {
+					// use timeDiffMins to check if time is in between start and end time
+					if (timeDiffMins(time.start_time, now_str) > 0 && timeDiffMins(time.end_time, now_str) < 0) {
+						available = false;
+						break;
+					}
+				}
+			}
+
+			if (available) {
+				room_div.classList.add("available");
+				num_avail_rooms++;
+			}
+
+			const room_name = document.createElement("p");
+			room_name.innerHTML = `Room <b>${room.name}</b>`;
+			room_div.appendChild(room_name);
+
+
+			const size = document.createElement("div");
+			size.classList.add("size");
+			size.innerText = `${room.max_occupancy} seats`;
+			room_div.appendChild(size);
+
+			const availability_bar = createAvailabilityBar(room.times_used);
+			room_div.appendChild(availability_bar);
+			
+			rooms.push(room_div);
+		}
+
+		building_rooms.innerHTML = `${building.rooms.length} rooms <span class='available'>${num_avail_rooms} available</span>`;
+		building_div.appendChild(building_rooms);
+
+		const room_list = document.createElement("div");
+		room_list.classList.add("room-list");
+		room_list.classList.add("hidden");
+
+		for (let room of rooms) {
+			room_list.appendChild(room);
+		}
+
+		building_div.appendChild(room_list);
+
+		building_div.addEventListener("click", () => {
+			room_list.classList.toggle("hidden");
+		});
+
+		buildings.appendChild(building_div);
+	}
+}
+
+function createAvailabilityBar(times_used) {
+	const availability_bar = document.createElement("div");
+	availability_bar.classList.add("availability-bar");
+
+	const now = new Date();
+	const now_str = `${now.getHours()}:${now.getMinutes()}:00`;
+
+	for (let time of times_used) {
+		const bar = document.createElement("div");
+		bar.classList.add("bar");
+
+		// if available, add aviailable class
+		let available = true;
+		if (time.days.includes(days_full[now.getDay()])) {
+			// use timeDiffMins to check if time is in between start and end time
+			if (timeDiffMins(time.start_time, now_str) > 0 && timeDiffMins(time.end_time, now_str) < 0) {
+				available = false;
+			}
+		}
+
+		if (available) {
+			bar.classList.add("available");
+		}
+
+		bar.style.left = `${timeDiffMins(time.start_time, now_str) / 1440 * 100}%`;
+		bar.style.width = `${timeDiffMins(time.end_time, time.start_time) / 1440 * 100}%`;
+
+		availability_bar.appendChild(bar);
+	}
+
+	return availability_bar;
+}
+
 // *****
 // HTML Popups
 // *****
+const room_popup =
+	`
+<div id="room-box">
+	<div id="buildings">
+	</div>
+</div
+
+`;
+
 const map_popup =
 	`
 <div id="map-box">

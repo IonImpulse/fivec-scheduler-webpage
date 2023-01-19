@@ -1787,6 +1787,61 @@ select *.option-class {
   transform: translate(100%, 0);
 }
 
+#room-box {
+  height: 60vh;
+  overflow-y: scroll;
+}
+
+#building-box {
+}
+
+.building {
+  display: grid;
+  text-align: left;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas: "name size" "rooms rooms";
+  cursor: pointer;
+  user-select: none;
+  padding: 5px;
+}
+
+.room-list {
+  grid-area: rooms;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.building .room {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 10px;
+  justify-content: space-evenly;
+  width: 100%;
+  background-color: var(--background-main);
+}
+
+.building-rooms, .size {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.building:hover {
+  background-color: var(--background-alt);
+}
+
+.building *.hidden {
+  display: none;
+}
+
+.building-rooms .available {
+  margin-left: 20px;
+}
+
 /* =============================
 
     MOBILE STYLES

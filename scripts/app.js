@@ -1495,14 +1495,14 @@ function toggleCourseOverlay(identifier, off = false) {
 	}
 }
 
-function showCourseOverlay(identifier, override = false) {
+async function showCourseOverlay(identifier, override = false) {
 	if (state.descriptions == undefined || state.descriptions.length == 0) {
 		return
 	}
 
 	if (t_state.overlay.locked == false || override == true) {
 		if (state.descriptions.length == 0) {
-			updateDescAndSearcher();
+			await updateDescAndSearcher();
 		}
 
 		let index = state.courses.findIndex((el) => el.identifier == identifier);
@@ -2173,12 +2173,10 @@ function buttonRoomFinder() {
 
 	buildings_list.sort((a, b) => a.name.localeCompare(b.name));
 
-	console.log(buildings_list);
 	const now = new Date();
 	const now_str = `${now.getHours()}:${now.getMinutes()}:00`;
 
 	for (let building of buildings_list) {
-		console.log("BUILDING", building.name);
 		const building_div = document.createElement("div");
 		building_div.classList.add("building");
 
@@ -2196,7 +2194,6 @@ function buttonRoomFinder() {
 		let sorted_rooms = building.rooms.sort((a, b) => a.name.localeCompare(b.name));
 
 		for (let room of sorted_rooms) {
-			console.log("ROOM", room.name);
 			const room_div = document.createElement("div");
 			room_div.classList.add("room");
 

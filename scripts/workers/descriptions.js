@@ -54,7 +54,44 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 		let timing = `<span class="desc-blob">`;
 		let timing_done = [];
 
+		let condensed_timing = [];
+
+		// Loop through timing, and condense it if the same time/location is used, but rooms are different
 		for (let time of course.timing) {
+			if (time.start_time == "00:00:00" && time.end_time == "00:00:00" && time.location.school == "NA") {
+				continue;
+			}
+
+			let found = false;
+
+			for (let i = 0; i < condensed_timing.length; i++) {
+				if (condensed_timing[i].start_time == time.start_time && condensed_timing[i].end_time == time.end_time && condensed_timing[i].location.school == time.location.school && condensed_timing[i].location.building == time.location.building) {
+					// Check to see the two lists of days are the same
+					let same_days = true;
+
+					for (let day of time.days) {
+						if (!condensed_timing[i].days.includes(day)) {
+							same_days = false;
+							break;
+						}
+					}
+
+					if (!same_days) {
+						continue;
+					}
+					
+					condensed_timing[i].location.room += `, ${time.location.room}`;
+					found = true;
+					break;
+				}
+			}
+
+			if (!found) {
+				condensed_timing.push(time);
+			}
+		}
+
+		for (let time of condensed_timing) {
 			let time_str = `${time.days} ${convertTime(time.start_time)} ${convertTime(time.end_time)} ${time.location.school} ${time.location.building} ${time.location.room}`;
 
 			if (!timing_done.includes(time_str)) {
@@ -70,7 +107,13 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 	
 				timing_node += `<b>${start_time} - ${end_time}:</b> ${day_str}<br>`;
 				timing_node += `<span class="clickable-text" onclick="addSearchFilter(\'at:${local.school}'\)">${schoolToReadable(local.school)}</span>`;
-				timing_node += `, ${local.building}, Room ${local.room}</div>`;
+				timing_node += `, ${local.building}`;
+
+				if (local.room.includes(',')) {
+					timing_node += `, Rooms ${local.room}</div>`;
+				} else {
+					timing_node += `, Room ${local.room}</div>`;
+				}
 	
 				timing += timing_node;
 			}		
@@ -122,7 +165,7 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 		let fulfulls_node = "<div";
 		fulfulls_node += " class=\"fulfills\">";
 		fulfulls_node += `<b>Fulfills:</b> `;
-		for (let fulfills of course.fulfills) {
+		for (let fulfills of course.fulfills ?? []) {
 			fulfulls_node += `<span class="clickable-text" onclick="addSearchFilter(\'area:${fulfills.trim().replace(/\s/g, "-")}\')">${fulfills}</span>, `;
 		}
 

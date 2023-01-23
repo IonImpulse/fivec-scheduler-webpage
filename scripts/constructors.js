@@ -84,7 +84,28 @@ function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_i
         let course_room = document.createElement("div");
         course_room.className = "room";
 
-        let course_rooms = time.locations.map(x => `${x.building} ${x.room}`);
+        let course_rooms = [];
+
+        console.log(time);
+
+        for (let location of time.locations) {
+            let found = false;
+
+            for (let i = 0; i < course_rooms.length; i++) {
+                if (course_rooms[i].building == location.building) {
+                    course_rooms[i].room = `${course_rooms[i].room}, ${location.room}`;
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                course_rooms.push(location);
+            }
+        }
+
+        course_rooms = course_rooms.map(x => `${x.building} ${x.room}`);
+
         // Remove duplicates
         course_rooms = [...new Set(course_rooms)];
         

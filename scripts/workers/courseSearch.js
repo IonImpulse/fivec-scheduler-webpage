@@ -441,8 +441,6 @@ function expensiveCourseSearch(input, all_courses_global, colors, hmc_mode, load
 
 		const search_term = tweakSearch(filters_object.input, all_courses_global);
 
-		console.log(button_filters);
-
 		results = search_courses(search_term, all_courses_global, filters_object.filters.concat(button_filters), hmc_mode, loaded_local_courses);
 	}
 

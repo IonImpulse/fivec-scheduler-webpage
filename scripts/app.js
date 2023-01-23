@@ -410,10 +410,7 @@ async function hideQuickSearch() {
 	if (el.className != "animate__animated animate__fadeOutUp" && el.className != "hidden") {
 		el.className = "animate__animated animate__fadeOutUp";
 	}
-	
-	setTimeout(function () {
-		el.className = "hidden";
-	}, 500);
+
 }
 
 async function buttonSearch(select_course_identifier=null) {
@@ -522,7 +519,7 @@ async function buttonSearch(select_course_identifier=null) {
 
 		input.focus();
 
-		state.button_filters = [];
+		t_state.button_filters = [];
 
 		// Update area filters
 		const filter_areas = document.getElementById("filter-area");
@@ -745,7 +742,7 @@ async function updateButtonFilters() {
 		});
 	}
 
-	state.button_filters = filters;
+	t_state.button_filters = filters;
 	await backgroundCourseSearch();
 }
 
@@ -1020,7 +1017,7 @@ async function backgroundQuickSearch() {
 		showQuickSearch();
 	}
 
-	searching_worker.postMessage([input.value, state.courses, colors, state.settings.hmc_mode, getCheckedCourses(), state.button_filters, true]);
+	searching_worker.postMessage([input.value, state.courses, colors, state.settings.hmc_mode, getCheckedCourses(), t_state.button_filters, true]);
 }
 
 async function backgroundCourseSearch(full = false) {
@@ -1031,7 +1028,7 @@ async function backgroundCourseSearch(full = false) {
 		return;
 	}
 
-	if (input.value == "" && t_state.search_results.length > 0 && state.button_filters.length == 0) {
+	if (input.value == "" && t_state.search_results.length > 0 && t_state.button_filters.length == 0) {
 		appendCourseHTML(t_state.search_results, document.getElementById("course-input").value, full);
 
 		postProcessSearch(input.value, t_state.search_results);
@@ -1047,7 +1044,7 @@ async function backgroundCourseSearch(full = false) {
 		postProcessSearch(document.getElementById("course-input").value, html_courses);
 	}
 
-	searching_worker.postMessage([input.value, state.courses, colors, state.settings.hmc_mode, getCheckedCourses(), state.button_filters, false]);
+	searching_worker.postMessage([input.value, state.courses, colors, state.settings.hmc_mode, getCheckedCourses(), t_state.button_filters, false]);
 }
 
 async function sleep(ms) {
@@ -2540,7 +2537,7 @@ const search_popup = `
 		<input id="hmc-credits" type="checkbox" class="day-checkbox" onclick="toggleCreditMode()">
 	</div>
 
-    <input class="input" id="course-input" placeholder="Search by course code, title, or instructor...">
+    <input type="search" autocomplete="off" class="search" id="course-input" placeholder="Search by course code, title, or instructor...">
 
     <span id="term-container"></span>
 </div>

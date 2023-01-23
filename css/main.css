@@ -421,12 +421,20 @@ canvas {
   padding: unset;
   padding-left: 10px;
   border: unset;
+  z-index: 1000;
   border-radius: var(--roundedness);
 }
 
 .search:focus, .search:hover {
   background-color: var(--button-main-active);
   outline: none;
+}
+
+#open-search {
+  display: block;
+  text-align: center;
+  font-weight: bold;
+  font-size: 20px;
 }
 
 #quick-search-container {
@@ -452,7 +460,7 @@ canvas {
   position: absolute;
   top: 50px;
   width: 100%;
-  z-index: 10000;
+  z-index: 900;
 }
 
 #quick-search-results.hidden {
@@ -597,7 +605,7 @@ canvas {
 }
 
 .course-schedule-block.selected {
-  z-index: 1060;
+  z-index: 850;
 }
 
 .course-search-result.selected {
@@ -868,14 +876,14 @@ canvas {
   justify-content: center;
   overflow: hidden;
   text-align: center;
-  z-index: 1000;
+  z-index: 700;
   position: relative;
   width: 100%;
   transition: width 0s;
 }
 
 .starred-course {
-  z-index: 1050;
+  z-index: 750;
 }
 
 .course-schedule-block.conflict {
@@ -1364,8 +1372,6 @@ label {
   grid-column-end: 5;
   text-overflow: ellipsis;
   margin: 0 auto;
-  width: 90%;
-  height: 60%;
   background-color: var(--background-alt);
 }
 

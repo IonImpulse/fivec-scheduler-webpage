@@ -121,9 +121,9 @@
       <button title="Share" tabindex="0" class="default-button share wide noselect" onclick="buttonShare()">
       </button>
       <div id="quick-search-container">
-        <input onkeyup="quickSearch(event)" onfocus="showQuickSearch()" id="search" type="text" placeholder="Search by course code, title, or instructor..." class="search">
+        <input type="search" autocomplete="off" onkeyup="quickSearch(event)" onfocus="showQuickSearch()" id="search" placeholder="Search by course code, title, or instructor..." class="search">
         <div id="quick-search-results" class="hidden"></div>
-        <button title="Open Search" tabindex="0" class="default-button" onclick="buttonSearch()">
+        <button title="Open Search" tabindex="0" class="default-button" id="open-search" onclick="buttonSearch()">Go</button>
       </div>
 
       <button title="Load" tabindex="0" class="default-button load wide noselect" onclick="buttonLoad()">

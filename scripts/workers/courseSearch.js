@@ -1,7 +1,7 @@
 importScripts("../libs/fuzzysort.js");
 
 onmessage = function(e) {
-    let course_divs = expensiveCourseSearch(e.data[0], e.data[1], e.data[2], e.data[3], e.data[4], e.data[5]);
+    let course_divs = expensiveCourseSearch(e.data[0], e.data[1], e.data[2], e.data[3], e.data[4], e.data[5], e.data[6]);
 
     postMessage(course_divs);
 }
@@ -22,7 +22,7 @@ function splitAtList(str, list) {
 	return false;
 }
 
-function createResultDiv(i, course, color, index, loaded_local_courses) {
+function createResultDiv(i, course, color, index, loaded_local_courses, is_quick) {
 	let identifier = course.identifier;
 
 	let course_div = "<div";
@@ -31,8 +31,12 @@ function createResultDiv(i, course, color, index, loaded_local_courses) {
 	course_div += ` id="${identifier}"`;
     course_div += " tabindex=\"0\"";
 
-	course_div += ` onclick="toggleCourseSelection(\'${identifier}\')"`;
-    course_div += ` onmouseenter="setCourseDescription(\'${index}\')"`;
+	if (!is_quick) {
+		course_div += ` onclick="toggleCourseSelection(\'${identifier}\')"`;
+		course_div += ` onmouseenter="setCourseDescription(\'${index}\')"`;
+	} else {
+		course_div += ` onmousedown="buttonSearch(\'${identifier}\')"`;
+	}
 	course_div += ` style="background-color: ${color}; z-index: ${10000 - i};">`;
 
 	// Create checkbox
@@ -431,7 +435,7 @@ function getFilters(input) {
 	return {filters: filters, input: wanted_search_term};
 }
 
-function expensiveCourseSearch(input, all_courses_global, colors, hmc_mode, loaded_local_courses, button_filters) {
+function expensiveCourseSearch(input, all_courses_global, colors, hmc_mode, loaded_local_courses, button_filters, is_quick) {
     let results = [];
 
     if (input == "" && button_filters.length == 0) {
@@ -448,7 +452,7 @@ function expensiveCourseSearch(input, all_courses_global, colors, hmc_mode, load
 
     for (let i = 0; i < results.length; i++) {
         let course = results[i].obj ?? results[i];
-        let course_div = createResultDiv(i, course, colors[i % colors.length], course.descIndex, loaded_local_courses);
+        let course_div = createResultDiv(i, course, colors[i % colors.length], course.descIndex, loaded_local_courses, is_quick);
 
         output.push(course_div);
     }

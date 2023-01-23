@@ -86,8 +86,6 @@ function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_i
 
         let course_rooms = [];
 
-        console.log(time);
-
         for (let location of time.locations) {
             let found = false;
 

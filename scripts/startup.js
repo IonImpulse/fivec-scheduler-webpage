@@ -29,7 +29,7 @@ async function startup() {
     // Create reusable web worker threads
     desc_worker = new Worker('scripts/workers/descriptions.js?v=1.19.10');
     searcher_worker = new Worker('scripts/workers/searcher.js?v=1.19.0');
-    searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.19.2');
+    searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.19.10');
     permutation_worker = new Worker('scripts/workers/permutations.js?v=1.19.0');
 
     // Start worker threads to generate descriptions + searcher
@@ -46,10 +46,16 @@ async function startup() {
 
     t_state.areas = areas;
 
+    document.addEventListener("click", function(e) {
+        if (e.target.id != "search" && e.target.id != "quick-search-results") {
+            hideQuickSearch();
+        }
+    })
+
     // Remove fade-in class
     let fader = document.getElementById("fader")
     fader.classList.add('fade-out');
-    buttonRoomFinder();
+    //buttonRoomFinder();
 }
 
 const schedule_element = document.getElementById("schedule-table");

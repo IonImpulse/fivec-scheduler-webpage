@@ -383,7 +383,40 @@ function buttonPrint() {
 	});
 }
 
-async function buttonSearch() {
+async function quickSearch(e) {
+	// If button is enter, then call buttonSearch()
+	if (e.keyCode == 13) {
+		hideQuickSearch();
+		buttonSearch();
+	} else if ((e.keyCode >= 48 && e.keyCode <= 90) || e.keyCode == 8) {
+		// If button is a letter or symbol or number or backspace, then search
+		backgroundQuickSearch();
+	} else if (e.keyCode == 27) {
+		// If button is escape, then hide
+		hideQuickSearch();
+	}
+}
+
+async function showQuickSearch() {
+	const el = document.getElementById("quick-search-results");
+	if (el.className != "animate__animated animate__fadeInDown") {
+		document.getElementById("quick-search-results").className = "animate__animated animate__fadeInDown";
+	}
+}
+
+async function hideQuickSearch() {
+	const el = document.getElementById("quick-search-results");
+
+	if (el.className != "animate__animated animate__fadeOutUp" && el.className != "hidden") {
+		el.className = "animate__animated animate__fadeOutUp";
+	}
+	
+	setTimeout(function () {
+		el.className = "hidden";
+	}, 500);
+}
+
+async function buttonSearch(select_course_identifier=null) {
 	if (state.courses == null) {
 		Swal.fire({
 			title: 'Error fetching courses!',
@@ -472,6 +505,15 @@ async function buttonSearch() {
 		hmc_credit_mode.checked = state.settings.hmc_mode;
 
 		let input = document.getElementById("course-input");
+
+		let quick_search_input = document.getElementById("search");
+		input.value = quick_search_input.value;
+
+		quick_search_input.value = "";
+
+		let quick_search_results = document.getElementById("quick-search-results");
+		quick_search_results.innerHTML = "";
+
 		document.getElementById("course-search-results").addEventListener("keydown", function (event) {
 			if (event.code === "Enter") {
 				document.activeElement.click();
@@ -518,8 +560,19 @@ async function buttonSearch() {
 		filters_el.addEventListener("keyup", updateButtonFilters);
 		updateButtonFilters();
 
-		setTimeout(function () {
-			backgroundCourseSearch();
+		setTimeout(async function () {
+			await backgroundCourseSearch();
+			// Select & setcoursedesc for select_course_index
+			if (select_course_identifier != null) {
+				let course = document.getElementById(select_course_identifier);
+
+				if (course != null) {
+					course.click();
+					// Find index in state.courses
+					let index = state.courses.findIndex((element) => element.identifier === select_course_identifier);
+					setCourseDescription(index);
+				}
+			}
 		}, 350);
 
 		// Create stats
@@ -949,6 +1002,27 @@ function saveSettings() {
 	updateSchedule();
 }
 
+async function backgroundQuickSearch() {
+	let input = document.getElementById("search");
+	let output = document.getElementById("quick-search-results");
+
+	if (input.value == "") {
+		hideQuickSearch();
+		return;
+	}
+
+	searching_worker.onmessage = function (k) {
+		// First 5 results
+		const html_courses = k.data.slice(0, 5);
+		
+		output.innerHTML = html_courses.join("\n");
+
+		showQuickSearch();
+	}
+
+	searching_worker.postMessage([input.value, state.courses, colors, state.settings.hmc_mode, getCheckedCourses(), state.button_filters, true]);
+}
+
 async function backgroundCourseSearch(full = false) {
 	let input = document.getElementById("course-input");
 	let output = document.getElementById("course-search-results");
@@ -973,7 +1047,7 @@ async function backgroundCourseSearch(full = false) {
 		postProcessSearch(document.getElementById("course-input").value, html_courses);
 	}
 
-	searching_worker.postMessage([input.value, state.courses, colors, state.settings.hmc_mode, getCheckedCourses(), state.button_filters]);
+	searching_worker.postMessage([input.value, state.courses, colors, state.settings.hmc_mode, getCheckedCourses(), state.button_filters, false]);
 }
 
 async function sleep(ms) {

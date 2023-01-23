@@ -100,7 +100,7 @@ function createScheduleGridDiv(course, color, set_max_grid_rows = false, low_z_i
             }
 
             if (!found) {
-                course_rooms.push(location);
+                course_rooms.push(JSON.parse(JSON.stringify(location)));
             }
         }
 

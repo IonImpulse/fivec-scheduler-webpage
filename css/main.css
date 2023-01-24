@@ -1954,9 +1954,7 @@ select *.option-class {
   }
 
   .title-bar {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
+    grid-template-columns: 5fr 12fr 5fr;
   }
 
   .course-schedule-block * {
@@ -2150,5 +2148,11 @@ select *.option-class {
     display: none;
   }
 
+  #map-line-legend {
+    display: none;
+  }
 
+  #map {
+    width: 90vw;
+  }
 }

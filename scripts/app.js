@@ -894,9 +894,8 @@ function generateICal(courses) {
 		course.timing.forEach(timing => {
 			let next_valid_date = nextDate(timing.days[0]);
 
-			let start_time = `${next_valid_date.getFullYear()}/${next_valid_date.getMonth()}/${next_valid_date.getDate()} ${timing.start_time}`;
-
-			let end_time = `${next_valid_date.getFullYear()}/${next_valid_date.getMonth()}/${next_valid_date.getDate()} ${timing.end_time}`;
+			let start_time = `${next_valid_date.getFullYear()}/${next_valid_date.getMonth() + 1}/${next_valid_date.getDate()} ${timing.start_time}`;
+			let end_time = `${next_valid_date.getFullYear()}/${next_valid_date.getMonth() + 1}/${next_valid_date.getDate()} ${timing.end_time}`;
 
 			let days = timing.days.map(day => day.toUpperCase().substring(0, 2));
 

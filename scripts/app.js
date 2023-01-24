@@ -410,6 +410,9 @@ async function hideQuickSearch() {
 
 	if (el.className != "animate__animated animate__fadeOutUp" && el.className != "hidden") {
 		el.className = "animate__animated animate__fadeOutUp";
+		setTimeout(function () {
+			document.getElementById("quick-search-results").className = "hidden";
+		}, 100);
 	}
 
 }

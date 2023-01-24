@@ -472,7 +472,7 @@ canvas {
   left: 0;
   overflow: hidden;
   position: absolute;
-  top: 50px;
+  top: 60px;
   width: 100%;
   z-index: 900;
 }

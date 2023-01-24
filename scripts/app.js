@@ -386,6 +386,7 @@ function buttonPrint() {
 async function quickSearch(e) {
 	// If button is enter, then call buttonSearch()
 	if (e.keyCode == 13) {
+		// Activate hover change on #open-search
 		hideQuickSearch();
 		buttonSearch();
 	} else if ((e.keyCode >= 48 && e.keyCode <= 90) || e.keyCode == 8) {

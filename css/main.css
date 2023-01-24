@@ -3,6 +3,7 @@
   --page-background: #ffffff;
   --background-alt: #f0f1f3;
   --background-main: #ffffff;
+  --title-bar: var(var(--background-main));
   --button-main: #e9e9e9;
   --button-main-active: #e6e6ff;
   --course-closed: #e27878;
@@ -49,6 +50,7 @@
   --settings-icon: url(../img/settings-light.svg);
   --filters-icon: url(../img/filters-light.svg);
   --map-icon: url(../img/map-light.svg);
+  --search-icon: url(../img/search.svg);
   --hover-effect: 0.96;
   --schedule-change-speed: 0.05s;
 
@@ -63,6 +65,7 @@
   --page-background: #0f0f11;
   --background-alt: #16151a;
   --background-main: #222227;
+  --title-bar: var(var(--background-alt));
   --button-main: #222227;
   --button-main-active: #2f2f42;
   --course-closed: #b93838;
@@ -228,10 +231,8 @@ canvas {
 
 .logo {
   height: 100%;
-  width: 35px;
-  position: relative;
-  left: 10px;
   border-radius: var(--roundedness);
+  margin-left: 10px;
 }
 
 .noselect {
@@ -264,20 +265,23 @@ canvas {
   grid-area: header;
   display: grid;
   grid-template-columns: 1fr 5fr 12fr 5fr;
-  padding-top: 10px;
-  padding-bottom: 5px;
 }
 
+.title-bar, #extra-buttons {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: var(--title-bar);
+}
+
+#schedule-box, #course-info-table, #course-box, #course-list-box {
+  background-color: var(--background-main);
+}
 
 #schedule-box {
   grid-area: schedule;
-  background-color: unset;
-  border-radius: var(--roundedness);
 }
 
 #schedule-table {
-  background-color: unset;
-  border-radius: var(--roundedness);
   color: var(--text-main);
   display: grid;
   grid-column-gap: 10px;
@@ -435,6 +439,15 @@ canvas {
   text-align: center;
   font-weight: bold;
   font-size: 20px;
+  margin-left: 10px;
+  background-color: var(--search-button-background);
+  background-image: var(--search-icon);
+  color: var(--text-alt);
+  width: 55px;
+}
+
+#open-search:hover, #open-search.hover {
+  background-color: var(--button-main-active);
 }
 
 #quick-search-container {
@@ -454,6 +467,7 @@ canvas {
   font: 1em "Inter", sans-serif;
   font-weight: 500;
   height: fit-content;
+  min-height: 10vh;
   max-height: 40vh;
   left: 0;
   overflow: hidden;
@@ -490,7 +504,7 @@ canvas {
 #current-time-line {
   opacity: 0.9;
   background-color: var(--text-main);
-  z-index: 1050;
+  z-index: 899;
   width: 103%;
   height: 3px;
   transform: translate(-1%, 0%);
@@ -534,14 +548,12 @@ canvas {
 }
 
 #course-table {
-  background-color: unset;
   border-radius: var(--roundedness);
   display: inline-block;
   transition: height 0.5s ease;
 }
 
 #course-list-box {
-  background-color: unset;
   border-radius: var(--roundedness);
   display: flex;
   flex-direction: column;
@@ -551,7 +563,6 @@ canvas {
 }
 
 #course-list-table {
-  background-color: unset;
   border-radius: var(--roundedness);
   position: relative;
   max-height: 20vh;
@@ -1002,7 +1013,6 @@ canvas {
 }
 
 #course-info-table {
-  background-color: unset;
   box-sizing: border-box;
   display: inline-block;
   overflow-y: scroll;
@@ -1047,17 +1057,10 @@ a:visited {
 #course-info-box,
 #course-box,
 #extra-buttons {
-  background-color: unset;
-  border-radius: var(--roundedness);
   display: inline-block;
   padding: var(--padding);
   min-width: 20vw;
   transition: height 0.5s ease;
-}
-
-#extra-buttons {
-  padding-top: 10px;
-  padding-bottom: 5px;
 }
 
 #course-info-box {

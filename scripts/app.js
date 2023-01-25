@@ -1221,6 +1221,20 @@ function setCourseDescription(index) {
 	course_search_desc.appendChild(node_to_append);
 }
 
+async function addCourse(i) {
+	const el = document.getElementById("quick-search-results");
+
+	if (el == null) {
+		return;
+	}
+
+	let identifier = el.children[i * 2].id;
+
+	t_state.selected = [identifier];
+
+	await addCourses();
+}
+
 async function addCourses() {
 	let courses = [];
 

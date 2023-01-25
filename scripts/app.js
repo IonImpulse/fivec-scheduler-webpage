@@ -746,6 +746,40 @@ async function updateButtonFilters() {
 		});
 	}
 
+	// Get seminar filter
+	let seminar_check = document.getElementById("filter-seminar").classList.contains("selected");
+
+	if (seminar_check) {
+		filters.push({
+			key: "seminar",
+			value: "some",
+			type: ":"
+		});
+	}
+
+	// Get STEM filter
+	let stem_check = document.getElementById("filter-stems").classList.contains("selected");
+
+	if (stem_check) {
+		filters.push({
+			key: "field",
+			value: "stems",
+			type: ":"
+		});
+	}
+
+	// Get Humanities filter
+	let humanities_check = document.getElementById("filter-humanities").classList.contains("selected");
+
+	if (humanities_check) {
+		filters.push({
+			key: "field",
+			value: "humanities",
+			type: ":"
+		});
+	}
+
+
 	t_state.button_filters = filters;
 	await backgroundCourseSearch();
 }
@@ -1014,6 +1048,11 @@ async function backgroundQuickSearch() {
 	searching_worker.onmessage = function (k) {
 		// First 5 results
 		const html_courses = k.data.slice(0, 5);
+
+		// Add button after each div to add it
+		html_courses.forEach((course, i) => {
+			html_courses[i] = `${course}<div class="instant-add-container"><button class='default-button instant-add-button' onclick='addCourse(${i})'></button></div>`;
+		});
 		
 		output.innerHTML = html_courses.join("\n");
 
@@ -2624,6 +2663,9 @@ const search_popup = `
 			<div class="options" id="misc-options">
 				<button id="hide-conflicts-check" class="radio" onclick="setMisc(0)" value="open">Hide Conflicts</button>
 				<button id="filter-half-semester" class="radio" onclick="setMisc(1)" value="open">Half Semester</button>
+				<button id="filter-seminar" class="radio" onclick="setMisc(2)" value="open">Seminar</button>
+				<button id="filter-humanities" class="radio" onclick="setMisc(3)" value="open">Humanities</button>
+				<button id="filter-stems" class="radio" onclick="setMisc(4)" value="open">STEMs</button>
 			</div>
 		</div>
 	</div>

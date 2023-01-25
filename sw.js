@@ -61,6 +61,8 @@ self.addEventListener('install', (event) => {
                 'img/filters-light.svg',
                 'img/map-dark.svg',
                 'img/map-light.svg',
+                'img/search.svg',
+                'img/plus.svg',
                 'img/favicons/android-chrome-192x192.png',
                 'img/favicons/android-chrome-512x512.png',
                 'img/favicons/apple-touch-icon.png',

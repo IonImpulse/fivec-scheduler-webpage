@@ -8,6 +8,30 @@ onmessage = function(e) {
 
 const filter_split_at = [":", "<=", ">=", "<", ">", "=", "@"];
 
+const category_stem = [
+    "AISS",
+    "AS",
+    "ALS",
+    "ASTR",
+    "BIOL",
+    "CHEM",
+    "CLES",
+    "COGS",
+    "CSMT",
+    "CSCI",
+    "CL",
+    "DSCI",
+    "EA",
+	"ENGR",
+    "GEOG",
+    "LGCS",
+    "MCBI",
+    "MATH",
+    "MOBI",
+    "NEUR",
+    "PHYS",
+];
+
 // Split a string at any of the provided strings
 // Returns the split string and the string that was split at
 function splitAtList(str, list) {
@@ -327,6 +351,16 @@ function search_courses(query, all_courses_global, filters, hmc_mode, loaded_loc
 		} else if (filter.key == "sub_term") {
 			if (filter.value == "some") {
 				results = results.filter(t => (t.obj || t).sub_term != "None");
+			}
+		} else if (filter.key == "seminar") {
+			// Classes that are longer then 2.5 hours
+			results = results.filter(t => (t.obj || t).timing.every(e => timeDiffMins(e.start_time.split(":").map(i => parseInt(i)), e.end_time.split(":").map(i => parseInt(i))) > 150));
+		} else if (filter.key == "field") {
+			// If field is "stem", only allow courses with code in category_stem
+			if (filter.value == "stems") {
+				results = results.filter(t => category_stem.includes((t.obj || t).code));
+			} else if (filter.value == "humanities") {
+				results = results.filter(t => !category_stem.includes((t.obj || t).code));
 			}
 		}
 	}

@@ -471,7 +471,6 @@ canvas {
   font: 1em "Inter", sans-serif;
   font-weight: 500;
   height: fit-content;
-  min-height: 10vh;
   max-height: 60vh;
   left: 0;
   overflow: hidden;
@@ -965,6 +964,18 @@ canvas {
 .course-loaded.course-list .course-info {
   grid-column-start: 2;
   grid-column-end: 3;
+}
+
+#json-input {
+  width: 80%;
+  height: 60px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  border: none;
+  background-color: var(--background-alt);
+  color: var(--text-main);
+  resize: none;
+  margin-top: 20px;
 }
 
 .star-course {

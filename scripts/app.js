@@ -13,7 +13,7 @@ jscolor.presets.default = {
 function buttonLoad() {
 	Swal.fire({
 		title: 'Load Schedule',
-		html: `<i>Enter a saved schedule code.<br>To add courses, exit and click the "Search" button.</i><div><input maxlength='7' id="code-input" oninput="checkIfFull()"></div>`,
+		html: load_popup,
 		focusConfirm: false,
 		showCancelButton: true,
 		confirmButtonText: 'Load',
@@ -30,16 +30,62 @@ function buttonLoad() {
 		},
 		buttonsStyling: false,
 		preConfirm: async () => {
-			try {
-				const response = await fetch(`${API_URL}${GET_COURSE_LIST_BY_CODE(document.getElementById("code-input").value.toUpperCase())}`)
-				if (!response.ok) {
-					throw new Error(response.statusText)
+			const json_input = document.getElementById("json-input").value;
+
+			if (json_input == "") {
+				try {
+					const response = await fetch(`${API_URL}${GET_COURSE_LIST_BY_CODE(document.getElementById("code-input").value.toUpperCase())}`)
+					if (!response.ok) {
+						throw new Error(response.statusText)
+					}
+					return await response.json()
+				} catch (error) {
+					Swal.showValidationMessage(
+						`Invalid Code! ${error}`
+					)
 				}
-				return await response.json()
-			} catch (error) {
-				Swal.showValidationMessage(
-					`Invalid Code! ${error}`
-				)
+			} else {
+				// Load from JSON
+				try {
+					const json = JSON.parse(json_input)
+
+					let course_list = [];
+					let courses_not_found = [];
+
+					for (let i = 0; i < json.length; i++) {
+						const courseCode = json[i].courseCode.replaceAll(" ", "-").toUpperCase();
+
+						// Find course in state
+						let course = state.courses.find(course => course.identifier == courseCode);
+
+						if (course == undefined) {
+							courses_not_found.push(courseCode);
+						} else {
+							course_list.push(course);
+						}
+					}
+
+					setTimeout(() => {
+						if (courses_not_found.length > 0) {
+							Toast.fire({
+								title: `Courses not found: ${courses_not_found.join(", ")}`,
+								icon: 'error'
+							});
+						}
+					}, 1000);
+
+					return {
+						code: "Imported Schedule",
+						courses: {
+							local_courses: course_list,
+							custom_courses: [],
+						},
+					};
+				} catch (error) {
+					Swal.showValidationMessage(
+						`Invalid JSON! ${error}`
+					)
+				}
 			}
 		},
 		allowOutsideClick: () => !Swal.isLoading()
@@ -2414,6 +2460,18 @@ function createAvailabilityBar(times_used) {
 // *****
 // HTML Popups
 // *****
+
+const load_popup =
+`<i>Enter a saved schedule code.<br>To add courses, exit and click the "Search" button.</i>
+<div>
+	<input maxlength='7' id="code-input" oninput="checkIfFull()">
+</div>
+<i>Or, enter exported schedule JSON from another scheduler.</i>
+<div>
+	<textarea id="json-input"></textarea>
+</div>
+`;
+
 const room_popup =
 	`
 <div id="room-box">

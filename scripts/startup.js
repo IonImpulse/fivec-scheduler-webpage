@@ -55,7 +55,7 @@ async function startup() {
     // Remove fade-in class
     let fader = document.getElementById("fader")
     fader.classList.add('fade-out');
-    //buttonRoomFinder();
+    buttonRoomFinder();
 }
 
 const schedule_element = document.getElementById("schedule-table");

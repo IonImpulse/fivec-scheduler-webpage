@@ -2346,10 +2346,14 @@ function buttonRoomFinder() {
 
 	buildings_list.sort((a, b) => a.name.localeCompare(b.name));
 
-	const now = new Date();
+	const now = new Date("2023-01-27 11:25:00");
 	const now_str = `${now.getHours()}:${now.getMinutes()}:00`;
 
 	for (let building of buildings_list) {
+		if (building.name.trim() == "") {
+			continue;
+		}
+
 		const building_div = document.createElement("div");
 		building_div.classList.add("building");
 
@@ -2428,30 +2432,29 @@ function createAvailabilityBar(times_used) {
 	const availability_bar = document.createElement("div");
 	availability_bar.classList.add("availability-bar");
 
-	const now = new Date();
+	const now = new Date("2023-01-27 11:25:00");
 	const now_str = `${now.getHours()}:${now.getMinutes()}:00`;
 
-	for (let time of times_used) {
-		const bar = document.createElement("div");
-		bar.classList.add("bar");
+	// For this day, find how long until the next class is
+	let next_class = null;
 
-		// if available, add aviailable class
-		let available = true;
+	for (let time of times_used) {
 		if (time.days.includes(days_full[now.getDay()])) {
 			// use timeDiffMins to check if time is in between start and end time
 			if (timeDiffMins(time.start_time, now_str) > 0 && timeDiffMins(time.end_time, now_str) < 0) {
-				available = false;
+				if (!next_class || timeDiffMins(time.start_time, now_str) < timeDiffMins(next_class.start_time, now_str)) {
+					next_class = time;
+				}
 			}
 		}
+	}
 
-		if (available) {
-			bar.classList.add("available");
-		}
+	if (next_class) {
+		console.log(next_class);
+		const time_until_next_class = timeDiffMins(next_class.start_time, now_str);
 
-		bar.style.left = `${timeDiffMins(time.start_time, now_str) / 1440 * 100}%`;
-		bar.style.width = `${timeDiffMins(time.end_time, time.start_time) / 1440 * 100}%`;
-
-		availability_bar.appendChild(bar);
+		availability_bar.style.width = `${time_until_next_class / 60 * 100}%`;
+		availability_bar.innerText = `Available for ${time_until_next_class}`;
 	}
 
 	return availability_bar;
@@ -2866,12 +2869,8 @@ const changelog_popup = `
 <div id="changelog-container">
 	<b>v1.19 Beta</b>
 	<ul>
+		<li>Added ability to import a schedule from exported JSON</li>
 		<li>
-			Added filtering by <b>all requirements</b>! Includes GE, Major track, Area requirement, etc. 
-			Click on the filter icon in search and select the <b>Area/Fulfills</b> dropdown
-		</li>
-		<li>Revamped filter layout in search</li>
-		<li>Fixed clicking courses not searching for course</li>
 	</ul>
 </div>
 `;

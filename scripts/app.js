@@ -2738,7 +2738,7 @@ const search_popup = `
 			<div class="options" id="misc-options">
 				<button id="hide-conflicts-check" class="radio" onclick="setMisc(0)" value="open">Hide Conflicts</button>
 				<button id="filter-half-semester" class="radio" onclick="setMisc(1)" value="open">Half Semester</button>
-				<button id="filter-seminar" class="radio" onclick="setMisc(2)" value="open">Seminar</button>
+				<button id="filter-seminar" class="radio" onclick="setMisc(2)" value="open">Seminar/Lab</button>
 				<button id="filter-humanities" class="radio" onclick="setMisc(3)" value="open">Humanities</button>
 				<button id="filter-stems" class="radio" onclick="setMisc(4)" value="open">STEMs</button>
 			</div>

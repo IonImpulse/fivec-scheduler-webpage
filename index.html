@@ -1,11 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head><noscript class="noscript">
-    <a href="https://duckduckgo.com/?t=ffab&q=how+do+i+enable+javascript&ia=web">Sorry, but this site requires
-      JavaScript to function properly.</a>
-  </noscript>
-
+<head>
   <!--- Prelude sets global variables and theming before CSS is shown -->
   <script src="scripts/prelude.js"></script>
   <meta charset="UTF-8">
@@ -111,43 +107,51 @@
 
 <body>
   <div id="fader">
-    <img id="loading-image" src="img/favicons/favicon.svg">
+    <img id="loading-image" src="img/favicons/favicon.svg" alt="5scheduler.io Logo">
   </div>
 
   <div id="main-grid">
-    <div class="title-bar ">
-      <a href="https://www.5scheduler.io" class="logo"><img src="/img/favicons/favicon.svg?v=2.0" alt="5scheduler.io"
-          class="logo"></a>
-      <button title="Share" tabindex="0" class="default-button share wide noselect" onclick="buttonShare()">
-      </button>
+    <div class="title-bar">
+      <a href="https://www.5scheduler.io" class="logo"><img src="/img/favicons/favicon.svg?v=2.0" alt="5scheduler.io"></a>
+
       <div id="quick-search-container">
         <input type="search" autocomplete="off" onkeyup="quickSearch(event)" onfocus="showQuickSearch()" id="search" placeholder="Search by course code, title, or instructor..." class="search">
         <div id="quick-search-results" class="hidden"></div>
         <button title="Open Search" tabindex="0" class="default-button" id="open-search" onclick="buttonSearch()"></button>
       </div>
 
-      <button title="Load" tabindex="0" class="default-button load wide noselect" onclick="buttonLoad()">
-      </button>
-    </div>
-    <div id="schedule-box" class="">
-      <div id="schedule-table" class=""></div>
-    </div>
-    <div id="extra-buttons" class="course-desc ">
       <button title="Open Schedule Map" tabindex="0" class="default-button noselect map" onclick="buttonMap()">
+        <label id="map-label">5C Map</label>
+      </button>
+      <button title="Share" tabindex="0" class="default-button share noselect" onclick="buttonShare()">
+        <label id="share-label">Share</label>
+      </button>
+      <button title="Load" tabindex="0" class="default-button load noselect" onclick="buttonLoad()">
+        <label id="load-label">Load</label>
       </button>
       <button title="Custom Course Manager" tabindex="0" class="default-button noselect custom-course"
         onclick="buttonCustomCourse()">
+        <label id="custom-course-label">Custom</label>
       </button>
       <button title="Save As Image" tabindex="0" class="default-button noselect export" onclick="buttonExport()">
+        <label id="export-label">Export</label>
       </button>
       <button title="Print" tabindex="0" class="default-button noselect print" onclick="buttonPrint()">
+        <label id="print-label">Print</label>
       </button>
       <button title="iCalendar" tabindex="0" class="default-button noselect cal" onclick="buttonCal()">
+        <label id="cal-label">iCal</label>
       </button>
       <button title="Theme" tabindex="0" class="default-button noselect theme" onclick="buttonTheme()">
+        <label id="theme-label">Theme</label>
       </button>
       <button title="Settings" tabindex="0" class="default-button noselect settings" onclick="buttonSettings()">
+        <label id="settings-label">Settings</label>
       </button>
+
+    </div>
+    <div id="schedule-box" class="">
+      <div id="schedule-table" class=""></div>
     </div>
     <div id="course-info-table" class="course-desc ">
     </div>

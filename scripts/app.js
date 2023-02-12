@@ -370,11 +370,15 @@ function screenshotToCanvas(canvas, source) {
 		height: `${y}`,
 	})
 		.then(function success(renderResult) {
-			canvas.width = x;
+			canvas.width = x - 20;
 			canvas.height = y;
 			canvas.style.width = `${x / 8}px`;
 			canvas.style.height = `${y / 8}px`;
 			context = canvas.getContext('2d');
+			// Draw a var(--background-main) background
+			context.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--background-main');
+			context.fillRect(0, 0, x, y);
+			
 			context.drawImage(renderResult.image, 0, 0, width = x * 4, height = y * 4);
 			Swal.hideLoading();
 		}, function error(e) {
@@ -1097,7 +1101,7 @@ async function backgroundQuickSearch() {
 
 		// Add button after each div to add it
 		html_courses.forEach((course, i) => {
-			html_courses[i] = `${course}<div class="instant-add-container"><button class='default-button instant-add-button' onclick='addCourse(${i})'></button></div>`;
+			html_courses[i] = `${course}<div class="quick-add-container"><button class='default-button quick-add-button' onclick='addCourse(${i})'></button></div>`;
 		});
 		
 		output.innerHTML = html_courses.join("\n");
@@ -1151,7 +1155,7 @@ function appendCourseHTML(courses, query, full = false) {
 	let output = document.getElementById("course-search-results");
 
 	if (courses.length == 0) {
-		output.innerHTML = `<b>No results found</b><br><br>Search for this course on <b><a class="clickable-text" href='https://www.5catalog.io/?search=${encodeURIComponent(query)}' target='_blank'>5catalog.io</a></b>`;
+		output.innerHTML = `<b>No results found</b>`;
 
 		return;
 	} else {

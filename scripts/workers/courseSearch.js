@@ -63,9 +63,6 @@ function createResultDiv(i, course, color, index, loaded_local_courses, is_quick
 	}
 	course_div += ` style="background-color: ${color}; z-index: ${10000 - i};">`;
 
-	// Create checkbox
-	course_div += `<div class="checkbox"></div>`;
-
 	let course_code = `<b>${course.identifier}</b>`;
 	let seats = `<span class="seats-highlight">${course.seats_taken} / ${course.max_seats}</span>`;
 	let status = `<span class="status-inline ${course.status}">${course.status}</span>`;

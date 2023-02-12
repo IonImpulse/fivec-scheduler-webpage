@@ -29,7 +29,7 @@ async function startup() {
     // Create reusable web worker threads
     desc_worker = new Worker('scripts/workers/descriptions.js?v=1.19.10');
     searcher_worker = new Worker('scripts/workers/searcher.js?v=1.19.0');
-    searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.19.13');
+    searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.19.14');
     permutation_worker = new Worker('scripts/workers/permutations.js?v=1.19.0');
 
     // Start worker threads to generate descriptions + searcher
@@ -55,7 +55,7 @@ async function startup() {
     // Remove fade-in class
     let fader = document.getElementById("fader")
     fader.classList.add('fade-out');
-    buttonRoomFinder();
+    //buttonRoomFinder();
 }
 
 const schedule_element = document.getElementById("schedule-table");
@@ -191,6 +191,14 @@ function updateScheduleSizing() {
     }
 }
 function generateLines() {
+    while (document.getElementsByClassName("line").length > 0) {
+        document.getElementsByClassName("line")[0].remove();
+    }
+
+    while (document.getElementsByClassName("highlight").length > 0) {
+        document.getElementsByClassName("highlight")[0].remove();
+    }
+
     for (let i = 0; i < 17; i++) {
         let line = document.createElement("div");
         line.className = "line";
@@ -199,7 +207,7 @@ function generateLines() {
         line.style.gridColumnEnd = 7;
         line.style.gridRowStart = 2 + (i * 20);
         line.style.gridRowEnd = 2 + (i * 20);
-        schedule_element.appendChild(line);
+        schedule_element.prepend(line);
     }
 
     for (let i = 0; i < 5; i++) {
@@ -210,7 +218,7 @@ function generateLines() {
         line.style.gridColumnEnd = i + 2;
         line.style.gridRowStart = 2;
         line.style.gridRowEnd = 2 + (17 * 20);
-        schedule_element.appendChild(line);
+        schedule_element.prepend(line);
     }
 }
 
@@ -227,6 +235,7 @@ function updateSchedule(play_animation = false) {
         updateStarredCourses();
         updateCredits();
         generateGridTimes();
+        generateLines();
         updateConflictedCourses();
 
         if (t_state.max_grid_rows == 0) {
@@ -239,8 +248,14 @@ function updateSchedule(play_animation = false) {
         let lines_to_delete = (350 - t_state.max_grid_rows) / 20 - 1;
         for (let i = 0; i < lines_to_delete; i++) {
             let time_label = document.getElementById("time-" + (23 - i));
+            let line = document.getElementById("h-line-" + (16 - i));
+
             if (time_label != undefined) {
                 time_label.remove();
+            }
+
+            if (line != undefined) {
+                line.remove();
             }
         }
 

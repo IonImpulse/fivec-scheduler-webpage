@@ -14,6 +14,8 @@
     content="scheduler, scheduling, course search, courses, claremont, claremont colleges, harvey mudd, hmc, claremont mckenna college, cmc, scripps, pitzer, pomona, schedule, maker, make, creator, create">
   <link rel="manifest" href="site.webmanifest">
 
+  <script defer data-domain="5scheduler.io" src="http://api.5scheduler.io/js/script.js"></script>
+
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="📚 5scheduler - Course Scheduler for the 5Cs">
@@ -115,8 +117,10 @@
       <a href="https://www.5scheduler.io" class="logo"><img src="/img/favicons/favicon.svg?v=2.0" alt="5scheduler.io"></a>
 
       <button title="Open Schedule Map" tabindex="0" class="default-button noselect map" onclick="buttonMap()">
-        <label id="map-label">5C Map</label>
+        <label id="map-label">Map</label>
       </button>
+      <button title="Room Finder" tabindex="0" class="default-button noselect room" onclick="buttonRoom()">
+        <label id="room-label">Rooms</label>
       <button title="Share" tabindex="0" class="default-button share noselect" onclick="buttonShare()">
         <label id="share-label">Share</label>
       </button>

@@ -1728,6 +1728,10 @@ async function starCourse(identifier) {
 	for (let el of els) {
 		el.classList.toggle("starred-course");
 		el.getElementsByClassName("star-course")[0].classList.toggle("filled");
+		el.getElementsByClassName("star-course")[0].classList.add("animate");
+		setTimeout(() => {
+			el.getElementsByClassName("star-course")[0].classList.remove("animate");
+		}, 501);
 	}
 }
 
@@ -2263,7 +2267,7 @@ function setMisc(index) {
 	el.children[index].classList.toggle("selected");
 }
 
-function buttonRoomFinder() {
+function buttonRoom() {
 	Swal.fire({
 		title: "Room Finder",
 		html: room_popup,
@@ -2284,8 +2288,6 @@ function buttonRoomFinder() {
 		},
 		buttonsStyling: false,
 	});
-
-	const buildings = document.getElementById("buildings");
 
 	// Contains objects of buildings with
 	// {
@@ -2352,6 +2354,14 @@ function buttonRoomFinder() {
 
 	const now = new Date("2023-01-27 11:25:00");
 	const now_str = `${now.getHours()}:${now.getMinutes()}:00`;
+	const human_readable_days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+	const room_box = document.getElementById("room-box");
+
+	room_box.innerHTML = `<p>Rooms that are free at ${now.getHours() < 13 ? now.getHours() : now.getHours() - 12}:${now.getMinutes()} ${(now.getHours() >= 12) ? "PM" : "AM"} on a ${human_readable_days[now.getDay()]}</p><div id="buildings"></div>`;
+
+
+	const buildings = document.getElementById("buildings");
 
 	for (let building of buildings_list) {
 		if (building.name.trim() == "") {
@@ -2379,12 +2389,12 @@ function buttonRoomFinder() {
 			room_div.classList.add("room");
 
 			// if available, add aviailable class
-			let available = true;
+			let available = false;
 			for (let time of room.times_used) {
 				if (time.days.includes(days_full[now.getDay()])) {
 					// use timeDiffMins to check if time is in between start and end time
 					if (timeDiffMins(time.start_time, now_str) > 0 && timeDiffMins(time.end_time, now_str) < 0) {
-						available = false;
+						available = true;
 						break;
 					}
 				}
@@ -2432,12 +2442,9 @@ function buttonRoomFinder() {
 	}
 }
 
-function createAvailabilityBar(times_used) {
+function createAvailabilityBar(times_used, now, now_str) {
 	const availability_bar = document.createElement("div");
 	availability_bar.classList.add("availability-bar");
-
-	const now = new Date("2023-01-27 11:25:00");
-	const now_str = `${now.getHours()}:${now.getMinutes()}:00`;
 
 	// For this day, find how long until the next class is
 	let next_class = null;

@@ -52,6 +52,7 @@
   --map-icon: url(../img/map-light.svg);
   --search-icon: url(../img/search.svg);
   --plus-icon: url(../img/plus.svg);
+  --room-icon: url(../img/room-light.svg);
   --hover-effect: 0.96;
   --schedule-change-speed: 0.05s;
 
@@ -99,6 +100,7 @@
   --settings-icon: url(../img/settings-dark.svg);
   --filters-icon: url(../img/filters-dark.svg);
   --map-icon: url(../img/map-dark.svg);
+  --room-icon: url(../img/room-dark.svg);
   --hover-effect: 1.1;
 }
 
@@ -162,7 +164,11 @@ canvas {
   animation-timing-function: ease-in-out;
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-direction: column;
+  font-family: serif;
+  font-size: 1.5rem;
+  color: var(--text-main  );
   opacity: 1;
 }
 
@@ -271,11 +277,12 @@ canvas {
 .title-bar {
   grid-area: header;
   display: grid;
-  grid-template-columns: 1fr repeat(4, 1fr) 12fr repeat(5, 1fr) 10px;
+  grid-template-columns: 1fr repeat(5, 1fr) 12fr repeat(5, 1fr) 10px;
   padding-top: 10px;
   padding-bottom: 10px;
   background-color: var(--title-bar);
-  gap: 10px;
+  gap: 5px;
+  place-items: center ;
 }
 
 .title-bar > button {
@@ -293,10 +300,10 @@ canvas {
 
 .title-bar > button > label {
   display: block;
-  height: 100%;
+  height: 10px;
   width: 100%;
-  transform: translate(0, 65%);
-  font-size: 10px;
+  transform: translate(0, 85%);
+  font-size: 11px;
   cursor: pointer;
 }
 
@@ -429,6 +436,10 @@ canvas {
   background-image: var(--dl-icon);
   margin-right: var(--padding);
   width: 80px;
+}
+
+.default-button.room {
+  background-image: var(--room-icon);
 }
 
 .default-button.wide {
@@ -609,7 +620,6 @@ canvas {
 
 #course-table {
   display: inline-block;
-  transition: height 0.5s ease;
   display: flex;
   flex-direction: column;
   row-gap: 5px;
@@ -1014,11 +1024,10 @@ canvas {
 
 .star-course.filled {
   background-image: var(--star-course-filled);
-  animation: grow-rotate-bezier 0.5s ease-in-out;
 }
 
-.star-course.unfilled {
-  animation: grow-rotate-bezier 0.5s ease-in-out reverse;
+.star-course.animate {
+  animation: grow-rotate-bezier 0.5s cubic-bezier(.17,.67,.24,1);
 }
 
 @keyframes grow-rotate-bezier {

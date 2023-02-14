@@ -4,6 +4,14 @@
 
 // Runs all startup scripts
 async function startup() {
+    const fader = document.getElementById("fader")
+
+    // Set a timeout after 10 seconds to tell the user
+    // the server is taking a long time to respond
+    setTimeout(() => {
+        fader.innerText += "Looks like something wrong! Please try again later.";
+    }, 10000);
+
     // Get state
     let new_state = await getState();
 
@@ -53,7 +61,6 @@ async function startup() {
     })
 
     // Remove fade-in class
-    let fader = document.getElementById("fader")
     fader.classList.add('fade-out');
     //buttonRoomFinder();
 }

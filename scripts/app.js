@@ -1721,8 +1721,8 @@ async function starCourse(identifier) {
 		state.starred_courses.push(identifier);
 	}
 
-	await save_json_data("starred_courses", state.starred_courses);
-
+	await saveState();
+	
 	let els = document.getElementsByClassName(`${identifier}-loaded`);
 
 	for (let el of els) {

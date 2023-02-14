@@ -114,12 +114,6 @@
     <div class="title-bar">
       <a href="https://www.5scheduler.io" class="logo"><img src="/img/favicons/favicon.svg?v=2.0" alt="5scheduler.io"></a>
 
-      <div id="quick-search-container">
-        <input type="search" autocomplete="off" onkeyup="quickSearch(event)" onfocus="showQuickSearch()" id="search" placeholder="Search by course code, title, or instructor..." class="search">
-        <div id="quick-search-results" class="hidden"></div>
-        <button title="Open Search" tabindex="0" class="default-button" id="open-search" onclick="buttonSearch()"></button>
-      </div>
-
       <button title="Open Schedule Map" tabindex="0" class="default-button noselect map" onclick="buttonMap()">
         <label id="map-label">5C Map</label>
       </button>
@@ -133,6 +127,14 @@
         onclick="buttonCustomCourse()">
         <label id="custom-course-label">Custom</label>
       </button>
+      
+      <div id="quick-search-container">
+        <input type="search" autocomplete="off" onkeyup="quickSearch(event)" onfocus="showQuickSearch()" id="search" placeholder="Search by course code, title, or instructor..." class="search">
+        <div id="quick-search-results" class="hidden"></div>
+        <button title="Open Search" tabindex="0" class="default-button" id="open-search" onclick="buttonSearch()"></button>
+      </div>
+
+
       <button title="Save As Image" tabindex="0" class="default-button noselect export" onclick="buttonExport()">
         <label id="export-label">Export</label>
       </button>

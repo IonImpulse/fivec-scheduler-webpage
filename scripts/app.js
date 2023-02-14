@@ -1101,7 +1101,7 @@ async function backgroundQuickSearch() {
 
 		// Add button after each div to add it
 		html_courses.forEach((course, i) => {
-			html_courses[i] = `${course}<div class="quick-add-container"><button class='default-button quick-add-button' onclick='addCourse(${i})'></button></div>`;
+			html_courses[i] = `<div class="quick-add-container"><button class='default-button quick-add-button' onclick='addCourse(${i})'></button></div>${course}`;
 		});
 		
 		output.innerHTML = html_courses.join("\n");
@@ -1278,7 +1278,7 @@ async function addCourse(i) {
 		return;
 	}
 
-	let identifier = el.children[i * 2].id;
+	let identifier = el.children[i * 2 + 1].id;
 
 	t_state.selected = [identifier];
 
@@ -1709,7 +1709,7 @@ async function showCourseOverlay(identifier, override = false) {
 	}
 }
 
-function starCourse(identifier) {
+async function starCourse(identifier) {
 	// Stop bubbling onclick event
 	if (!e) var e = window.event;
 	e.cancelBubble = true;
@@ -1721,7 +1721,7 @@ function starCourse(identifier) {
 		state.starred_courses.push(identifier);
 	}
 
-	save_json_data("starred_courses", state.starred_courses);
+	await save_json_data("starred_courses", state.starred_courses);
 
 	let els = document.getElementsByClassName(`${identifier}-loaded`);
 

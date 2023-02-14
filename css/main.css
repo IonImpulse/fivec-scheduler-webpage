@@ -271,10 +271,11 @@ canvas {
 .title-bar {
   grid-area: header;
   display: grid;
-  grid-template-columns: 1fr 12fr repeat(9, 1fr) 10px;
+  grid-template-columns: 1fr repeat(4, 1fr) 12fr repeat(5, 1fr) 10px;
   padding-top: 10px;
   padding-bottom: 10px;
   background-color: var(--title-bar);
+  gap: 10px;
 }
 
 .title-bar > button {
@@ -284,7 +285,8 @@ canvas {
   cursor: pointer;
   height: 100%;
   width: 100%;
-  background-position: 50% 10%;
+  max-width: 60px;
+  background-position: 50% 20%;
   background-size: 20px 20px;
   image-rendering: high-quality;  
 }
@@ -465,7 +467,6 @@ canvas {
   font-weight: bold;
   font-size: 20px;
   margin-left: 10px;
-  margin-right: 10px;
   background-color: var(--search-button-background);
   background-image: var(--search-icon);
   background-size: 20px 20px;
@@ -505,7 +506,7 @@ canvas {
   width: fit-content;
   z-index: 900;
   display: grid;
-  grid-template-columns: 12fr 40px;
+  grid-template-columns: 40px 12fr;
   grid-template-rows: 1fr;
   grid-gap: 5px;
   padding: var(--padding);
@@ -1013,6 +1014,23 @@ canvas {
 
 .star-course.filled {
   background-image: var(--star-course-filled);
+  animation: grow-rotate-bezier 0.5s ease-in-out;
+}
+
+.star-course.unfilled {
+  animation: grow-rotate-bezier 0.5s ease-in-out reverse;
+}
+
+@keyframes grow-rotate-bezier {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(2) rotate(20deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
 }
 
 .visibility-button {

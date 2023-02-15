@@ -1965,13 +1965,11 @@ select *.option-class {
   overflow-y: scroll;
 }
 
-#building-box {
-}
-
 .building {
   display: grid;
   text-align: left;
   grid-template-columns: 1fr 1fr;
+  column-gap: 10px;
   grid-template-areas: "name size" "rooms rooms";
   cursor: pointer;
   user-select: none;
@@ -1981,7 +1979,7 @@ select *.option-class {
 
 .building h1 {
   grid-area: name;
-  font-size: 18px;
+  font-size: 1.2em;
   padding: 10px;
   margin: 0;
   border-radius: var(--roundedness);
@@ -2355,5 +2353,22 @@ select *.option-class {
 
   #course-list-Main {
     height: 40px;
+  }
+
+  #room-box {
+    font-size: 12px;
+  }
+
+  .room-list {
+    width: 100%;
+    margin-left: 0%;
+  }
+
+  .building .room {
+    grid-template-columns: 2fr 1fr 3fr;
+  }
+
+  #swal2-title {
+    font-size: 1.5em !important;
   }
 }

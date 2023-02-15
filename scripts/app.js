@@ -2942,7 +2942,6 @@ const changelog_popup = `
 		<li>Added Room Finder panel, which allows you to find rooms that are open at a given time</li>
 		<li>Replaced the search button with a quick search/quick add bar</li>
 		<li>Added ability to import a schedule from exported JSON</li>
-		<li>
 	</ul>
 </div>
 `;

@@ -685,6 +685,7 @@ canvas {
   position: sticky;
   top: 0;
   z-index: 900;
+  border-radius: var(--roundedness);
 }
 
 .course-table-row {
@@ -2095,11 +2096,30 @@ select *.option-class {
     grid-template-columns: 1fr;
     grid-template-areas:
       "header"
-      "right-header"
       "schedule"
       "course-info"
       "courses-list"
       "course-lists-list";
+  }
+
+  .title-bar {
+    grid-template-columns: unset;
+    grid-template-areas: "btn1 btn2 btn3 btn4 btn5" "s s s s s" "btn6 btn7 btn8 btn9 btn10";
+    height: 180px;
+  }
+
+  .search {
+    height: 50px;
+  }
+
+  #quick-search-container {
+    grid-area: s;
+    width: 95%;
+  }
+
+  #quick-search-results {
+    top: 80px;
+    min-width: unset;
   }
 
   #schedule-box {
@@ -2135,9 +2155,6 @@ select *.option-class {
     width: 80vw;
   }
 
-  .title-bar {
-    grid-template-columns: 5fr 12fr 5fr;
-  }
 
   .course-schedule-block * {
     font-size: 0.7vh !important;
@@ -2189,7 +2206,6 @@ select *.option-class {
 
   #course-table {
     max-height: 60vh;
-    width: 88vw;
   }
 
   .course-schedule-block .identifier {
@@ -2264,7 +2280,6 @@ select *.option-class {
   .course-search-result {
     row-gap: 0px;
     font-size: .7em;
-    overflow: hidden;
   }
 
   #fader {
@@ -2336,5 +2351,9 @@ select *.option-class {
 
   #map {
     width: 90vw;
+  }
+
+  #course-list-Main {
+    height: 40px;
   }
 }

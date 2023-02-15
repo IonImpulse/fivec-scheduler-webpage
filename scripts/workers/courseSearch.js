@@ -85,9 +85,6 @@ function createResultDiv(i, course, color, index, loaded_local_courses, is_quick
 		coreqs = `<span class="coreqs-highlight popup-holder" onmouseenter="showPopup(\'#${identifier}-coreqs\')" onmouseleave="hidePopup(\'#${identifier}-coreqs\')">Coreq ${popup}</span>`;
 	}
 
-	if (course.perm_count > 0) {
-		perm_count = `<span class="perms-highlight">Perms: ${course.perm_count}</span>`;
-	}
 
 	if (course.sub_term != "None") {
 		sub_term = `<span class="sub-term-highlight">${course.sub_term} Half-Semester</span>`;

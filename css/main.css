@@ -563,6 +563,12 @@ canvas {
   position: relative;
 }
 
+#quick-search-results p {
+  margin-top: 10px;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
 .quick-add-button {
   height: 30px;
   width: 30px;
@@ -1328,26 +1334,25 @@ a:visited {
 
 #create-course,
 #edit-course {
-  width: 12vw;
-  height: 12vh;
+  height: 4vh;
   text-align: center;
-  line-height: 12vh;
 }
 
 #edit-course {
   width: 10vw;
 }
 #create-course,
-#add-new-course {
+#add-new-course,
+#edit-course {
   background-color: var(--search-button-background);
   color: var(--text-alt);
-  width: 10vw;
+  width: 8vw;
 }
 
 #cancel-new-course {
   background-color: var(--course-closed);
   color: var(--text-alt);
-  width: 4vw;
+  width: 6vw;
 }
 
 .button-group {
@@ -2001,6 +2006,11 @@ select *.option-class {
   column-gap: 10px;
   justify-content: space-evenly;
   width: 100%;
+}
+
+.building-rooms {
+  color: var(--text-course-schedule);
+  font-weight: bold;
 }
 
 .building-rooms, .size {

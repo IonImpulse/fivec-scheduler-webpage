@@ -785,17 +785,6 @@ async function updateButtonFilters() {
 		});
 	}
 
-	// Get sub terms
-	let sub_term_check = document.getElementById("filter-half-semester").classList.contains("selected");
-
-	if (sub_term_check) {
-		filters.push({
-			key: "sub_term",
-			value: "some",
-			type: ":"
-		});
-	}
-
 	// Get seminar filter
 	let seminar_check = document.getElementById("filter-seminar").classList.contains("selected");
 
@@ -1103,6 +1092,8 @@ async function backgroundQuickSearch() {
 		html_courses.forEach((course, i) => {
 			html_courses[i] = `<div class="quick-add-container"><button class='default-button quick-add-button' onclick='addCourse(${i})'></button></div>${course}`;
 		});
+
+		html_courses.push("<p></p><p>Press enter for more results & options</p>");
 		
 		output.innerHTML = html_courses.join("\n");
 
@@ -2749,6 +2740,17 @@ const search_popup = `
 		</div>
 
 		<div class="filter-item">
+			<label class="filter-label" for="misc-options">Quick Filters</label>
+
+			<div class="options" id="misc-options">
+				<button id="hide-conflicts-check" class="radio" onclick="setMisc(0)" value="open">Hide Conflicts</button>
+				<button id="filter-seminar" class="radio" onclick="setMisc(1)" value="open">Seminar/Lab</button>
+				<button id="filter-humanities" class="radio" onclick="setMisc(2)" value="open">Humanities</button>
+				<button id="filter-stems" class="radio" onclick="setMisc(3)" value="open">STEMs</button>
+			</div>
+		</div>
+
+		<div class="filter-item">
 			<div class="filter-times">
 				<div>
 					<label class="filter-label" for="filter-time-after">After</label>
@@ -2809,18 +2811,6 @@ const search_popup = `
 		<div class="filter-item">
 			<label class="filter-label" for="filter-credits">Credits</label>
 			<input type="number" id="filter-credits" class="filter-input" placeholder="Credits">
-		</div>
-
-		<div class="filter-item">
-			<label class="filter-label" for="misc-options">Misc</label>
-
-			<div class="options" id="misc-options">
-				<button id="hide-conflicts-check" class="radio" onclick="setMisc(0)" value="open">Hide Conflicts</button>
-				<button id="filter-half-semester" class="radio" onclick="setMisc(1)" value="open">Half Semester</button>
-				<button id="filter-seminar" class="radio" onclick="setMisc(2)" value="open">Seminar/Lab</button>
-				<button id="filter-humanities" class="radio" onclick="setMisc(3)" value="open">Humanities</button>
-				<button id="filter-stems" class="radio" onclick="setMisc(4)" value="open">STEMs</button>
-			</div>
 		</div>
 	</div>
 
@@ -2948,6 +2938,9 @@ const changelog_popup = `
 <div id="changelog-container">
 	<b>v1.19 Beta</b>
 	<ul>
+		<li>Refreshed the look of the title bar, and reorganized the buttons</li>
+		<li>Added Room Finder panel, which allows you to find rooms that are open at a given time</li>
+		<li>Replaced the search button with a quick search/quick add bar</li>
 		<li>Added ability to import a schedule from exported JSON</li>
 		<li>
 	</ul>

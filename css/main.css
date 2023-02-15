@@ -29,6 +29,7 @@
   --shadow-length: 4px;
   --text-alt: #fdfdfd;
   --text-course-schedule: #ffffff;
+  --text-course-schedule-alt: #252525;
   --text-light: #616161;
   --text-main: #252525;
   --link-color: #106497;
@@ -102,6 +103,31 @@
   --map-icon: url(../img/map-dark.svg);
   --room-icon: url(../img/room-dark.svg);
   --hover-effect: 1.1;
+}
+
+.ClaremontMckenna {
+  color: var(--text-course-schedule) !important;
+  background-color: var(--school-ClaremontMckenna) !important;
+}
+
+.HarveyMudd {
+  color: var(--text-course-schedule-alt) !important;
+  background-color: var(--school-HarveyMudd) !important;
+}
+
+.Pitzer {
+  color: var(--text-course-schedule-alt) !important;
+  background-color: var(--school-Pitzer) !important;
+}
+
+.Scripps {
+  color: var(--text-course-schedule) !important;
+  background-color: var(--school-Scripps) !important;
+}
+
+.Pomona {
+  color: var(--text-course-schedule) !important;
+  background-color: var(--school-Pomona) !important;
 }
 
 .noscript {
@@ -1944,6 +1970,16 @@ select *.option-class {
   cursor: pointer;
   user-select: none;
   padding: 5px;
+  border-radius: var(--roundedness);
+}
+
+.building h1 {
+  grid-area: name;
+  font-size: 18px;
+  padding: 10px;
+  margin: 0;
+  border-radius: var(--roundedness);
+  width: fit-content;
 }
 
 .room-list {
@@ -1952,23 +1988,27 @@ select *.option-class {
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  gap: 5px;
+  gap: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 90%;
+  margin-left: 5%;
 }
 
 .building .room {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 3fr;
   column-gap: 10px;
   justify-content: space-evenly;
   width: 100%;
-  background-color: var(--background-main);
 }
 
 .building-rooms, .size {
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
+  border-radius: var(--roundedness);
 }
 
 .building:hover {
@@ -1980,7 +2020,37 @@ select *.option-class {
 }
 
 .building-rooms .available {
-  margin-left: 20px;
+  margin-left: 20px
+}
+
+.building-rooms.none {
+  background-color: var(--course-closed);
+}
+
+.building-rooms.some {
+  background-color: var(--course-reopened);
+}
+
+.building-rooms.all {
+  background-color: var(--course-open);
+}
+
+.room p {
+  height: 120%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 0 auto;
+  gap: 10px;
+  align-items: center;
+  background-color: var(--course-closed);
+  color: white;
+  border-radius: var(--roundedness);
+}
+
+.room.available p {
+  background-color: var(--course-open);
 }
 
 /* =============================

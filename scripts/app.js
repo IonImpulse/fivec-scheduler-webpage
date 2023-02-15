@@ -1722,7 +1722,7 @@ async function starCourse(identifier) {
 	}
 
 	await saveState();
-	
+
 	let els = document.getElementsByClassName(`${identifier}-loaded`);
 
 	for (let el of els) {
@@ -2214,6 +2214,39 @@ function schoolToReadable(school) {
 	}
 }
 
+function schoolToShort(school) {
+	switch (school) {
+		case "HarveyMudd":
+			return "HMC";
+		case "ClaremontMckenna":
+			return "CMC";
+		case "Pomona":
+			return "POM";
+		case "Pitzer":
+			return "PIZ";
+		case "Scripps":
+			return "SCR";
+		default:
+			return "N/A";
+	}
+}
+
+function shortToSchool(short) {
+	switch (short) {
+		case "HMC":
+			return "HarveyMudd";
+		case "CMC":
+			return "ClaremontMckenna";
+		case "POM":
+			return "Pomona";
+		case "PIZ":
+			return "Pitzer";
+		case "SCR":
+			return "Scripps";
+		default:
+			return "NA";
+	}
+}
 
 document.getElementById("schedule-table").addEventListener("click", function (e) {
 	if (e.target.classList.contains("course-schedule-block") || e.target.parentElement.classList.contains("course-schedule-block")) {
@@ -2306,11 +2339,13 @@ function buttonRoom() {
 
 	for (let course of state.courses) {
 		for (let time of course.timing) {
-			let building = buildings_list.find(x => x.name == time.location.building);
+			const building_str = `${schoolToShort(time.location.school)} - ${time.location.building}`;
+
+			let building = buildings_list.find(x => x.name == building_str);
 
 			if (!building) {
 				building = {
-					name: time.location.building,
+					name: building_str,
 					rooms: [],
 				};
 
@@ -2352,14 +2387,9 @@ function buttonRoom() {
 
 	buildings_list.sort((a, b) => a.name.localeCompare(b.name));
 
-	const now = new Date("2023-01-27 11:25:00");
+	//const now = new Date("2023-01-27 11:25:00");
+	const now = new Date();
 	const now_str = `${now.getHours()}:${now.getMinutes()}:00`;
-	const human_readable_days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
-	const room_box = document.getElementById("room-box");
-
-	room_box.innerHTML = `<p>Rooms that are free at ${now.getHours() < 13 ? now.getHours() : now.getHours() - 12}:${now.getMinutes()} ${(now.getHours() >= 12) ? "PM" : "AM"} on a ${human_readable_days[now.getDay()]}</p><div id="buildings"></div>`;
-
 
 	const buildings = document.getElementById("buildings");
 
@@ -2373,6 +2403,7 @@ function buttonRoom() {
 
 		const building_name = document.createElement("h1");
 		building_name.innerText = building.name;
+		building_name.classList.add(`${shortToSchool(building.name.split(" - ")[0])}`);
 		building_div.appendChild(building_name);
 
 		const building_rooms = document.createElement("div");
@@ -2388,13 +2419,13 @@ function buttonRoom() {
 			const room_div = document.createElement("div");
 			room_div.classList.add("room");
 
-			// if available, add aviailable class
-			let available = false;
+			// if available, add available class
+			let available = true;
 			for (let time of room.times_used) {
 				if (time.days.includes(days_full[now.getDay()])) {
 					// use timeDiffMins to check if time is in between start and end time
 					if (timeDiffMins(time.start_time, now_str) > 0 && timeDiffMins(time.end_time, now_str) < 0) {
-						available = true;
+						available = false;
 						break;
 					}
 				}
@@ -2415,13 +2446,22 @@ function buttonRoom() {
 			size.innerText = `${room.max_occupancy} seats`;
 			room_div.appendChild(size);
 
-			const availability_bar = createAvailabilityBar(room.times_used);
+			const availability_bar = createAvailabilityText(room.times_used, now, now_str);
 			room_div.appendChild(availability_bar);
 			
 			rooms.push(room_div);
 		}
 
 		building_rooms.innerHTML = `${building.rooms.length} rooms <span class='available'>${num_avail_rooms} available</span>`;
+
+		if (num_avail_rooms == 0) {
+			building_rooms.classList.add("none");
+		} else if (num_avail_rooms == building.rooms.length) {
+			building_rooms.classList.add("all");
+		} else {
+			building_rooms.classList.add("some");
+		}
+
 		building_div.appendChild(building_rooms);
 
 		const room_list = document.createElement("div");
@@ -2442,33 +2482,61 @@ function buttonRoom() {
 	}
 }
 
-function createAvailabilityBar(times_used, now, now_str) {
-	const availability_bar = document.createElement("div");
-	availability_bar.classList.add("availability-bar");
+function createAvailabilityText(times_used, now, now_str) {
+	const availability_text = document.createElement("div");
+	availability_text.classList.add("availability-text");
 
-	// For this day, find how long until the next class is
-	let next_class = null;
+	// Create a bit of text that either says
+	// "Available for xxx minutes until xxxx time"
+	// "Unavailable for xxx minutes until xxxx time"
+	// "Available until tomorrow"
+
+	let available = true;
+	let time_until = null;
 
 	for (let time of times_used) {
 		if (time.days.includes(days_full[now.getDay()])) {
 			// use timeDiffMins to check if time is in between start and end time
 			if (timeDiffMins(time.start_time, now_str) > 0 && timeDiffMins(time.end_time, now_str) < 0) {
-				if (!next_class || timeDiffMins(time.start_time, now_str) < timeDiffMins(next_class.start_time, now_str)) {
-					next_class = time;
-				}
+				available = false;
+				time_until = time.end_time;
+				break;
 			}
 		}
 	}
 
-	if (next_class) {
-		console.log(next_class);
-		const time_until_next_class = timeDiffMins(next_class.start_time, now_str);
+	if (available) {
+		availability_text.classList.add("available");
+		availability_text.innerText = "Available";
 
-		availability_bar.style.width = `${time_until_next_class / 60 * 100}%`;
-		availability_bar.innerText = `Available for ${time_until_next_class}`;
+		// check if available until tomorrow
+		if (time_until == null) {
+			availability_text.innerText += " until tomorrow";
+		} else {
+			availability_text.innerText += ` for ${timeDiffMins(now_str, time_until)} minutes until ${to12HourTime(time_until)}`;
+		}
+	} else {
+		availability_text.classList.add("unavailable");
+		availability_text.innerText = `Unavailable for ${timeDiffMins(now_str, time_until)} minutes until ${to12HourTime(time_until)}`;
 	}
 
-	return availability_bar;
+	return availability_text;
+}
+
+function to12HourTime(time_str) {
+	let split = time_str.split(":");
+	let to_return;
+	// Remove last in split array
+	split.pop();
+
+	if (Number(split[0]) > 12) {
+		split[0] = Number(split[0]) - 12;
+		to_return = split.join(":") + " PM";
+	} else {
+		to_return = split.join(":") + " AM";
+	}
+
+	return to_return;
 }
 
 // *****

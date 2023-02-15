@@ -4,6 +4,14 @@
 
 // Runs all startup scripts
 async function startup() {
+    const fader = document.getElementById("fader")
+
+    // Set a timeout after 10 seconds to tell the user
+    // the server is taking a long time to respond
+    setTimeout(() => {
+        fader.innerText += "Looks like something wrong! Please try again later.";
+    }, 10000);
+
     // Get state
     let new_state = await getState();
 
@@ -27,10 +35,10 @@ async function startup() {
     update_loop();
 
     // Create reusable web worker threads
-    desc_worker = new Worker('scripts/workers/descriptions.js?v=1.19.0');
-    searcher_worker = new Worker('scripts/workers/searcher.js?v=1.19.0');
-    searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.19.0');
-    permutation_worker = new Worker('scripts/workers/permutations.js?v=1.19.0');
+    desc_worker = new Worker('scripts/workers/descriptions.js?v=1.20.0');
+    searcher_worker = new Worker('scripts/workers/searcher.js?v=1.20.0');
+    searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.20.0');
+    permutation_worker = new Worker('scripts/workers/permutations.js?v=1.20.0');
 
     // Start worker threads to generate descriptions + searcher
     updateDescAndSearcher(false);
@@ -46,9 +54,15 @@ async function startup() {
 
     t_state.areas = areas;
 
+    document.addEventListener("click", function(e) {
+        if (e.target.id != "search" && e.target.id != "quick-search-results") {
+            hideQuickSearch();
+        }
+    })
+
     // Remove fade-in class
-    let fader = document.getElementById("fader")
     fader.classList.add('fade-out');
+    //buttonRoomFinder();
 }
 
 const schedule_element = document.getElementById("schedule-table");
@@ -184,6 +198,14 @@ function updateScheduleSizing() {
     }
 }
 function generateLines() {
+    while (document.getElementsByClassName("line").length > 0) {
+        document.getElementsByClassName("line")[0].remove();
+    }
+
+    while (document.getElementsByClassName("highlight").length > 0) {
+        document.getElementsByClassName("highlight")[0].remove();
+    }
+
     for (let i = 0; i < 17; i++) {
         let line = document.createElement("div");
         line.className = "line";
@@ -192,7 +214,7 @@ function generateLines() {
         line.style.gridColumnEnd = 7;
         line.style.gridRowStart = 2 + (i * 20);
         line.style.gridRowEnd = 2 + (i * 20);
-        schedule_element.appendChild(line);
+        schedule_element.prepend(line);
     }
 
     for (let i = 0; i < 5; i++) {
@@ -203,7 +225,7 @@ function generateLines() {
         line.style.gridColumnEnd = i + 2;
         line.style.gridRowStart = 2;
         line.style.gridRowEnd = 2 + (17 * 20);
-        schedule_element.appendChild(line);
+        schedule_element.prepend(line);
     }
 }
 
@@ -220,6 +242,7 @@ function updateSchedule(play_animation = false) {
         updateStarredCourses();
         updateCredits();
         generateGridTimes();
+        generateLines();
         updateConflictedCourses();
 
         if (t_state.max_grid_rows == 0) {
@@ -232,8 +255,14 @@ function updateSchedule(play_animation = false) {
         let lines_to_delete = (350 - t_state.max_grid_rows) / 20 - 1;
         for (let i = 0; i < lines_to_delete; i++) {
             let time_label = document.getElementById("time-" + (23 - i));
+            let line = document.getElementById("h-line-" + (16 - i));
+
             if (time_label != undefined) {
                 time_label.remove();
+            }
+
+            if (line != undefined) {
+                line.remove();
             }
         }
 

@@ -13,7 +13,7 @@ jscolor.presets.default = {
 function buttonLoad() {
 	Swal.fire({
 		title: 'Load Schedule',
-		html: `<i>Enter a saved schedule code.<br>To add courses, exit and click the "Search" button.</i><div><input maxlength='7' id="code-input" oninput="checkIfFull()"></div>`,
+		html: load_popup,
 		focusConfirm: false,
 		showCancelButton: true,
 		confirmButtonText: 'Load',
@@ -30,16 +30,62 @@ function buttonLoad() {
 		},
 		buttonsStyling: false,
 		preConfirm: async () => {
-			try {
-				const response = await fetch(`${API_URL}${GET_COURSE_LIST_BY_CODE(document.getElementById("code-input").value.toUpperCase())}`)
-				if (!response.ok) {
-					throw new Error(response.statusText)
+			const json_input = document.getElementById("json-input").value;
+
+			if (json_input == "") {
+				try {
+					const response = await fetch(`${API_URL}${GET_COURSE_LIST_BY_CODE(document.getElementById("code-input").value.toUpperCase())}`)
+					if (!response.ok) {
+						throw new Error(response.statusText)
+					}
+					return await response.json()
+				} catch (error) {
+					Swal.showValidationMessage(
+						`Invalid Code! ${error}`
+					)
 				}
-				return await response.json()
-			} catch (error) {
-				Swal.showValidationMessage(
-					`Invalid Code! ${error}`
-				)
+			} else {
+				// Load from JSON
+				try {
+					const json = JSON.parse(json_input)
+
+					let course_list = [];
+					let courses_not_found = [];
+
+					for (let i = 0; i < json.length; i++) {
+						const courseCode = json[i].courseCode.replaceAll(" ", "-").toUpperCase();
+
+						// Find course in state
+						let course = state.courses.find(course => course.identifier == courseCode);
+
+						if (course == undefined) {
+							courses_not_found.push(courseCode);
+						} else {
+							course_list.push(course);
+						}
+					}
+
+					setTimeout(() => {
+						if (courses_not_found.length > 0) {
+							Toast.fire({
+								title: `Courses not found: ${courses_not_found.join(", ")}`,
+								icon: 'error'
+							});
+						}
+					}, 1000);
+
+					return {
+						code: "Imported Schedule",
+						courses: {
+							local_courses: course_list,
+							custom_courses: [],
+						},
+					};
+				} catch (error) {
+					Swal.showValidationMessage(
+						`Invalid JSON! ${error}`
+					)
+				}
 			}
 		},
 		allowOutsideClick: () => !Swal.isLoading()
@@ -324,11 +370,15 @@ function screenshotToCanvas(canvas, source) {
 		height: `${y}`,
 	})
 		.then(function success(renderResult) {
-			canvas.width = x;
+			canvas.width = x - 20;
 			canvas.height = y;
 			canvas.style.width = `${x / 8}px`;
 			canvas.style.height = `${y / 8}px`;
 			context = canvas.getContext('2d');
+			// Draw a var(--background-main) background
+			context.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--background-main');
+			context.fillRect(0, 0, x, y);
+			
 			context.drawImage(renderResult.image, 0, 0, width = x * 4, height = y * 4);
 			Swal.hideLoading();
 		}, function error(e) {
@@ -383,7 +433,41 @@ function buttonPrint() {
 	});
 }
 
-async function buttonSearch() {
+async function quickSearch(e) {
+	// If button is enter, then call buttonSearch()
+	if (e.keyCode == 13) {
+		// Activate hover change on #open-search
+		hideQuickSearch();
+		buttonSearch();
+	} else if ((e.keyCode >= 48 && e.keyCode <= 90) || e.keyCode == 8) {
+		// If button is a letter or symbol or number or backspace, then search
+		backgroundQuickSearch();
+	} else if (e.keyCode == 27) {
+		// If button is escape, then hide
+		hideQuickSearch();
+	}
+}
+
+async function showQuickSearch() {
+	const el = document.getElementById("quick-search-results");
+	if (el.className != "animate__animated animate__fadeInDown") {
+		document.getElementById("quick-search-results").className = "animate__animated animate__fadeInDown";
+	}
+}
+
+async function hideQuickSearch() {
+	const el = document.getElementById("quick-search-results");
+
+	if (el.className != "animate__animated animate__fadeOutUp" && el.className != "hidden") {
+		el.className = "animate__animated animate__fadeOutUp";
+		setTimeout(function () {
+			document.getElementById("quick-search-results").className = "hidden";
+		}, 100);
+	}
+
+}
+
+async function buttonSearch(select_course_identifier=null) {
 	if (state.courses == null) {
 		Swal.fire({
 			title: 'Error fetching courses!',
@@ -472,6 +556,15 @@ async function buttonSearch() {
 		hmc_credit_mode.checked = state.settings.hmc_mode;
 
 		let input = document.getElementById("course-input");
+
+		let quick_search_input = document.getElementById("search");
+		input.value = quick_search_input.value;
+
+		quick_search_input.value = "";
+
+		let quick_search_results = document.getElementById("quick-search-results");
+		quick_search_results.innerHTML = "";
+
 		document.getElementById("course-search-results").addEventListener("keydown", function (event) {
 			if (event.code === "Enter") {
 				document.activeElement.click();
@@ -480,7 +573,7 @@ async function buttonSearch() {
 
 		input.focus();
 
-		state.button_filters = [];
+		t_state.button_filters = [];
 
 		// Update area filters
 		const filter_areas = document.getElementById("filter-area");
@@ -518,8 +611,19 @@ async function buttonSearch() {
 		filters_el.addEventListener("keyup", updateButtonFilters);
 		updateButtonFilters();
 
-		setTimeout(function () {
-			backgroundCourseSearch();
+		setTimeout(async function () {
+			await backgroundCourseSearch();
+			// Select & setcoursedesc for select_course_index
+			if (select_course_identifier != null) {
+				let course = document.getElementById(select_course_identifier);
+
+				if (course != null) {
+					course.click();
+					// Find index in state.courses
+					let index = state.courses.findIndex((element) => element.identifier === select_course_identifier);
+					setCourseDescription(index);
+				}
+			}
 		}, 350);
 
 		// Create stats
@@ -681,18 +785,41 @@ async function updateButtonFilters() {
 		});
 	}
 
-	// Get sub terms
-	let sub_term_check = document.getElementById("filter-half-semester").classList.contains("selected");
+	// Get seminar filter
+	let seminar_check = document.getElementById("filter-seminar").classList.contains("selected");
 
-	if (sub_term_check) {
+	if (seminar_check) {
 		filters.push({
-			key: "sub_term",
+			key: "seminar",
 			value: "some",
 			type: ":"
 		});
 	}
 
-	state.button_filters = filters;
+	// Get STEM filter
+	let stem_check = document.getElementById("filter-stems").classList.contains("selected");
+
+	if (stem_check) {
+		filters.push({
+			key: "field",
+			value: "stems",
+			type: ":"
+		});
+	}
+
+	// Get Humanities filter
+	let humanities_check = document.getElementById("filter-humanities").classList.contains("selected");
+
+	if (humanities_check) {
+		filters.push({
+			key: "field",
+			value: "humanities",
+			type: ":"
+		});
+	}
+
+
+	t_state.button_filters = filters;
 	await backgroundCourseSearch();
 }
 
@@ -844,9 +971,8 @@ function generateICal(courses) {
 		course.timing.forEach(timing => {
 			let next_valid_date = nextDate(timing.days[0]);
 
-			let start_time = `${next_valid_date.getFullYear()}/${next_valid_date.getMonth()}/${next_valid_date.getDate()} ${timing.start_time}`;
-
-			let end_time = `${next_valid_date.getFullYear()}/${next_valid_date.getMonth()}/${next_valid_date.getDate()} ${timing.end_time}`;
+			let start_time = `${next_valid_date.getFullYear()}/${next_valid_date.getMonth() + 1}/${next_valid_date.getDate()} ${timing.start_time}`;
+			let end_time = `${next_valid_date.getFullYear()}/${next_valid_date.getMonth() + 1}/${next_valid_date.getDate()} ${timing.end_time}`;
 
 			let days = timing.days.map(day => day.toUpperCase().substring(0, 2));
 
@@ -949,6 +1075,34 @@ function saveSettings() {
 	updateSchedule();
 }
 
+async function backgroundQuickSearch() {
+	let input = document.getElementById("search");
+	let output = document.getElementById("quick-search-results");
+
+	if (input.value == "") {
+		hideQuickSearch();
+		return;
+	}
+
+	searching_worker.onmessage = function (k) {
+		// First 5 results
+		const html_courses = k.data.slice(0, 5);
+
+		// Add button after each div to add it
+		html_courses.forEach((course, i) => {
+			html_courses[i] = `<div class="quick-add-container"><button class='default-button quick-add-button' onclick='addCourse(${i})'></button></div>${course}`;
+		});
+
+		html_courses.push("<p></p><p>Press enter for more results & options</p>");
+		
+		output.innerHTML = html_courses.join("\n");
+
+		showQuickSearch();
+	}
+
+	searching_worker.postMessage([input.value, state.courses, colors, state.settings.hmc_mode, getCheckedCourses(), t_state.button_filters, true]);
+}
+
 async function backgroundCourseSearch(full = false) {
 	let input = document.getElementById("course-input");
 	let output = document.getElementById("course-search-results");
@@ -957,7 +1111,7 @@ async function backgroundCourseSearch(full = false) {
 		return;
 	}
 
-	if (input.value == "" && t_state.search_results.length > 0 && state.button_filters.length == 0) {
+	if (input.value == "" && t_state.search_results.length > 0 && t_state.button_filters.length == 0) {
 		appendCourseHTML(t_state.search_results, document.getElementById("course-input").value, full);
 
 		postProcessSearch(input.value, t_state.search_results);
@@ -973,7 +1127,7 @@ async function backgroundCourseSearch(full = false) {
 		postProcessSearch(document.getElementById("course-input").value, html_courses);
 	}
 
-	searching_worker.postMessage([input.value, state.courses, colors, state.settings.hmc_mode, getCheckedCourses(), state.button_filters]);
+	searching_worker.postMessage([input.value, state.courses, colors, state.settings.hmc_mode, getCheckedCourses(), t_state.button_filters, false]);
 }
 
 async function sleep(ms) {
@@ -992,7 +1146,7 @@ function appendCourseHTML(courses, query, full = false) {
 	let output = document.getElementById("course-search-results");
 
 	if (courses.length == 0) {
-		output.innerHTML = `<b>No results found</b><br><br>Search for this course on <b><a class="clickable-text" href='https://www.5catalog.io/?search=${encodeURIComponent(query)}' target='_blank'>5catalog.io</a></b>`;
+		output.innerHTML = `<b>No results found</b>`;
 
 		return;
 	} else {
@@ -1106,6 +1260,20 @@ function setCourseDescription(index) {
 	node_to_append.innerHTML = course_info;
 
 	course_search_desc.appendChild(node_to_append);
+}
+
+async function addCourse(i) {
+	const el = document.getElementById("quick-search-results");
+
+	if (el == null) {
+		return;
+	}
+
+	let identifier = el.children[i * 2 + 1].id;
+
+	t_state.selected = [identifier];
+
+	await addCourses();
 }
 
 async function addCourses() {
@@ -1455,7 +1623,7 @@ function removeHighlightCourses(identifier) {
 	}
 }
 
-function toggleCourseOverlay(identifier, off=false) {
+function toggleCourseOverlay(identifier, off = false) {
 	// Case zero: force off
 	if (off) {
 		removeHighlightCourses(t_state.overlay.identifier);
@@ -1495,14 +1663,14 @@ function toggleCourseOverlay(identifier, off=false) {
 	}
 }
 
-function showCourseOverlay(identifier, override = false) {
+async function showCourseOverlay(identifier, override = false) {
 	if (state.descriptions == undefined || state.descriptions.length == 0) {
 		return
 	}
 
 	if (t_state.overlay.locked == false || override == true) {
 		if (state.descriptions.length == 0) {
-			updateDescAndSearcher();
+			await updateDescAndSearcher();
 		}
 
 		let index = state.courses.findIndex((el) => el.identifier == identifier);
@@ -1532,7 +1700,7 @@ function showCourseOverlay(identifier, override = false) {
 	}
 }
 
-function starCourse(identifier) {
+async function starCourse(identifier) {
 	// Stop bubbling onclick event
 	if (!e) var e = window.event;
 	e.cancelBubble = true;
@@ -1544,13 +1712,17 @@ function starCourse(identifier) {
 		state.starred_courses.push(identifier);
 	}
 
-	save_json_data("starred_courses", state.starred_courses);
+	await saveState();
 
 	let els = document.getElementsByClassName(`${identifier}-loaded`);
 
 	for (let el of els) {
 		el.classList.toggle("starred-course");
 		el.getElementsByClassName("star-course")[0].classList.toggle("filled");
+		el.getElementsByClassName("star-course")[0].classList.add("animate");
+		setTimeout(() => {
+			el.getElementsByClassName("star-course")[0].classList.remove("animate");
+		}, 501);
 	}
 }
 
@@ -1611,7 +1783,7 @@ function addSearchFilter(filter, e = false) {
 		buttonSearch();
 		el = document.getElementById("course-input");
 	}
-	
+
 	el.value = filter;
 
 	el.focus();
@@ -1837,7 +2009,7 @@ function buttonPrevPermutation() {
 }
 
 
-function buttonMap(course=null, path=null) {
+function buttonMap(course = null, path = null) {
 	Swal.fire({
 		title: 'Map',
 		icon: '',
@@ -1939,7 +2111,7 @@ function buttonMap(course=null, path=null) {
 
 		// Get courses for that day by checking if "days" contains the day
 		let courses = getLoadedCourses();
-		
+
 		courses = courses.filter(
 			course => course.timing.map(x => x.days).flat().includes(days[i])
 		);
@@ -1973,7 +2145,7 @@ function buttonMap(course=null, path=null) {
 					if (prev_loc && prev_loc[0] != "") {
 						let prev_latlng = [prev_loc[0].replaceAll(",", ""), prev_loc[1].replaceAll(",", "")];
 
-						let line = L.polyline([prev_latlng, latlng], { color: colors[i], weight: 3}).addTo(map);
+						let line = L.polyline([prev_latlng, latlng], { color: colors[i], weight: 3 }).addTo(map);
 
 						let content = `<b>${prev_course.identifier}</b><br>${prev_course.title}<br><br><b>${course.identifier}</b><br>${course.title}`;
 
@@ -2033,11 +2205,44 @@ function schoolToReadable(school) {
 	}
 }
 
+function schoolToShort(school) {
+	switch (school) {
+		case "HarveyMudd":
+			return "HMC";
+		case "ClaremontMckenna":
+			return "CMC";
+		case "Pomona":
+			return "POM";
+		case "Pitzer":
+			return "PIZ";
+		case "Scripps":
+			return "SCR";
+		default:
+			return "N/A";
+	}
+}
 
-document.getElementById("schedule-table").addEventListener("click", function(e) {
+function shortToSchool(short) {
+	switch (short) {
+		case "HMC":
+			return "HarveyMudd";
+		case "CMC":
+			return "ClaremontMckenna";
+		case "POM":
+			return "Pomona";
+		case "PIZ":
+			return "Pitzer";
+		case "SCR":
+			return "Scripps";
+		default:
+			return "NA";
+	}
+}
+
+document.getElementById("schedule-table").addEventListener("click", function (e) {
 	if (e.target.classList.contains("course-schedule-block") || e.target.parentElement.classList.contains("course-schedule-block")) {
 	} else {
-		toggleCourseOverlay("", off=true);
+		toggleCourseOverlay("", off = true);
 
 	}
 
@@ -2048,14 +2253,14 @@ function rmp(instructor_name, course_identifier) {
 	instructor_name = instructor_name.split(" ");
 	instructor_name = instructor_name[0] + " " + instructor_name[instructor_name.length - 1];
 	instructor_name = instructor_name.replaceAll(" ", "+");
-	
+
 	const school_ids = {
 		"HarveyMudd": "U2Nob29sLTQwMA==",
 		"Scripps": "U2Nob29sLTg4OQ==",
 		"Pitzer": "U2Nob29sLTc2OA==",
 		"ClaremontMckenna": "U2Nob29sLTIzNA==",
 		"Pomona": "U2Nob29sLTc3NA=="
-	}	
+	}
 
 	let course = state.courses.find(x => x.identifier == course_identifier);
 
@@ -2086,9 +2291,269 @@ function setMisc(index) {
 	el.children[index].classList.toggle("selected");
 }
 
+function buttonRoom() {
+	Swal.fire({
+		title: "Room Finder",
+		html: room_popup,
+		showCloseButton: true,
+		showCancelButton: false,
+		confirmButtonText:
+			`Done`,
+		customClass: {
+			popup: 'swal-medium-wide',
+			confirmButton: 'default-button swal confirm',
+			cancelButton: 'default-button swal cancel',
+		},
+		showClass: {
+			popup: 'animate__animated animate__fadeInDown',
+		},
+		hideClass: {
+			popup: 'animate__animated animate__fadeOutUp',
+		},
+		buttonsStyling: false,
+	});
+
+	// Contains objects of buildings with
+	// {
+	// 	name: "Building Name",
+	// 	rooms: [{}, {}, ...]
+	// }
+	// Each room object contains
+	// {
+	// 	name: "Room Name",
+	// 	courses: [{}, {}, ...]
+	//  times_used: [{}, {}, ...]
+	//  max_occupancy: 16
+	// }
+	// Times are just day, start_time, and end_time
+	let buildings_list = [];
+
+	for (let course of state.courses) {
+		for (let time of course.timing) {
+			const building_str = `${schoolToShort(time.location.school)} - ${time.location.building}`;
+
+			let building = buildings_list.find(x => x.name == building_str);
+
+			if (!building) {
+				building = {
+					name: building_str,
+					rooms: [],
+				};
+
+				buildings_list.push(building);
+			}
+
+			let room = building.rooms.find(x => x.name == time.location.room);
+
+			if (!room) {
+				room = {
+					name: time.location.room,
+					courses: [],
+					times_used: [],
+					max_occupancy: 0
+				};
+
+				building.rooms.push(room);
+			}
+
+			if (!room.courses.includes(course)) {
+				room.courses.push(course);
+			}
+
+			let time_used = room.times_used.find(x => x.days == time.days && x.start_time == time.start_time && x.end_time == time.end_time);
+
+			if (!time_used) {
+				time_used = {
+					days: time.days,
+					start_time: time.start_time,
+					end_time: time.end_time
+				};
+
+				room.times_used.push(time_used);
+			}
+
+			room.max_occupancy = Math.max(room.max_occupancy, Math.max(course.seats_taken, course.max_seats));
+		}
+	}
+
+	buildings_list.sort((a, b) => a.name.localeCompare(b.name));
+
+	//const now = new Date("2023-01-27 11:25:00");
+	const now = new Date();
+	const now_str = `${now.getHours()}:${now.getMinutes()}:00`;
+
+	const buildings = document.getElementById("buildings");
+
+	for (let building of buildings_list) {
+		if (building.name.trim() == "") {
+			continue;
+		}
+
+		const building_div = document.createElement("div");
+		building_div.classList.add("building");
+
+		const building_name = document.createElement("h1");
+		building_name.innerText = building.name;
+		building_name.classList.add(`${shortToSchool(building.name.split(" - ")[0])}`);
+		building_div.appendChild(building_name);
+
+		const building_rooms = document.createElement("div");
+		building_rooms.classList.add("building-rooms");
+
+		let num_avail_rooms = 0;
+		let rooms = [];
+
+
+		let sorted_rooms = building.rooms.sort((a, b) => a.name.localeCompare(b.name));
+
+		for (let room of sorted_rooms) {
+			const room_div = document.createElement("div");
+			room_div.classList.add("room");
+
+			// if available, add available class
+			let available = true;
+			for (let time of room.times_used) {
+				if (time.days.includes(days_full[now.getDay()])) {
+					// use timeDiffMins to check if time is in between start and end time
+					if (timeDiffMins(time.start_time, now_str) > 0 && timeDiffMins(time.end_time, now_str) < 0) {
+						available = false;
+						break;
+					}
+				}
+			}
+
+			if (available) {
+				room_div.classList.add("available");
+				num_avail_rooms++;
+			}
+
+			const room_name = document.createElement("p");
+			room_name.innerHTML = `Room <b>${room.name}</b>`;
+			room_div.appendChild(room_name);
+
+
+			const size = document.createElement("div");
+			size.classList.add("size");
+			size.innerText = `${room.max_occupancy} seats`;
+			room_div.appendChild(size);
+
+			const availability_bar = createAvailabilityText(room.times_used, now, now_str);
+			room_div.appendChild(availability_bar);
+			
+			rooms.push(room_div);
+		}
+
+		building_rooms.innerHTML = `${building.rooms.length} rooms <span class='available'>${num_avail_rooms} available</span>`;
+
+		if (num_avail_rooms == 0) {
+			building_rooms.classList.add("none");
+		} else if (num_avail_rooms == building.rooms.length) {
+			building_rooms.classList.add("all");
+		} else {
+			building_rooms.classList.add("some");
+		}
+
+		building_div.appendChild(building_rooms);
+
+		const room_list = document.createElement("div");
+		room_list.classList.add("room-list");
+		room_list.classList.add("hidden");
+
+		for (let room of rooms) {
+			room_list.appendChild(room);
+		}
+
+		building_div.appendChild(room_list);
+
+		building_div.addEventListener("click", () => {
+			room_list.classList.toggle("hidden");
+		});
+
+		buildings.appendChild(building_div);
+	}
+}
+
+function createAvailabilityText(times_used, now, now_str) {
+	const availability_text = document.createElement("div");
+	availability_text.classList.add("availability-text");
+
+	// Create a bit of text that either says
+	// "Available for xxx minutes until xxxx time"
+	// "Unavailable for xxx minutes until xxxx time"
+	// "Available until tomorrow"
+
+	let available = true;
+	let time_until = null;
+
+	for (let time of times_used) {
+		if (time.days.includes(days_full[now.getDay()])) {
+			// use timeDiffMins to check if time is in between start and end time
+			if (timeDiffMins(time.start_time, now_str) > 0 && timeDiffMins(time.end_time, now_str) < 0) {
+				available = false;
+				time_until = time.end_time;
+				break;
+			}
+		}
+	}
+
+	if (available) {
+		availability_text.classList.add("available");
+		availability_text.innerText = "Available";
+
+		// check if available until tomorrow
+		if (time_until == null) {
+			availability_text.innerText += " until tomorrow";
+		} else {
+			availability_text.innerText += ` for ${timeDiffMins(now_str, time_until)} minutes until ${to12HourTime(time_until)}`;
+		}
+	} else {
+		availability_text.classList.add("unavailable");
+		availability_text.innerText = `Unavailable for ${timeDiffMins(now_str, time_until)} minutes until ${to12HourTime(time_until)}`;
+	}
+
+	return availability_text;
+}
+
+function to12HourTime(time_str) {
+	let split = time_str.split(":");
+	let to_return;
+	// Remove last in split array
+	split.pop();
+
+	if (Number(split[0]) > 12) {
+		split[0] = Number(split[0]) - 12;
+		to_return = split.join(":") + " PM";
+	} else {
+		to_return = split.join(":") + " AM";
+	}
+
+	return to_return;
+}
+
 // *****
 // HTML Popups
 // *****
+
+const load_popup =
+`<i>Enter a saved schedule code.<br>To add courses, exit and click the "Search" button.</i>
+<div>
+	<input maxlength='7' id="code-input" oninput="checkIfFull()">
+</div>
+<i>Or, enter exported schedule JSON from another scheduler.</i>
+<div>
+	<textarea id="json-input"></textarea>
+</div>
+`;
+
+const room_popup =
+	`
+<div id="room-box">
+	<div id="buildings">
+	</div>
+</div
+
+`;
+
 const map_popup =
 	`
 <div id="map-box">
@@ -2259,7 +2724,7 @@ const search_popup = `
 		<input id="hmc-credits" type="checkbox" class="day-checkbox" onclick="toggleCreditMode()">
 	</div>
 
-    <input class="input" id="course-input" placeholder="Search by course code, title, or instructor...">
+    <input type="search" autocomplete="off" class="search" id="course-input" placeholder="Search by course code, title, or instructor...">
 
     <span id="term-container"></span>
 </div>
@@ -2272,6 +2737,17 @@ const search_popup = `
 			<select id="filter-area" class="filter-input">
 				<option class="option-class" value="">All</option>
 			</select>
+		</div>
+
+		<div class="filter-item">
+			<label class="filter-label" for="misc-options">Quick Filters</label>
+
+			<div class="options" id="misc-options">
+				<button id="hide-conflicts-check" class="radio" onclick="setMisc(0)" value="open">Hide Conflicts</button>
+				<button id="filter-seminar" class="radio" onclick="setMisc(1)" value="open">Seminar/Lab</button>
+				<button id="filter-humanities" class="radio" onclick="setMisc(2)" value="open">Humanities</button>
+				<button id="filter-stems" class="radio" onclick="setMisc(3)" value="open">STEMs</button>
+			</div>
 		</div>
 
 		<div class="filter-item">
@@ -2335,15 +2811,6 @@ const search_popup = `
 		<div class="filter-item">
 			<label class="filter-label" for="filter-credits">Credits</label>
 			<input type="number" id="filter-credits" class="filter-input" placeholder="Credits">
-		</div>
-
-		<div class="filter-item">
-			<label class="filter-label" for="misc-options">Misc</label>
-
-			<div class="options" id="misc-options">
-				<button id="hide-conflicts-check" class="radio" onclick="setMisc(0)" value="open">Hide Conflicts</button>
-				<button id="filter-half-semester" class="radio" onclick="setMisc(1)" value="open">Half Semester</button>
-			</div>
 		</div>
 	</div>
 
@@ -2469,14 +2936,13 @@ const new_schedule_popup = `
 
 const changelog_popup = `
 <div id="changelog-container">
-	<b>v1.19 Beta</b>
+	<b>v1.20 Beta</b>
 	<ul>
-		<li>
-			Added filtering by <b>all requirements</b>! Includes GE, Major track, Area requirement, etc. 
-			Click on the filter icon in search and select the <b>Area/Fulfills</b> dropdown
-		</li>
-		<li>Revamped filter layout in search</li>
-		<li>Fixed clicking courses not searching for course</li>
+		<li>Refreshed the look of the title bar, and reorganized the buttons</li>
+		<li>Added Room Finder panel, which allows you to find rooms that are open at a given time</li>
+		<li>Replaced the search button with a quick search/quick add bar</li>
+		<li>Added ability to import a schedule from exported JSON</li>
+		<li>Various bug fixes/small improvements</li>
 	</ul>
 </div>
 `;

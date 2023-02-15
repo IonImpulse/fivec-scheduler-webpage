@@ -1,4 +1,4 @@
-const current_version = '1.19.1';
+const current_version = '1.20.0';
 // On install, cache everything
 self.addEventListener('install', (event) => {
     event.waitUntil(
@@ -61,6 +61,10 @@ self.addEventListener('install', (event) => {
                 'img/filters-light.svg',
                 'img/map-dark.svg',
                 'img/map-light.svg',
+                'img/search.svg',
+                'img/plus.svg',
+                'img/room-dark.svg',
+                'img/room-light.svg',
                 'img/favicons/android-chrome-192x192.png',
                 'img/favicons/android-chrome-512x512.png',
                 'img/favicons/apple-touch-icon.png',

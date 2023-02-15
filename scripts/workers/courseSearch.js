@@ -1,12 +1,36 @@
 importScripts("../libs/fuzzysort.js");
 
 onmessage = function(e) {
-    let course_divs = expensiveCourseSearch(e.data[0], e.data[1], e.data[2], e.data[3], e.data[4], e.data[5]);
+    let course_divs = expensiveCourseSearch(e.data[0], e.data[1], e.data[2], e.data[3], e.data[4], e.data[5], e.data[6]);
 
     postMessage(course_divs);
 }
 
 const filter_split_at = [":", "<=", ">=", "<", ">", "=", "@"];
+
+const category_stem = [
+    "AISS",
+    "AS",
+    "ALS",
+    "ASTR",
+    "BIOL",
+    "CHEM",
+    "CLES",
+    "COGS",
+    "CSMT",
+    "CSCI",
+    "CL",
+    "DSCI",
+    "EA",
+	"ENGR",
+    "GEOG",
+    "LGCS",
+    "MCBI",
+    "MATH",
+    "MOBI",
+    "NEUR",
+    "PHYS",
+];
 
 // Split a string at any of the provided strings
 // Returns the split string and the string that was split at
@@ -22,7 +46,7 @@ function splitAtList(str, list) {
 	return false;
 }
 
-function createResultDiv(i, course, color, index, loaded_local_courses) {
+function createResultDiv(i, course, color, index, loaded_local_courses, is_quick) {
 	let identifier = course.identifier;
 
 	let course_div = "<div";
@@ -31,12 +55,13 @@ function createResultDiv(i, course, color, index, loaded_local_courses) {
 	course_div += ` id="${identifier}"`;
     course_div += " tabindex=\"0\"";
 
-	course_div += ` onclick="toggleCourseSelection(\'${identifier}\')"`;
-    course_div += ` onmouseenter="setCourseDescription(\'${index}\')"`;
+	if (!is_quick) {
+		course_div += ` onclick="toggleCourseSelection(\'${identifier}\')"`;
+		course_div += ` onmouseenter="setCourseDescription(\'${index}\')"`;
+	} else {
+		course_div += ` onmousedown="buttonSearch(\'${identifier}\')"`;
+	}
 	course_div += ` style="background-color: ${color}; z-index: ${10000 - i};">`;
-
-	// Create checkbox
-	course_div += `<div class="checkbox"></div>`;
 
 	let course_code = `<b>${course.identifier}</b>`;
 	let seats = `<span class="seats-highlight">${course.seats_taken} / ${course.max_seats}</span>`;
@@ -60,9 +85,6 @@ function createResultDiv(i, course, color, index, loaded_local_courses) {
 		coreqs = `<span class="coreqs-highlight popup-holder" onmouseenter="showPopup(\'#${identifier}-coreqs\')" onmouseleave="hidePopup(\'#${identifier}-coreqs\')">Coreq ${popup}</span>`;
 	}
 
-	if (course.perm_count > 0) {
-		perm_count = `<span class="perms-highlight">Perms: ${course.perm_count}</span>`;
-	}
 
 	if (course.sub_term != "None") {
 		sub_term = `<span class="sub-term-highlight">${course.sub_term} Half-Semester</span>`;
@@ -324,6 +346,16 @@ function search_courses(query, all_courses_global, filters, hmc_mode, loaded_loc
 			if (filter.value == "some") {
 				results = results.filter(t => (t.obj || t).sub_term != "None");
 			}
+		} else if (filter.key == "seminar") {
+			// Classes that are longer then 2.5 hours
+			results = results.filter(t => (t.obj || t).timing.every(e => timeDiffMins(e.start_time.split(":").map(i => parseInt(i)), e.end_time.split(":").map(i => parseInt(i))) > 150));
+		} else if (filter.key == "field") {
+			// If field is "stem", only allow courses with code in category_stem
+			if (filter.value == "stems") {
+				results = results.filter(t => category_stem.includes((t.obj || t).code));
+			} else if (filter.value == "humanities") {
+				results = results.filter(t => !category_stem.includes((t.obj || t).code));
+			}
 		}
 	}
 
@@ -431,7 +463,7 @@ function getFilters(input) {
 	return {filters: filters, input: wanted_search_term};
 }
 
-function expensiveCourseSearch(input, all_courses_global, colors, hmc_mode, loaded_local_courses, button_filters) {
+function expensiveCourseSearch(input, all_courses_global, colors, hmc_mode, loaded_local_courses, button_filters, is_quick) {
     let results = [];
 
     if (input == "" && button_filters.length == 0) {
@@ -441,8 +473,6 @@ function expensiveCourseSearch(input, all_courses_global, colors, hmc_mode, load
 
 		const search_term = tweakSearch(filters_object.input, all_courses_global);
 
-		console.log(button_filters);
-
 		results = search_courses(search_term, all_courses_global, filters_object.filters.concat(button_filters), hmc_mode, loaded_local_courses);
 	}
 
@@ -450,7 +480,7 @@ function expensiveCourseSearch(input, all_courses_global, colors, hmc_mode, load
 
     for (let i = 0; i < results.length; i++) {
         let course = results[i].obj ?? results[i];
-        let course_div = createResultDiv(i, course, colors[i % colors.length], course.descIndex, loaded_local_courses);
+        let course_div = createResultDiv(i, course, colors[i % colors.length], course.descIndex, loaded_local_courses, is_quick);
 
         output.push(course_div);
     }

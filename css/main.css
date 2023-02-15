@@ -1979,7 +1979,7 @@ select *.option-class {
 
 .building h1 {
   grid-area: name;
-  font-size: 1.2em;
+  font-size: 1em;
   padding: 10px;
   margin: 0;
   border-radius: var(--roundedness);

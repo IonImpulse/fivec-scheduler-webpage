@@ -2487,10 +2487,11 @@ function createAvailabilityText(times_used, now, now_str) {
 
 	for (let time of times_used) {
 		if (time.days.includes(days_full[now.getDay()])) {
+			time_until = time.end_time;
+
 			// use timeDiffMins to check if time is in between start and end time
 			if (timeDiffMins(time.start_time, now_str) > 0 && timeDiffMins(time.end_time, now_str) < 0) {
 				available = false;
-				time_until = time.end_time;
 				break;
 			}
 		}
@@ -2498,17 +2499,17 @@ function createAvailabilityText(times_used, now, now_str) {
 
 	if (available) {
 		availability_text.classList.add("available");
-		availability_text.innerText = "Available";
+		availability_text.innerText = "Available until tomorrow";
 
 		// check if available until tomorrow
-		if (time_until == null) {
-			availability_text.innerText += " until tomorrow";
-		} else {
-			availability_text.innerText += ` for ${timeDiffMins(now_str, time_until)} minutes until ${to12HourTime(time_until)}`;
+		if (time_until != null) {
+			if (timeDiffMins(now_str, time_until) > 0) {
+				availability_text.innerText = `Available until ${to12HourTime(time_until)}`;
+			}
 		}
 	} else {
 		availability_text.classList.add("unavailable");
-		availability_text.innerText = `Unavailable for ${timeDiffMins(now_str, time_until)} minutes until ${to12HourTime(time_until)}`;
+		availability_text.innerText = `Unavailable until ${to12HourTime(time_until)}`;
 	}
 
 	return availability_text;

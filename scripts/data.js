@@ -9,6 +9,7 @@ const UPDATE_IF_STALE = function (timestamp) { return "updateIfStale/" + timesta
 const GET_UNIQUE_CODE = "getUniqueCode";
 const GET_COURSE_LIST_BY_CODE = function (code) { return "getCourseListByCode/" + code; }
 const GET_LOCATIONS = "getLocations"
+const EMS = "get5CEvents";
 const STATUS = "status"
 
 async function load_json_data(name) {
@@ -31,6 +32,7 @@ async function update_database() {
     console.debug("Updating database...");
 
     let location_update = update_locations();
+    let ems_update = update_ems();
 
     let response;
     let json;
@@ -58,6 +60,8 @@ async function update_database() {
     }
 
     state.locations = await location_update;    
+    state.ems = await ems_update;
+    console.log(state.ems);
 
     if (json != "No update needed" && json != undefined) {
         console.debug("New data found...");
@@ -115,6 +119,17 @@ function hydrateCourse(course) {
 
 async function update_locations() {
     let response = fetch(`${API_URL}${GET_LOCATIONS}`);
+    let data = await response;
+
+    if (data.status == 200) {
+        let json = await data.json();
+
+        return json;
+    }
+}
+
+async function update_ems() {
+    let response = fetch(`${API_URL}${EMS}`);
     let data = await response;
 
     if (data.status == 200) {

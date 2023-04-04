@@ -923,7 +923,8 @@ canvas {
   padding: var(--padding-medium);
   display: grid;
   position: relative;
-  grid-template-columns: 1fr 1fr 10fr 1fr;
+  grid-template-columns: 1vmax 1vmax 10fr 1vmax;
+  column-gap: 5px;
   align-items: center;
 }
 
@@ -1013,13 +1014,15 @@ canvas {
 }
 
 .course-info {
-  max-width: 90%;
-  margin-left: 10px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   grid-column-start: 3;
   grid-column-end: 4;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 200%;
 }
 
 .course-loaded.course-list .course-info {
@@ -1093,8 +1096,8 @@ canvas {
   background-image: url(../img/delete.svg);
   background-repeat: no-repeat;
   background-position: center;
-  height: 60%;
-  width: 100%;
+  height: 1vmax;
+  width: 1vmax;
   grid-column-start: 4;
   grid-column-end: 5;
   position: absolute;

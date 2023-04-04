@@ -7,7 +7,7 @@ Contains ALL global variables used.
 
 // Version number
 // Will delete localStorage variables when updating
-const current_version = '1.20.0';
+const current_version = '1.21.0';
 
 // Average paces for distance calcs
 const walking_feet_per_minute = 328;
@@ -26,7 +26,8 @@ var state = {
     term: "Loading...",
     descriptions: [],
     locations: {},
-
+    ems: [],
+    
     // loaded points to index in schedules
     loaded: 0,
     // schedules is a list of schedules

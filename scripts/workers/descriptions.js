@@ -41,7 +41,7 @@ function generateAllDescriptions(all_desc_global, all_courses_global, loaded_cus
 		let perm_count = "";
 	
 		if (true) {
-			perm_count = `<span class="perms-highlight" onclick="addSearchFilter(\'perms<${course.perm_count}\')">Perms: ${course.perm_count}</span>`;
+			perm_count = `<span class="perms-highlight" onclick="addSearchFilter(\'perms<${course.perm_count}\')">${course.perm_count} PERMs</span>`;
 		}
 
 		// Put the course code and status in a div on the right

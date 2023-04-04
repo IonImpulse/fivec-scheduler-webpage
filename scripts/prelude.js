@@ -26,7 +26,8 @@ var state = {
     term: "Loading...",
     descriptions: [],
     locations: {},
-
+    ems: [],
+    
     // loaded points to index in schedules
     loaded: 0,
     // schedules is a list of schedules

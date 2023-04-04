@@ -37,7 +37,7 @@ async function startup() {
     // Create reusable web worker threads
     desc_worker = new Worker('scripts/workers/descriptions.js?v=1.20.0');
     searcher_worker = new Worker('scripts/workers/searcher.js?v=1.20.0');
-    searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.20.0');
+    searching_worker = new Worker('scripts/workers/courseSearch.js?v=1.20.1');
     permutation_worker = new Worker('scripts/workers/permutations.js?v=1.20.0');
 
     // Start worker threads to generate descriptions + searcher

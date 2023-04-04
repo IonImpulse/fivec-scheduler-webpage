@@ -2937,13 +2937,10 @@ const new_schedule_popup = `
 
 const changelog_popup = `
 <div id="changelog-container">
-	<b>v1.20 Beta</b>
+	<b>v1.21 Beta</b>
 	<ul>
-		<li>Refreshed the look of the title bar, and reorganized the buttons</li>
-		<li>Added Room Finder panel, which allows you to find rooms that are open at a given time</li>
-		<li>Replaced the search button with a quick search/quick add bar</li>
-		<li>Added ability to import a schedule from exported JSON</li>
-		<li>Various bug fixes/small improvements</li>
+		<li>Added PERMs when searching for classes</li>
+		<li>Small bug fixes</li>
 	</ul>
 </div>
 `;

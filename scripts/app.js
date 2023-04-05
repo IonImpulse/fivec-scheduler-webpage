@@ -2912,7 +2912,6 @@ const new_schedule_popup = `
 <div id="new-schedule-container">
 	<div class="custom-course-manager">
 		<div class="create-schedule-form">
-			<div class="header">Name</div>
 			<div class="form-group">
 
 				<div>
